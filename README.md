@@ -13,6 +13,8 @@ To run the website server, execute `npm start` from a terminal window. Then navi
 ## Useful links
 
 [Angular Material Docs](https://material.angularjs.org/#/)
+
 [List of Material Icons](https://klarsys.github.io/angular-material-icons/)
+
 [Material Design color guide](http://www.google.com/design/spec/style/color.html#)
 
