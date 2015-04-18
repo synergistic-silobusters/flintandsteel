@@ -1,7 +1,28 @@
 var express = require('express'),
 	morgan = require('morgan'),
 	path = require('path'),
-	colors = require('colors');
+	colors = require('colors'),
+	datastore = require('docstore');
+
+var userDb, ideasDb;
+
+dataStore.open('./server/datastore/users', function(err, store) {
+	if (err) {
+		console.log(err);
+	}
+	else {
+		userDb = store;
+	}
+});
+
+dataStore.open('./server/datastore/ideas', function(err, store) {
+	if (err) {
+		console.log(err);
+	}
+	else {
+		ideasDb = store;
+	}
+});
 
 var app = express();
 
@@ -17,3 +38,21 @@ app.use(morgan(':remote-addr - ' +
 app.use(express.static(path.join(__dirname + '/../src')));
 
 app.listen(process.argv[2] || 8080);
+
+
+saveToDatastore = function(key, value, datastore, logOnlyErrors) {
+	datastore.save(
+	{
+		key: key,
+		_id: key,
+		jsonStr: JSON.stringify(value)
+	}, 
+	function(err, doc) {
+		if (err) {
+			console.log(err);
+		}
+		else if (!logOnlyErrors) {
+			console.log('Document with key ' + doc.key + ' stored.');
+		}
+	});
+};
