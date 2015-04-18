@@ -1,0 +1,28 @@
+{
+  "name": "flintandsteel",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YashdalfTheGray/flintandsteel.git"
+  },
+  "keywords": [
+    "flint",
+    "and",
+    "steel"
+  ],
+  "author": "Yash Kulshrestha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YashdalfTheGray/flintandsteel/issues"
+  },
+  "homepage": "https://github.com/YashdalfTheGray/flintandsteel",
+  "dependencies": {
+    "express": "^4.12.3"
+  }
+}

@@ -64,3 +64,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Node and bower modules
+node_modules
+src/lib
