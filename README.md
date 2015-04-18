@@ -8,7 +8,7 @@ After cloning the git repo run `npm install` from a terminal window.
 
 ## Running
 
-To run the website server, execute `npm start` from a terminal window. Then navigate to [http://localhost:8080]. 
+To run the website server, execute `npm start` from a terminal window. Then navigate to http://localhost:8080. 
 
 ## Useful links
 
