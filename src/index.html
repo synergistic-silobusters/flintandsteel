@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+	<title>Flint And Steel</title>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+	
+	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="./lib/angular-material/angular-material.css"/>
+	<link rel="stylesheet" type="text/css" href="assets/app.css">
+
+	<script src="lib/angular/angular.js"></script>
+	<script src="lib/angular-animate/angular-animate.js"></script>
+	<script src="lib/angular-route/angular-route.js"></script>
+	<script src="lib/angular-mocks/angular-mocks.js"></script>
+	<script src="lib/angular-material/angular-material.js"></script>
+	<script src="lib/angular-aria/angular-aria.js"></script>
+
+	<script src="app.js"></script>
+
+</head>
+
+<body ng-app="flintandsteel" layout="column">
+
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<md-button hide-gt-sm class="md-icon-button" aria-label="Menu">
+          		<md-icon md-svg-icon="navigation:menu"></md-icon>
+        	</md-button>
+			<span flex></span>
+			<h2><span>Flint and Steel</span></h2>
+			<span flex></span>
+        	<md-button class="md-icon-button" aria-label="Account">
+          		<md-icon md-svg-icon="action:account_circle"></md-icon>
+        	</md-button>
+        	<md-button class="md-icon-button" aria-label="More">
+          		<md-icon md-svg-icon="navigation:more_vert"></md-icon>
+        	</md-button>
+		</div>
+	</md-toolbar>
+
+	<md-content>
+		<div ng-view class="container"></div>
+	</md-content>
+	
+</body>
+</html>

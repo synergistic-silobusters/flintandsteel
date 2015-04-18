@@ -1,0 +1,7 @@
+.md-icon-button {
+	margin-right: 10px;
+}
+
+.md-icon-button:last-child {
+	margin-right: 0px;
+}

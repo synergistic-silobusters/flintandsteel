@@ -65,6 +65,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Node and bower modules
+# Node and bower files
 node_modules
 src/lib
+npm-debug.log
