@@ -5,16 +5,28 @@
 	This sets up the main app module and also tells Angular
 	what this module depends on to work correctly. 
  */
-angular.module('flintandsteel', [
+angular.module('flintAndSteel', [
 		'ngAnimate',
 		'ngRoute',
 		'ngMaterial'
 	]
 )
 .config([
+	'$routeProvider',
 	'$mdIconProvider',
 	'$mdThemingProvider', 
-	function($mdIconProvider, $mdThemingProvider) {
+	function($routeProvider, $mdIconProvider, $mdThemingProvider) {
+		$routeProvider
+			.when('/home', {
+				templateUrl: 'home/home.tpl.html',
+				controller: 'homeCtrl'
+			})
+			.when('/login', {
+				templateUrl: 'login/login.tpl.html',
+				controller: 'loginCtrl'
+			})
+			.otherwise({ redirectTo: '/home'});
+
 	    $mdIconProvider
 	        .iconSet('action', './assets/icons/action-icons.svg', 24)
 	        .iconSet('alert', './assets/icons/alert-icons.svg', 24)
