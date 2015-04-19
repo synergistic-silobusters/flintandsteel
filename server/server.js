@@ -6,7 +6,7 @@ var express = require('express'),
 
 var userDb, ideasDb;
 
-dataStore.open('./server/datastore/users', function(err, store) {
+datastore.open('./server/datastore/users', function(err, store) {
 	if (err) {
 		console.log(err);
 	}
@@ -15,7 +15,7 @@ dataStore.open('./server/datastore/users', function(err, store) {
 	}
 });
 
-dataStore.open('./server/datastore/ideas', function(err, store) {
+datastore.open('./server/datastore/ideas', function(err, store) {
 	if (err) {
 		console.log(err);
 	}
