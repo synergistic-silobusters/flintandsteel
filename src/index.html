@@ -22,12 +22,15 @@
 	<script src="app.js"></script>
 	<script src="home/home.js"></script>
 	<script src="login/login.js"></script>
+	<script src="toolbar/toolbar.js"></script>
+	<script src="signup/signup.js"></script>
+	<script src="account/account.js"></script>
 
 </head>
 
 <body ng-app="flintAndSteel" layout="column">
 
-	<md-toolbar>
+	<md-toolbar ng-controller="toolbarCtrl">
 		<div class="md-toolbar-tools">
 			<md-button hide-gt-sm class="md-icon-button" aria-label="Menu">
           		<md-icon md-svg-icon="navigation:menu"></md-icon>
@@ -35,7 +38,7 @@
 			<span flex></span>
 			<h2><span>Flint and Steel</span></h2>
 			<span flex></span>
-        	<md-button class="md-icon-button" aria-label="Account" ui-sref="login">
+        	<md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
           		<md-icon md-svg-icon="action:account_circle"></md-icon>
         	</md-button>
         	<md-button class="md-icon-button" aria-label="More">

@@ -27,6 +27,16 @@ angular.module('flintAndSteel', [
 	      		url: '/login',
 	      		templateUrl: 'login/login.tpl.html',
 	      		controller: 'loginCtrl'
+    		})
+    		.state('signup', {
+    			url: '/signup',
+    			templateUrl: 'signup/signup.tpl.html',
+    			controller: 'signupCtrl'
+    		})
+    		.state('account', {
+    			url: '/account',
+    			templateUrl: 'account/account.tpl.html',
+    			controller: 'accountCtrl'
     		});
 
 		$urlRouterProvider.otherwise('home');
