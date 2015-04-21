@@ -7,25 +7,29 @@
  */
 angular.module('flintAndSteel', [
 		'ngAnimate',
-		'ngRoute',
+		'ui.router',
 		'ngMaterial'
 	]
 )
 .config([
-	'$routeProvider',
+	'$urlRouterProvider',
+	'$stateProvider',
 	'$mdIconProvider',
 	'$mdThemingProvider', 
-	function($routeProvider, $mdIconProvider, $mdThemingProvider) {
-		$routeProvider
-			.when('/home', {
-				templateUrl: 'home/home.tpl.html',
-				controller: 'homeCtrl'
-			})
-			.when('/login', {
-				templateUrl: 'login/login.tpl.html',
-				controller: 'loginCtrl'
-			})
-			.otherwise({ redirectTo: '/home'});
+	function($urlRouterProvider, $stateProvider, $mdIconProvider, $mdThemingProvider) {
+		$stateProvider
+			.state('home', {
+	      		url: '',
+	      		templateUrl: 'home/home.tpl.html',
+	      		controller: 'homeCtrl'
+    		})
+    		.state('login', {
+	      		url: '/login',
+	      		templateUrl: 'login/login.tpl.html',
+	      		controller: 'loginCtrl'
+    		});
+
+		$urlRouterProvider.otherwise('home');
 
 	    $mdIconProvider
 	        .iconSet('action', './assets/icons/action-icons.svg', 24)
