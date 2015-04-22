@@ -5,3 +5,11 @@
 .md-icon-button:last-child {
 	margin-right: 0px;
 }
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body { 
+  font-family: 'Open Sans', sans-serif;
+  color: #666;
+}
+
