@@ -14,7 +14,7 @@
 
 	<script src="lib/angular/angular.js"></script>
 	<script src="lib/angular-animate/angular-animate.js"></script>
-	<script src="lib/angular-route/angular-route.js"></script>
+	<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
 	<script src="lib/angular-mocks/angular-mocks.js"></script>
 	<script src="lib/angular-material/angular-material.js"></script>
 	<script src="lib/angular-aria/angular-aria.js"></script>
@@ -22,12 +22,15 @@
 	<script src="app.js"></script>
 	<script src="home/home.js"></script>
 	<script src="login/login.js"></script>
+	<script src="toolbar/toolbar.js"></script>
+	<script src="signup/signup.js"></script>
+	<script src="account/account.js"></script>
 
 </head>
 
 <body ng-app="flintAndSteel" layout="column">
 
-	<md-toolbar>
+	<md-toolbar ng-controller="toolbarCtrl">
 		<div class="md-toolbar-tools">
 			<md-button hide-gt-sm class="md-icon-button" aria-label="Menu">
           		<md-icon md-svg-icon="navigation:menu"></md-icon>
@@ -35,7 +38,7 @@
 			<span flex></span>
 			<h2><span></span></h2>
 			<span flex></span>
-        	<md-button class="md-icon-button" aria-label="Account" href="#/login">
+        	<md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
           		<md-icon md-svg-icon="action:account_circle"></md-icon>
         	</md-button>
         	<md-button class="md-icon-button" aria-label="More">
@@ -45,9 +48,14 @@
 	</md-toolbar>
 
 	<md-content>
+<<<<<<< HEAD
 	<h1><center> Flint and Steel</center> </h1>
 		<div ng-view class="container"></div>
 		
+=======
+		<div ui-view class="container"></div>
+		"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+>>>>>>> bce21af93c2c3fe5cd6fae546b2eb9418e2ec044
 	</md-content>
 	
 </body>

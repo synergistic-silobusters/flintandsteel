@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "bower install",
-    "start": "node server/server.js"
+    "start": "echo \"Please use gulp start to start the server\" && exit 0"
   },
   "repository": {
     "type": "git",
@@ -28,5 +28,13 @@
     "docstore": "^0.1.1",
     "express": "^4.12.3",
     "morgan": "^1.5.2"
+  },
+  "devDependencies": {
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.10.0",
+    "gulp-nodemon": "^2.0.2",
+    "gulp-util": "^3.0.4",
+    "jshint-stylish-ex": "^0.2.0"
   }
 }
