@@ -6,8 +6,12 @@ angular.module('flintAndSteel')
 		'$scope',
 		'$state',
 		function($scope, $state) {
-			$scope.accountClick = function() {
+			$scope.accountClick = function accountClick() {
 				$state.go('login');
+			};
+
+			$scope.stateIsHome = function checkState() {
+				return $state.is('home');
 			};
 		}
 	]

@@ -1,3 +1,10 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body { 
+  font-family: 'Open Sans', sans-serif;
+  color: #666;
+}
+
 .md-icon-button {
 	margin-right: 10px;
 }
@@ -6,11 +13,10 @@
 	margin-right: 0px;
 }
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans);
-
-body { 
-  font-family: 'Open Sans', sans-serif;
-  color: #666;
+.login-button {
+	margin-right: 10px;
 }
 
-git
+.signup-button {
+	margin-left: 10px;
+}

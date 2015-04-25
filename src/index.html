@@ -25,6 +25,7 @@
 	<script src="toolbar/toolbar.js"></script>
 	<script src="signup/signup.js"></script>
 	<script src="account/account.js"></script>
+	<script src="loginSvc/loginSvc.js"></script>
 
 </head>
 
@@ -35,8 +36,7 @@
 			<md-button hide-gt-sm class="md-icon-button" aria-label="Menu">
           		<md-icon md-svg-icon="navigation:menu"></md-icon>
         	</md-button>
-			<span flex></span>
-			<h2><span></span></h2>
+			<h2 ng-if="!stateIsHome()"><span>Flint and Steel</span></h2>
 			<span flex></span>
         	<md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
           		<md-icon md-svg-icon="action:account_circle"></md-icon>
