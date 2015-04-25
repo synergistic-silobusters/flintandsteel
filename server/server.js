@@ -37,6 +37,30 @@ app.use(morgan(':remote-addr - ' +
 ));
 app.use(express.static(path.join(__dirname + '/../src')));
 
+app.post('/login', function(req, res) {
+	userDb.get(req.body.username, function(err, doc) {
+		if (err) {
+			res.sendStatus(400);
+		}
+		else {
+			var accountFromDb = JSON.parse(doc.jsonStr);
+			if (req.body.password === accountFromDb.password) {
+				res.sendStatus(200);
+			}
+			else {
+				res.sendStatus(401);
+			}
+		}
+	});
+	console.log(req.body);
+});
+
+app.post('/signup', function(req, res) {
+	saveToDatastore(req.body.username, req.body, userDb);
+	console.log(req.body);
+	res.sendStatus(201);
+});
+
 app.listen(process.argv[2] || 8080);
 
 

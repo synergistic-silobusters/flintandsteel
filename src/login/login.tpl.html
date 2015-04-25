@@ -18,7 +18,11 @@
 					</div>
 	        	</md-input-container>
 	        	<p></p>
-	        	<md-button class="md-raised md-accent" ng-click="loginUser(account)" flex>Login</md-button>
+	        	<span>
+	        	<md-button class="md-raised md-primary login-button" ng-click="loginUser(account)" flex>Login</md-button>
+	        	or
+	        	<md-button class="md-raised md-accent signup-button" ng-click="signUpUser(account)" flex>Sign Up</md-button>
+	        	</span>
 	        </form>
 		</md-card-content>
 	</md-card>
