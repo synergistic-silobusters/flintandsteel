@@ -8,7 +8,7 @@ After cloning the git repo run `npm install` from a terminal window.
 
 ## Updating
 
-`gulp cleanModules` will make sure that all the modules are the latest versions and ascertain that there are no unneeded modules downloaded. 
+`gulp clean:modules` will make sure that all the modules are the latest versions and ascertain that there are no unneeded modules downloaded. This clears out noth npm and bower modules. 
 
 This will reduce the ammount of conflicts rising from versioning and previous experiments. 
 
@@ -19,6 +19,10 @@ To run the website server, execute `gulp start` from a terminal window. Then nav
 ## Linting
 
 Running `gulp jshint` will lint any Javascript file under the `src` folder excluding `src/lib`.
+
+## Clearing Persistent storage
+
+The express server app uses [docstore](https://www.npmjs.com/package/docstore) to store users and ideas in JSON format. If this storage location gets messy, `gulp clean:db` can be used to clear up the datastore. 
 
 ## Useful links
 
