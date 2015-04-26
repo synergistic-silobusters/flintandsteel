@@ -5,10 +5,14 @@ angular.module('flintAndSteel')
 		'$scope',
 		'$state',
 		'loginSvc',
-		function($scope) {
+		function($scope, $state, loginSvc) {
 			$scope.loginUser = function(account) {
 				loginSvc.checkLogin(account, function LoginSuccess(data) {
-					console.log(data);
+					if (data === 'AUTH_OK') {
+						$scope.$root.authenticated = true;
+						$state.go('home');
+					}
+					
 				},
 				function loginError(data, status, headers, config) {
 					console.log(status);
@@ -16,7 +20,8 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.signUpUser = function signUpUser(account) {
-				$state.go('signup', {account: account});
+				$scope.$root.username = account.username;
+				$state.go('signup');
 			};
 		}
 	]

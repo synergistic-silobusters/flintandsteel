@@ -1,3 +1,39 @@
 <md-content layout="column" layout-align="start center">
-	<h1>This will be the Flint and Steel signup page</h1>
+	<md-card>
+		<md-card-content>
+			<h2>Sign Up</h2>
+			<form name="loginForm" layout="column" layout-align="start center">
+				<md-input-container flex>
+					<label>Username</label>
+					<input ng-model="account.username" name="username" required>
+					<div ng-messages="loginForm.username.$error">
+						<div ng-message="required">Required</div>
+					</div>
+	        	</md-input-container>
+	        	<md-input-container flex>
+					<label>Password</label>
+					<input ng-model="account.password" name="password" required type="password">
+					<div ng-messages="loginForm.password.$error">
+						<div ng-message="required">Required</div>
+					</div>
+	        	</md-input-container>
+	        	<md-input-container flex>
+					<label>Email</label>
+					<input ng-model="account.email" name="email" required type="email">
+					<div ng-messages="loginForm.email.$error">
+						<div ng-message="required">Required</div>
+					</div>
+	        	</md-input-container>
+	        	<md-input-container flex>
+					<label>Name</label>
+					<input ng-model="account.name" name="name" required>
+					<div ng-messages="loginForm.name.$error">
+						<div ng-message="required">Required</div>
+					</div>
+	        	</md-input-container>
+	        	<p></p>
+	        	<md-button class="md-raised md-primary" ng-click="completeSignUp(account)" flex>Sign Up</md-button>
+	        </form>
+		</md-card-content>
+	</md-card>
 </md-content>

@@ -7,7 +7,13 @@ angular.module('flintAndSteel')
 		'$state',
 		function($scope, $state) {
 			$scope.accountClick = function accountClick() {
-				$state.go('login');
+				if ($scope.$root.authenticated) {
+					$state.go('account');
+				}
+				else {
+					$state.go('login');
+				}
+				
 			};
 
 			$scope.stateIsHome = function checkState() {

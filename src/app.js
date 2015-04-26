@@ -19,7 +19,7 @@ angular.module('flintAndSteel', [
 	function($urlRouterProvider, $stateProvider, $mdIconProvider, $mdThemingProvider) {
 		$stateProvider
 			.state('home', {
-	      		url: '',
+	      		url: '/',
 	      		templateUrl: 'home/home.tpl.html',
 	      		controller: 'homeCtrl'
     		})
@@ -44,7 +44,7 @@ angular.module('flintAndSteel', [
     			controller: 'ideasListCtrl'
     		});
 
-		$urlRouterProvider.otherwise('home');
+		$urlRouterProvider.otherwise('/');
 
 	    $mdIconProvider
 	        .iconSet('action', './assets/icons/action-icons.svg', 24)

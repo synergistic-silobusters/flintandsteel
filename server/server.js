@@ -2,7 +2,8 @@ var express = require('express'),
 	morgan = require('morgan'),
 	path = require('path'),
 	colors = require('colors'),
-	datastore = require('docstore');
+	datastore = require('docstore'),
+	bodyParser = require('body-parser');
 
 var userDb, ideasDb;
 
@@ -26,6 +27,7 @@ datastore.open('./server/datastore/ideas', function(err, store) {
 
 var app = express();
 
+
 app.use(morgan(':remote-addr - ' + 
 			   '[:date] '.cyan + 
 			   '":method :url '.green + 
@@ -36,30 +38,32 @@ app.use(morgan(':remote-addr - ' +
 			   'time=:response-time ms'
 ));
 app.use(express.static(path.join(__dirname + '/../src')));
+app.use(bodyParser.json());
+
 
 app.post('/login', function(req, res) {
+	//console.log(req.body);
 	userDb.get(req.body.username, function(err, doc) {
 		if (err) {
-			res.sendStatus(400);
+			res.status(200).send('USER_NOT_FOUND');
 		}
 		else {
 			var accountFromDb = JSON.parse(doc.jsonStr);
 			if (req.body.password === accountFromDb.password) {
-				res.sendStatus(200);
+				res.status(200).send('AUTH_OK');
 			}
 			else {
-				res.sendStatus(401);
+				res.status(200).send('AUTH_ERROR');
 			}
 		}
 	});
-	console.log(req.body);
 });
-
 app.post('/signup', function(req, res) {
+	//console.log(req.body);
 	saveToDatastore(req.body.username, req.body, userDb);
-	console.log(req.body);
 	res.sendStatus(201);
 });
+
 
 app.listen(process.argv[2] || 8080);
 
