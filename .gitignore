@@ -69,3 +69,6 @@ Temporary Items
 node_modules
 src/lib
 npm-debug.log
+
+# Database files
+server/datastore
