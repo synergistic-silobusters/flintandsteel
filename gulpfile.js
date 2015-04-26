@@ -22,10 +22,13 @@ gulp.task('usage', function() {
 		colors.green('jshint'),
 		'\tRun jshint on the spec and the js folder under src.',
 		'',
-		colors.green('cleanModules'),
+		colors.green('clean:modules'),
 		'\tDeletes the npm_modules and the src/lib directories.',
 		'\t' + colors.magenta('NOTE:') + ' ' + colors.green('npm install') + 
 		' will be required before running the app.',
+		'',
+		colors.green('clean:db'),
+		'\tResets the persistent app storage by clearing out the datastore folder.',
 		''
 	];
 	gutil.log(usageLines.join(os.EOL));
@@ -47,9 +50,16 @@ gulp.task('jshint', function() {
 	.pipe(jshint.reporter(stylish));
 });
 
-gulp.task('cleanModules', function() {
+gulp.task('clean:modules', function() {
 	return del([
 		'node_modules',
 		'src/lib'
+	]);
+});
+
+gulp.task('clean:db', function() {
+	return del([
+		'server/datastore/users/*',
+		'server/datastore/ideas/*'
 	]);
 });
