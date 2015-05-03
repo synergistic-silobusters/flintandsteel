@@ -26,6 +26,8 @@ The express server app uses [docstore](https://www.npmjs.com/package/docstore) t
 
 ## Useful links
 
+[Angular Docs](https://docs.angularjs.org/api)
+
 [Angular Material Docs](https://material.angularjs.org/#/)
 
 [List of Material Icons](https://klarsys.github.io/angular-material-icons/)
