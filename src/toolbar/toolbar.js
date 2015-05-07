@@ -5,7 +5,8 @@ angular.module('flintAndSteel')
 	[
 		'$scope',
 		'$state',
-		function($scope, $state) {
+		'$mdSidenav',
+		function($scope, $state, $mdSidenav) {
 			$scope.accountClick = function accountClick() {
 				if ($scope.$root.authenticated) {
 					$state.go('account');
@@ -18,6 +19,10 @@ angular.module('flintAndSteel')
 
 			$scope.stateIsHome = function checkState() {
 				return $state.is('home');
+			};
+
+			$scope.showNav = function showNav() {
+				$mdSidenav('left').toggle();
 			};
 		}
 	]

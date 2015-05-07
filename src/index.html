@@ -33,7 +33,7 @@
 
 	<md-toolbar ng-controller="toolbarCtrl">
 		<div class="md-toolbar-tools">
-			<md-button hide-gt-sm class="md-icon-button" aria-label="Menu">
+			<md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
           		<md-icon md-svg-icon="navigation:menu"></md-icon>
         	</md-button>
 			<h2 ng-if="!stateIsHome()"><span>Flint and Steel</span></h2>
@@ -47,10 +47,19 @@
 		</div>
 	</md-toolbar>
 
-	<md-content>
+	<md-content flex layout="row">
+		<md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left">
+			<md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
+			<!-- <md-list>
+				<md-item ng-repeat="idea in topIdeas">
+					IDEA LIST ITEM DIRECTIVE GOES HERE
+				</md-item>
+			</md-list> -->
+			<md-divider></md-divider>
+			<md-button class="md-primary" ui-sref="home">Home</md-button>
+		</md-sidenav>
 
-		<div ui-view class="container"></div>
-
+		<div ui-view flex></div>
 	</md-content>
 	
 </body>

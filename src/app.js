@@ -66,7 +66,10 @@ angular.module('flintAndSteel', [
 
 	    $mdThemingProvider.theme('default')
                           .primaryPalette('blue')
-                          .accentPalette('deep-orange')
+                          .accentPalette('green', {
+                          	'default': 'A200',
+                          	'hue-1': '600'
+                          })
                           .warnPalette('red');
 	}
 ])
