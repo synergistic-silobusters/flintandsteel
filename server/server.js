@@ -63,6 +63,22 @@ app.post('/signup', function(req, res) {
 	saveToDatastore(req.body.username, req.body, userDb);
 	res.sendStatus(201);
 });
+app.post('/idea', function(req, res) {
+	//console.log(req.body);
+	saveToDatastore(req.body.id, req.body, ideasDb);
+	res.sendStatus(201);
+});
+
+app.get('/idea', function(req, res) {
+	ideasDb.get(req.body.id, function(err, doc) {
+		if (err) {
+			res.status(200).send('IDEA_NOT_FOUND');
+		}
+		else {
+			res.status(200).json(JSON.parse(doc.jsonStr));
+		}
+	});
+});
 
 
 app.listen(process.argv[2] || 8080);
