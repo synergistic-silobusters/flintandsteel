@@ -27,6 +27,11 @@ datastore.open('./server/datastore/ideas', function(err, store) {
 
 var app = express();
 
+// Datastore filter to find everything
+var filter = function dbFilter(doc) {
+	return true;
+};
+
 
 app.use(morgan(':remote-addr - ' + 
 			   '[:date] '.cyan + 
@@ -70,12 +75,33 @@ app.post('/idea', function(req, res) {
 });
 
 app.get('/idea', function(req, res) {
-	ideasDb.get(req.body.id, function(err, doc) {
+	ideasDb.get(req.query.id, function(err, doc) {
 		if (err) {
 			res.status(200).send('IDEA_NOT_FOUND');
 		}
 		else {
 			res.status(200).json(JSON.parse(doc.jsonStr));
+		}
+	});
+});
+app.get('/ideaheaders', function(req, res) {
+	ideasDb.scan(filter, function(err, docs) {
+		if (err) {
+			res.sendStatus(500);
+		}
+		else if (docs.length === 0) {
+			res.status(200).send('NO_IDEAS_IN_STORAGE');
+		}
+		else {
+			var headers = {};
+			for(var i = 0; i < docs.length; i++) {
+				headers[docs.id] = {
+					title: doc.title,
+					author: doc.author,
+					likes: doc.likes
+				};
+			}
+			res.send(200).json(headers);
 		}
 	});
 });
