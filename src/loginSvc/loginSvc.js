@@ -6,6 +6,7 @@ angular.module('flintAndSteel')
 		'$http',
 		'appSettings',
 		function($http, appSettings) {
+
 			return {
 				checkLogin: function checkLogin(account, successCb, errorCb){
 					//console.log(account);
@@ -15,6 +16,7 @@ angular.module('flintAndSteel')
 				},
 				addUser: function addUser(account, successCb, errorCb) {
 					//console.log(account);
+					account.id = _.uniqueId('user_');
 					$http.post(appSettings.serverUrl + '/signup', account)
 						.success(successCb)
 						.error(errorCb);
