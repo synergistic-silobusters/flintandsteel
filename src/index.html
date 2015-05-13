@@ -19,6 +19,7 @@
 	<script src="lib/angular-material/angular-material.js"></script>
 	<script src="lib/angular-aria/angular-aria.js"></script>
 	<script src="lib/lodash/lodash.js"></script>
+	<script src="lib/moment/moment.js"></script>
 
 	<script src="app.js"></script>
 	<script src="home/home.js"></script>
@@ -28,6 +29,7 @@
 	<script src="account/account.js"></script>
 	<script src="loginSvc/loginSvc.js"></script>
 	<script src="ideaSvc/ideaSvc.js"></script>
+	<script src="ideasView/ideasView.js"></script>
 
 </head>
 
@@ -50,7 +52,7 @@
 	</md-toolbar>
 
 	<md-content flex layout="row">
-		<md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left">
+		<md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
 			<md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
 			<!-- <md-list>
 				<md-item ng-repeat="idea in topIdeas">
@@ -58,12 +60,16 @@
 				</md-item>
 			</md-list> -->
 			<md-divider></md-divider>
-			<div layout="row">
-				<md-button class="md-primary" ui-sref="home" flex>Home</md-button>
-			</div>
+			<div layout="row"><md-button class="md-primary" ui-sref="home" flex>Home</md-button></div>
+			<div layout="row"><md-button class="md-primary" ui-sref="idea" flex>Idea (Test only)</md-button></div>
+<!-- 			<div layout="row" layout-align="end end">
+				<md-button class="md-fab" aria-label="Add another idea">
+	            	<md-icon md-svg-icon="content:add"></md-icon>
+	        	</md-button>
+	        </div> -->
 		</md-sidenav>
 
-		<div ui-view flex></div>
+		<div ui-view flex class="scroll-container"></div>
 	</md-content>
 	
 </body>

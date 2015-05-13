@@ -15,8 +15,9 @@ angular.module('flintAndSteel')
 								.content(account.username + ' has successfully signed in!')
 								.position('top right')
 								.hideDelay(5000)
-						)
+						);
 						$scope.$root.authenticated = true;
+						$scope.$root.username = account.username;
 						$state.go('home');
 					}
 					else if (data === 'AUTH_ERROR') {
@@ -25,7 +26,7 @@ angular.module('flintAndSteel')
 								.content('Your credentials don\'t match the stored ones :(')
 								.position('top right')
 								.hideDelay(5000)
-						)
+						);
 					}
 					
 				},

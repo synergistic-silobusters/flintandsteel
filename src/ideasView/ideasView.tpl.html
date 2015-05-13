@@ -1,0 +1,65 @@
+<md-card>
+	<img ng-src="{{idea.image}}" class="md-card-image">
+	<md-card-content>
+		<h1>{{idea.title}}</h1>
+		<h3>by {{idea.author}}</h3>
+		<p>{{idea.description}}</p>
+	</md-card-content>
+</md-card>
+<md-card>
+	<md-card-content>
+		{{idea.likes}} likes, {{idea.managerLikes}} by managers, and {{idea.backs.length}} backs
+	</md-card-content>
+</md-card>
+<md-card>
+	<md-card-content>
+		<md-tabs md-dynamic-height md-border-bottom>
+			<md-tab label="Comments">
+				<md-content class="md-padding">
+					<md-list>
+						<md-list-item class="md-2-line" ng-repeat="comment in idea.comments">
+							<div class="md-list-item-text">
+								<h3>{{comment.text}}</h3>
+								<p>{{comment.from}} <small class="extra-space-left">{{comment.time}}</small></p>
+							</div>
+						</md-list-item>
+					</md-list>
+					<div layout="row" ng-if="$root.authenticated">
+						<md-input-container class="no-padding-bottom" flex>
+							<label>Add a comment</label>
+							<input ng-model="newComment">
+						</md-input-container>
+						<md-button class="md-icon-button" aria-label="Submit" ng-click="addNewInteraction('comments', newComment)">
+					        <md-icon md-svg-icon="action:done"></md-icon>
+						</md-button>
+					</div>
+				</md-content>
+			</md-tab>
+			<md-tab label="Backers">
+				<md-content class="md-padding">
+					<md-list>
+						<md-list-item class="md-2-line" ng-repeat="back in idea.backs">
+							<div class="md-list-item-text">
+								<h3>{{back.text}}</h3>
+								<p>{{back.from}} <small class="extra-space-left">{{back.time}}</small></p>
+							</div>
+						</md-list-item>
+					</md-list>
+					<div layout="row" ng-if="$root.authenticated">
+						<md-input-container class="no-padding-bottom" flex>
+							<label>Back this idea...</label>
+							<input ng-model="newBack">
+						</md-input-container>
+						<md-button class="md-icon-button" aria-label="Submit" ng-click="addNewInteraction('backs', newBack)">
+					        <md-icon md-svg-icon="action:done"></md-icon>
+						</md-button>
+					</div>
+				</md-content>
+			</md-tab>
+		</md-tabs>
+	</md-card-content>
+</md-card>
+
+<div ng-if="debug">
+	<pre>{{headers}}</pre>
+</div>

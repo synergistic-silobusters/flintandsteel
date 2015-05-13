@@ -42,6 +42,11 @@ angular.module('flintAndSteel', [
     			url: '/ideasList',
     			templateUrl: 'ideasList/ideasList.tpl.html',
     			controller: 'ideasListCtrl'
+    		})
+    		.state('idea', {
+    			url: '/idea',
+    			templateUrl: 'ideasView/ideasView.tpl.html',
+    			controller: 'IdeasViewCtrl'
     		});
 
 		$urlRouterProvider.otherwise('/');

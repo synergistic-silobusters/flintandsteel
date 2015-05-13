@@ -21,7 +21,7 @@ angular.module('flintAndSteel')
 						.success(successCb)
 						.error(errorCb);
 				},
-				getideaHeaders: function getIdeaHeaders(successCb, errorCb) {
+				getIdeaHeaders: function getIdeaHeaders(successCb, errorCb) {
 					$http.get(appSettings.serverUrl + '/ideaheaders')
 						.success(successCb)
 						.error(errorCb);

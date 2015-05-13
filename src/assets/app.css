@@ -24,3 +24,15 @@ body {
 .user-authenticated {
 	fill: #b9f6ca;
 }
+
+.scroll-container {
+	overflow: scroll;
+}
+
+.extra-space-left {
+	padding-left: 20px;
+}
+
+.no-padding-bottom {
+	padding-bottom: 0px;
+}
