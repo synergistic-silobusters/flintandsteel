@@ -38,7 +38,7 @@ angular.module('flintAndSteel', [
     			templateUrl: 'users/accountView/accountView.tpl.html',
     			controller: 'AccountViewCtrl'
     		})
-    		.state('ideasList', {
+    		.state('ideaslist', {
     			url: '/ideaslist',
     			templateUrl: 'ideas/ideasList/ideasList.tpl.html',
     			controller: 'IdeasListCtrl'
@@ -47,6 +47,11 @@ angular.module('flintAndSteel', [
     			url: '/idea',
     			templateUrl: 'ideas/ideasView/ideasView.tpl.html',
     			controller: 'IdeasViewCtrl'
+    		})
+    		.state('addidea', {
+    			url: '/addidea',
+    			templateUrl: 'ideas/addIdeaView/addIdeaView.tpl.html',
+    			controller: 'AddIdeaViewCtrl'
     		});
 
 		$urlRouterProvider.otherwise('/');

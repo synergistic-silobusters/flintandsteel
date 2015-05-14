@@ -36,3 +36,8 @@ body {
 .no-padding-bottom {
 	padding-bottom: 0px;
 }
+
+.fab-layout {
+	margin-right: 10px;
+	margin-bottom: 10px;
+}

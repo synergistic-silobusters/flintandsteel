@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('toolbarCtrl', 
+.controller('ToolbarCtrl', 
 	[
 		'$scope',
 		'$state',
