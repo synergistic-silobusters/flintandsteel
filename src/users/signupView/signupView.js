@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('signupCtrl', 
+.controller('SignupViewCtrl', 
 	[
 		'$scope',
 		'$state',

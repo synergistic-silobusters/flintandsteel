@@ -1,5 +1,5 @@
 angular.module('flintAndSteel')
-.controller('homeCtrl',
+.controller('HomeViewCtrl',
 	[
 		'$scope',
 		function($scope){

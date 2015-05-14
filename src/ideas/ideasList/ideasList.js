@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('ideasListCtrl', 
+.controller('IdeasListCtrl', 
 	[
 		'$scope',
 		function($scope) {

@@ -20,32 +20,32 @@ angular.module('flintAndSteel', [
 		$stateProvider
 			.state('home', {
 	      		url: '/',
-	      		templateUrl: 'home/home.tpl.html',
-	      		controller: 'homeCtrl'
+	      		templateUrl: 'homeView/homeView.tpl.html',
+	      		controller: 'HomeViewCtrl'
     		})
     		.state('login', {
 	      		url: '/login',
-	      		templateUrl: 'login/login.tpl.html',
-	      		controller: 'loginCtrl'
+	      		templateUrl: 'users/loginView/loginView.tpl.html',
+	      		controller: 'LoginViewCtrl'
     		})
     		.state('signup', {
     			url: '/signup',
-    			templateUrl: 'signup/signup.tpl.html',
-    			controller: 'signupCtrl'
+    			templateUrl: 'users/signupView/signupView.tpl.html',
+    			controller: 'SignupViewCtrl'
     		})
     		.state('account', {
     			url: '/account',
-    			templateUrl: 'account/account.tpl.html',
-    			controller: 'accountCtrl'
+    			templateUrl: 'users/accountView/accountView.tpl.html',
+    			controller: 'AccountViewCtrl'
     		})
     		.state('ideasList', {
-    			url: '/ideasList',
-    			templateUrl: 'ideasList/ideasList.tpl.html',
-    			controller: 'ideasListCtrl'
+    			url: '/ideaslist',
+    			templateUrl: 'ideas/ideasList/ideasList.tpl.html',
+    			controller: 'IdeasListCtrl'
     		})
     		.state('idea', {
     			url: '/idea',
-    			templateUrl: 'ideasView/ideasView.tpl.html',
+    			templateUrl: 'ideas/ideasView/ideasView.tpl.html',
     			controller: 'IdeasViewCtrl'
     		});
 
