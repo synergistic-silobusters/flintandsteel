@@ -30,6 +30,12 @@ angular.module('flintAndSteel')
 						return false;
 					}
 					return $rootScope.account.status === 'AUTH_OK';
+				},
+				logout: function logout() {
+					$rootScope.account = undefined;
+				},
+				getProperty: function getProperty(propertyName) {
+					return $rootScope.account[propertyName];
 				}
 			};
 		}
