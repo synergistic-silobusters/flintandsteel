@@ -24,7 +24,7 @@
 							</div>
 						</md-list-item>
 					</md-list>
-					<div layout="row" ng-if="$root.authenticated">
+					<div layout="row" ng-if="isUserLoggedIn()">
 						<md-input-container class="no-padding-bottom" flex>
 							<label>Add a comment</label>
 							<input ng-model="newComment">
@@ -45,7 +45,7 @@
 							</div>
 						</md-list-item>
 					</md-list>
-					<div layout="row" ng-if="$root.authenticated">
+					<div layout="row" ng-if="isUserLoggedIn()">
 						<md-input-container class="no-padding-bottom" flex>
 							<label>Back this idea...</label>
 							<input ng-model="newBack">

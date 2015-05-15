@@ -1,11 +1,15 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('accountCtrl', 
+.controller('AccountViewCtrl', 
 	[
 		'$scope',
-		function($scope) {
-			
+		'$state',
+		'loginSvc',
+		function($scope, $state, loginSvc) {
+			if(!loginSvc.isUserLoggedIn()) {
+				$state.go('home');
+			}
 		}
 	]
 );

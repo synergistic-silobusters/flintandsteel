@@ -4,14 +4,18 @@ angular.module('flintAndSteel')
 .factory('loginSvc', 
 	[
 		'$http',
+		'$rootScope',
 		'appSettings',
-		function($http, appSettings) {
+		function($http, $rootScope, appSettings) {
 
 			return {
 				checkLogin: function checkLogin(account, successCb, errorCb){
 					//console.log(account);
 					$http.post(appSettings.serverUrl + '/login', account)
-						.success(successCb)
+						.success(function(data, status, headers, config) {
+							$rootScope.account = data;
+							successCb(data, status, headers, config);
+						})
 						.error(errorCb);
 				},
 				addUser: function addUser(account, successCb, errorCb) {
@@ -20,6 +24,12 @@ angular.module('flintAndSteel')
 					$http.post(appSettings.serverUrl + '/signup', account)
 						.success(successCb)
 						.error(errorCb);
+				},
+				isUserLoggedIn: function isUserLoggedIn() {
+					if (typeof $rootScope.account === 'undefined') {
+						return false;
+					}
+					return $rootScope.account.status === 'AUTH_OK';
 				}
 			};
 		}

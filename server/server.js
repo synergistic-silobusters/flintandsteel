@@ -50,15 +50,25 @@ app.post('/login', function(req, res) {
 	//console.log(req.body);
 	userDb.get(req.body.username, function(err, doc) {
 		if (err) {
-			res.status(200).send('USER_NOT_FOUND');
+			res.status(200).json({ status: 'USER_NOT_FOUND' });
 		}
 		else {
 			var accountFromDb = JSON.parse(doc.jsonStr);
 			if (req.body.password === accountFromDb.password) {
-				res.status(200).send('AUTH_OK');
+				res.status(200).json({
+					status: 'AUTH_OK',
+					id: accountFromDb.id,
+					username: accountFromDb.username,
+					name: accountFromDb.name
+				});
 			}
 			else {
-				res.status(200).send('AUTH_ERROR');
+				res.status(200).json({
+					status: 'AUTH_ERROR',
+					id: undefined,
+					username: undefined,
+					name: undefined
+				});
 			}
 		}
 	});

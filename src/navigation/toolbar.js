@@ -6,9 +6,10 @@ angular.module('flintAndSteel')
 		'$scope',
 		'$state',
 		'$mdSidenav',
-		function($scope, $state, $mdSidenav) {
+		'loginSvc',
+		function($scope, $state, $mdSidenav, loginSvc) {
 			$scope.accountClick = function accountClick() {
-				if ($scope.$root.authenticated) {
+				if (loginSvc.isUserLoggedIn()) {
 					$state.go('account');
 				}
 				else {

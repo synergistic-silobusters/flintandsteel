@@ -5,8 +5,9 @@ angular.module('flintAndSteel')
 	[
 		'$scope',
 		'$stateParams',
-		'ideaSvc', 
-		function($scope, $stateParams, ideaSvc){
+		'ideaSvc',
+		'loginSvc', 
+		function($scope, $stateParams, ideaSvc, loginSvc){
 
 			/*
 			The way this works
@@ -32,6 +33,7 @@ angular.module('flintAndSteel')
 					$scope.newBack = '';
 				}
 			};
+			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 
 			ideaSvc.getIdeaHeaders(function(data) {
 				$scope.headers = data;
