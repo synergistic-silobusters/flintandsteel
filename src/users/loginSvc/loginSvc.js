@@ -11,7 +11,7 @@ angular.module('flintAndSteel')
 			return {
 				checkLogin: function checkLogin(account, successCb, errorCb){
 					//console.log(account);
-					$http.post(appSettings.serverUrl + '/login', account)
+					$http.post('/login', account)
 						.success(function(data, status, headers, config) {
 							$rootScope.account = data;
 							successCb(data, status, headers, config);
@@ -21,7 +21,7 @@ angular.module('flintAndSteel')
 				addUser: function addUser(account, successCb, errorCb) {
 					//console.log(account);
 					account.id = _.uniqueId('user_');
-					$http.post(appSettings.serverUrl + '/signup', account)
+					$http.post('/signup', account)
 						.success(successCb)
 						.error(errorCb);
 				},
