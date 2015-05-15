@@ -27,7 +27,7 @@
 					<div layout="row" ng-if="isUserLoggedIn()">
 						<md-input-container class="no-padding-bottom" flex>
 							<label>Add a comment</label>
-							<input ng-model="newComment">
+							<input id="comment-box" ng-model="newComment" type="text" />
 						</md-input-container>
 						<md-button class="md-icon-button" aria-label="Submit" ng-click="addNewInteraction('comments', newComment)">
 					        <md-icon md-svg-icon="action:done"></md-icon>
@@ -48,7 +48,7 @@
 					<div layout="row" ng-if="isUserLoggedIn()">
 						<md-input-container class="no-padding-bottom" flex>
 							<label>Back this idea...</label>
-							<input ng-model="newBack">
+							<input id="back-box" ng-model="newBack" type="text" />
 						</md-input-container>
 						<md-button class="md-icon-button" aria-label="Submit" ng-click="addNewInteraction('backs', newBack)">
 					        <md-icon md-svg-icon="action:done"></md-icon>

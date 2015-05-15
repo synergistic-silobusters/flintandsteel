@@ -19,18 +19,17 @@ angular.module('flintAndSteel')
 			 */
 
 			$scope.debug = false;
-			$scope.newComment = '';
-			$scope.newBack = '';
 
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
 				if (type === 'comments' || type === 'backs') {
 					$scope.idea[type].push({
 						text: content,
-						from: $scope.$root.username,
+						from: loginSvc.getProperty('name'),
 						time: moment().calendar()
 					});
-					$scope.newComment = '';
-					$scope.newBack = '';
+					document.getElementById('comment-box').value = '';
+					document.getElementById('back-box').value = '';
+					content = null;
 				}
 			};
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
