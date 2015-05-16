@@ -34,7 +34,7 @@ gulp.task('usage', function() {
 	gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('start', function() {
+gulp.task('start', ['_cleanUp'], function() {
 	nodemon({ 
 		script: 'server/server.js',
 		'ignore': ['spec/*'] 
@@ -58,6 +58,19 @@ gulp.task('clean:modules', function() {
 });
 
 gulp.task('clean:db', function() {
+	return del([
+		'server/datastore/users/*',
+		'server/datastore/ideas/*'
+	]);
+});
+
+gulp.task('_createDataDirs', function() {
+	return gulp.src('README.md')
+	.pipe(gulp.dest('server/datastore/ideas'))
+	.pipe(gulp.dest('server/datastore/users'));
+});
+
+gulp.task('_cleanUp', ['_createDataDirs'], function() {
 	return del([
 		'server/datastore/users/*',
 		'server/datastore/ideas/*'
