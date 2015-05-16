@@ -4,7 +4,8 @@ var express = require('express'),
 	chalk = require('chalk'),
 	datastore = require('docstore'),
 	bodyParser = require('body-parser'),
-	external = require('external-ip')();
+	external = require('external-ip')(),
+	ip = require('ip');
 
 var userDb, ideasDb, ipExternal;
 
@@ -150,12 +151,18 @@ app.get('/ideaheaders', function(req, res) {
 	});
 });
 
-external(function (err, ip) {
+external(function (err, ipExternal) {
     if (err) {
         throw err;
     }
     else {
-    	console.log(chalk.magenta('Server listening at http://localhost:8080 or http://%s:8080'), ip);
+    	console.log(
+    		'Server listening at' +
+    		'\n\tlocal:    ' + chalk.magenta('http://localhost:8080') + 
+    		'\n\tnetwork:  ' + chalk.magenta('http://') + chalk.magenta(ip.address()) + chalk.magenta(':8080') +
+    		'\n\tExternal: ' + chalk.magenta('http://') + chalk.magenta(ipExternal) + chalk.magenta(':8080') + 
+    		'\n\tExternal access requires port 8080 to be configured properly.'
+    	);
     }
 });
 
