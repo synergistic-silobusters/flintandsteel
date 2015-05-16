@@ -1,11 +1,12 @@
 var express = require('express'),
 	morgan = require('morgan'),
 	path = require('path'),
-	colors = require('colors'),
+	chalk = require('chalk'),
 	datastore = require('docstore'),
-	bodyParser = require('body-parser');
+	bodyParser = require('body-parser'),
+	external = require('external-ip')();
 
-var userDb, ideasDb;
+var userDb, ideasDb, ipExternal;
 
 datastore.open('./server/datastore/users', function(err, store) {
 	if (err) {
@@ -34,12 +35,12 @@ var filter = function dbFilter(doc) {
 
 
 app.use(morgan(':remote-addr - ' + 
-			   '[:date] '.cyan + 
-			   '":method :url '.green + 
-			   'HTTP/:http-version" '.gray + 
-			   ':status '.yellow + 
+			   chalk.cyan('[:date] ') + 
+			   chalk.green('":method :url ') + 
+			   chalk.gray('HTTP/:http-version" ') + 
+			   chalk.yellow(':status ') + 
 			   ':res[content-length] ' + 
-			   '":referrer" ":user-agent" '.gray + 
+			   chalk.gray('":referrer" ":user-agent" ') + 
 			   'time=:response-time ms'
 ));
 app.use(express.static(path.join(__dirname + '/../src')));
@@ -82,10 +83,10 @@ app.post('/signup', function(req, res) {
 	}, 
 	function(err, doc) {
 		if (err) {
-			console.log(err);
+			console.log(chalk.bgRed(err));
 		}
 		else {
-			console.log('Document with key ' + doc.key + ' stored in users.');
+			console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
 		}
 	});
 	res.sendStatus(201);
@@ -105,10 +106,10 @@ app.post('/idea', function(req, res) {
 	}, 
 	function(err, doc) {
 		if (err) {
-			console.log(err);
+			console.log(chalk.bgRed(err));
 		}
-		else if (!logOnlyErrors) {
-			console.log('Document with key ' + doc.key + ' stored in users.');
+		else {
+			console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
 		}
 	});
 	res.sendStatus(201);
@@ -149,5 +150,13 @@ app.get('/ideaheaders', function(req, res) {
 	});
 });
 
+external(function (err, ip) {
+    if (err) {
+        throw err;
+    }
+    else {
+    	console.log(chalk.magenta('Server listening at http://localhost:8080 or http://%s:8080'), ip);
+    }
+});
 
 app.listen(process.argv[2] || 8080);

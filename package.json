@@ -28,6 +28,8 @@
     "chalk": "^1.0.0",
     "docstore": "^0.1.1",
     "express": "^4.12.3",
+    "external-ip": "^0.2.3",
+    "ip": "^0.3.2",
     "morgan": "^1.5.2"
   },
   "devDependencies": {
