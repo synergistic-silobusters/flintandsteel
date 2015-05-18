@@ -72,7 +72,7 @@ gulp.task('_createDataDirs', function() {
 
 gulp.task('_cleanUp', ['_createDataDirs'], function() {
 	return del([
-		'server/datastore/users/*',
-		'server/datastore/ideas/*'
+		'server/datastore/users/README.md',
+		'server/datastore/ideas/README.md'
 	]);
 });
