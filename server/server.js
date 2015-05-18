@@ -95,15 +95,16 @@ app.post('/signup', function(req, res) {
 app.post('/idea', function(req, res) {
 	ideasDb.save(
 	{
-		key: key,
-		_id: key,
-		ideaId: value.id,
-		title: value.title,
-		description: value.description,
-		likes: value.likes,
-		managerLikes: value.managerLikes,
-		comments: value.comments,
-		backs: value.backs
+		key: req.body.id,
+		_id: req.body.id,
+		ideaId: req.body.id,
+		title: req.body.title,
+		description: req.body.description,
+		author: req.body.author,
+		likes: req.body.likes,
+		managerLikes: req.body.managerLikes,
+		comments: req.body.comments,
+		backs: req.body.backs
 	}, 
 	function(err, doc) {
 		if (err) {
@@ -138,15 +139,16 @@ app.get('/ideaheaders', function(req, res) {
 			res.status(200).send('NO_IDEAS_IN_STORAGE');
 		}
 		else {
-			var headers = {};
+			var headers = [];
 			for(var i = 0; i < docs.length; i++) {
-				headers[docs.id] = {
-					title: doc.title,
-					author: doc.author,
-					likes: doc.likes + doc.managerLikes
-				};
+				headers.push({
+					id: docs[i].ideaId,
+					title: docs[i].title,
+					author: docs[i].author,
+					likes: docs[i].likes + docs[i].managerLikes
+				});
 			}
-			res.send(200).json(headers);
+			res.status(200).json(headers);
 		}
 	});
 });
