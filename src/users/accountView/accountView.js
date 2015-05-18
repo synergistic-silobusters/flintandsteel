@@ -8,6 +8,15 @@ angular.module('flintAndSteel')
 		'$mdToast',
 		'loginSvc',
 		function($scope, $state, $mdToast, loginSvc) {
+			// Replace this with a DB read from logged in user
+			$scope.user = {
+				username: 'TheMainManDarth',
+				password: 'mynameisAnakin',
+				name: 'Darth Vader',
+				email: 'darth.vader@thesith.com'
+			};
+			// /Replace
+			
 			if(!loginSvc.isUserLoggedIn()) {
 				$state.go('home');
 			}
@@ -23,6 +32,8 @@ angular.module('flintAndSteel')
 				);
 				$state.go('home');
 			}
+			
+			
 		}
-	]
+	]	
 );
