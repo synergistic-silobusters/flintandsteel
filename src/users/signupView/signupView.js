@@ -18,7 +18,7 @@ angular.module('flintAndSteel')
 						$mdToast.simple()
 							.content('User creation successful, please log in.')
 							.position('top right')
-							.hideDelay(5000)
+							.hideDelay(3000)
 					);
 					$state.go('login');
 				},

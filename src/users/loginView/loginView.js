@@ -14,9 +14,8 @@ angular.module('flintAndSteel')
 							$mdToast.simple()
 								.content(data.name + ' has successfully signed in!')
 								.position('top right')
-								.hideDelay(5000)
+								.hideDelay(3000)
 						);
-						//$scope.$root.accout = data;
 						$state.go('home');
 					}
 					else if (data.status === 'AUTH_ERROR') {
@@ -24,7 +23,7 @@ angular.module('flintAndSteel')
 							$mdToast.simple()
 								.content('Your credentials don\'t match the stored ones :(')
 								.position('top right')
-								.hideDelay(5000)
+								.hideDelay(3000)
 						);
 					}
 					else if (data.status === 'USER_NOT_FOUND') {
@@ -32,7 +31,7 @@ angular.module('flintAndSteel')
 							$mdToast.simple()
 								.content('The user was not found in the server!')
 								.position('top right')
-								.hideDelay(5000)
+								.hideDelay(3000)
 						);
 					}
 					
