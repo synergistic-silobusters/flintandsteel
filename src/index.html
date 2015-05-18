@@ -57,10 +57,10 @@
 		<md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
 			<div ng-controller="SidenavCtrl" layout="column" flex>
 				<div flex>
-					<md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
-					<md-list>
-						<md-item ng-repeat="idea in topIdeas">
-							{{idea.title}}
+					<md-list class="top-ideas-list">
+						<md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
+						<md-item ng-repeat="idea in topIdeas track by $index">
+							<div class="top-ideas-list-item">{{idea.title}}</div>
 						</md-item>
 					</md-list>
 					<md-divider></md-divider>

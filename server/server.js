@@ -111,7 +111,7 @@ app.post('/idea', function(req, res) {
 			console.log(chalk.bgRed(err));
 		}
 		else {
-			console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
+			console.log(chalk.bgGreen('Document with key %s stored in ideas.'), doc.key);
 		}
 	});
 	res.sendStatus(201);
