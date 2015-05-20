@@ -5,7 +5,8 @@ var express = require('express'),
 	datastore = require('docstore'),
 	bodyParser = require('body-parser'),
 	external = require('external-ip')(),
-	ip = require('ip');
+	ip = require('ip'),
+	_ = require('lodash');
 
 var userDb, ideasDb, ipExternal;
 
@@ -96,7 +97,7 @@ app.post('/idea', function(req, res) {
 	ideasDb.save(
 	{
 		key: req.body.id,
-		_id: req.body.id,
+		_id: 'idea_' + req.body.id,
 		ideaId: req.body.id,
 		title: req.body.title,
 		description: req.body.description,
@@ -118,7 +119,7 @@ app.post('/idea', function(req, res) {
 });
 
 app.get('/idea', function(req, res) {
-	ideasDb.get(req.query.id, function(err, doc) {
+	ideasDb.get('idea_' + req.query.id, function(err, doc) {
 		if (err) {
 			res.status(200).send('IDEA_NOT_FOUND');
 		}
@@ -152,6 +153,38 @@ app.get('/ideaheaders', function(req, res) {
 		}
 	});
 });
+app.get('/uniqueid', function(req, res) {
+	var dbToSearch = undefined, 
+		propName = '';
+	if (req.query.for === 'idea') {
+		dbToSearch = ideasDb;
+		propName = 'ideaId';
+	}
+	else if (req.query.for === 'user'){
+		dbToSearch = userDb;
+		propName = 'accountId';
+	}
+	if (dbToSearch) {
+		dbToSearch.scan(filter, function(err, docs) {
+			if (err) {
+				res.sendStatus(500);
+			}
+			else {
+				var listofIds = [], id = 0;
+				var matcher = function matcher(item) {
+					return item === id;
+				};
+				for (var i = 0; i < docs.length; i++) {
+					listofIds.push(docs[i][propName]);
+				}
+				while(_.findIndex(listofIds, matcher) !== -1) {
+					id++;
+				}
+				res.status(200).json(id);
+			}
+		})
+	}
+})
 
 external(function (err, ipExternal) {
     if (err) {

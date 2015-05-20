@@ -24,6 +24,7 @@ angular.module('flintAndSteel')
 								.position('top right')
 								.hideDelay(3000)
 						);
+						$scope.$emit('newIdeaAdded');
 						$state.go('home');
 					}
 				}, function(data, status, header, config) {

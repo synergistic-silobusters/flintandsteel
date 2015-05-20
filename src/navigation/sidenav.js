@@ -15,11 +15,24 @@ angular.module('flintAndSteel')
 			});
 
 			$scope.navTo = function navTo(state) {
-				$state.go(state);
+				if (state === 'idea') {
+					$state.go('idea', {ideaId: 'mock_idea'});
+				}
+				else {
+					$state.go(state);
+				}
 				if (!$mdSidenav('left').isLockedOpen()) {
 					$mdSidenav('left').close();
 				}
 			};
+
+			$scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent(event) {
+				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
+					$scope.topIdeas = data;
+				},function getIdeaHeadersError(data, status, headers, config) {
+					console.log(status);
+				});
+			});
 		}
 	]
 );
