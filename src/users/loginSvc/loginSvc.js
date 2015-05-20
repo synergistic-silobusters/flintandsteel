@@ -20,10 +20,16 @@ angular.module('flintAndSteel')
 				},
 				addUser: function addUser(account, successCb, errorCb) {
 					//console.log(account);
-					account.id = _.uniqueId('user_');
-					$http.post('/signup', account)
-						.success(successCb)
-						.error(errorCb);
+					$http.get('/uniqueid?for=user')
+						.success(function getIdSucess(data) {
+							account.id = data;
+							$http.post('/signup', account)
+								.success(successCb)
+								.error(errorCb);
+						})
+						.error(function getIdFailed(data, status, headers, config) {
+							console.log(status);
+						});
 				},
 				isUserLoggedIn: function isUserLoggedIn() {
 					if (typeof $rootScope.account === 'undefined') {
