@@ -24,6 +24,14 @@ Running `gulp jshint` will lint any Javascript file under the `src` folder exclu
 
 The express server app uses [docstore](https://www.npmjs.com/package/docstore) to store users and ideas in JSON format. If this storage location gets messy, `gulp clean:db` can be used to clear up the datastore. 
 
+## Contributing
+
+Before commiting code, make sure
+* you run `gulp jshint` to lint the code and solve any issues presented
+* change `package.json` and `bower.json` if a new module was installed using the `--save` command line switch, i.e. `[npm|bower] install --save {module_name}`
+
+**Note**: Do not push to the stable branch, commiting to the stable branch will result in code being lost. The stable branch is created for milestone releases. 
+
 ## Useful links
 
 [Angular Docs](https://docs.angularjs.org/api)
