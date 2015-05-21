@@ -4,8 +4,7 @@ angular.module('flintAndSteel')
 .factory('ideaSvc', 
 	[
 		'$http',
-		'appSettings',
-		function($http, appSettings) {
+		function($http) {
 
 			var mockIdea = {
 				id: 'mock_idea',

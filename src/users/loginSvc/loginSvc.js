@@ -5,8 +5,7 @@ angular.module('flintAndSteel')
 	[
 		'$http',
 		'$rootScope',
-		'appSettings',
-		function($http, $rootScope, appSettings) {
+		function($http, $rootScope) {
 
 			return {
 				checkLogin: function checkLogin(account, successCb, errorCb){

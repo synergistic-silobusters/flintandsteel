@@ -82,7 +82,4 @@ angular.module('flintAndSteel', [
                           })
                           .warnPalette('red');
 	}
-])
-.constant('appSettings', {
-	serverUrl: 'http://localhost:8080'
-});
+]);
