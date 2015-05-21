@@ -117,6 +117,25 @@ app.post('/idea', function(req, res) {
 	});
 	res.sendStatus(201);
 });
+app.post('/updateidea', function(req, res) {
+	ideasDb.get('idea_' + req.body.id, function(err, doc) {
+		if (err) {
+			res.sendStatus(500);
+		}
+		else {
+			doc[req.body.property] = req.body.value;
+			ideasDb.save(doc, function(err, doc) {
+				if (err) {
+					console.log(chalk.bgRed(err));
+				}
+				else {
+					console.log(chalk.bgGreen('Document with key %s updated in ideas.'), doc.key);
+					res.sendStatus(200);
+				}
+			});
+		}
+	});
+});
 
 app.get('/idea', function(req, res) {
 	ideasDb.get('idea_' + req.query.id, function(err, doc) {
@@ -154,7 +173,7 @@ app.get('/ideaheaders', function(req, res) {
 	});
 });
 app.get('/uniqueid', function(req, res) {
-	var dbToSearch = undefined, 
+	var dbToSearch, 
 		propName = '';
 	if (req.query.for === 'idea') {
 		dbToSearch = ideasDb;
@@ -182,9 +201,9 @@ app.get('/uniqueid', function(req, res) {
 				}
 				res.status(200).json(id);
 			}
-		})
+		});
 	}
-})
+});
 
 external(function (err, ipExternal) {
     if (err) {

@@ -20,6 +20,7 @@ angular.module('flintAndSteel')
 
 			$scope.debug = false;
 			$scope.idea = {};
+			$scope.userLiked = false;
 
 			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
 				$scope.idea = data;
@@ -34,11 +35,48 @@ angular.module('flintAndSteel')
 						from: loginSvc.getProperty('name'),
 						time: moment().calendar()
 					});
+					ideaSvc.updateIdea($scope.idea.id, type, $scope.idea[type],
+					function success(data) {
+						console.log(data);
+					},
+					function error(data, status, headers, config) {
+						console.log(status);
+					});
 					document.getElementById('comment-box').value = '';
 					document.getElementById('back-box').value = '';
 					content = null;
 				}
 			};
+
+			$scope.likeIdea = function likeIdea() {
+				$scope.idea.likes++;
+				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
+					function success(data) {
+						console.log(data);
+					},
+					function error(data, status, headers, config) {
+						console.log(status);
+					});
+				$scope.userLiked = true;
+			};
+
+			$scope.unlikeIdea = function unlikeIdea() {
+				$scope.idea.likes--;
+				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
+					function success(data) {
+						console.log(data);
+					},
+					function error(data, status, headers, config) {
+						console.log(status);
+					});
+				$scope.userLiked = false;
+			};
+
+			$scope.isUserLiked = function isUserLiked() {
+				// This will (at some point) use the loginSvc to determine if a certain user likes an idea
+				return $scope.userLiked;
+			};
+
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 		}
 	]
