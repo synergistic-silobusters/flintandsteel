@@ -29,6 +29,7 @@ The express server app uses [docstore](https://www.npmjs.com/package/docstore) t
 Before commiting code, make sure
 * you run `gulp jshint` to lint the code and solve any issues presented
 * change `package.json` and `bower.json` if a new module was installed using the `--save` command line switch, i.e. `[npm|bower] install --save {module_name}`
+* Add `package.json` or `bower.json` to a separate commit with a reason to pull that module into the build
 
 **Note**: Do not push to the stable branch, commiting to the stable branch will result in code being lost. The stable branch is created for milestone releases. 
 
