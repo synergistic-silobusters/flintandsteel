@@ -103,7 +103,6 @@ app.post('/idea', function(req, res) {
 		description: req.body.description,
 		author: req.body.author,
 		likes: req.body.likes,
-		managerLikes: req.body.managerLikes,
 		comments: req.body.comments,
 		backs: req.body.backs
 	}, 
