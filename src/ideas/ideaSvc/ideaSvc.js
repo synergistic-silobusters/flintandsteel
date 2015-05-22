@@ -6,7 +6,7 @@ angular.module('flintAndSteel')
 		'$http',
 		function($http) {
 
-			var mockIdea = {
+			this.mockIdea = {
 				id: 'mock_idea',
 				title: 'The bestest Idea ever!',
 				description: 'Apophenia order-flow systema futurity garage sentient car advert. Footage 3D-printed Legba free-market lights courier camera Kowloon youtube fluidity euro-pop garage bicycle augmented reality. Dome military-grade faded meta--space vehicle warehouse. Computer concrete corrupted vehicle tower dead knife cyber-camera augmented reality table shrine apophenia tiger-team-ware soul-delay. Hacker pistol into plastic realism sub-orbital futurity girl geodesic disposable boat sentient tanto urban. Plastic alcohol bicycle carbon courier spook gang wristwatch katana sensory sign long-chain hydrocarbons assault nano. ',
@@ -39,54 +39,59 @@ angular.module('flintAndSteel')
 					}
 				]
 			};
+			this.postIdea = function postIdea(idea, successCb, errorCb){
+				$http.get('/uniqueid?for=idea')
+					.success(function getIdSucess(data) {
+						idea.id = data;
+						$http.post('/idea', idea)
+							.success(successCb)
+							.error(errorCb);
+					})
+					.error(function getIdFailed(data, status, headers, config) {
+						console.log(status);
+					});
+				
+			};
+			this.getIdea = function getIdea(ideaId, successCb, errorCb) {
+				if (ideaId === 'mock_idea') {
+					successCb(this.mockIdea);
+				}
+				else {
+					$http.get('/idea?id=' + ideaId)
+						.success(successCb)
+						.error(errorCb);
+				}
+			};
+			this.getIdeaHeaders = function getIdeaHeaders(successCb, errorCb) {
+				$http.get('/ideaheaders')
+					.success(successCb)
+					.error(errorCb);
+			};
+			this.getUniqueId = function getUniqueId(successCb, errorCb) {
+				$http.get('/uniqueId?for=idea')
+					.success(successCb)
+					.error(errorCb);
+			};
+			this.updateIdea = function updateIdea(ideaId, property, data, successCb, errorCb) {
+				if (ideaId !== 'mock_idea') {
+					$http.post('/updateidea', 
+							{
+								id: ideaId,
+								property: property,
+								value: data
+							}
+						)
+						.success(successCb)
+						.error(errorCb);
+				}
+			};
 
 			return {
-				postIdea: function postIdea(idea, successCb, errorCb){
-					$http.get('/uniqueid?for=idea')
-						.success(function getIdSucess(data) {
-							idea.id = data;
-							$http.post('/idea', idea)
-								.success(successCb)
-								.error(errorCb);
-						})
-						.error(function getIdFailed(data, status, headers, config) {
-							console.log(status);
-						});
-					
-				},
-				getIdea: function getIdea(ideaId, successCb, errorCb) {
-					if (ideaId === 'mock_idea') {
-						successCb(mockIdea);
-					}
-					else {
-						$http.get('/idea?id=' + ideaId)
-							.success(successCb)
-							.error(errorCb);
-					}
-				},
-				getIdeaHeaders: function getIdeaHeaders(successCb, errorCb) {
-					$http.get('/ideaheaders')
-						.success(successCb)
-						.error(errorCb);
-				},
-				getUniqueId: function getUniqueId(successCb, errorCb) {
-					$http.get('/uniqueId?for=idea')
-						.success(successCb)
-						.error(errorCb);
-				},
-				updateIdea: function updateIdea(ideaId, property, data, successCb, errorCb) {
-					if (ideaId !== 'mock_idea') {
-						$http.post('/updateidea', 
-								{
-									id: ideaId,
-									property: property,
-									value: data
-								}
-							)
-							.success(successCb)
-							.error(errorCb);
-					}
-				}
+				postIdea: this.postIdea,
+				getIdea: this.getIdea,
+				getIdeaHeaders: this.getIdeaHeaders,
+				getUniqueId: this.getUniqueId,
+				updateIdea: this.updateIdea
 			};
 		}
 	]
