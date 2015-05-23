@@ -1,4 +1,5 @@
 /* global angular */
+/* global _ */
 
 angular.module('flintAndSteel')
 .factory('loginSvc', 
@@ -41,8 +42,19 @@ angular.module('flintAndSteel')
 			this.getProperty = function getProperty(propertyName) {
 				return $rootScope.account[propertyName];
 			};
-			this.addLikedIdea = function addLikedIdea(ideaId) {
+			this.likeIdea = function likeIdea(ideaId) {
 				$rootScope.account.likedIdeas.push(ideaId);
+				this.updateAccount($rootScope.account, function accountUpdateSuccess(data) {
+					// nothing *really* needs to happen here
+				}, function accountUpdateError(data, status, headers, config) {
+					console.log(status);
+				});
+			};
+			this.unlikeIdea = function unlikeIdea(ideaId) {
+				_.remove($rootScope.account.likedIdeas, function (item) {
+					return item === ideaId;
+				});
+				console.log($rootScope.account);
 				this.updateAccount($rootScope.account, function accountUpdateSuccess(data) {
 					// nothing *really* needs to happen here
 				}, function accountUpdateError(data, status, headers, config) {
@@ -61,7 +73,8 @@ angular.module('flintAndSteel')
 				isUserLoggedIn: this.isUserLoggedIn,
 				logout: this.logout,
 				getProperty: this.getProperty,
-				addLikedIdea: this.addLikedIdea,
+				likeIdea: this.likeIdea,
+				unlikeIdea: this.unlikeIdea,
 				updateAccount: this.updateAccount
 			};
 		}

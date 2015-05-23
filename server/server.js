@@ -83,7 +83,7 @@ app.post('/signup', function(req, res) {
 		accountId: req.body.id,
 		password: req.body.password,
 		name: req.body.name,
-		likedIdeas: likedIdeas
+		likedIdeas: req.body.likedIdeas
 	}, 
 	function(err, doc) {
 		if (err) {
@@ -138,24 +138,25 @@ app.post('/updateidea', function(req, res) {
 	});
 });
 app.post('/updateaccount', function(req, res) {
-	userDb.save(
-	{
-		key: req.body.username,
-		_id: req.body.username,
-		accountId: req.body.id,
-		password: req.body.password,
-		name: req.body.name,
-		likedIdeas: likedIdeas
-	}, 
-	function(err, doc) {
+	userDb.get(req.body.username, function(err, doc) {
 		if (err) {
-			console.log(chalk.bgRed(err));
+			res.sendStatus(500);
 		}
 		else {
-			console.log(chalk.bgGreen('Document with key %s updated in users.'), doc.key);
+			_.assign(doc, req.body);
+			doc.status = undefined;
+			doc.id = undefined;
+			userDb.save(doc, function(err, doc) {
+				if (err) {
+					console.log(chalk.bgRed(err));
+				}
+				else {
+					console.log(chalk.bgGreen('Document with key %s updated in account.'), doc.key);
+					res.sendStatus(200);
+				}
+			});
 		}
 	});
-	res.sendStatus(200);
 });
 
 app.get('/idea', function(req, res) {
@@ -228,7 +229,11 @@ app.get('/uniqueid', function(req, res) {
 
 external(function (err, ipExternal) {
     if (err) {
-        throw err;
+        console.log(
+        	chalk.red('Could not determine network status, server running in local-only mode') +
+        	'\nServer listening at' +
+    		'\n\tlocal:    ' + chalk.magenta('http://localhost:8080')
+        );
     }
     else {
     	console.log(

@@ -20,7 +20,7 @@ angular.module('flintAndSteel')
 
 			$scope.debug = false;
 			$scope.idea = {};
-			$scope.userLiked = false;
+			//$scope.userLiked = false;
 
 			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
 				$scope.idea = data;
@@ -57,7 +57,8 @@ angular.module('flintAndSteel')
 					function error(data, status, headers, config) {
 						console.log(status);
 					});
-				$scope.userLiked = true;
+				loginSvc.likeIdea($scope.idea.id);
+				//$scope.userLiked = true;
 			};
 
 			$scope.unlikeIdea = function unlikeIdea() {
@@ -69,12 +70,15 @@ angular.module('flintAndSteel')
 					function error(data, status, headers, config) {
 						console.log(status);
 					});
-				$scope.userLiked = false;
+				loginSvc.unlikeIdea($scope.idea.id);
 			};
 
 			$scope.isUserLiked = function isUserLiked() {
-				// This will (at some point) use the loginSvc to determine if a certain user likes an idea
-				return $scope.userLiked;
+				var likedIdeas = loginSvc.getProperty('likedIdeas');
+				var result = (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
+				console.log(likedIdeas);
+				console.log(result);
+				return result;
 			};
 
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
