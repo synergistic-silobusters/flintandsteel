@@ -60,7 +60,8 @@ app.post('/login', function(req, res) {
 					status: 'AUTH_OK',
 					id: doc.accountId,
 					username: req.body.username,
-					name: doc.name
+					name: doc.name,
+					likedIdeas: doc.likedIdeas
 				});
 			}
 			else {
@@ -81,7 +82,8 @@ app.post('/signup', function(req, res) {
 		_id: req.body.username,
 		accountId: req.body.id,
 		password: req.body.password,
-		name: req.body.name
+		name: req.body.name,
+		likedIdeas: likedIdeas
 	}, 
 	function(err, doc) {
 		if (err) {
@@ -134,6 +136,26 @@ app.post('/updateidea', function(req, res) {
 			});
 		}
 	});
+});
+app.post('/updateaccount', function(req, res) {
+	userDb.save(
+	{
+		key: req.body.username,
+		_id: req.body.username,
+		accountId: req.body.id,
+		password: req.body.password,
+		name: req.body.name,
+		likedIdeas: likedIdeas
+	}, 
+	function(err, doc) {
+		if (err) {
+			console.log(chalk.bgRed(err));
+		}
+		else {
+			console.log(chalk.bgGreen('Document with key %s updated in users.'), doc.key);
+		}
+	});
+	res.sendStatus(200);
 });
 
 app.get('/idea', function(req, res) {
