@@ -18,9 +18,7 @@ angular.module('flintAndSteel')
 				5) Profit
 			 */
 
-			$scope.debug = false;
 			$scope.idea = {};
-			//$scope.userLiked = false;
 
 			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
 				$scope.idea = data;
@@ -58,7 +56,6 @@ angular.module('flintAndSteel')
 						console.log(status);
 					});
 				loginSvc.likeIdea($scope.idea.id);
-				//$scope.userLiked = true;
 			};
 
 			$scope.unlikeIdea = function unlikeIdea() {

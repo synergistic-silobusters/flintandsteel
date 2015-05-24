@@ -24,6 +24,11 @@ angular.module('flintAndSteel')
 						text: 'Hey, I was thinking the same thing!',
 						from: 'Another Nobody',
 						time: moment().subtract(4, 'hours').calendar()
+					},
+					{
+						text: 'This is gold, gold I tell you!',
+						from: 'The Man',
+						time: moment().subtract(30, 'minutes').calendar()
 					}
 				],
 				backs: [
