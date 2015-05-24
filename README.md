@@ -39,6 +39,8 @@ Before commiting code, make sure
 
 [Angular Material Docs](https://material.angularjs.org/#/)
 
+[Lodash API](https://lodash.com/docs)
+
 [List of Material Icons](https://klarsys.github.io/angular-material-icons/)
 
 [Material Design color guide](http://www.google.com/design/spec/style/color.html#)
