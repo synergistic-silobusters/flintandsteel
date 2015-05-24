@@ -2,7 +2,7 @@ var gulp = require('gulp'),
 	gutil = require('gulp-util'),
 	os = require('os'),
 	del = require('del'),
-	colors = require('colors'),
+	chalk = require('chalk'),
 	jshint = require('gulp-jshint'),
 	stylish = require('jshint-stylish-ex'),
 	nodemon = require('gulp-nodemon');
@@ -13,21 +13,21 @@ gulp.task('usage', function() {
 	var usageLines = [
 		'',
 		'',
-		colors.green('usage'),
+		chalk.green('usage'),
 		'\tDisplay this help page.',
 		'',
-		colors.green('start'),
+		chalk.green('start'),
 		'\t runs the app server using express.',
 		'',
-		colors.green('jshint'),
+		chalk.green('jshint'),
 		'\tRun jshint on the spec and the js folder under src.',
 		'',
-		colors.green('clean:modules'),
+		chalk.green('clean:modules'),
 		'\tDeletes the npm_modules and the src/lib directories.',
-		'\t' + colors.magenta('NOTE:') + ' ' + colors.green('npm install') + 
+		'\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') + 
 		' will be required before running the app.',
 		'',
-		colors.green('clean:db'),
+		chalk.green('clean:db'),
 		'\tResets the persistent app storage by clearing out the datastore folder.',
 		''
 	];
