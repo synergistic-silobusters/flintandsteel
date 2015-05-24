@@ -90,13 +90,28 @@ angular.module('flintAndSteel')
 						.error(errorCb);
 				}
 			};
+			this.getBackTypeChips = function getBackTypeChips() {
+				var types = [
+					{ name: 'Experience' },
+					{ name: 'Funding' },
+					{ name: 'Time' },
+					{ name: 'Knowledge' },
+					{ name: 'Social Network'},
+					{ name: 'Materials' }
+				];
+				return types.map(function (type) {
+					type._lowername = type.name.toLowerCase();
+					return type;
+				});
+			};
 
 			return {
 				postIdea: this.postIdea,
 				getIdea: this.getIdea,
 				getIdeaHeaders: this.getIdeaHeaders,
 				getUniqueId: this.getUniqueId,
-				updateIdea: this.updateIdea
+				updateIdea: this.updateIdea,
+				getBackTypeChips: this.getBackTypeChips
 			};
 		}
 	]

@@ -56,13 +56,32 @@
 						</md-list-item>
 					</md-list>
 					<div layout="row" ng-if="isUserLoggedIn()">
-						<md-input-container class="no-padding-bottom" flex>
-							<label>Back this idea...</label>
-							<input id="back-box" ng-model="newBack" type="text" />
-						</md-input-container>
-						<md-button class="md-icon-button" aria-label="Submit" ng-click="addNewInteraction('backs', newBack)">
-					        <md-icon md-svg-icon="action:done"></md-icon>
-						</md-button>
+						<div layout="column" flex>
+							<md-input-container class="no-padding-bottom">
+								<label>Back this idea...</label>
+								<input id="back-box" ng-model="newBack" type="text" />
+							</md-input-container>
+							<md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match ng-show="newBack">
+								<md-autocomplete
+									md-selected-item="selectedType"
+									md-search-text="searchText"
+									md-items="type in querySearch(searchText)"
+									md-item-text="type.name"
+									placeholder="Type of backing">
+									<span md-highlight-text="ctrl.searchText">{{type.name}}</span>
+								</md-autocomplete>
+								<md-chip-template>
+									<span>
+										<strong>{{$chip.name}}</strong>
+									</span>
+								</md-chip-template>
+						    </md-chips>
+						</div>
+						<div layout="column" layout-align="center end">
+							<md-button class="md-icon-button" aria-label="Submit" ng-click="addNewInteraction('backs', newBack)">
+						        <md-icon md-svg-icon="action:done"></md-icon>
+							</md-button>
+						</div>
 					</div>
 				</md-content>
 			</md-tab>

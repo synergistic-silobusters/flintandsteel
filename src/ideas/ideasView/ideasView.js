@@ -19,6 +19,10 @@ angular.module('flintAndSteel')
 			 */
 
 			$scope.idea = {};
+			$scope.typeChips = ideaSvc.getBackTypeChips();
+			$scope.selectedTypes = [];
+			$scope.selectedType = undefined;
+			$scope.searchText = undefined;
 
 			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
 				$scope.idea = data;
@@ -72,13 +76,22 @@ angular.module('flintAndSteel')
 
 			$scope.isUserLiked = function isUserLiked() {
 				var likedIdeas = loginSvc.getProperty('likedIdeas');
-				var result = (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
-				console.log(likedIdeas);
-				console.log(result);
-				return result;
+				return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
 			};
 
+			$scope.querySearch = function querySearch (query) {
+				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : [];
+				return results;
+		    };
+
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+
+			function createFilterFor(query) {
+				var lowercaseQuery = angular.lowercase(query);
+				return function filterFn(type) {
+					return (type._lowername.indexOf(lowercaseQuery) === 0);
+				};
+			}
 		}
 	]
 );
