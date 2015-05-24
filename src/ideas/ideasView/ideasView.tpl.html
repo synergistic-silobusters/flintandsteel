@@ -35,7 +35,7 @@
 						</md-list-item>
 					</md-list>
 					<div layout="row" ng-if="isUserLoggedIn()">
-						<md-input-container class="no-padding-bottom" flex>
+						<md-input-container id="comment-box-container" class="no-padding-bottom" flex>
 							<label>Add a comment</label>
 							<input id="comment-box" ng-model="newComment" type="text" />
 						</md-input-container>
@@ -63,7 +63,7 @@
 					</md-list>
 					<div layout="row" ng-if="isUserLoggedIn()">
 						<div layout="column" flex>
-							<md-input-container class="no-padding-bottom">
+							<md-input-container id="back-box-container" class="no-padding-bottom">
 								<label>Back this idea...</label>
 								<input id="back-box" ng-model="newBack" type="text" />
 							</md-input-container>

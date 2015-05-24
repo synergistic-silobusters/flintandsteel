@@ -47,7 +47,6 @@ angular.module('flintAndSteel')
 							types: $scope.selectedTypes
 						});
 					}
-					console.log($scope.idea.backs);
 					ideaSvc.updateIdea($scope.idea.id, type, $scope.idea[type],
 					function success(data) {
 						console.log(data);
@@ -57,6 +56,8 @@ angular.module('flintAndSteel')
 					});
 					document.getElementById('comment-box').value = '';
 					document.getElementById('back-box').value = '';
+					angular.element(document.getElementById('comment-box-container')).removeClass('md-input-has-value');
+					angular.element(document.getElementById('back-box-container')).removeClass('md-input-has-value');
 					content = null;
 					$scope.selectedTypes = [];
 					$scope.selectedType = undefined;
