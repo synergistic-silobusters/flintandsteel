@@ -32,11 +32,22 @@ angular.module('flintAndSteel')
 
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
 				if (type === 'comments' || type === 'backs') {
-					$scope.idea[type].push({
-						text: content,
-						from: loginSvc.getProperty('name'),
-						time: moment().calendar()
-					});
+					if (type === 'comments') {
+						$scope.idea[type].push({
+							text: content,
+							from: loginSvc.getProperty('name'),
+							time: moment().calendar()
+						});
+					}
+					else if (type === 'backs') {
+						$scope.idea[type].push({
+							text: content,
+							from: loginSvc.getProperty('name'),
+							time: moment().calendar(),
+							types: $scope.selectedTypes
+						});
+					}
+					console.log($scope.idea.backs);
 					ideaSvc.updateIdea($scope.idea.id, type, $scope.idea[type],
 					function success(data) {
 						console.log(data);
@@ -47,6 +58,8 @@ angular.module('flintAndSteel')
 					document.getElementById('comment-box').value = '';
 					document.getElementById('back-box').value = '';
 					content = null;
+					$scope.selectedTypes = [];
+					$scope.selectedType = undefined;
 				}
 			};
 

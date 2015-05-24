@@ -51,7 +51,13 @@
 						<md-list-item class="md-2-line" ng-repeat="back in idea.backs">
 							<div class="md-list-item-text">
 								<h3>{{back.text}}</h3>
-								<p>{{back.from}} <small class="extra-space-left">{{back.time}}</small></p>
+								<p>
+									{{back.from}} <small class="extra-space-left">{{back.time}}</small>
+									<span class="extra-space-left">
+										<small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
+									</span>
+								</p>
+								</span>
 							</div>
 						</md-list-item>
 					</md-list>

@@ -45,3 +45,12 @@ body {
 .top-ideas-list-item {
 	margin-left: 20px;
 }
+
+.custom-chip {
+	margin-left: 5px;
+	margin-right: 5px;
+	padding: 3px 6px;
+	background-color: #e0e0e0;
+	color: #424242;
+	border-radius: 10px;
+}

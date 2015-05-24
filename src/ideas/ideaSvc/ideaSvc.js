@@ -35,12 +35,19 @@ angular.module('flintAndSteel')
 					{
 						text: 'management experience',
 						from: 'Some Manager',
-						time: moment().subtract(7, 'days').calendar()
+						time: moment().subtract(7, 'days').calendar(),
+						types: [
+							{ name: 'Experience' },
+							{ name: 'Knowledge' }
+						]
 					},
 					{
 						text: 'TEN MILLION DOLLARS',
 						from: 'Just Kidding',
-						time: moment().subtract(84, 'hours').calendar()
+						time: moment().subtract(84, 'hours').calendar(),
+						types: [
+							{ name: 'Funding' }
+						]
 					}
 				]
 			};
