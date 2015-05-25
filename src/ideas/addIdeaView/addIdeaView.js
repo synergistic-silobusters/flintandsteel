@@ -16,7 +16,7 @@ angular.module('flintAndSteel')
 				ideaToAdd.backs = [];
 				ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
 					console.log(data);
-					if (data == 'Created') {
+					if (data === 'Created') {
 						$mdToast.show(
 							$mdToast.simple()
 								.content('New idea created successfully!')
