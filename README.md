@@ -16,6 +16,10 @@ This will reduce the ammount of conflicts rising from versioning and previous ex
 
 To run the website server, execute `gulp start` from a terminal window. Then navigate to http://localhost:8080. 
 
+## Testing
+
+To run the client side tests, execute `gulp test:client` from a terminal window. 
+
 ## Linting
 
 Running `gulp jshint` will lint any Javascript file under the `src` folder excluding `src/lib`.
@@ -30,6 +34,7 @@ Before commiting code, make sure
 * you run `gulp jshint` to lint the code and solve any issues presented
 * change `package.json` and `bower.json` if a new module was installed using the `--save` command line switch, i.e. `[npm|bower] install --save {module_name}`
 * Add `package.json` or `bower.json` to a separate commit with a reason to pull that module into the build
+* Update the unit tests in the corresponding .spec.js file in the same folder. If one doesn't exist, create a file with the same name as the folder followed by ".spec.js". This marks the file as a unit test file. 
 
 **Note**: Do not push to the stable branch, commiting to the stable branch will result in code being lost. The stable branch is created for milestone releases. 
 
@@ -40,6 +45,8 @@ Before commiting code, make sure
 [Angular Material Docs](https://material.angularjs.org/#/)
 
 [Lodash API](https://lodash.com/docs)
+
+[Jasmine BDD docs](http://jasmine.github.io/2.3/introduction.html)
 
 [List of Material Icons](https://klarsys.github.io/angular-material-icons/)
 
