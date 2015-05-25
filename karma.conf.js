@@ -23,6 +23,8 @@ module.exports = function(config) {
       'src/lib/angular-material/angular-material.js',
       'src/lib/angular-material/angular-material-mocks.js',
       'src/app.js',
+      'src/ideas/ideaSvc/ideaSvc.mock.js',
+      'src/users/loginSvc/loginSvc.mock.js',
       'src/homeView/homeView.js',
       'src/ideas/**/*.js',
       'src/navigation/**/*.js',
