@@ -5,7 +5,8 @@ var gulp = require('gulp'),
 	chalk = require('chalk'),
 	jshint = require('gulp-jshint'),
 	stylish = require('jshint-stylish-ex'),
-	nodemon = require('gulp-nodemon');
+	nodemon = require('gulp-nodemon'),
+	karma = require('karma').server;
 
 gulp.task('default', ['usage']);
 
@@ -18,6 +19,9 @@ gulp.task('usage', function() {
 		'',
 		chalk.green('start'),
 		'\t runs the app server using express.',
+		'',
+		chalk.green('test:client'),
+		'\t runs the client side tests using karma.',
 		'',
 		chalk.green('jshint'),
 		'\tRun jshint on the spec and the js folder under src.',
@@ -48,6 +52,13 @@ gulp.task('jshint', function() {
 	])
 	.pipe(jshint())
 	.pipe(jshint.reporter(stylish));
+});
+
+gulp.task('test:client', function(done) {
+	karma.start({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: true
+	}, done);
 });
 
 gulp.task('clean:modules', function() {
