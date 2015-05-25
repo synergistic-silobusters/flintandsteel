@@ -4,6 +4,13 @@ angular.module('flintAndSteel')
 .factory('loginSvcMock', 
 	[
 		function() {
+			var mockUserAccount = {
+				id: 1,
+				username: 'MainManDarth',
+				name: 'Darth Vader',
+				likedIdeas: [ 'mock_idea' ]
+			};
+
 			function NotImplementedException(call) {
 				this.name = 'NotImplementedException';
 				this.message = 'Method ' + call + ' has not been implemented!';
@@ -26,7 +33,7 @@ angular.module('flintAndSteel')
 					throw new NotImplementedException('logout');
 				},
 				getProperty: function getProperty(propertyName) {
-					throw new NotImplementedException('getProperty');
+					return mockUserAccount[propertyName];
 				},
 				likeIdea: function likeIdea(ideaId) {
 					throw new NotImplementedException('likeIdea');
