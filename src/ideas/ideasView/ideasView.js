@@ -49,7 +49,7 @@ angular.module('flintAndSteel')
 					}
 					ideaSvc.updateIdea($scope.idea.id, type, $scope.idea[type],
 					function success(data) {
-						console.log(data);
+						//console.log(data);
 					},
 					function error(data, status, headers, config) {
 						console.log(status);
@@ -68,7 +68,7 @@ angular.module('flintAndSteel')
 				$scope.idea.likes++;
 				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
 					function success(data) {
-						console.log(data);
+						//console.log(data);
 					},
 					function error(data, status, headers, config) {
 						console.log(status);
@@ -80,7 +80,7 @@ angular.module('flintAndSteel')
 				$scope.idea.likes--;
 				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
 					function success(data) {
-						console.log(data);
+						//console.log(data);
 					},
 					function error(data, status, headers, config) {
 						console.log(status);
