@@ -66,7 +66,14 @@ angular.module('flintAndSteel')
 					successCb(mockIdea);
 				},
 				getIdeaHeaders: function getIdeaHeaders(successCb, errorCb) {
-					throw new NotImplementedException('getIdeaHeaders');
+					return [
+						{
+							id: 'mock_idea',
+							title: 'The bestest Idea ever!',
+							author: 'Yash Kulshrestha',
+							likes: 23
+						}
+					];
 				},
 				getUniqueId: function getUniqueId(successCb, errorCb) {
 					throw new NotImplementedException('getUniqueId');
