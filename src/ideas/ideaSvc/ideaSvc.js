@@ -18,7 +18,6 @@ angular.module('flintAndSteel')
 					.error(function getIdFailed(data, status, headers, config) {
 						console.log(status);
 					});
-				
 			};
 			this.getIdea = function getIdea(ideaId, successCb, errorCb) {
 				if (ideaId === 'mock_idea') {
@@ -32,11 +31,6 @@ angular.module('flintAndSteel')
 			};
 			this.getIdeaHeaders = function getIdeaHeaders(successCb, errorCb) {
 				$http.get('/ideaheaders')
-					.success(successCb)
-					.error(errorCb);
-			};
-			this.getUniqueId = function getUniqueId(successCb, errorCb) {
-				$http.get('/uniqueId?for=idea')
 					.success(successCb)
 					.error(errorCb);
 			};
