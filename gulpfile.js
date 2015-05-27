@@ -38,7 +38,7 @@ gulp.task('usage', function() {
 	gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('start', ['_cleanUp'], function() {
+gulp.task('start', ['_cleanUp', 'test:client'], function() {
 	nodemon({ 
 		script: 'server/server.js',
 		'ignore': ['spec/*'] 
