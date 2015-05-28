@@ -47,9 +47,9 @@ describe('ideaSvc', function() {
 
 		beforeEach(function() {
 			postIdeaHandler = $httpBackend.whenPOST('/idea')
-								.respond('201', 'Created');
+								.respond(201, 'Created');
 			uniqueIdHandler = $httpBackend.whenGET('/uniqueid?for=idea')
-								.respond('200', 9001);
+								.respond(200, 9001);
 		});
 
 		it('should add a newly submitted idea', function() {
@@ -57,7 +57,7 @@ describe('ideaSvc', function() {
 			$httpBackend.expectPOST('/idea', dummyIdea);
 
 			ideaSvc.postIdea(dummyIdea, function (data) {
-
+				expect(data).toBe('Created');
 			}, function (data, status, headers, config) {
 
 			});
@@ -71,7 +71,7 @@ describe('ideaSvc', function() {
 
 		beforeEach(function() {
 			getIdeaHandler = $httpBackend.whenGET('/idea?id=9001')
-								.respond('200', dummyIdea);
+								.respond(200, dummyIdea);
 		});
 
 		it('it should return an idea when provided an idea', function() {
@@ -114,7 +114,7 @@ describe('ideaSvc', function() {
 				}
 			];
 			getIdeaHeadersHandler = $httpBackend.whenGET('/ideaheaders')
-										.respond('200', dummyHeaders);
+										.respond(200, dummyHeaders);
 		});
 
 		it('should return idea headers', function() {
@@ -139,7 +139,7 @@ describe('ideaSvc', function() {
 				property: 'likes',
 				value: 24
 			};
-			updateIdeaHandler = $httpBackend.whenPOST('/updateidea', updatedIdea).respond('200', 'OK');
+			updateIdeaHandler = $httpBackend.whenPOST('/updateidea', updatedIdea).respond(200, 'OK');
 		});
 
 		it('should update the idea with new passed in information', function() {
