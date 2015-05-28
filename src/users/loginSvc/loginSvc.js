@@ -10,7 +10,7 @@ angular.module('flintAndSteel')
 			this.checkLogin = function checkLogin(account, successCb, errorCb){
 				//console.log(account);
 				$http.post('/login', account)
-					.success(function(data, status, headers, config) {
+					.success(function (data, status, headers, config) {
 						$rootScope.account = data;
 						successCb(data, status, headers, config);
 					})
@@ -54,7 +54,6 @@ angular.module('flintAndSteel')
 				_.remove($rootScope.account.likedIdeas, function (item) {
 					return item === ideaId;
 				});
-				console.log($rootScope.account);
 				this.updateAccount($rootScope.account, function accountUpdateSuccess(data) {
 					// nothing *really* needs to happen here
 				}, function accountUpdateError(data, status, headers, config) {
