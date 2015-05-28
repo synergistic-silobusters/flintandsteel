@@ -2,10 +2,11 @@ var gulp = require('gulp'),
 	gutil = require('gulp-util'),
 	os = require('os'),
 	del = require('del'),
-	colors = require('colors'),
+	chalk = require('chalk'),
 	jshint = require('gulp-jshint'),
 	stylish = require('jshint-stylish-ex'),
-	nodemon = require('gulp-nodemon');
+	nodemon = require('gulp-nodemon'),
+	karma = require('karma').server;
 
 gulp.task('default', ['usage']);
 
@@ -13,28 +14,31 @@ gulp.task('usage', function() {
 	var usageLines = [
 		'',
 		'',
-		colors.green('usage'),
+		chalk.green('usage'),
 		'\tDisplay this help page.',
 		'',
-		colors.green('start'),
+		chalk.green('start'),
 		'\t runs the app server using express.',
 		'',
-		colors.green('jshint'),
+		chalk.green('test:client'),
+		'\t runs the client side tests using karma.',
+		'',
+		chalk.green('jshint'),
 		'\tRun jshint on the spec and the js folder under src.',
 		'',
-		colors.green('clean:modules'),
+		chalk.green('clean:modules'),
 		'\tDeletes the npm_modules and the src/lib directories.',
-		'\t' + colors.magenta('NOTE:') + ' ' + colors.green('npm install') + 
+		'\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') + 
 		' will be required before running the app.',
 		'',
-		colors.green('clean:db'),
+		chalk.green('clean:db'),
 		'\tResets the persistent app storage by clearing out the datastore folder.',
 		''
 	];
 	gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('start', ['_cleanUp'], function() {
+gulp.task('start', ['_cleanUp', 'test:client'], function() {
 	nodemon({ 
 		script: 'server/server.js',
 		'ignore': ['spec/*'] 
@@ -48,6 +52,13 @@ gulp.task('jshint', function() {
 	])
 	.pipe(jshint())
 	.pipe(jshint.reporter(stylish));
+});
+
+gulp.task('test:client', function(done) {
+	karma.start({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: true
+	}, done);
 });
 
 gulp.task('clean:modules', function() {

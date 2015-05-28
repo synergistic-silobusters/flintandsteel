@@ -33,8 +33,7 @@ angular.module('flintAndSteel')
 								.position('top right')
 								.hideDelay(3000)
 						);
-					}
-					
+					}			
 				},
 				function loginError(data, status, headers, config) {
 					console.log(status);

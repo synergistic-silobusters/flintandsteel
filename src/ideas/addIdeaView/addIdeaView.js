@@ -12,12 +12,11 @@ angular.module('flintAndSteel')
 
 			$scope.addNewIdea = function addNewIdea(ideaToAdd) {
 				ideaToAdd.likes = 0;
-				ideaToAdd.managerLikes = 0;
 				ideaToAdd.comments = [];
 				ideaToAdd.backs = [];
 				ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
 					console.log(data);
-					if (data == 'Created') {
+					if (data === 'Created') {
 						$mdToast.show(
 							$mdToast.simple()
 								.content('New idea created successfully!')

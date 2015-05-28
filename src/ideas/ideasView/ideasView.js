@@ -18,9 +18,11 @@ angular.module('flintAndSteel')
 				5) Profit
 			 */
 
-			$scope.debug = false;
 			$scope.idea = {};
-			$scope.userLiked = false;
+			$scope.typeChips = ideaSvc.getBackTypeChips();
+			$scope.selectedTypes = [];
+			$scope.selectedType = undefined;
+			$scope.searchText = undefined;
 
 			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
 				$scope.idea = data;
@@ -30,21 +32,35 @@ angular.module('flintAndSteel')
 
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
 				if (type === 'comments' || type === 'backs') {
-					$scope.idea[type].push({
-						text: content,
-						from: loginSvc.getProperty('name'),
-						time: moment().calendar()
-					});
+					if (type === 'comments') {
+						$scope.idea[type].push({
+							text: content,
+							from: loginSvc.getProperty('name'),
+							time: moment().calendar()
+						});
+					}
+					else if (type === 'backs') {
+						$scope.idea[type].push({
+							text: content,
+							from: loginSvc.getProperty('name'),
+							time: moment().calendar(),
+							types: $scope.selectedTypes
+						});
+					}
 					ideaSvc.updateIdea($scope.idea.id, type, $scope.idea[type],
 					function success(data) {
-						console.log(data);
+						//console.log(data);
 					},
 					function error(data, status, headers, config) {
 						console.log(status);
 					});
 					document.getElementById('comment-box').value = '';
 					document.getElementById('back-box').value = '';
+					angular.element(document.getElementById('comment-box-container')).removeClass('md-input-has-value');
+					angular.element(document.getElementById('back-box-container')).removeClass('md-input-has-value');
 					content = null;
+					$scope.selectedTypes = [];
+					$scope.selectedType = undefined;
 				}
 			};
 
@@ -52,32 +68,44 @@ angular.module('flintAndSteel')
 				$scope.idea.likes++;
 				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
 					function success(data) {
-						console.log(data);
+						//console.log(data);
 					},
 					function error(data, status, headers, config) {
 						console.log(status);
 					});
-				$scope.userLiked = true;
+				loginSvc.likeIdea($scope.idea.id);
 			};
 
 			$scope.unlikeIdea = function unlikeIdea() {
 				$scope.idea.likes--;
 				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
 					function success(data) {
-						console.log(data);
+						//console.log(data);
 					},
 					function error(data, status, headers, config) {
 						console.log(status);
 					});
-				$scope.userLiked = false;
+				loginSvc.unlikeIdea($scope.idea.id);
 			};
 
 			$scope.isUserLiked = function isUserLiked() {
-				// This will (at some point) use the loginSvc to determine if a certain user likes an idea
-				return $scope.userLiked;
+				var likedIdeas = loginSvc.getProperty('likedIdeas');
+				return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
 			};
 
+			$scope.querySearch = function querySearch (query) {
+				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : [];
+				return results;
+		    };
+
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+
+			function createFilterFor(query) {
+				var lowercaseQuery = angular.lowercase(query);
+				return function filterFn(type) {
+					return (type._lowername.indexOf(lowercaseQuery) === 0);
+				};
+			}
 		}
 	]
 );
