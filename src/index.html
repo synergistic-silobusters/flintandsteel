@@ -45,8 +45,9 @@
         	</md-button>
 			<h2 ng-if="!stateIsHome()"><span>Flint and Steel</span></h2>
 			<span flex></span>
-        	<md-button class="md-icon-button" ng-class="{ 'user-authenticated': $root.authenticated }" aria-label="Account" ng-click="accountClick()">
-          		<md-icon md-svg-icon="action:account_circle"></md-icon>
+        	<md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
+          		<md-icon md-svg-icon="action:perm_identity" ng-if="!isUserLoggedIn()"></md-icon>
+          		<md-icon md-svg-icon="action:account_box" ng-if="isUserLoggedIn()"></md-icon>
         	</md-button>
         	<md-button class="md-icon-button" aria-label="More">
           		<md-icon md-svg-icon="navigation:more_vert"></md-icon>

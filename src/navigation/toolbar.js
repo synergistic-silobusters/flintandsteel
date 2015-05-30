@@ -25,6 +25,8 @@ angular.module('flintAndSteel')
 			$scope.showNav = function showNav() {
 				$mdSidenav('left').toggle();
 			};
+
+			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 		}
 	]
 );
