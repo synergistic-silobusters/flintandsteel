@@ -10,6 +10,7 @@ angular.module('flintAndSteel')
 		function($scope, $state, $mdToast, loginSvc) {
 
 			$scope.account = {};
+			$scope.duplicateUser = false;
 			$scope.account.username = $scope.$root.username;
 
 			$scope.completeSignUp = function completeSignUp(account) {
@@ -26,6 +27,15 @@ angular.module('flintAndSteel')
 					console.log(status);
 				});
 			};
+
+			$scope.$watch('account.username', function(newValue, oldValue) {
+				console.log('Watcher run! oldValue %s | newValue %s', oldValue, newValue);
+				loginSvc.checkValidUsername(newValue, function (data) {
+					$scope.duplicateUser = !data;
+				}, function (data, status, headers, config) {
+					console.log(status);
+				});
+			});
 		}
 	]
 );

@@ -54,7 +54,8 @@ angular.module('flintAndSteel')
 					{ name: 'Time' },
 					{ name: 'Knowledge' },
 					{ name: 'Social Network'},
-					{ name: 'Materials' }
+					{ name: 'Materials' },
+					{ name: 'How can I help?' }
 				];
 				return types.map(function (type) {
 					type._lowername = type.name.toLowerCase();

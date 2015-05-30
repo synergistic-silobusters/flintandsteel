@@ -66,9 +66,14 @@ angular.module('flintAndSteel')
 					.error(errorCb);
 			};
 			this.checkValidUsername = function checkValidUsername(username, successCb, errorCb) {
-				$http.get('/isuniqueuser?user=' + username)
-					.success(successCb)
-					.error(errorCb);
+				if(username) {
+					$http.get('/isuniqueuser?user=' + username)
+						.success(successCb)
+						.error(errorCb);
+				}
+				else {
+					return false;
+				}
 			};
 
 			return {
