@@ -43,6 +43,9 @@ angular.module('flintAndSteel')
 				},
 				updateAccount: function updateAccount(account, successCb, errorCb) {
 					throw new NotImplementedException('updateAccount');
+				},
+				checkValidUsername: function checkValidUsername(username, successCb, errorCb) {
+					throw new NotImplementedException('checkValidUsername');
 				}
 			};
 		}

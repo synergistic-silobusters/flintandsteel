@@ -226,6 +226,26 @@ app.get('/uniqueid', function(req, res) {
 		});
 	}
 });
+app.get('/isuniqueuser', function(req, res) {
+	userDb.scan(filter, function(err, docs) {
+		if (err) {
+			res.sendStatus(500);
+		}
+		else {
+			var userFound = false;
+			var matcher = function matcher(item) {
+				return item === req.query.user;
+			};
+			for (var i = 0; i < docs.length; i++) {
+				userFound = (docs[i].username === req.query.user);
+				if (userFound) {
+					break;
+				}
+			}
+			res.status(200).json(!userFound);
+		}
+	});
+});
 
 external(function (err, ipExternal) {
     if (err) {
