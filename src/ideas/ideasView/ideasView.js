@@ -94,7 +94,7 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.querySearch = function querySearch (query) {
-				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : [];
+				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : $scope.typeChips;
 				return results;
 		    };
 
