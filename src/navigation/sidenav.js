@@ -7,7 +7,8 @@ angular.module('flintAndSteel')
 		'$state',
 		'$mdSidenav',
 		'ideaSvc',
-		function($scope, $state, $mdSidenav, ideaSvc) {
+		'loginSvc',
+		function($scope, $state, $mdSidenav, ideaSvc, loginSvc) {
 			ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
 				$scope.topIdeas = data;
 			},function getIdeaHeadersError(data, status, headers, config) {
@@ -25,6 +26,10 @@ angular.module('flintAndSteel')
 					$mdSidenav('left').close();
 				}
 			};
+
+			$scope.isUserLoggedIn = function() {
+				return loginSvc.isUserLoggedIn();
+			}
 
 			$scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent(event) {
 				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
