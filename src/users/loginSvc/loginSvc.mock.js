@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.factory('loginSvcMock', 
+.factory('loginSvcMock',
 	[
 		function() {
 			var mockUserAccount = {
@@ -19,18 +19,25 @@ angular.module('flintAndSteel')
 				};
 			}
 
+			var loggedIn = false;
+
 			return {
 				checkLogin: function checkLogin(account, successCb, errorCb){
-					throw new NotImplementedException('checkLogin');
+					if (account['username'] === mockUserAccount['username']) {
+						loggedIn = true;
+					}
+					else {
+						loggedIn = false;
+					}
 				},
 				addUser: function addUser(account, successCb, errorCb) {
 					throw new NotImplementedException('addUser');
 				},
 				isUserLoggedIn: function isUserLoggedIn() {
-					throw new NotImplementedException('isUserLoggedIn');
+					return loggedIn;
 				},
 				logout: function logout() {
-					throw new NotImplementedException('logout');
+					loggedIn = false;
 				},
 				getProperty: function getProperty(propertyName) {
 					return mockUserAccount[propertyName];

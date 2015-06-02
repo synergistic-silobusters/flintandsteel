@@ -17,7 +17,12 @@ angular.module('flintAndSteel')
 
 			$scope.navTo = function navTo(state) {
 				if (state === 'idea') {
-					$state.go('idea', {ideaId: 'mock_idea'});
+					if (loginSvc.isUserLoggedIn()) {
+						$state.go('idea', {ideaId: 'mock_idea'});
+					}
+					else {
+						$state.go('login');
+					}
 				}
 				else {
 					$state.go(state);
@@ -27,9 +32,7 @@ angular.module('flintAndSteel')
 				}
 			};
 
-			$scope.isUserLoggedIn = function() {
-				return loginSvc.isUserLoggedIn();
-			}
+			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 
 			$scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent(event) {
 				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {

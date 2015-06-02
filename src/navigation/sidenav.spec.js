@@ -1,15 +1,16 @@
 describe('SidenavCtrl', function() {
-	var $rootScope, scope, ctrl, $mdSidenav, $state, ideaSvcMock;
+	var $rootScope, scope, ctrl, $mdSidenav, $state, ideaSvcMock, $loginSvcMock;
 
 	beforeEach(module('flintAndSteel'));
 	beforeEach(module('ui.router'));
 
-	beforeEach(inject(function (_$rootScope_, $controller, _$state_, _$mdSidenav_, _ideaSvcMock_) {
+	beforeEach(inject(function (_$rootScope_, $controller, _$state_, _$mdSidenav_, _ideaSvcMock_, _loginSvcMock_) {
 		$rootScope = _$rootScope_;
 		scope = $rootScope.$new();
 		$state = _$state_;
 		$mdSidenav = _$mdSidenav_;
 		ideaSvcMock = _ideaSvcMock_;
+		loginSvcMock = _loginSvcMock_;
 
 		spyOn($state, 'go');
 		/*
@@ -21,7 +22,8 @@ describe('SidenavCtrl', function() {
 			$scope: scope,
 			$state: $state,
 			$mdSidenav: $mdSidenav,
-			ideaSvc: ideaSvcMock
+			ideaSvc: ideaSvcMock,
+			loginSvc: loginSvcMock
 		});
 	}));
 
@@ -44,7 +46,18 @@ describe('SidenavCtrl', function() {
 			// TODO - figure out how to test the $mdSidenav calls.
 		});
 
-		it('should navigate to the mock_idea ideaView', function() {
+		it('should navigate to the login if user is guest', function() {
+			state = 'idea';
+			scope.navTo(state);
+			expectedState = 'login';
+
+			expect($state.go).toHaveBeenCalledWith(expectedState);
+			// TODO - figure out how to test the $mdSidenav calls.
+		});
+
+		it('should navigate to the mock_idea ideaView if user is logged in', function() {
+			account = {'username': 'MainManDarth'};
+			loginSvcMock.checkLogin(account);
 			state = 'idea';
 			scope.navTo(state);
 
@@ -52,7 +65,7 @@ describe('SidenavCtrl', function() {
 			// TODO - figure out how to test the $mdSidenav calls.
 		});
 	});
-	
+
 	describe('$scope.$on(newIdeaAdded)', function() {
 
 		beforeEach(function() {
