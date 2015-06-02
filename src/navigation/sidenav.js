@@ -10,7 +10,6 @@ angular.module('flintAndSteel')
 		function($scope, $state, $mdSidenav, ideaSvc) {
 			getIdeas = function() {
 				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-					console.log(data);
 					$scope.topIdeas = data;
 				},function getIdeaHeadersError(data, status, headers, config) {
 					console.log(status);
