@@ -181,6 +181,9 @@ app.get('/ideaheaders', function(req, res) {
 			res.status(200).send('NO_IDEAS_IN_STORAGE');
 		}
 		else {
+			docs.sort(function(a,b) {
+				return a.key - b.key;
+			});
 			var headers = [];
 			for(var i = 0; i < docs.length; i++) {
 				headers.push({
