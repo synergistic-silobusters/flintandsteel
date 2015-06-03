@@ -1,5 +1,7 @@
 # flintandsteel
 
+![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/Logo2.PNG)
+
 ## Installation
 
 After cloning the git repo run `npm install` from a terminal window.
