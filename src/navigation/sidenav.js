@@ -23,7 +23,7 @@ angular.module('flintAndSteel')
 			$scope.navTo = function navTo(state) {
 				if (state === 'addIdea') {
 					if (loginSvc.isUserLoggedIn()) {
-						$state.go(state)
+						$state.go(state);
 					}
 					else {
 						$state.go('login');

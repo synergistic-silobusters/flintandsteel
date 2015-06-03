@@ -49,7 +49,7 @@
           		<md-icon md-svg-icon="action:perm_identity" ng-if="!isUserLoggedIn()"></md-icon>
           		<md-icon md-svg-icon="action:account_box" ng-if="isUserLoggedIn()"></md-icon>
         	</md-button>
-        	<md-button class="md-icon-button" aria-label="More">
+        	<md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
           		<md-icon md-svg-icon="navigation:more_vert"></md-icon>
         	</md-button>
 		</div>
