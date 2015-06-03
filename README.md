@@ -4,7 +4,7 @@
 
 After cloning the git repo run `npm install` from a terminal window.
 
-You will likely also have to run `npm install gulp-cli -g` in order to run gulp. This command installs `gulp` globally so it can be used in the command line.
+You will likely also have to run `npm install gulp -g` in order to run gulp. This command installs `gulp` globally so it can be used in the command line.
 
 **Note**: On unix based platforms, this will need to be run with `sudo` and on Windows, the command prompt will require administrative privileges.
 
