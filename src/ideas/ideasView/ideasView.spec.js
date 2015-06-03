@@ -129,9 +129,9 @@ describe('IdeasViewCtrl', function() {
 			scope.typeChips = ideaSvcMock.getBackTypeChips();
 		});
 
-		it('should return an empty array for an empty search', function() {
+		it('should return an array of all the typeChips for an empty search', function() {
 			results = scope.querySearch();
-			expect(results.length).toBe(0);
+			expect(results).toBe(scope.typeChips);
 		});
 
 		it('should return an array with length 1 when searched for "K"', function() {
