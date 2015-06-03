@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "bower install && node config",
+    "postinstall": "bower install",
     "start": "echo \"Please use gulp start to start the server\" && exit 0"
   },
   "repository": {
