@@ -46,8 +46,8 @@ describe('SidenavCtrl', function() {
 			// TODO - figure out how to test the $mdSidenav calls.
 		});
 
-		it('should navigate to the login if user is guest', function() {
-			state = 'idea';
+		it('should navigate to the login if user is guest and tries to add idea', function() {
+			state = 'addIdea';
 			scope.navTo(state);
 			expectedState = 'login';
 
@@ -55,9 +55,17 @@ describe('SidenavCtrl', function() {
 			// TODO - figure out how to test the $mdSidenav calls.
 		});
 
-		it('should navigate to the mock_idea ideaView if user is logged in', function() {
+		it('should navigate to the add idea page if user is logged in and tries to add idea', function() {
 			account = {'username': 'MainManDarth'};
 			loginSvcMock.checkLogin(account);
+			state = 'addIdea';
+			scope.navTo(state);
+
+			expect($state.go).toHaveBeenCalledWith(state);
+			// TODO - figure out how to test the $mdSidenav calls.
+		});
+
+		it('should navigate to the idea with id mock_idea', function() {
 			state = 'idea';
 			scope.navTo(state);
 

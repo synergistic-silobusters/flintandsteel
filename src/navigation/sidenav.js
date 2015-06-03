@@ -16,13 +16,16 @@ angular.module('flintAndSteel')
 			});
 
 			$scope.navTo = function navTo(state) {
-				if (state === 'idea') {
+				if (state === 'addIdea') {
 					if (loginSvc.isUserLoggedIn()) {
-						$state.go('idea', {ideaId: 'mock_idea'});
+						$state.go(state)
 					}
 					else {
 						$state.go('login');
 					}
+				}
+				else if (state === 'idea') {
+					$state.go('idea', {ideaId: 'mock_idea'});
 				}
 				else {
 					$state.go(state);
