@@ -74,12 +74,35 @@ angular.module('flintAndSteel', [
 	        .iconSet('social', './assets/icons/social-icons.svg', 24)
 	        .iconSet('toggle', './assets/icons/toggle-icons.svg', 24);
 
+		var rockstarterRedMap = $mdThemingProvider.extendPalette('red', {
+			'900': '650100'
+	    });
+	    var rockstarterGrayMap = $mdThemingProvider.extendPalette('grey', {
+			'900': '464b51'
+	    });
+
+	    $mdThemingProvider.definePalette('rokstarter-red', rockstarterRedMap);
+	    $mdThemingProvider.definePalette('rokstarter-gray', rockstarterGrayMap);
+
 	    $mdThemingProvider.theme('default')
-                          .primaryPalette('blue')
+                          .primaryPalette('rokstarter-gray', {
+                          	'default': '900'
+                          })
+                          .accentPalette('rokstarter-red', {
+                          	'default': '900',
+                          	'hue-1': 'A700'
+                          })
+                          .warnPalette('red');
+
+	    /*$mdThemingProvider.theme('default')
+                          .primaryPalette('gray')
                           .accentPalette('green', {
                           	'default': 'A200',
                           	'hue-1': '600'
                           })
-                          .warnPalette('red');
+                          .warnPalette('red');*/
 	}
 ]);
+
+// red #650100
+// gray #464b51
