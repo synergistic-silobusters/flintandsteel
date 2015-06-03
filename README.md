@@ -28,6 +28,16 @@ To run the client side tests, execute `gulp test:client` from a terminal window.
 
 Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib`.
 
+## Continuous Integration
+
+To automate both the Testing and Linting steps above, you could set up your account at [CircleCI](https://circleci.com/). This will test and lint your code on commit. This is especially effective if you fork the repo. Before submitting a pull request, you could make sure that the build is green without doing anything but committing!
+
+Once you've linked your GitHub account with CircleCI, click on [Add Projects](https://circleci.com/add-projects), click on your account. You will see a list of repositories show up below. Click on `Show Forks` in the upper right corner of the list. You should see `flintandsteel` if you've successfully forked the repo. Any and every branch that you create will build automagically once you commit to it.
+
+Later, a `circle.yml` file may be added to configure CircleCI for you. But for now, in order to configure CircleCI with the flintandsteel repo, click on the gear next to `<USERNAME>/flintandsteel`. This will bring up the project settings. Under `Test Commands` on the left-hand menu, click `Dependency Commands`. For `Pre-dependency commands` enter `npm install -g gulp`. Next click `Test Commands` on the left. For `Test commands` enter `gulp jshint && gulp test:client`.
+
+At the bottom, you will see `Save Commands` and `Test settings on...` with a branch name. Click `Save & Go!` and watch the build go!
+
 ## Clearing Persistent storage
 
 The express server app uses [docstore](https://www.npmjs.com/package/docstore) to store users and ideas in JSON format. If this storage location gets messy, `gulp clean:db` can be used to clear up the datastore.
