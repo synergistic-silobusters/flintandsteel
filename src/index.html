@@ -43,7 +43,7 @@
 			<md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
           		<md-icon md-svg-icon="navigation:menu"></md-icon>
         	</md-button>
-			<h2 ng-if="!stateIsHome()"><span>Flint and Steel</span></h2>
+			<h2 ng-if="!stateIsHome()"><span><a ui-sref="home">Flint and Steel</a></span></h2>
 			<span flex></span>
         	<md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
           		<md-icon md-svg-icon="action:perm_identity" ng-if="!isUserLoggedIn()"></md-icon>
@@ -71,8 +71,8 @@
 						</md-item>
 					</md-list>
 					<md-divider></md-divider>
-					<div layout="row"><md-button class="md-primary" ng-click="navTo('home')" flex>Home</md-button></div>
-					<div layout="row"><md-button class="md-primary" ng-click="navTo('idea')" flex>Idea (Test only)</md-button></div>
+					<!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('home')" flex>Home</md-button></div> -->
+					<!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('idea')" flex>Idea (Test only)</md-button></div> -->
 				</div>
 				<div flex layout="row" layout-align="end end">
 					<md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')">
