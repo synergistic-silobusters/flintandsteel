@@ -6,7 +6,9 @@ var gulp = require('gulp'),
 	jshint = require('gulp-jshint'),
 	stylish = require('jshint-stylish-ex'),
 	nodemon = require('gulp-nodemon'),
-	karma = require('karma').server;
+	karma = require('karma').server,
+	fs = require('fs'),
+	ideas = require('./ideas').ideas;
 
 gulp.task('default', ['usage']);
 
@@ -28,7 +30,7 @@ gulp.task('usage', function() {
 		'',
 		chalk.green('clean:modules'),
 		'\tDeletes the npm_modules and the src/lib directories.',
-		'\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') + 
+		'\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
 		' will be required before running the app.',
 		'',
 		chalk.green('clean:db'),
@@ -39,9 +41,9 @@ gulp.task('usage', function() {
 });
 
 gulp.task('start', ['_cleanUp', 'test:client'], function() {
-	nodemon({ 
+	nodemon({
 		script: 'server/server.js',
-		'ignore': ['spec/*'] 
+		'ignore': ['spec/*']
 	});
 });
 
@@ -86,4 +88,30 @@ gulp.task('_cleanUp', ['_createDataDirs'], function() {
 		'server/datastore/users/README.md',
 		'server/datastore/ideas/README.md'
 	]);
+});
+
+gulp.task('generate:data', function() {
+	filePattern = "server/datastore/ideas/idea_X.json";
+	fileName    = filePattern.replace("X", "0");
+
+	fs.stat(fileName, function(err, stat) {
+	  var id = 0;
+
+	  if (err === null) {
+	    // File exists
+	    console.error("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue");
+	  } else if (err.code == 'ENOENT') {
+	    // File does not exist, generate ideas
+	    ideas.forEach(function(idea, index, arr) {
+	      fs.writeFile(filePattern.replace("X", index), JSON.stringify(idea), function(err) {
+	        if (err) throw err;
+	      });
+	    });
+
+	  } else {
+	    // Something went very wrong.
+	    console.error("ERROR: ", err.code);
+	    throw err;
+	  }
+	});
 });
