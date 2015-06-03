@@ -1,18 +1,23 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('SidenavCtrl', 
+.controller('SidenavCtrl',
 	[
 		'$scope',
 		'$state',
 		'$mdSidenav',
 		'ideaSvc',
 		function($scope, $state, $mdSidenav, ideaSvc) {
-			ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-				$scope.topIdeas = data;
-			},function getIdeaHeadersError(data, status, headers, config) {
-				console.log(status);
-			});
+			getIdeas = function() {
+				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
+					$scope.topIdeas = data;
+				},function getIdeaHeadersError(data, status, headers, config) {
+					console.log(status);
+				});
+			};
+
+			getIdeas();
+			setInterval(getIdeas, 750);
 
 			$scope.navTo = function navTo(state) {
 				if (state === 'idea') {

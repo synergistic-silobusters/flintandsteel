@@ -24,11 +24,16 @@ angular.module('flintAndSteel')
 			$scope.selectedType = undefined;
 			$scope.searchText = undefined;
 
-			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
-				$scope.idea = data;
-			}, function getIdeaError(data, status, headers, config) {
-				console.log(status);
-			});
+			getIdea = function() {
+				ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
+					$scope.idea = data;
+				}, function getIdeaError(data, status, headers, config) {
+					console.log(status);
+				});
+			};
+
+			getIdea();
+			setInterval(getIdea, 750);
 
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
 				if (type === 'comments' || type === 'backs') {
