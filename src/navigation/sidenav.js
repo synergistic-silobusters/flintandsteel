@@ -7,7 +7,8 @@ angular.module('flintAndSteel')
 		'$state',
 		'$mdSidenav',
 		'ideaSvc',
-		function($scope, $state, $mdSidenav, ideaSvc) {
+		'loginSvc',
+		function($scope, $state, $mdSidenav, ideaSvc, loginSvc) {
 			getIdeas = function() {
 				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
 					$scope.topIdeas = data;
@@ -20,7 +21,15 @@ angular.module('flintAndSteel')
 			setInterval(getIdeas, 750);
 
 			$scope.navTo = function navTo(state) {
-				if (state === 'idea') {
+				if (state === 'addIdea') {
+					if (loginSvc.isUserLoggedIn()) {
+						$state.go(state)
+					}
+					else {
+						$state.go('login');
+					}
+				}
+				else if (state === 'idea') {
 					$state.go('idea', {ideaId: 'mock_idea'});
 				}
 				else {
@@ -30,6 +39,8 @@ angular.module('flintAndSteel')
 					$mdSidenav('left').close();
 				}
 			};
+
+			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 
 			$scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent(event) {
 				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
