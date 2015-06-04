@@ -62,13 +62,8 @@
 				<div flex>
 					<md-list class="top-ideas-list">
 						<md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
-						<md-item>
-							<div class="top-ideas-list-item">Braun's directive goes here</div>
-						</md-item>
-						<md-item ng-repeat="idea in topIdeas track by $index">
-							<div class="top-ideas-list-item">
-								<a ui-sref="idea({ ideaId: idea.id })">{{idea.title}}</a>
-							</div>
+						<md-item ng-repeat="idea in topIdeas track by $index" ui-sref="idea({ ideaId: idea.id })">
+							<idea-item idea="idea"></idea-item>
 						</md-item>
 					</md-list>
 					<md-divider></md-divider>
