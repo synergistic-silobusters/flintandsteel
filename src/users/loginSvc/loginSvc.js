@@ -65,6 +65,16 @@ angular.module('flintAndSteel')
 					.success(successCb)
 					.error(errorCb);
 			};
+			this.checkValidUsername = function checkValidUsername(username, successCb, errorCb) {
+				if(username) {
+					$http.get('/isuniqueuser?user=' + username)
+						.success(successCb)
+						.error(errorCb);
+				}
+				else {
+					return false;
+				}
+			};
 
 			return {
 				checkLogin: this.checkLogin,
@@ -74,7 +84,8 @@ angular.module('flintAndSteel')
 				getProperty: this.getProperty,
 				likeIdea: this.likeIdea,
 				unlikeIdea: this.unlikeIdea,
-				updateAccount: this.updateAccount
+				updateAccount: this.updateAccount,
+				checkValidUsername: this.checkValidUsername
 			};
 		}
 	]

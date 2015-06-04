@@ -1,13 +1,14 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('IdeasViewCtrl', 
+.controller('IdeasViewCtrl',
 	[
 		'$scope',
 		'$stateParams',
+		'$interval',
 		'ideaSvc',
-		'loginSvc', 
-		function($scope, $stateParams, ideaSvc, loginSvc){
+		'loginSvc',
+		function($scope, $stateParams, $interval, ideaSvc, loginSvc){
 
 			/*
 			The way this works
@@ -24,10 +25,19 @@ angular.module('flintAndSteel')
 			$scope.selectedType = undefined;
 			$scope.searchText = undefined;
 
-			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
-				$scope.idea = data;
-			}, function getIdeaError(data, status, headers, config) {
-				console.log(status);
+			getIdea = function() {
+				ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
+					$scope.idea = data;
+				}, function getIdeaError(data, status, headers, config) {
+					console.log(status);
+				});
+			};
+
+			getIdea();
+			var ideaInterval = $interval(getIdea, 750);
+
+			$scope.$on('$stateChangeStart', function() {
+				$interval.cancel(ideaInterval);
 			});
 
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
@@ -93,10 +103,10 @@ angular.module('flintAndSteel')
 				return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
 			};
 
-			$scope.querySearch = function querySearch (query) {
+			$scope.querySearch = function querySearch(query) {
 				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : [];
 				return results;
-		    };
+	    };
 
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 

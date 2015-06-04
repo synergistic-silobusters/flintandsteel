@@ -5,14 +5,14 @@
 			<form name="loginForm" layout="column" layout-align="start center">
 				<md-input-container flex>
 					<label>Username</label>
-					<input ng-model="account.username" name="username" required>
+					<input id="username" ng-model="account.username" name="username" ng-required="loginForm.username.$touched">
 					<div ng-messages="loginForm.username.$error">
 						<div ng-message="required">Required</div>
 					</div>
 	        	</md-input-container>
 	        	<md-input-container flex>
 					<label>Password</label>
-					<input ng-model="account.password" name="password" required type="password">
+					<input ng-model="account.password" name="password" type="password" ng-required="loginForm.password.$touched">
 					<div ng-messages="loginForm.password.$error">
 						<div ng-message="required">Required</div>
 					</div>

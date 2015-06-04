@@ -194,4 +194,38 @@ describe('loginSvc', function() {
 
 	});
 
+	describe('loginSvc.checkValidUsername', function() {
+		var checkValidUsernameHandler;
+
+		beforeEach(function() {
+			checkValidUsernameHandler = $httpBackend.whenGET('/isuniqueuser?user=dummy')
+											.respond(200, true);
+		});
+
+		it('should return true for a unique user', function() {
+			$httpBackend.expectGET('/isuniqueuser?user=dummy');
+
+			loginSvc.checkValidUsername('dummy', function (data) {
+				expect(data).toBe(true);
+			}, function (data, status, headers, config) {
+
+			});
+
+			$httpBackend.flush();
+		});
+
+		it('should return false for a duplicate user', function() {
+			checkValidUsernameHandler.respond(200, false);
+			$httpBackend.expectGET('/isuniqueuser?user=dummy');
+
+			loginSvc.checkValidUsername('dummy', function (data) {
+				expect(data).toBe(false);
+			}, function (data, status, headers, config) {
+
+			});
+
+			$httpBackend.flush();
+		});
+	});
+
 });

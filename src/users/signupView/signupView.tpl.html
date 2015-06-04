@@ -5,28 +5,30 @@
 			<form name="loginForm" layout="column" layout-align="start center">
 				<md-input-container flex>
 					<label>Username</label>
-					<input ng-model="account.username" name="username" required>
+					<input ng-model="account.username" ng-model-options="{ updateOn: 'blur' }" name="username" ng-required="loginForm.username.$touched">
+					<!-- <md-progress-circular class="md-primary" md-mode="indeterminate" md-diameter="16"></md-progress-circular> -->
 					<div ng-messages="loginForm.username.$error">
-						<div ng-message="required">Required</div>
+						<div ng-hide="duplicateUser" ng-message="required">Required</div>
+						<div ng-show="duplicateUser" ng-message="duplicate">Username already in use</div>
 					</div>
 	        	</md-input-container>
 	        	<md-input-container flex>
 					<label>Password</label>
-					<input ng-model="account.password" name="password" required type="password">
+					<input ng-model="account.password" name="password" type="password" ng-required="loginForm.password.$touched">
 					<div ng-messages="loginForm.password.$error">
 						<div ng-message="required">Required</div>
 					</div>
 	        	</md-input-container>
 	        	<md-input-container flex>
 					<label>Email</label>
-					<input ng-model="account.email" name="email" required type="email">
+					<input ng-model="account.email" name="email" type="email" ng-required="loginForm.email.$touched">
 					<div ng-messages="loginForm.email.$error">
 						<div ng-message="required">Required</div>
 					</div>
 	        	</md-input-container>
 	        	<md-input-container flex>
 					<label>Name</label>
-					<input ng-model="account.name" name="name" required>
+					<input ng-model="account.name" name="name" ng-required="loginForm.name.$touched">
 					<div ng-messages="loginForm.name.$error">
 						<div ng-message="required">Required</div>
 					</div>

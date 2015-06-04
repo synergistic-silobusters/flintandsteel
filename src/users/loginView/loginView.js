@@ -7,6 +7,7 @@ angular.module('flintAndSteel')
 		'$mdToast',
 		'loginSvc',
 		function($scope, $state, $mdToast, loginSvc) {
+
 			$scope.loginUser = function(account) {
 				loginSvc.checkLogin(account, function LoginSuccess(data) {
 					if (data.status === 'AUTH_OK') {
@@ -41,7 +42,7 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.signUpUser = function signUpUser(account) {
-				$scope.$root.username = account.username;
+				$scope.$root.username = account ? account.username : '';
 				$state.go('signup');
 			};
 		}
