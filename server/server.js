@@ -6,7 +6,8 @@ var express = require('express'),
 	bodyParser = require('body-parser'),
 	external = require('external-ip')(),
 	ip = require('ip'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	ideas = require('./idea');
 
 var userDb, ideasDb, ipExternal;
 
@@ -35,16 +36,32 @@ var filter = function dbFilter(doc) {
 	return true;
 };
 
+function startSees(res) {
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  });
+  res.write("\n");
 
-app.use(morgan(':remote-addr - ' + 
-			   chalk.cyan('[:date] ') + 
-			   chalk.green('":method :url ') + 
-			   chalk.gray('HTTP/:http-version" ') + 
-			   chalk.yellow(':status ') + 
-			   ':res[content-length] ' + 
-			   chalk.gray('":referrer" ":user-agent" ') + 
-			   'time=:response-time ms'
-));
+  return function sendSse(name,data,id) {
+    res.write("event: " + name + "\n");
+		console.log("event: " + name + "\n");
+    if(id) res.write("id: " + id + "\n");
+    res.write("data: " + JSON.stringify(data) + "\n\n");
+		console.log("data: " + JSON.stringify(data) + "\n\n");
+  }
+}
+
+// app.use(morgan(':remote-addr - ' +
+// 			   chalk.cyan('[:date] ') +
+// 			   chalk.green('":method :url ') +
+// 			   chalk.gray('HTTP/:http-version" ') +
+// 			   chalk.yellow(':status ') +
+// 			   ':res[content-length] ' +
+// 			   chalk.gray('":referrer" ":user-agent" ') +
+// 			   'time=:response-time ms'
+// ));
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
@@ -84,7 +101,7 @@ app.post('/signup', function(req, res) {
 		password: req.body.password,
 		name: req.body.name,
 		likedIdeas: req.body.likedIdeas
-	}, 
+	},
 	function(err, doc) {
 		if (err) {
 			console.log(chalk.bgRed(err));
@@ -96,26 +113,23 @@ app.post('/signup', function(req, res) {
 	res.sendStatus(201);
 });
 app.post('/idea', function(req, res) {
-	ideasDb.save(
-	{
-		key: req.body.id,
-		_id: 'idea_' + req.body.id,
-		ideaId: req.body.id,
-		title: req.body.title,
-		description: req.body.description,
-		author: req.body.author,
-		likes: req.body.likes,
-		comments: req.body.comments,
-		backs: req.body.backs
-	}, 
-	function(err, doc) {
-		if (err) {
-			console.log(chalk.bgRed(err));
+	ideas.create(
+		req.body.id,
+		req.body.title,
+		req.body.description,
+		req.body.author,
+		req.body.likes,
+		req.body.comments,
+		req.body.backs,
+		function(err, doc) {
+			if (err) {
+				console.log(chalk.bgRed(err));
+			}
+			else {
+				console.log(chalk.bgGreen('Document with key %s stored in ideas.'), doc.key);
+			}
 		}
-		else {
-			console.log(chalk.bgGreen('Document with key %s stored in ideas.'), doc.key);
-		}
-	});
+	);
 	res.sendStatus(201);
 });
 app.post('/updateidea', function(req, res) {
@@ -173,32 +187,33 @@ app.get('/idea', function(req, res) {
 	});
 });
 app.get('/ideaheaders', function(req, res) {
-	ideasDb.scan(filter, function(err, docs) {
+	ideas.fetch(function(err, headers) {
 		if (err) {
 			res.sendStatus(500);
 		}
-		else if (docs.length === 0) {
+		else if (headers.length === 0) {
 			res.status(200).send('NO_IDEAS_IN_STORAGE');
 		}
 		else {
-			docs.sort(function(a,b) {
-				return a.key - b.key;
-			});
-			var headers = [];
-			for(var i = 0; i < docs.length; i++) {
-				headers.push({
-					id: docs[i].ideaId,
-					title: docs[i].title,
-					author: docs[i].author,
-					likes: docs[i].likes
-				});
-			}
 			res.status(200).json(headers);
 		}
 	});
 });
+app.get('/ideaheaders/events', function (req, res) {
+	var allIdeas = ideas.getInstance();
+	var sse = startSees(res);
+	allIdeas.on("newHeaders", updateHeaders);
+
+	req.once("end", function() {
+		ideas.removeListener("newHeaders", updateHeaders);
+	});
+
+	function updateHeaders(headers) {
+		sse("newHeaders", headers);
+	}
+});
 app.get('/uniqueid', function(req, res) {
-	var dbToSearch, 
+	var dbToSearch,
 		propName = '';
 	if (req.query.for === 'idea') {
 		dbToSearch = ideasDb;
@@ -261,9 +276,9 @@ external(function (err, ipExternal) {
     else {
     	console.log(
     		'Server listening at' +
-    		'\n\tlocal:    ' + chalk.magenta('http://localhost:8080') + 
+    		'\n\tlocal:    ' + chalk.magenta('http://localhost:8080') +
     		'\n\tnetwork:  ' + chalk.magenta('http://') + chalk.magenta(ip.address()) + chalk.magenta(':8080') +
-    		'\n\tExternal: ' + chalk.magenta('http://') + chalk.magenta(ipExternal) + chalk.magenta(':8080') + 
+    		'\n\tExternal: ' + chalk.magenta('http://') + chalk.magenta(ipExternal) + chalk.magenta(':8080') +
     		'\n\tExternal access requires port 8080 to be configured properly.'
     	);
     }
