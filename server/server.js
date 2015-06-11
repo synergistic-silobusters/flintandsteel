@@ -11,6 +11,8 @@ var express = require('express'),
 
 var userDb, ideasDb, ipExternal;
 
+var allIdeas = ideas.getInstance();
+
 datastore.open('./server/datastore/users', function(err, store) {
 	if (err) {
 		console.log(err);
@@ -127,6 +129,9 @@ app.post('/idea', function(req, res) {
 			}
 			else {
 				console.log(chalk.bgGreen('Document with key %s stored in ideas.'), doc.key);
+				ideas.fetch(function(err, headers) {
+					allIdeas.newHeaders(headers);
+				});
 			}
 		}
 	);
@@ -200,7 +205,7 @@ app.get('/ideaheaders', function(req, res) {
 	});
 });
 app.get('/ideaheaders/events', function (req, res) {
-	var allIdeas = ideas.getInstance();
+	console.log("Listening to events!");
 	var sse = startSees(res);
 	allIdeas.on("newHeaders", updateHeaders);
 
@@ -209,6 +214,7 @@ app.get('/ideaheaders/events', function (req, res) {
 	});
 
 	function updateHeaders(headers) {
+		console.log("Woo!");
 		sse("newHeaders", headers);
 	}
 });

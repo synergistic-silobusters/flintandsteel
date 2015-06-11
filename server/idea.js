@@ -27,20 +27,8 @@ exports.create = function(id, title, description, author, likes, comments, backs
       if (err) {
         cb(err);
       }
-      else {
-        getHeaders(function(err, headers) {
-          if (err) {
-            cb(err);
-          }
-          else if (headers.length > 0) {
-            var ideas = new Ideas();
-            ideas.newHeaders(headers);
-          }
-          cb(null, headers);
-        });
-      }
-    }
-  );
+      cb(null, doc);
+  });
 };
 
 exports.fetch = getHeaders;

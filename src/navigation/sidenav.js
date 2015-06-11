@@ -17,8 +17,17 @@ angular.module('flintAndSteel')
 				});
 			};
 
+			var ideaAddEvents = new EventSource('/ideaheaders/events');
+			ideaAddEvents.addEventListener("newHeaders", function(event) {
+	      var headers = JSON.parse(event.data);
+	      if(headers.length > 0) {
+	        $scope.topIdeas = headers;
+	      }
+	    });
+
 			getIdeas();
-			setInterval(getIdeas, 3000);
+			//setInterval(getIdeas, 3000);
+
 
 			$scope.navTo = function navTo(state) {
 				if (state === 'addIdea') {
