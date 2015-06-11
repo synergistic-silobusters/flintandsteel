@@ -34,7 +34,7 @@ angular.module('flintAndSteel')
 			};
 
 			getIdea();
-			var ideaInterval = $interval(getIdea, 750);
+			var ideaInterval = $interval(getIdea, 3000);
 
 			$scope.$on('$stateChangeStart', function() {
 				$interval.cancel(ideaInterval);

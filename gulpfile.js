@@ -90,7 +90,7 @@ gulp.task('_cleanUp', ['_createDataDirs'], function() {
 	]);
 });
 
-gulp.task('generate:data', function() {
+gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
 	filePattern = "server/datastore/ideas/idea_X.json";
 	fileName    = filePattern.replace("X", "0");
 
@@ -99,12 +99,15 @@ gulp.task('generate:data', function() {
 
 	  if (err === null) {
 	    // File exists
-	    console.error("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue");
+	    gutil.log(chalk.red("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue"));
 	  } else if (err.code == 'ENOENT') {
 	    // File does not exist, generate ideas
 	    ideas.forEach(function(idea, index, arr) {
 	      fs.writeFile(filePattern.replace("X", index), JSON.stringify(idea), function(err) {
-	        if (err) throw err;
+	        if (err) {
+				// Should no longer happen due to the gulp pre-requisite tasks.
+				gutil.log(chalk.red("ERROR: Try to create the 'server/datastore/ideas' directory path to continue."));
+			}
 	      });
 	    });
 
