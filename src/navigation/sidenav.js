@@ -18,12 +18,12 @@ angular.module('flintAndSteel')
 			};
 
 			getIdeas();
-			setInterval(getIdeas, 750);
+			setInterval(getIdeas, 3000);
 
 			$scope.navTo = function navTo(state) {
 				if (state === 'addIdea') {
 					if (loginSvc.isUserLoggedIn()) {
-						$state.go(state)
+						$state.go(state);
 					}
 					else {
 						$state.go('login');

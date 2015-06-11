@@ -1,13 +1,14 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('IdeasViewCtrl', 
+.controller('IdeasViewCtrl',
 	[
 		'$scope',
 		'$stateParams',
+		'$interval',
 		'ideaSvc',
-		'loginSvc', 
-		function($scope, $stateParams, ideaSvc, loginSvc){
+		'loginSvc',
+		function($scope, $stateParams, $interval, ideaSvc, loginSvc){
 
 			/*
 			The way this works
@@ -33,7 +34,11 @@ angular.module('flintAndSteel')
 			};
 
 			getIdea();
-			setInterval(getIdea, 750);
+			var ideaInterval = $interval(getIdea, 3000);
+
+			$scope.$on('$stateChangeStart', function() {
+				$interval.cancel(ideaInterval);
+			});
 
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
 				if (type === 'comments' || type === 'backs') {
@@ -98,10 +103,10 @@ angular.module('flintAndSteel')
 				return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
 			};
 
-			$scope.querySearch = function querySearch (query) {
+			$scope.querySearch = function querySearch(query) {
 				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : [];
 				return results;
-		    };
+	    };
 
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 

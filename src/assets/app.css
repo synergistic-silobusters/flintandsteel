@@ -21,10 +21,6 @@ body {
 	margin-left: 10px;
 }
 
-.user-authenticated {
-	fill: #b9f6ca;
-}
-
 .scroll-container {
 	overflow: scroll;
 }
@@ -53,4 +49,19 @@ body {
 	background-color: #e0e0e0;
 	color: #424242;
 	border-radius: 10px;
+}
+.idea-pointer {
+	cursor: pointer;
+}
+
+.extra-padding-left-sm {
+	padding-left: 5px;
+}
+
+.extra-padding-left-md {
+	padding-left: 10px;
+}
+
+.accent-text {
+	color: #650100;
 }

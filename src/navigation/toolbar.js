@@ -8,6 +8,8 @@ angular.module('flintAndSteel')
 		'$mdSidenav',
 		'loginSvc',
 		function($scope, $state, $mdSidenav, loginSvc) {
+			$scope.displayOverflow = false;
+
 			$scope.accountClick = function accountClick() {
 				if (loginSvc.isUserLoggedIn()) {
 					$state.go('account');
