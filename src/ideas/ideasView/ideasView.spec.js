@@ -1,17 +1,19 @@
 describe('IdeasViewCtrl', function() {
-	var scope, ctrl, $stateParams, ideaSvcMock, loginSvcMock;
+	var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock;
 
 	beforeEach(module('flintAndSteel'));
 
-	beforeEach(inject(function ($rootScope, $controller, _$stateParams_, _ideaSvcMock_, _loginSvcMock_) {
+	beforeEach(inject(function ($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_) {
 		scope = $rootScope.$new();
 		$stateParams = _$stateParams_;
+		$mdDialog = _$mdDialog_;
 		ideaSvcMock = _ideaSvcMock_;
 		loginSvcMock = _loginSvcMock_;
 
 		ctrl = $controller('IdeasViewCtrl', {
 			$scope: scope,
 			$stateParams: $stateParams,
+			$mdDialog: $mdDialog,
 			ideaSvc: ideaSvcMock,
 			loginSvc: loginSvcMock
 		});
@@ -159,6 +161,20 @@ describe('IdeasViewCtrl', function() {
 		it('should return nothing for unacceptable back types', function() {
 			results = scope.querySearch('technology');
 			expect(results.length).toBe(0);
+		});
+	});
+
+	describe('$scope.openLikes()', function() {
+
+		beforeEach(function() {
+			spyOn($mdDialog, 'show').and.callFake(function() {
+			});
+		});
+
+		it('should open a dialog when clicked', function() {
+			scope.openLikes({name: 'clickEvent'}, ['User 1', 'User 2']);
+
+			expect($mdDialog.show).toHaveBeenCalled();
 		});
 	});
 

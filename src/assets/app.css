@@ -65,3 +65,7 @@ body {
 .accent-text {
 	color: #650100;
 }
+
+.idea-likes-click {
+	cursor: pointer;
+}
