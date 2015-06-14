@@ -60,6 +60,7 @@ app.post('/login', function(req, res) {
 					status: 'AUTH_OK',
 					id: doc.accountId,
 					username: req.body.username,
+					email: doc.email,
 					name: doc.name,
 					likedIdeas: doc.likedIdeas
 				});
@@ -82,6 +83,7 @@ app.post('/signup', function(req, res) {
 		_id: req.body.username,
 		accountId: req.body.id,
 		password: req.body.password,
+		email: req.body.email,
 		name: req.body.name,
 		likedIdeas: req.body.likedIdeas
 	}, 
