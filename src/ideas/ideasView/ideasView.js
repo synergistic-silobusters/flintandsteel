@@ -75,7 +75,7 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.likeIdea = function likeIdea() {
-				$scope.idea.likes++;
+				$scope.idea.likes.push(loginSvc.getProperty('username'));
 				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
 					function success(data) {
 						//console.log(data);
@@ -87,7 +87,9 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.unlikeIdea = function unlikeIdea() {
-				$scope.idea.likes--;
+				_.remove($scope.idea.likes, function (n) {
+					return n === loginSvc.getProperty('username');
+				});
 				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
 					function success(data) {
 						//console.log(data);

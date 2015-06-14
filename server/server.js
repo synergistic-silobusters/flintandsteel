@@ -192,7 +192,7 @@ app.get('/ideaheaders', function(req, res) {
 					id: docs[i].ideaId,
 					title: docs[i].title,
 					author: docs[i].author,
-					likes: docs[i].likes
+					likes: docs[i].likes.length
 				});
 			}
 			res.status(200).json(headers);

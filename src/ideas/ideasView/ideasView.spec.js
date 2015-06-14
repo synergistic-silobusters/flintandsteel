@@ -73,7 +73,7 @@ describe('IdeasViewCtrl', function() {
 		var ideaLikes;
 
 		beforeEach(function() {
-			ideaLikes = scope.idea.likes;
+			ideaLikes = scope.idea.likes.length;
 
 			spyOn(loginSvcMock, 'likeIdea').and.callFake(function() {
 			});
@@ -82,7 +82,7 @@ describe('IdeasViewCtrl', function() {
 		it('should like an idea', function() {
 			scope.likeIdea();
 
-			expect(scope.idea.likes).toBe(ideaLikes + 1);
+			expect(scope.idea.likes.length).toBe(ideaLikes + 1);
 			expect(loginSvcMock.likeIdea).toHaveBeenCalledWith(scope.idea.id);
 		});
 	});
@@ -91,16 +91,19 @@ describe('IdeasViewCtrl', function() {
 		var ideaLikes;
 
 		beforeEach(function() {
-			ideaLikes = scope.idea.likes;
-
+			spyOn(loginSvcMock, 'likeIdea').and.callFake(function() {
+			});
 			spyOn(loginSvcMock, 'unlikeIdea').and.callFake(function() {
 			});
+
+			scope.likeIdea();
+			ideaLikes = scope.idea.likes.length;
 		});
 
-		it('should like an idea', function() {
+		it('should unlike an idea', function() {
 			scope.unlikeIdea();
 
-			expect(scope.idea.likes).toBe(ideaLikes - 1);
+			expect(scope.idea.likes.length).toBe(ideaLikes - 1);
 			expect(loginSvcMock.unlikeIdea).toHaveBeenCalledWith(scope.idea.id);
 		});
 	});
