@@ -23,6 +23,7 @@
     "angular-material": "~0.9.6",
     "angular-ui-router": "~0.2.13",
     "lodash": "~3.8.0",
-    "moment": "~2.10.2"
+    "moment": "~2.10.2",
+    "identicon": "*"
   }
 }

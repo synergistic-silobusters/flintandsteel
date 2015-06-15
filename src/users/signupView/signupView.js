@@ -29,7 +29,6 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.$watch('account.username', function(newValue, oldValue) {
-				console.log('Watcher run! oldValue %s | newValue %s', oldValue, newValue);
 				loginSvc.checkValidUsername(newValue, function (data) {
 					$scope.duplicateUser = !data;
 				}, function (data, status, headers, config) {

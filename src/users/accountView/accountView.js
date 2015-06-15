@@ -10,11 +10,11 @@ angular.module('flintAndSteel')
 		function($scope, $state, $mdToast, loginSvc) {
 			// Replace this with a DB read from logged in user
 			$scope.user = {
-				username: 'TheMainManDarth',
-				password: 'mynameisAnakin',
-				name: 'Darth Vader',
-				email: 'darth.vader@thesith.com'
-			};
+				username: loginSvc.getProperty('username'),
+				password: loginSvc.getProperty('password'),
+				name: loginSvc.getProperty('name'),
+				email: loginSvc.getProperty('email'),
+			 };
 			// /Replace
 			
 			if(!loginSvc.isUserLoggedIn()) {
