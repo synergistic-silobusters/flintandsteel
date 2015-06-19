@@ -34,7 +34,7 @@ describe('AddIdeaViewCtrl', function() {
 		scope.addNewIdea(idea);
 
 		expect(ideaSvcMock.postIdea).toHaveBeenCalled();
-		expect(idea.likes).toBe(0);
+		expect(idea.likes.length).toBe(0);
 		expect(idea.comments.length).toBe(0);
 		expect(idea.backs.length).toBe(0);
 	});

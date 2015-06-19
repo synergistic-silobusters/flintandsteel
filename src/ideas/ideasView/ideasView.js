@@ -6,9 +6,10 @@ angular.module('flintAndSteel')
 		'$scope',
 		'$stateParams',
 		'$interval',
+		'$mdDialog',
 		'ideaSvc',
 		'loginSvc',
-		function($scope, $stateParams, $interval, ideaSvc, loginSvc){
+		function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc){
 
 			/*
 			The way this works
@@ -75,7 +76,7 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.likeIdea = function likeIdea() {
-				$scope.idea.likes++;
+				$scope.idea.likes.push(loginSvc.getProperty('name'));
 				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
 					function success(data) {
 						//console.log(data);
@@ -87,7 +88,9 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.unlikeIdea = function unlikeIdea() {
-				$scope.idea.likes--;
+				_.remove($scope.idea.likes, function (n) {
+					return n === loginSvc.getProperty('name');
+				});
 				ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
 					function success(data) {
 						//console.log(data);
@@ -106,7 +109,47 @@ angular.module('flintAndSteel')
 			$scope.querySearch = function querySearch(query) {
 				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : [];
 				return results;
-	    };
+	    	};
+
+	    	$scope.openLikes = function openLikes(ev, likesArray) {
+				$mdDialog.show({
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					template:
+						'<md-dialog aria-label="Users dialog">' +
+						'	<md-toolbar>' +
+						'		<div class="md-toolbar-tools">' +
+						'			<h2>Users who liked this idea</h2>' +
+						'		</div>' +
+						'	</md-toolbar>' +
+						'	<md-dialog-content>' +
+						'		<md-list>' +
+						'			<md-list-item ng-if="users.length > 0" ng-repeat="user in users">' +
+						'				<div>{{user}}</div>' +
+						'			</md-list-item>' +
+						'			<md-list-item ng-if="users.length === 0">' +
+						'				<div>No likes yet!</div>' +
+						'			</md-list-item>' +
+						'		</md-list>' +
+						'	</md-dialog-content>' +
+						'	<div class="md-actions">' +
+						'		<md-button ng-click="closeDialog()" class="md-primary">' +
+						'			Close' +
+						'		</md-button>' +
+						'	</div>' +
+						'</md-dialog>',
+					locals: {
+						users: likesArray
+					},
+					controller: function ($scope, $mdDialog, users) {
+						$scope.users = users;
+						console.log($scope.users);
+						$scope.closeDialog = function() {
+							$mdDialog.hide();
+						};
+					}
+				});
+	    	};
 
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 

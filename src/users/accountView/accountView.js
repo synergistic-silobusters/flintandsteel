@@ -8,18 +8,19 @@ angular.module('flintAndSteel')
 		'$mdToast',
 		'loginSvc',
 		function($scope, $state, $mdToast, loginSvc) {
-			// Replace this with a DB read from logged in user
-			$scope.user = {
-				username: 'TheMainManDarth',
-				password: 'mynameisAnakin',
-				name: 'Darth Vader',
-				email: 'darth.vader@thesith.com'
-			};
-			// /Replace
-			
+			// NOTE: Nothing can go above this!
 			if(!loginSvc.isUserLoggedIn()) {
 				$state.go('home');
 			}
+			
+			// Replace this with a DB read from logged in user
+			$scope.user = {
+				username: loginSvc.getProperty('username'),
+				password: loginSvc.getProperty('password'),
+				name: loginSvc.getProperty('name'),
+				email: loginSvc.getProperty('email'),
+			 };
+			// /Replace
 
 			$scope.logout = function logout() {
 				var accountName = loginSvc.getProperty('name');

@@ -11,7 +11,7 @@ angular.module('flintAndSteel')
 			$scope.idea = {};
 
 			$scope.addNewIdea = function addNewIdea(ideaToAdd) {
-				ideaToAdd.likes = 0;
+				ideaToAdd.likes = [];
 				ideaToAdd.comments = [];
 				ideaToAdd.backs = [];
 				ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {

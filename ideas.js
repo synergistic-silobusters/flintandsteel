@@ -6,7 +6,7 @@ var ideas = [
     "title":"ROKStarter",
     "description":"A Web-based Platform for Innovation that promotes collaboration by providing visibility and interaction capabilities to employee ideas.",
     "author":"The Cleveland Innovation Challenge Team",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -17,7 +17,7 @@ var ideas = [
     "title":"Incubator for Manufacturing",
     "description":"Use space at MKE campus to incubate local startup manufacturing companies.",
     "author":"Joe Balistrieri and Team",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -28,7 +28,7 @@ var ideas = [
     "title":"Short-Term Embedded Project (STEP)",
     "description":"Establish a semi-formal process for granting Employees time with another business unit to assist in the completion of a small-scale project, with allotted hours per-week, clearly defined objectives, and a set end date.",
     "author":"Melinda Green and Team",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -39,7 +39,7 @@ var ideas = [
     "title":"Multimedia Documentation",
     "description":"Include multimedia elements such as videos and 3D models in PDF documentation to enhance user experience.",
     "author":"​Oliver Haya and Team",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -50,7 +50,7 @@ var ideas = [
     "title":"RA Panel",
     "description":"Panel optimization tool.",
     "author":"Tom McCullough",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -61,7 +61,7 @@ var ideas = [
     "title":"Senior Design Pipeline",
     "description":"Central location for business units to propose projects to campus managers.",
     "author":"Mike Cymerman and Team",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -72,7 +72,7 @@ var ideas = [
     "title":"Enterprise Search",
     "description":"Enterprise Search by Team Spock",
     "author":"Team Spock",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -83,7 +83,7 @@ var ideas = [
     "title":"XT Drive",
     "description":"Extra-tough low voltage drive.",
     "author":"Andy Gagnon and Team",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -94,7 +94,7 @@ var ideas = [
     "title":"One-Click Project Convertor",
     "description":"One-Click Project Convertor by Team China.",
     "author":"Team China",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   },
@@ -105,7 +105,7 @@ var ideas = [
     "title":"RA Project E-Room",
     "description":"RA Project E-Room by Team India.",
     "author":"Team India",
-    "likes":0,
+    "likes":[],
     "comments":[],
     "backs":[]
   }

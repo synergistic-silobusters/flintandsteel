@@ -10,7 +10,23 @@ angular.module('flintAndSteel')
 				description: 'Apophenia order-flow systema futurity garage sentient car advert. Footage 3D-printed Legba free-market lights courier camera Kowloon youtube fluidity euro-pop garage bicycle augmented reality. Dome military-grade faded meta--space vehicle warehouse. Computer concrete corrupted vehicle tower dead knife cyber-camera augmented reality table shrine apophenia tiger-team-ware soul-delay. Hacker pistol into plastic realism sub-orbital futurity girl geodesic disposable boat sentient tanto urban. Plastic alcohol bicycle carbon courier spook gang wristwatch katana sensory sign long-chain hydrocarbons assault nano. ',
 				author: 'Yash Kulshrestha',
 				image: '../assets/defaultideahero.jpg',
-				likes: 23,
+				likes: [
+					'cottageclaw',
+					'vbfond',
+					'curvechange',
+					'bothdesigned',
+					'gymnastfinance',
+					'aberrantcollagen',
+					'kuwaitiinspiring',
+					'basteglyderau',
+					'adoptionpanting',
+					'tokenslagoon',
+					'welshwood',
+					'kumquatslant',
+					'anaerobedigits',
+					'chouxthames',
+					'pizzago'
+				],
 				managerLikes: 6,
 				comments: [
 					{

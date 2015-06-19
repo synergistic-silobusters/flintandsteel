@@ -14,11 +14,11 @@
 			</md-button>
 		</span>
 		<span flex ng-if="isUserLoggedIn() && isUserLiked()">
-			<md-button class="md-icon-button" aria-label="Unline" ng-click="unlikeIdea()">
+			<md-button class="md-icon-button" aria-label="Unlike" ng-click="unlikeIdea()">
 				<md-icon md-svg-icon="action:favorite"></md-icon>
 			</md-button>
 		</span>
-		<span flex>{{idea.likes}} likes and {{idea.backs.length}} backs</span>
+		<span flex>{{idea.likes.length}} <a class="idea-likes-click" ng-click="openLikes($event, idea.likes)">likes</a> and {{idea.backs.length}} backs</span>
 	</md-card-content>
 </md-card>
 <md-card>

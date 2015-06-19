@@ -87,7 +87,7 @@ function getHeaders(cb) {
 					id: docs[i].ideaId,
 					title: docs[i].title,
 					author: docs[i].author,
-					likes: docs[i].likes + docs[i].managerLikes
+					likes: docs[i].likes.length
 				});
 			}
       cb(null, headers);
