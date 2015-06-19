@@ -30,7 +30,7 @@
 						<md-list-item class="md-2-line" ng-repeat="comment in idea.comments">
 							<div class="md-list-item-text">
 								<h3>{{comment.text}}</h3>
-								<p>{{comment.from}} <small class="extra-space-left">{{comment.time}}</small></p>
+								<p>{{comment.from}} <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
 							</div>
 						</md-list-item>
 					</md-list>
@@ -52,7 +52,7 @@
 							<div class="md-list-item-text">
 								<h3>{{back.text}}</h3>
 								<p>
-									{{back.from}} <small class="extra-space-left">{{back.time}}</small>
+									{{back.from}} <small class="extra-space-left" ng-bind="momentizeTime(back.time)"></small>
 									<span class="extra-space-left">
 										<small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
 									</span>

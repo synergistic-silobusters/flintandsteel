@@ -41,20 +41,25 @@ angular.module('flintAndSteel')
 				$interval.cancel(ideaInterval);
 			});
 
+			$scope.momentizeTime = function momentizeTime(time) {
+				return moment(time).calendar();
+			}
+
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
+				var now = new Date().toISOString();
 				if (type === 'comments' || type === 'backs') {
 					if (type === 'comments') {
 						$scope.idea[type].push({
 							text: content,
 							from: loginSvc.getProperty('name'),
-							time: moment().calendar()
+							time: now
 						});
 					}
 					else if (type === 'backs') {
 						$scope.idea[type].push({
 							text: content,
 							from: loginSvc.getProperty('name'),
-							time: moment().calendar(),
+							time: now,
 							types: $scope.selectedTypes
 						});
 					}
