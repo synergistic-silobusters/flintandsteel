@@ -118,5 +118,5 @@ Ideas.prototype.newHeaders = function(headers) {
 }
 
 Ideas.prototype.updateIdea = function(idea) {
-  this.emit("updateIdea", idea);
+  this.emit("updateIdea_" + idea.key, idea);
 }

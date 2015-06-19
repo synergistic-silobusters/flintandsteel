@@ -187,14 +187,14 @@ app.get('/idea', function(req, res) {
 });
 app.get('/idea/:id/events', function (req, res) {
 	var sse = startSees(res);
-	IdeasInstance.on("updateIdea", updateIdea);
+	IdeasInstance.on("updateIdea_" + req.params.id, updateIdea);
 
 	req.on("close", function() {
-		IdeasInstance.removeListener("updateIdea", updateIdea);
+		IdeasInstance.removeListener("updateIdea_" + req.params.id, updateIdea);
 	});
 
 	function updateIdea(idea) {
-		sse("updateIdea", idea);
+		sse("updateIdea_" + req.params.id, idea, req.params.id);
 	}
 });
 app.get('/ideaheaders', function(req, res) {

@@ -33,7 +33,7 @@ angular.module('flintAndSteel')
 			});
 
 			var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
-			ideaUpdateEvents.addEventListener("updateIdea", function(event) {
+			ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
 				var idea = JSON.parse(event.data);
 	      if(typeof idea !== 'undefined') {
 					$scope.$apply(function() {
