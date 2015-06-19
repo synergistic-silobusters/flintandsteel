@@ -7,11 +7,11 @@ var express = require('express'),
 	external = require('external-ip')(),
 	ip = require('ip'),
 	_ = require('lodash'),
-	ideas = require('./idea');
+	ideas = require('./ideas');
 
 var userDb, ideasDb, ipExternal;
 
-var allIdeas = ideas.getInstance();
+var IdeasInstance = ideas.getInstance();
 
 datastore.open('./server/datastore/users', function(err, store) {
 	if (err) {
@@ -130,7 +130,7 @@ app.post('/idea', function(req, res) {
 			else {
 				console.log(chalk.bgGreen('Document with key %s stored in ideas.'), doc.key);
 				ideas.fetch(function(err, headers) {
-					allIdeas.newHeaders(headers);
+					IdeasInstance.newHeaders(headers);
 				});
 			}
 		}
@@ -138,21 +138,12 @@ app.post('/idea', function(req, res) {
 	res.sendStatus(201);
 });
 app.post('/updateidea', function(req, res) {
-	ideasDb.get('idea_' + req.body.id, function(err, doc) {
+	ideas.update(req.body.id, req.body.property, req.body.value, function(err){
 		if (err) {
 			res.sendStatus(500);
 		}
 		else {
-			doc[req.body.property] = req.body.value;
-			ideasDb.save(doc, function(err, doc) {
-				if (err) {
-					console.log(chalk.bgRed(err));
-				}
-				else {
-					console.log(chalk.bgGreen('Document with key %s updated in ideas.'), doc.key);
-					res.sendStatus(200);
-				}
-			});
+				res.sendStatus(200);
 		}
 	});
 });
@@ -179,14 +170,11 @@ app.post('/updateaccount', function(req, res) {
 });
 
 app.get('/idea', function(req, res) {
-	ideasDb.get('idea_' + req.query.id, function(err, doc) {
+	ideas.get(req.query.id, function(err, idea) {
 		if (err) {
 			res.status(200).send('IDEA_NOT_FOUND');
 		}
 		else {
-			var idea = doc;
-			idea.id = doc.ideaId;
-			idea.ideaId = undefined;
 			res.status(200).json(idea);
 		}
 	});
@@ -207,7 +195,7 @@ app.get('/ideaheaders', function(req, res) {
 app.get('/ideaheaders/events', function (req, res) {
 	console.log("Listening to events!");
 	var sse = startSees(res);
-	allIdeas.on("newHeaders", updateHeaders);
+	IdeasInstance.on("newHeaders", updateHeaders);
 
 	req.once("end", function() {
 		ideas.removeListener("newHeaders", updateHeaders);
