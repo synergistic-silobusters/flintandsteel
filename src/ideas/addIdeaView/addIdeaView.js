@@ -1,13 +1,18 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('AddIdeaViewCtrl', 
+.controller('AddIdeaViewCtrl',
 	[
 		'$scope',
 		'$state',
 		'$mdToast',
 		'ideaSvc',
-		function($scope, $state, $mdToast, ideaSvc) {
+		'loginSvc',
+		function($scope, $state, $mdToast, ideaSvc, loginSvc) {
+			if (!loginSvc.isUserLoggedIn()) {
+				$state.go('login', {'retState': $state.current.name});
+			}
+
 			$scope.idea = {};
 
 			$scope.addNewIdea = function addNewIdea(ideaToAdd) {
