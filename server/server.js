@@ -48,22 +48,20 @@ function startSees(res) {
 
   return function sendSse(name,data,id) {
     res.write("event: " + name + "\n");
-		console.log("event: " + name + "\n");
     if(id) res.write("id: " + id + "\n");
     res.write("data: " + JSON.stringify(data) + "\n\n");
-		console.log("data: " + JSON.stringify(data) + "\n\n");
   }
 }
 
-// app.use(morgan(':remote-addr - ' +
-// 			   chalk.cyan('[:date] ') +
-// 			   chalk.green('":method :url ') +
-// 			   chalk.gray('HTTP/:http-version" ') +
-// 			   chalk.yellow(':status ') +
-// 			   ':res[content-length] ' +
-// 			   chalk.gray('":referrer" ":user-agent" ') +
-// 			   'time=:response-time ms'
-// ));
+app.use(morgan(':remote-addr - ' +
+			   chalk.cyan('[:date] ') +
+			   chalk.green('":method :url ') +
+			   chalk.gray('HTTP/:http-version" ') +
+			   chalk.yellow(':status ') +
+			   ':res[content-length] ' +
+			   chalk.gray('":referrer" ":user-agent" ') +
+			   'time=:response-time ms'
+));
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
@@ -143,7 +141,10 @@ app.post('/updateidea', function(req, res) {
 			res.sendStatus(500);
 		}
 		else {
-				res.sendStatus(200);
+			ideas.fetch(function(err, headers) {
+				IdeasInstance.newHeaders(headers);
+			});
+			res.sendStatus(200);
 		}
 	});
 });
@@ -193,7 +194,6 @@ app.get('/ideaheaders', function(req, res) {
 	});
 });
 app.get('/ideaheaders/events', function (req, res) {
-	console.log("Listening to events!");
 	var sse = startSees(res);
 	IdeasInstance.on("newHeaders", updateHeaders);
 

@@ -113,6 +113,5 @@ function Ideas() {
 require("util").inherits(Ideas, require("events").EventEmitter);
 
 Ideas.prototype.newHeaders = function(headers) {
-  console.log("Emitting Event!");
   this.emit("newHeaders", headers);
 }
