@@ -26,19 +26,24 @@ angular.module('flintAndSteel')
 			$scope.selectedType = undefined;
 			$scope.searchText = undefined;
 
-			getIdea = function() {
-				ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
-					$scope.idea = data;
-				}, function getIdeaError(data, status, headers, config) {
-					console.log(status);
-				});
-			};
+			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
+				$scope.idea = data;
+			}, function getIdeaError(data, status, headers, config) {
+				console.log(status);
+			});
 
-			getIdea();
-			var ideaInterval = $interval(getIdea, 3000);
+			var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
+			ideaUpdateEvents.addEventListener("updateIdea", function(event) {
+				var idea = JSON.parse(event.data);
+	      if(typeof idea !== 'undefined') {
+					$scope.$apply(function() {
+						$scope.idea = idea;
+					});
+	      }
+	    });
 
 			$scope.$on('$stateChangeStart', function() {
-				$interval.cancel(ideaInterval);
+				ideaUpdateEvents.close();
 			});
 
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
@@ -103,6 +108,7 @@ angular.module('flintAndSteel')
 
 			$scope.isUserLiked = function isUserLiked() {
 				var likedIdeas = loginSvc.getProperty('likedIdeas');
+				console.log(likedIdeas);
 				return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
 			};
 

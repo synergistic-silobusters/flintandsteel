@@ -143,6 +143,9 @@ app.post('/updateidea', function(req, res) {
 			res.sendStatus(500);
 		}
 		else {
+			ideas.get(req.body.id, function(err, idea) {
+				IdeasInstance.updateIdea(idea);
+			});
 			ideas.fetch(function(err, headers) {
 				IdeasInstance.newHeaders(headers);
 			});
@@ -182,6 +185,18 @@ app.get('/idea', function(req, res) {
 		}
 	});
 });
+app.get('/idea/:id/events', function (req, res) {
+	var sse = startSees(res);
+	IdeasInstance.on("updateIdea", updateIdea);
+
+	req.on("close", function() {
+		IdeasInstance.removeListener("updateIdea", updateIdea);
+	});
+
+	function updateIdea(idea) {
+		sse("updateIdea", idea);
+	}
+});
 app.get('/ideaheaders', function(req, res) {
 	ideas.fetch(function(err, headers) {
 		if (err) {
@@ -199,12 +214,11 @@ app.get('/ideaheaders/events', function (req, res) {
 	var sse = startSees(res);
 	IdeasInstance.on("newHeaders", updateHeaders);
 
-	req.once("end", function() {
-		ideas.removeListener("newHeaders", updateHeaders);
+	req.on("close", function() {
+		IdeasInstance.removeListener("newHeaders", updateHeaders);
 	});
 
 	function updateHeaders(headers) {
-		console.log("Woo!");
 		sse("newHeaders", headers);
 	}
 });

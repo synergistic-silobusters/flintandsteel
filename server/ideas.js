@@ -1,4 +1,5 @@
 var Idea = require('./idea');
+var chalk = require('chalk');
 var datastore = require('docstore');
 
 var ideasDb;
@@ -47,7 +48,7 @@ exports.get = function(id, cb) {
 };
 
 exports.update = function(id, property, value, cb) {
-	ideasDb.get('idea_' + req.body.id, function(err, doc) {
+	ideasDb.get('idea_' + id, function(err, doc) {
 		if (err) {
 			cb(err);
 		}
@@ -114,4 +115,8 @@ require("util").inherits(Ideas, require("events").EventEmitter);
 
 Ideas.prototype.newHeaders = function(headers) {
   this.emit("newHeaders", headers);
+}
+
+Ideas.prototype.updateIdea = function(idea) {
+  this.emit("updateIdea", idea);
 }
