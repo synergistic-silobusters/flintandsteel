@@ -72,9 +72,10 @@ angular.module('flintAndSteel')
 					});
 					var commentBox = document.getElementById('comment-box');
 					var backBox = document.getElementById('back-box');
-					if (commentBox !== null)
+					if (commentBox !== null) {
 						commentBox.value = '';
 						angular.element(document.getElementById('comment-box-container')).removeClass('md-input-has-value');
+					}
 					if (backBox !== null) {
 						backBox.value = '';
 						angular.element(document.getElementById('back-box-container')).removeClass('md-input-has-value');
