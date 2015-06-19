@@ -1,18 +1,20 @@
 describe('ToolbarCtrl', function() {
-	var scope, ctrl, $state, $mdSidenav, loginSvcMock;
+	var scope, ctrl, $state, $stateParams, $mdSidenav, loginSvcMock;
 
 	beforeEach(module('flintAndSteel'));
 	beforeEach(module('ui.router'));
 
-	beforeEach(inject(function ($rootScope, $controller, _$state_, _$mdSidenav_, _loginSvcMock_) {
+	beforeEach(inject(function ($rootScope, $controller, _$state_, _$stateParams_, _$mdSidenav_, _loginSvcMock_) {
 		scope = $rootScope.$new();
 		$state = _$state_;
+		$stateParams = _$stateParams_;
 		$mdSidenav = _$mdSidenav_;
 		loginSvcMock = _loginSvcMock_;
 
 		ctrl = $controller('ToolbarCtrl', {
 			$scope: scope,
 			$state: $state,
+			$stateParams: $stateParams,
 			$mdSidenav: $mdSidenav,
 			loginSvc: loginSvcMock
 		});
@@ -23,7 +25,7 @@ describe('ToolbarCtrl', function() {
 	});
 
 	describe('$scope.accountClick', function() {
-		
+
 		beforeEach(function() {
 			spyOn($state, 'go');
 		});
@@ -36,7 +38,7 @@ describe('ToolbarCtrl', function() {
 			scope.accountClick();
 
 			expect(loginSvcMock.isUserLoggedIn).toHaveBeenCalled();
-			expect($state.go).toHaveBeenCalledWith('login');
+			expect($state.go).toHaveBeenCalledWith('login', {'retState': '', 'retParams': undefined});
 		});
 
 		it('should navigate to account if user is logged in', function() {

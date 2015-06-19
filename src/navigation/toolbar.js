@@ -16,7 +16,6 @@ angular.module('flintAndSteel')
 					$state.go('account');
 				}
 				else {
-					console.log($stateParams);
 					var returnState = $state.current.name +
 					$state.go('login', {'retState':$state.current.name, 'retParams': $stateParams.ideaId});
 				}

@@ -1,14 +1,17 @@
 describe('LoginViewCtrl', function() {
-	var scope, ctrl, $state, $mdToast, loginSvcMock;
+	var scope, ctrl, $state, $stateParams, $mdToast, loginSvcMock;
 
 	beforeEach(module('flintAndSteel'));
 	beforeEach(module('ui.router'));
 
-	beforeEach(inject(function ($rootScope, $controller, _$state_, _$mdToast_, _loginSvcMock_) {
+	beforeEach(inject(function ($rootScope, $controller, _$state_, _$stateParams_, _$mdToast_, _loginSvcMock_) {
 		scope = $rootScope.$new();
 		$state = _$state_;
+		$stateParams = _$stateParams_;
 		$mdToast = _$mdToast_;
 		loginSvcMock = _loginSvcMock_;
+
+		$stateParams.retState = '';
 
 		spyOn($state, 'go');
 		spyOn($mdToast, 'show');
@@ -16,9 +19,10 @@ describe('LoginViewCtrl', function() {
 		ctrl = $controller('LoginViewCtrl', {
 			$scope: scope,
 			$state: $state,
+			$stateParams: $stateParams,
 			$mdToast: $mdToast,
 			loginSvc: loginSvcMock
-		});	
+		});
 	}));
 
 	it('should exist', function() {
@@ -34,6 +38,8 @@ describe('LoginViewCtrl', function() {
 					name: account.name
 				});
 			});
+
+			$state.current.name = 'home';
 
 			scope.loginUser({ name: 'Guybrush Threepwood' });
 
