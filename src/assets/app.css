@@ -1,8 +1,13 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
-body { 
+body {
   font-family: 'Open Sans', sans-serif;
   color: #666;
+}
+
+.add-idea {
+  min-height: 40px;
+  max-height: 40px;
 }
 
 .md-icon-button {
@@ -34,7 +39,7 @@ body {
 }
 
 .fab-layout {
-	margin-right: 10px;
+	margin-right: 20px;
 	margin-bottom: 10px;
 }
 
