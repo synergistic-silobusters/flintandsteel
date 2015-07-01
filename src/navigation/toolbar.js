@@ -1,13 +1,14 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('ToolbarCtrl', 
+.controller('ToolbarCtrl',
 	[
 		'$scope',
 		'$state',
+		'$stateParams',
 		'$mdSidenav',
 		'loginSvc',
-		function($scope, $state, $mdSidenav, loginSvc) {
+		function($scope, $state, $stateParams, $mdSidenav, loginSvc) {
 			$scope.displayOverflow = false;
 
 			$scope.accountClick = function accountClick() {
@@ -15,9 +16,10 @@ angular.module('flintAndSteel')
 					$state.go('account');
 				}
 				else {
-					$state.go('login');
+					var returnState = $state.current.name +
+					$state.go('login', {'retState':$state.current.name, 'retParams': $stateParams.ideaId});
 				}
-				
+
 			};
 
 			$scope.stateIsHome = function checkState() {

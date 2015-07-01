@@ -4,9 +4,10 @@ angular.module('flintAndSteel')
 .controller('LoginViewCtrl', [
 		'$scope',
 		'$state',
+		'$stateParams',
 		'$mdToast',
 		'loginSvc',
-		function($scope, $state, $mdToast, loginSvc) {
+		function($scope, $state, $stateParams, $mdToast, loginSvc) {
 
 			$scope.loginUser = function(account) {
 				loginSvc.checkLogin(account, function LoginSuccess(data) {
@@ -17,7 +18,13 @@ angular.module('flintAndSteel')
 								.position('top right')
 								.hideDelay(3000)
 						);
-						$state.go('home');
+						var retState = $stateParams.retState;
+						if (retState !== '' && retState !== 'login') {
+							$state.go(retState, {'ideaId':$stateParams.retParams});
+						}
+						else {
+							$state.go('home');
+						}
 					}
 					else if (data.status === 'AUTH_ERROR') {
 						$mdToast.show(
@@ -34,7 +41,7 @@ angular.module('flintAndSteel')
 								.position('top right')
 								.hideDelay(3000)
 						);
-					}			
+					}
 				},
 				function loginError(data, status, headers, config) {
 					console.log(status);
