@@ -19,7 +19,7 @@ angular.module('flintAndSteel')
 								.hideDelay(3000)
 						);
 						var retState = $stateParams.retState;
-						if (retState !== '' && retState !== 'login') {
+						if (typeof(retState) !== 'undefined' && retState !== '' && retState !== 'login') {
 							$state.go(retState, {'ideaId':$stateParams.retParams});
 						}
 						else {
