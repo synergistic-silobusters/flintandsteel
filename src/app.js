@@ -46,7 +46,8 @@ angular.module('flintAndSteel', [
     		.state('idea', {
     			url: '/idea/{ideaId}',
     			templateUrl: 'ideas/ideasView/ideasView.tpl.html',
-    			controller: 'IdeasViewCtrl'
+    			controller: 'IdeasViewCtrl',
+    			controllerAs: 'ideasView'
     		})
     		.state('addidea', {
     			url: '/addidea',
