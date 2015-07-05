@@ -3,7 +3,7 @@
 
 /*
 	This sets up the main app module and also tells Angular
-	what this module depends on to work correctly. 
+	what this module depends on to work correctly.
  */
 angular.module('flintAndSteel', [
 		'ngAnimate',
@@ -15,7 +15,7 @@ angular.module('flintAndSteel', [
 	'$urlRouterProvider',
 	'$stateProvider',
 	'$mdIconProvider',
-	'$mdThemingProvider', 
+	'$mdThemingProvider',
 	function($urlRouterProvider, $stateProvider, $mdIconProvider, $mdThemingProvider) {
 		$stateProvider
 			.state('home', {
@@ -24,7 +24,7 @@ angular.module('flintAndSteel', [
 	      		controller: 'HomeViewCtrl'
     		})
     		.state('login', {
-	      		url: '/login',
+	      		url: '/login?retState&retParams',
 	      		templateUrl: 'users/loginView/loginView.tpl.html',
 	      		controller: 'LoginViewCtrl'
     		})

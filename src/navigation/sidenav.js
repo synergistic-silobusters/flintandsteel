@@ -9,16 +9,21 @@ angular.module('flintAndSteel')
 		'ideaSvc',
 		'loginSvc',
 		function($scope, $state, $mdSidenav, ideaSvc, loginSvc) {
-			getIdeas = function() {
-				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-					$scope.topIdeas = data;
-				},function getIdeaHeadersError(data, status, headers, config) {
-					console.log(status);
-				});
-			};
+			ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
+				$scope.topIdeas = data;
+			},function getIdeaHeadersError(data, status, headers, config) {
+				console.log(status);
+			});
 
-			getIdeas();
-			setInterval(getIdeas, 3000);
+			var ideaAddEvents = new EventSource('/ideaheaders/events');
+			ideaAddEvents.addEventListener("newHeaders", function(event) {
+	      var headers = JSON.parse(event.data);
+	      if(headers.length > 0) {
+					$scope.$apply(function() {
+						$scope.topIdeas = headers;
+					});
+	      }
+	    });
 
 			$scope.navTo = function navTo(state) {
 				if (state === 'addIdea') {

@@ -26,35 +26,45 @@ angular.module('flintAndSteel')
 			$scope.selectedType = undefined;
 			$scope.searchText = undefined;
 
-			getIdea = function() {
-				ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
-					$scope.idea = data;
-				}, function getIdeaError(data, status, headers, config) {
-					console.log(status);
-				});
-			};
-
-			getIdea();
-			var ideaInterval = $interval(getIdea, 3000);
-
-			$scope.$on('$stateChangeStart', function() {
-				$interval.cancel(ideaInterval);
+			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
+				$scope.idea = data;
+			}, function getIdeaError(data, status, headers, config) {
+				console.log(status);
 			});
 
+			var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
+			ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
+				var idea = JSON.parse(event.data);
+	      if(typeof idea !== 'undefined') {
+					$scope.$apply(function() {
+						$scope.idea = idea;
+					});
+	      }
+	    });
+
+			$scope.$on('$stateChangeStart', function() {
+				ideaUpdateEvents.close();
+			});
+
+			$scope.momentizeTime = function momentizeTime(time) {
+				return moment(time).calendar();
+			}
+
 			$scope.addNewInteraction = function addNewInteraction(type, content) {
+				var now = new Date().toISOString();
 				if (type === 'comments' || type === 'backs') {
 					if (type === 'comments') {
 						$scope.idea[type].push({
 							text: content,
 							from: loginSvc.getProperty('name'),
-							time: moment().calendar()
+							time: now
 						});
 					}
 					else if (type === 'backs') {
 						$scope.idea[type].push({
 							text: content,
 							from: loginSvc.getProperty('name'),
-							time: moment().calendar(),
+							time: now,
 							types: $scope.selectedTypes
 						});
 					}
@@ -65,10 +75,17 @@ angular.module('flintAndSteel')
 					function error(data, status, headers, config) {
 						console.log(status);
 					});
-					document.getElementById('comment-box').value = '';
-					document.getElementById('back-box').value = '';
-					angular.element(document.getElementById('comment-box-container')).removeClass('md-input-has-value');
-					angular.element(document.getElementById('back-box-container')).removeClass('md-input-has-value');
+					var commentBox = document.getElementById('comment-box');
+					var backBox = document.getElementById('back-box');
+					if (commentBox !== null) {
+						commentBox.value = '';
+						angular.element(document.getElementById('comment-box-container')).removeClass('md-input-has-value');
+					}
+					if (backBox !== null) {
+						backBox.value = '';
+						angular.element(document.getElementById('back-box-container')).removeClass('md-input-has-value');
+					}
+
 					content = null;
 					$scope.selectedTypes = [];
 					$scope.selectedType = undefined;
@@ -103,6 +120,7 @@ angular.module('flintAndSteel')
 
 			$scope.isUserLiked = function isUserLiked() {
 				var likedIdeas = loginSvc.getProperty('likedIdeas');
+				console.log(likedIdeas);
 				return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
 			};
 
