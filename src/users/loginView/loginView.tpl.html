@@ -2,28 +2,28 @@
 	<md-card>
 		<md-card-content>
 			<h2>Login</h2>
-			<form name="loginForm" layout="column" layout-align="start center">
+			<form name="loginForm">
 				<md-input-container flex>
 					<label>Username</label>
 					<input id="username" ng-model="account.username" name="username" ng-required="loginForm.username.$touched">
 					<div ng-messages="loginForm.username.$error">
 						<div ng-message="required">Required</div>
 					</div>
-	        	</md-input-container>
-	        	<md-input-container flex>
+      	</md-input-container>
+      	<md-input-container flex>
 					<label>Password</label>
 					<input ng-model="account.password" name="password" type="password" ng-required="loginForm.password.$touched">
 					<div ng-messages="loginForm.password.$error">
 						<div ng-message="required">Required</div>
 					</div>
-	        	</md-input-container>
-	        	<p></p>
-	        	<span>
+      	</md-input-container>
+      	<p></p>
+      	<span>
 		        	<md-button class="md-raised md-primary login-button" ng-click="loginUser(account)" flex>Login</md-button>
 		        	or
 		        	<md-button class="md-raised md-accent signup-button" ng-click="signUpUser(account)" flex>Sign Up</md-button>
-	        	</span>
-	        </form>
+      	</span>
+      </form>
 		</md-card-content>
 	</md-card>
 </md-content>
