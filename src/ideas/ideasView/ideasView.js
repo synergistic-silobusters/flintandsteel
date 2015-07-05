@@ -166,6 +166,10 @@ angular.module('flintAndSteel')
 
 			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 
+			$scope.ideaHasImage = function() {
+				return typeof $scope.idea.image !== 'undefined';
+			}
+
 			function createFilterFor(query) {
 				var lowercaseQuery = angular.lowercase(query);
 				return function filterFn(type) {

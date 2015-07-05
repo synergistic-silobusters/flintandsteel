@@ -1,5 +1,5 @@
 <md-card>
-	<img ng-src="{{idea.image}}" class="md-card-image">
+	<img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
 	<md-card-content>
 		<h1>{{idea.title}}</h1>
 		<h3>by {{idea.author}}</h3>
