@@ -17,13 +17,13 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular": "~1.4.0",
-    "angular-mocks": "~1.4.0",
-    "angular-animate": "~1.4.0",
-    "angular-material": "~0.9.6",
-    "angular-ui-router": "~0.2.13",
-    "lodash": "~3.8.0",
-    "moment": "~2.10.2",
+    "angular": "1.4.1",
+    "angular-mocks": "1.4.1",
+    "angular-animate": "1.4.1",
+    "angular-material": "0.10.0",
+    "angular-ui-router": "0.2.15",
+    "lodash": "3.8.0",
+    "moment": "2.10.3",
     "identicon": "*"
   }
 }

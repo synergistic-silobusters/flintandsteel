@@ -30,27 +30,21 @@ describe('IdeasViewCtrl', function() {
 			content = '';
 			commentsLength = scope.idea.comments.length;
 			backsLength = scope.idea.backs.length;
-
-			spyOn(document, 'getElementById').and.callFake(function() {
-				return {
-					value: content
-				};
-			});
 		});
 
 		it('should add a new comment when comment is selected', function() {
-			content = 'This is a test comment!';
+			ctrl.newComment = 'This is a test comment!';
 
-			scope.addNewInteraction('comments', content);
+			scope.addNewInteraction('comments');
 
 			expect(scope.idea.comments.length).toBe(commentsLength + 1);
 			expect(scope.idea.comments[commentsLength].text).toBe('This is a test comment!');
 		});
 
 		it('should add a new back with no tags', function() {
-			content = 'This is a test back!';
+			ctrl.newBack = 'This is a test back!';
 
-			scope.addNewInteraction('backs', content);
+			scope.addNewInteraction('backs');
 
 			expect(scope.idea.backs.length).toBe(backsLength + 1);
 			expect(scope.idea.backs[backsLength].text).toBe('This is a test back!');
@@ -58,10 +52,10 @@ describe('IdeasViewCtrl', function() {
 		});
 
 		it('should add a new back with two tags', function() {
-			content = 'This is a test back!';
+			ctrl.newBack = 'This is a test back!';
 			scope.selectedTypes = [{ name: 'Experience' }, { name: 'Funding' }];
 
-			scope.addNewInteraction('backs', content);
+			scope.addNewInteraction('backs');
 
 			expect(scope.idea.backs.length).toBe(backsLength + 1);
 			expect(scope.idea.backs[backsLength].text).toBe('This is a test back!');

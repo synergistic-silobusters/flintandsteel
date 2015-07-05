@@ -20,11 +20,15 @@ angular.module('flintAndSteel')
 				5) Profit
 			 */
 
+			var ctrl = this;
+
 			$scope.idea = {};
 			$scope.typeChips = ideaSvc.getBackTypeChips();
 			$scope.selectedTypes = [];
 			$scope.selectedType = undefined;
 			$scope.searchText = undefined;
+			ctrl.newComment = '';
+			ctrl.newBack = '';
 
 			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
 				$scope.idea = data;
@@ -50,19 +54,19 @@ angular.module('flintAndSteel')
 				return moment(time).calendar();
 			}
 
-			$scope.addNewInteraction = function addNewInteraction(type, content) {
+			$scope.addNewInteraction = function addNewInteraction(type) {
 				var now = new Date().toISOString();
 				if (type === 'comments' || type === 'backs') {
 					if (type === 'comments') {
 						$scope.idea[type].push({
-							text: content,
+							text: ctrl.newComment,
 							from: loginSvc.getProperty('name'),
 							time: now
 						});
 					}
 					else if (type === 'backs') {
 						$scope.idea[type].push({
-							text: content,
+							text: ctrl.newBack,
 							from: loginSvc.getProperty('name'),
 							time: now,
 							types: $scope.selectedTypes
@@ -75,20 +79,11 @@ angular.module('flintAndSteel')
 					function error(data, status, headers, config) {
 						console.log(status);
 					});
-					var commentBox = document.getElementById('comment-box');
-					var backBox = document.getElementById('back-box');
-					if (commentBox !== null) {
-						commentBox.value = '';
-						angular.element(document.getElementById('comment-box-container')).removeClass('md-input-has-value');
-					}
-					if (backBox !== null) {
-						backBox.value = '';
-						angular.element(document.getElementById('back-box-container')).removeClass('md-input-has-value');
-					}
 
-					content = null;
 					$scope.selectedTypes = [];
 					$scope.selectedType = undefined;
+					ctrl.newComment = '';
+					ctrl.newBack = '';
 				}
 			};
 
@@ -120,7 +115,7 @@ angular.module('flintAndSteel')
 
 			$scope.isUserLiked = function isUserLiked() {
 				var likedIdeas = loginSvc.getProperty('likedIdeas');
-				console.log(likedIdeas);
+				//console.log(likedIdeas);
 				return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea.id; }) !== -1);
 			};
 
