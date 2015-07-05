@@ -70,7 +70,9 @@
 							<md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match ng-show="newBack">
 								<md-autocomplete
 									md-selected-item="selectedType"
+									md-selected-item-change=""
 									md-search-text="searchText"
+									md-search-text-change=""
 									md-items="type in querySearch(searchText)"
 									md-item-text="type.name"
 									placeholder="Type of backing">
