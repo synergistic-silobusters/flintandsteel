@@ -1,9 +1,12 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
 	[
-		'$scope',
-		function($scope){
-			
+		'$scope', '$state',
+		function($scope, $state){
+			$scope.navToBrowse = function navToBrowse() {
+				
+				$state.go('ideabrowse');
+			};
 		}
 	]
 );

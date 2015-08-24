@@ -53,6 +53,11 @@ angular.module('flintAndSteel', [
     			url: '/addidea',
     			templateUrl: 'ideas/addIdeaView/addIdeaView.tpl.html',
     			controller: 'AddIdeaViewCtrl'
+    		})
+    		.state('ideabrowse', {
+    			url: '/ideabrowse',
+    			templateUrl: 'ideas/ideaBrowse/ideaBrowse.tpl.html',
+    			controller: 'IdeaBrowseCtrl'
     		});
 
 		$urlRouterProvider.otherwise('/');
