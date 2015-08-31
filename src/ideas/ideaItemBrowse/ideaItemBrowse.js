@@ -9,7 +9,7 @@ angular.module('flintAndSteel')
 				scope: {
 					idea: '='
 				},
-				templateUrl: 'ideas/ideaItem/ideaItemBrowse.tpl.html'
+				templateUrl: 'ideas/ideaItemBrowse/ideaItemBrowse.tpl.html'
 			};
 		}
 	]
