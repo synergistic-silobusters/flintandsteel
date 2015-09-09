@@ -74,3 +74,9 @@ body {
 .idea-likes-click {
 	cursor: pointer;
 }
+
+.search-bar {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
