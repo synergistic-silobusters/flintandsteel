@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
 	gutil = require('gulp-util'),
+	inject = require('gulp-inject'),
 	os = require('os'),
 	del = require('del'),
 	chalk = require('chalk'),
@@ -9,6 +10,16 @@ var gulp = require('gulp'),
 	karma = require('karma').server,
 	fs = require('fs'),
 	ideas = require('./ideas').ideas;
+
+var paths = {
+		js: ['src/**/*.js',
+	  '!src/dist/**/*.js',
+		'!src/lib/**/*.js',
+	  '!src/**/*.spec.js',
+		'!src/**/*.mock.js',
+	  '!src/**/*.conf.js',
+	  '!src/**/*.e2e.js']
+};
 
 gulp.task('default', ['usage']);
 
@@ -40,12 +51,18 @@ gulp.task('usage', function() {
 	gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('start', ['_cleanUp', 'test:client'], function() {
+gulp.task('start', ['_cleanUp', 'test:client', 'inject'], function() {
 	nodemon({
 		script: 'server/server.js',
 		'ignore': ['spec/*']
 	});
 });
+
+gulp.task('inject', function() {
+	gulp.src('./src/index.html')
+		.pipe(inject(gulp.src(paths.js, {read: false}), {relative: true}))
+		.pipe(gulp.dest('./src'));
+})
 
 gulp.task('jshint', function() {
 	return gulp.src([
