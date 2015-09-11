@@ -23,6 +23,7 @@ We use the forking methodology for contributions. This enables us to keep the co
 We use [Trello](https://trello.com/) to track our development. If you would like to become a regular contributor to this project, please let the team know and we can discuss further. 
 
 Contribute to our project by following these steps
+
 1. Fork flintandsteel and clone it locally
 2. Make your changes and push to your fork
 3. Create a Pull Request back to our repository
