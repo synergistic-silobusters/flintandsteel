@@ -38,11 +38,9 @@ To start with some predefined data, `gulp generate:data` populates the datastore
 
 ## Contributing
 
-Before committing code, make sure
-* you run `gulp jshint` to lint the code and solve any issues presented
-* change `package.json` and `bower.json` if a new module was installed using the `--save` command line switch, i.e. `[npm|bower] install --save {module_name}`
-* Add `package.json` or `bower.json` to a separate commit with a reason to pull that module into the build
-* Update the unit tests in the corresponding .spec.js file in the same folder. If one doesn't exist, create a file with the same name as the folder followed by ".spec.js". This marks the file as a unit test file.
+Refer to CONTRIBUTING.md for directions on how to set up and contribute to this project. 
+
+Constributions using other channels will be disregarded and asked to be routed through the proper procedure. 
 
 **Note**: Do not push to the stable branch, committing to the stable branch will result in code being lost. The stable branch is created for milestone releases.
 
