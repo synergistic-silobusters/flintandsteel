@@ -2,9 +2,11 @@ language: node_js
 node_js:
   - "0.10"
   
+before_install:
+  - npm install -g bower
+  
 before_script:
   - npm install -g gulp
-  - npm install -g bower
   
 script: 
   - gulp test:client
