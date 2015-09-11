@@ -31,6 +31,8 @@ Contribute to our project by following these steps
 ### Fork flintandsteel and set up your repo
 Click the fork button on our repository page to get a copy for yourself. You can then create a local clone of your fork using `git clone <repo_name>`. You can now begin making your changes to the code. 
 
+**NOTE**: If you have already forked the repo and cloned it, make sure to rebase before starting to make changes. This will ensure that you have the latest code. 
+
 Refer to [README.md](./README.md) for installation and execution instructions. 
 
 ### Make your changes
@@ -40,8 +42,9 @@ After you make your changes and before committing, make sure to
 * change `package.json` and `bower.json` if a new module was installed using the `--save` command line switch, i.e. `[npm|bower] install --save <module_name>`
 * add `package.json` or `bower.json` to a separate commit with a reason to pull that module into the build
 * update the unit tests in the corresponding `.spec.js` file in the same folder. If one doesn't exist, create a file with the same name as the folder followed by ".spec.js". This marks the file as a unit test file.
+* run `gulp test:client` to run the unit tests and make sure they all pass. Make sure that none of the tests are excluded or focused. 
 
-Pull requests changing significant portions of code without updating the unit tests will be rejected and asked to be redone.
+Pull requests changing significant portions of code without updating the unit tests will be rejected and asked to be redone. Pull requests containing focused or excluded unit tests will also be rejected until changed. 
 
 ### Create a Pull Request
 
@@ -49,7 +52,7 @@ After you have pushed your changes to your fork, please create a pull request fr
 
 Also make sure that you ask at least 2 members to review your code. Once both members review and approve the code, we will merge the pull request. Once the code reviews are requested, members are expected to respond within 2 days and are expected to leave constructive feedback, if required. 
 
-Once the pull request is merged, make sure that you update your master before begining further work on your flintandsteel fork. 
+Once the pull request is merged, make sure that you update your master before beginning further work on your flintandsteel fork. 
 
 ## Coding Style
 
