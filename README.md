@@ -40,7 +40,7 @@ To start with some predefined data, `gulp generate:data` populates the datastore
 
 Refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for directions on how to set up and contribute to this project. 
 
-Constributions using other channels will be disregarded and asked to be routed through the proper procedure. 
+Contributions using other channels will be disregarded and asked to be routed through the proper procedure. 
 
 **Note**: Do not push to the stable branch, committing to the stable branch will result in code being lost. The stable branch is created for milestone releases.
 
