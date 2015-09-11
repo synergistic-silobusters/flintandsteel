@@ -10,7 +10,7 @@ You will likely also have to run `npm install gulp -g` in order to run gulp. Thi
 
 **Note**: On unix based platforms, this will need to be run with `sudo` and on Windows, the command prompt will require administrative privileges.
 
-## Updating
+### Updating
 
 `gulp clean:modules` will make sure that all the modules are the latest versions and ascertain that there are no unneeded modules downloaded. This clears out noth npm and bower modules.
 
@@ -20,19 +20,19 @@ This will reduce the amount of conflicts rising from versioning and previous exp
 
 To run the website server, execute `gulp start` from a terminal window. Then navigate to http://localhost:8080.
 
-## Testing
+### Testing
 
 To run the client side tests, execute `gulp test:client` from a terminal window.
 
-## Linting
+### Linting
 
 Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib`.
 
-## Clearing Persistent storage
+### Clearing Persistent storage
 
 The express server app uses [docstore](https://www.npmjs.com/package/docstore) to store users and ideas in JSON format. If this storage location gets messy, `gulp clean:db` can be used to clear up the datastore.
 
-## Generating Canned Idea datastore
+### Generating Canned Idea datastore
 
 To start with some predefined data, `gulp generate:data` populates the datastore with pre-populated ideas.
 
