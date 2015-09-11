@@ -31,7 +31,7 @@ Contribute to our project by following these steps
 ### Fork flintandsteel and set up your repo
 Click the fork button on our repository page to get a copy for yourself. You can then create a local clone of your fork using `git clone <repo_name>`. You can now begin making your changes to the code. 
 
-Refer to README.md for installation and execution instructions. 
+Refer to [README.md](./README.md) for installation and execution instructions. 
 
 ### Make your changes
 
