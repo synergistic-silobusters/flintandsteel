@@ -38,7 +38,7 @@ To start with some predefined data, `gulp generate:data` populates the datastore
 
 ## Contributing
 
-Refer to CONTRIBUTING.md for directions on how to set up and contribute to this project. 
+Refer to [CONTRIBUTING.md](./CONTRIBUTING.md) for directions on how to set up and contribute to this project. 
 
 Constributions using other channels will be disregarded and asked to be routed through the proper procedure. 
 
