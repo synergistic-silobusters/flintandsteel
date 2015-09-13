@@ -37,6 +37,8 @@ Refer to [README.md](./README.md) for installation and execution instructions.
 
 ### Make your changes
 
+Please use 4 spaces as indentation for the sake of uniformity. 
+
 After you make your changes and before committing, make sure to
 * run `gulp jshint` to lint the code and solve any issues presented
 * change `package.json` and `bower.json` if a new module was installed using the `--save` command line switch, i.e. `[npm|bower] install --save <module_name>`
