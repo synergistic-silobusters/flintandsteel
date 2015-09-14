@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/YashdalfTheGray/flintandsteel.svg?branch=master)](https://travis-ci.org/YashdalfTheGray/flintandsteel)
+
 # flintandsteel
 
 ![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/Logo2.PNG)
