@@ -1,11 +1,13 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.factory('ideaSvc', 
+.factory('ideaSvc',
 	[
 		'$http',
-		'ideaSvcMock',
-		function($http, ideaSvcMock) {
+		// 'ideaSvcMock',
+		function($http
+			// , ideaSvcMock
+		) {
 
 			this.postIdea = function postIdea(idea, successCb, errorCb){
 				$http.get('/uniqueid?for=idea')
@@ -20,14 +22,14 @@ angular.module('flintAndSteel')
 					});
 			};
 			this.getIdea = function getIdea(ideaId, successCb, errorCb) {
-				if (ideaId === 'mock_idea') {
-					ideaSvcMock.getIdea(ideaId, successCb);
-				}
-				else {
+				// if (ideaId === 'mock_idea') {
+				// 	ideaSvcMock.getIdea(ideaId, successCb);
+				// }
+				// else {
 					$http.get('/idea?id=' + ideaId)
 						.success(successCb)
 						.error(errorCb);
-				}
+				// }
 			};
 			this.getIdeaHeaders = function getIdeaHeaders(successCb, errorCb) {
 				$http.get('/ideaheaders')
@@ -36,7 +38,7 @@ angular.module('flintAndSteel')
 			};
 			this.updateIdea = function updateIdea(ideaId, property, data, successCb, errorCb) {
 				if (ideaId !== 'mock_idea') {
-					$http.post('/updateidea', 
+					$http.post('/updateidea',
 							{
 								id: ideaId,
 								property: property,
