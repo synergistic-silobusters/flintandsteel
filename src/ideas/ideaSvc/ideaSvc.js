@@ -64,17 +64,14 @@ angular.module('flintAndSteel')
 					return type;
 				});
 			};
-			this.getTeamChips = function getTeamChips() {
-				return scope.idea.backs;
-			};
+
 			return {
 				postIdea: this.postIdea,
 				getIdea: this.getIdea,
 				getIdeaHeaders: this.getIdeaHeaders,
 				getUniqueId: this.getUniqueId,
 				updateIdea: this.updateIdea,
-				getBackTypeChips: this.getBackTypeChips,
-				getTeamChips: this.getTeamChips
+				getBackTypeChips: this.getBackTypeChips
 			};
 		}
 	]

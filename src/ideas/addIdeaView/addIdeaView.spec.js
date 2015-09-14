@@ -37,6 +37,5 @@ describe('AddIdeaViewCtrl', function() {
 		expect(idea.likes.length).toBe(0);
 		expect(idea.comments.length).toBe(0);
 		expect(idea.backs.length).toBe(0);
-		expect(idea.team.length).toBe(0);
 	});
 });
