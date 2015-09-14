@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/YashdalfTheGray/flintandsteel.svg?branch=master-author)](https://travis-ci.org/YashdalfTheGray/flintandsteel)
+[![Build Status](https://travis-ci.org/YashdalfTheGray/flintandsteel.svg?branch=master)](https://travis-ci.org/YashdalfTheGray/flintandsteel)
 [![Issue Stats](http://issuestats.com/github/yashdalfthegray/flintandsteel/badge/pr?style=flat)](http://issuestats.com/github/yashdalfthegray/flintandsteel)
 [![Issue Stats](http://issuestats.com/github/yashdalfthegray/flintandsteel/badge/issue?style=flat)](http://issuestats.com/github/yashdalfthegray/flintandsteel)
 
