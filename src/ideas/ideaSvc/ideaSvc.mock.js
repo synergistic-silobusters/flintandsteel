@@ -63,6 +63,17 @@ angular.module('flintAndSteel')
 							{ name: 'Funding' }
 						]
 					}
+				],
+				team: [
+					{
+						//text: 'management experience',
+						from: 'David',
+						//time: moment().subtract(7, 'days').calendar(),
+						//types: [
+						//	{ name: 'Experience' },
+						//	{ name: 'Knowledge' }
+						//]
+					}
 				]
 			};
 

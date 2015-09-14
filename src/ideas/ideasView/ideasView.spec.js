@@ -24,12 +24,13 @@ describe('IdeasViewCtrl', function() {
 	});
 
 	describe('$scope.addNewInteraction()', function() {
-		var content, commentsLength, backsLength;
+		var content, commentsLength, backsLength, teamLength;
 
 		beforeEach(function() {
 			content = '';
 			commentsLength = scope.idea.comments.length;
 			backsLength = scope.idea.backs.length;
+			teamLength = scope.idea.team.length;
 		});
 
 		it('should add a new comment when comment is selected', function() {

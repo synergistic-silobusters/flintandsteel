@@ -29,6 +29,7 @@ angular.module('flintAndSteel')
 			$scope.searchText = undefined;
 			ctrl.newComment = '';
 			ctrl.newBack = '';
+			ctrl.newTeam = '';
 
 			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
 				$scope.idea = data;
@@ -56,7 +57,7 @@ angular.module('flintAndSteel')
 
 			$scope.addNewInteraction = function addNewInteraction(type) {
 				var now = new Date().toISOString();
-				if (type === 'comments' || type === 'backs') {
+				if (type === 'comments' || type === 'backs' || type === 'team') {
 					if (type === 'comments') {
 						$scope.idea[type].push({
 							text: ctrl.newComment,
@@ -72,6 +73,13 @@ angular.module('flintAndSteel')
 							types: $scope.selectedTypes
 						});
 					}
+					else if (type === 'team') {
+						$scope.idea[type].push({
+							text: ctrl.newTeam,
+							from: loginSvc.getProperty('name'),
+							time: now
+						});
+					}
 					ideaSvc.updateIdea($scope.idea.id, type, $scope.idea[type],
 					function success(data) {
 						//console.log(data);
@@ -84,6 +92,7 @@ angular.module('flintAndSteel')
 					$scope.selectedType = undefined;
 					ctrl.newComment = '';
 					ctrl.newBack = '';
+					ctrl.newTeam = '';
 				}
 			};
 

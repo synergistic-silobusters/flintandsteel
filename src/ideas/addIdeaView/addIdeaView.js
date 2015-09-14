@@ -19,6 +19,7 @@ angular.module('flintAndSteel')
 				ideaToAdd.likes = [];
 				ideaToAdd.comments = [];
 				ideaToAdd.backs = [];
+				ideaToAdd.team = [];
 				ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
 					console.log(data);
 					if (data === 'Created') {
