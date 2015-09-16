@@ -103,12 +103,13 @@
 								<label>Back this idea...</label>
 								<input id="back-box" ng-model="ideasView.newBack" type="text" />
 							</md-input-container>
-							<md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match ng-show="ideasView.newBack">
+							<md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match="true" ng-show="ideasView.newBack">
 								<md-autocomplete
 									md-selected-item="selectedType"
 									md-selected-item-change=""
 									md-search-text="searchText"
 									md-search-text-change=""
+									md-min-length="0"
 									md-items="type in querySearch(searchText)"
 									md-item-text="type.name"
 									placeholder="Type of backing">
