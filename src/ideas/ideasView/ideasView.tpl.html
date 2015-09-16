@@ -1,10 +1,46 @@
 <md-card>
 	<img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
 	<md-card-content>
-		<h1>{{idea.title}}</h1>
-		<h3>by {{idea.author}}</h3>
-		<p>{{idea.description}}</p>
+		<div ng-hide="ideasView.enableEdit">
+			<h1>{{idea.title}}</h1>
+			<h3>by {{idea.author}}</h3>
+			<p>{{idea.description}}</p>
+		</div>
+		<form ng-show="ideasView.enableEdit" name="newIdeaForm">
+			<div layout="column">
+				<md-input-container>
+					<label>Title</label>
+					<input ng-model="idea.title" required>
+				</md-input-container>
+				<md-input-container flex>
+					<label>Description</label>
+					<textarea ng-model="idea.description" columns="1" md-maxlength="1000" required></textarea>
+				</md-input-container>
+				<p></p>
+				<div layout="row" layout-align="end center">
+					<md-button class="md-raised md-primary" ng-click="ideasView.editIdea(idea.title, idea.description)">Submit</md-button>
+					<md-button class="md-raised md-primary" ng-click="ideasView.refreshIdea()">Cancel</md-button>
+				</div>
+			</div>
+		</form>
 	</md-card-content>
+	<md-card-footer>
+		<md-fab-toolbar md-direction="left" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
+	    <md-fab-trigger class="align-with-text">
+	      <md-button aria-label="menu" class="md-fab md-primary">
+	        <md-icon md-svg-icon="navigation:menu"></md-icon>
+	      </md-button>
+	    </md-fab-trigger>
+	    <md-toolbar>
+	      <md-fab-actions class="md-toolbar-tools">
+	        <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;">
+	          <md-icon md-svg-icon="editor:mode_edit"></md-icon>
+	        </md-button>
+	      </md-fab-actions>
+	    </md-toolbar>
+	  </md-fab-toolbar>
+		<i ng-show="idea.editedOn && !ideasView.enableEdit">Edited {{momentizeTime(idea.editedOn)}}</i>
+	</md-card-footer>
 </md-card>
 <md-card>
 	<md-card-content>
@@ -67,12 +103,13 @@
 								<label>Back this idea...</label>
 								<input id="back-box" ng-model="ideasView.newBack" type="text" />
 							</md-input-container>
-							<md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match ng-show="ideasView.newBack">
+							<md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match="true" ng-show="ideasView.newBack">
 								<md-autocomplete
 									md-selected-item="selectedType"
 									md-selected-item-change=""
 									md-search-text="searchText"
 									md-search-text-change=""
+									md-min-length="0"
 									md-items="type in querySearch(searchText)"
 									md-item-text="type.name"
 									placeholder="Type of backing">

@@ -29,12 +29,18 @@ angular.module('flintAndSteel')
 			$scope.searchText = undefined;
 			ctrl.newComment = '';
 			ctrl.newBack = '';
+			ctrl.enableEdit = false;
 
-			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
-				$scope.idea = data;
-			}, function getIdeaError(data, status, headers, config) {
-				console.log(status);
-			});
+			ctrl.refreshIdea = function() {
+				ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
+					$scope.idea = data;
+					ctrl.enableEdit = false;
+				}, function getIdeaError(data, status, headers, config) {
+					console.log(status);
+				});
+			}
+
+			ctrl.refreshIdea();
 
 			var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
 			ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
@@ -120,7 +126,7 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.querySearch = function querySearch(query) {
-				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : [];
+				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : $scope.typeChips;
 				return results;
 	    	};
 
@@ -168,7 +174,35 @@ angular.module('flintAndSteel')
 
 			$scope.ideaHasImage = function() {
 				return typeof $scope.idea.image !== 'undefined';
-			}
+			};
+
+			ctrl.editIdea = function(title, description) {
+				if (ctrl.isUserAuthor()) {
+					ideaSvc.updateIdea($scope.idea.id, "title", title, function() {
+						ideaSvc.updateIdea($scope.idea.id, "description", description, function() {
+							ideaSvc.updateIdea($scope.idea.id, "editedOn", (new Date()).toISOString(), function() {
+								ctrl.refreshIdea();
+							},
+							function() {
+								console.log("ERR: Could not update idea.");
+							});
+						},
+						function() {
+							console.log("ERR: Could not update idea.");
+						});
+					},
+					function() {
+						console.log("ERR: Could not update idea.");
+					});
+				}
+			};
+
+			ctrl.isUserAuthor = function() {
+				if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
+					return true;
+				}
+				return false;
+			};
 
 			function createFilterFor(query) {
 				var lowercaseQuery = angular.lowercase(query);
