@@ -16,6 +16,7 @@ angular.module('flintAndSteel')
 			$scope.idea = {};
 
 			$scope.addNewIdea = function addNewIdea(ideaToAdd) {
+				ideaToAdd.author = loginSvc.getProperty('name');
 				ideaToAdd.likes = [];
 				ideaToAdd.comments = [];
 				ideaToAdd.backs = [];
