@@ -172,4 +172,89 @@ describe('IdeasViewCtrl', function() {
 		});
 	});
 
+	describe('editing the idea', function() {
+
+		var authorAccount = {
+			id: 1,
+			username: 'MainManDarth',
+			name: 'Darth Vader',
+			likedIdeas: [ 'mock_idea' ]
+		};
+
+		var nonAuthorAccount = {
+			id: 2,
+			username: 'SonOfDarth',
+			name: 'Luke Skywalker',
+			likedIdeas: [ 'mock_idea' ]
+		};
+
+		var mockIdea;
+
+		beforeEach(function() {
+			loginSvcMock.checkLogin(authorAccount);
+			ideaSvcMock.getIdea(null, function(idea) {
+				mockIdea = idea;
+			});
+			spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+		});
+
+		it('should allow the author to edit the idea', function() {
+			loginSvcMock.checkLogin(authorAccount);
+			expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+			ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
+			expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+		});
+
+		it('should not allow someone other than the author to edit the idea', function() {
+			loginSvcMock.checkLogin(nonAuthorAccount);
+			ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
+			expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+		});
+
+		it('should allow the author to add text to the idea description', function() {
+			var description = mockIdea["description"];
+			ctrl.editIdea(mockIdea["title"], mockIdea["description"] + " Booyah!");
+			ideaSvcMock.getIdea(null, function(idea) {
+				mockIdea = idea;
+			});
+			expect(mockIdea["description"]).toBe(description + " Booyah!");
+		});
+
+		it('should allow the author to delete text to the idea description', function() {
+			var description = mockIdea["description"];
+			ctrl.editIdea(mockIdea["title"], mockIdea["description"].substr(0, 4));
+			ideaSvcMock.getIdea(null, function(idea) {
+				mockIdea = idea;
+			});
+			expect(mockIdea["description"]).toBe(description.substr(0, 4));
+		});
+
+		it('should allow the author to overwrite the old idea title', function(){
+			var title = mockIdea["title"];
+			ctrl.editIdea("New Title", mockIdea["description"]);
+			ideaSvcMock.getIdea(null, function(idea) {
+				mockIdea = idea;
+			});
+			expect(mockIdea["title"]).not.toBe(title);
+			expect(mockIdea["title"]).toBe("New Title");
+		});
+
+		it('should save the last edited date/time', function(){
+			var now = (new Date()).toISOString();
+			ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
+			ideaSvcMock.getIdea(null, function(idea) {
+				mockIdea = idea;
+			});
+			expect(mockIdea["editedOn"].substr(-7,6)).toBeCloseTo(now.substr(-7,6), 1);
+		});
+
+		it('should refresh $scope.idea with the new idea data', function() {
+			ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
+			ideaSvcMock.getIdea(null, function(idea) {
+				mockIdea = idea;
+			});
+			expect(scope.idea).toBe(mockIdea);
+		});
+	});
+
 });
