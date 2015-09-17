@@ -4,6 +4,7 @@ angular.module('flintAndSteel')
 .directive('ideaItemBrowse', 
 	[
 		function() {
+			
 			return {
 				restrict: 'E',
 				scope: {
