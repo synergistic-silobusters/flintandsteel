@@ -68,7 +68,7 @@
 					<div flex>
 						<md-list class="top-ideas-list">
 							<md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
-							<md-item ng-repeat="idea in topIdeas">
+							<md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:5">
 								<idea-item idea="idea" ui-sref="idea({ ideaId: idea.id })" class="idea-pointer"></idea-item>
 							</md-item>
 						</md-list>
