@@ -9,7 +9,8 @@ angular.module('flintAndSteel')
 		'$mdDialog',
 		'ideaSvc',
 		'loginSvc',
-		function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc){
+		'$state',
+		function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state){
 
 			/*
 			The way this works
@@ -45,11 +46,14 @@ angular.module('flintAndSteel')
 			var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
 			ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
 				var idea = JSON.parse(event.data);
-	      if(typeof idea !== 'undefined') {
+	      if(typeof idea !== 'undefined' && idea !== null) {
 					$scope.$apply(function() {
 						$scope.idea = idea;
 					});
 	      }
+				else {
+					$state.go('home');
+				}
 	    });
 
 			$scope.$on('$stateChangeStart', function() {
@@ -193,6 +197,17 @@ angular.module('flintAndSteel')
 					},
 					function() {
 						console.log("ERR: Could not update idea.");
+					});
+				}
+			};
+
+			ctrl.deleteIdea = function() {
+				if (ctrl.isUserAuthor()) {
+					ideaSvc.deleteIdea($scope.idea.id, function() {
+						return;
+					},
+					function() {
+						console.log("ERR: Idea " + $scope.idea.id + " not deleted");
 					});
 				}
 			};

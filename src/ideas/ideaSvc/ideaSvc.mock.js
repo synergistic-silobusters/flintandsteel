@@ -98,6 +98,9 @@ angular.module('flintAndSteel')
 					mockIdea[property] = data;
 					successCb('OK');
 				},
+				deleteIdea: function deleteIdea(ideaId, successCb, errorCb) {
+					successCb('Deleted!');
+				},
 				getBackTypeChips: function getBackTypeChips() {
 					var types = [
 						{ name: 'Experience' },

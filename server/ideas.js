@@ -2,7 +2,7 @@ var Idea = require('./idea');
 var chalk = require('chalk');
 var datastore = require('docstore');
 
-var ideasDb;
+var ideasDb, userDb;
 
 var IdeasSingleton;
 
@@ -17,6 +17,15 @@ datastore.open('./server/datastore/ideas', function(err, store) {
 	}
 	else {
 		ideasDb = store;
+	}
+});
+
+datastore.open('./server/datastore/users', function(err, store) {
+	if (err) {
+		console.log(err);
+	}
+	else {
+		userDb = store;
 	}
 });
 
@@ -70,6 +79,41 @@ exports.update = function(id, property, value, cb) {
 
 exports.fetch = getHeaders;
 
+exports.delete = function(id, cb) {
+	ideasDb.get('idea_' + id, function(err, doc) {
+		if (err) {
+			cb(err);
+		}
+		else {
+			doc[likes].map(function(user) {
+				userDb.scan(function(doc) {
+					return doc.name === user;
+				}, function(err,docs) {
+					if (err) {
+						cb(err);
+					}
+					docs.map(function(userDoc) {
+						var ideaIdIndex = userDoc.likes.indexOf(id);
+						if (ideaIdIndex >= 0) {
+							userDoc.likes.splice(ideaIdIndex, 1);
+						}
+					});
+				});
+			});
+			ideasDb.remove('idea_' + id, function(err) {
+				if (err) {
+					console.log(chalk.bgRed(err));
+					cb(err);
+				}
+				else {
+					console.log(chalk.bgGreen('Document with key %s removed in ideas.'), ('idea_' + id));
+					cb(null);
+				}
+			});
+		}
+	});
+}
+
 function getHeaders(cb) {
   ideasDb.scan(filter, function(err, docs) {
 		if (err) {
@@ -117,6 +161,6 @@ Ideas.prototype.newHeaders = function(headers) {
   this.emit("newHeaders", headers);
 }
 
-Ideas.prototype.updateIdea = function(idea) {
-  this.emit("updateIdea_" + idea.key, idea);
+Ideas.prototype.updateIdea = function(idea, oldKey) {
+  this.emit("updateIdea_" + idea.key || oldKey, idea);
 }
