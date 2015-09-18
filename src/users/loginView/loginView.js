@@ -15,6 +15,7 @@ angular.module('flintAndSteel')
 						$mdToast.show(
 							$mdToast.simple()
 								.content(data.name + ' has successfully signed in!')
+								.action('OK')
 								.position('top right')
 								.hideDelay(3000)
 						);
@@ -30,6 +31,7 @@ angular.module('flintAndSteel')
 						$mdToast.show(
 							$mdToast.simple()
 								.content('Your credentials don\'t match the stored ones :(')
+								.action('OK')
 								.position('top right')
 								.hideDelay(3000)
 						);
@@ -38,6 +40,7 @@ angular.module('flintAndSteel')
 						$mdToast.show(
 							$mdToast.simple()
 								.content('The user was not found in the server!')
+								.action('OK')
 								.position('top right')
 								.hideDelay(3000)
 						);
