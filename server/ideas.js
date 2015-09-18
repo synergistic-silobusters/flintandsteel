@@ -85,7 +85,7 @@ exports.delete = function(id, cb) {
 			cb(err);
 		}
 		else {
-			doc[likes].map(function(user) {
+			doc.likes.map(function(user) {
 				userDb.scan(function(doc) {
 					return doc.name === user;
 				}, function(err,docs) {
@@ -93,11 +93,18 @@ exports.delete = function(id, cb) {
 						cb(err);
 					}
 					docs.map(function(userDoc) {
-						var ideaIdIndex = userDoc.likes.indexOf(id);
+						var ideaIdIndex = userDoc.likedIdeas.indexOf(id);
+						console.log(userDoc.likedIdeas);
+						console.log(id);
+						console.log(ideaIdIndex);
 						if (ideaIdIndex >= 0) {
-							userDoc.likes.splice(ideaIdIndex, 1);
+							userDoc.likedIdeas.splice(ideaIdIndex, 1);
+							userDb.save(userDoc, function(err) {
+								console.log("ERR: Could not resave updated user during idea delete.")
+							});
 						}
 					});
+
 				});
 			});
 			ideasDb.remove('idea_' + id, function(err) {
@@ -162,5 +169,5 @@ Ideas.prototype.newHeaders = function(headers) {
 }
 
 Ideas.prototype.updateIdea = function(idea, oldKey) {
-  this.emit("updateIdea_" + idea.key || oldKey, idea);
+  this.emit("updateIdea_" + oldKey || idea.key , idea);
 }

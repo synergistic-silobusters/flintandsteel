@@ -212,6 +212,22 @@ angular.module('flintAndSteel')
 				}
 			};
 
+			ctrl.confirmDeleteIdea = function(ev) {
+				$mdDialog.show($mdDialog.confirm()
+					.title('Deleting Your Idea...')
+					.content('Hey, ' + $scope.idea.author + '! Are you sure you want to delete ' + $scope.idea.title + '? This action is irreversible :( ')
+					.ariaLabel('Delete idea confirmation')
+					.targetEvent(ev)
+					.ok('I understand. Delete it.')
+					.cancel('Oh! No thanks!')
+				).then(function() {
+					ctrl.deleteIdea();
+				},
+				function() {
+					return;
+				})
+			}
+
 			ctrl.isUserAuthor = function() {
 				if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
 					return true;

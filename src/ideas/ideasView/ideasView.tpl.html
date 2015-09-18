@@ -25,20 +25,27 @@
 		</form>
 	</md-card-content>
 	<md-card-footer>
-		<md-fab-toolbar md-direction="left" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
+		<md-fab-speed-dial md-direction="right" class="md-fling" md-open="isOpen" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
 	    <md-fab-trigger class="align-with-text">
 	      <md-button aria-label="menu" class="md-fab md-primary">
 	        <md-icon md-svg-icon="navigation:menu"></md-icon>
 	      </md-button>
 	    </md-fab-trigger>
-	    <md-toolbar>
-	      <md-fab-actions class="md-toolbar-tools">
+      <md-fab-actions>
+				<div>
 	        <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;">
+						<md-tooltip md-direction="top">Edit Idea</md-tooltip>
 	          <md-icon md-svg-icon="editor:mode_edit"></md-icon>
 	        </md-button>
-	      </md-fab-actions>
-	    </md-toolbar>
-	  </md-fab-toolbar>
+				</div>
+				<div>
+	        <md-button aria-label="delete" class="md-icon-button" ng-click="ideasView.confirmDeleteIdea($event);">
+						<md-tooltip md-direction="top">Delete Idea</md-tooltip>
+						<md-icon md-svg-icon="action:delete"></md-icon>
+	        </md-button>
+				</div>
+      </md-fab-actions>
+	  </md-fab-speed-dial>
 		<i ng-show="idea.editedOn && !ideasView.enableEdit">Edited {{momentizeTime(idea.editedOn)}}</i>
 	</md-card-footer>
 </md-card>
