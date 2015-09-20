@@ -3,7 +3,7 @@
 
 /*
 	This sets up the main app module and also tells Angular
-	what this module depends on to work correctly. 
+	what this module depends on to work correctly.
  */
 angular.module('flintAndSteel', [
 		'ngAnimate',
@@ -15,33 +15,49 @@ angular.module('flintAndSteel', [
 	'$urlRouterProvider',
 	'$stateProvider',
 	'$mdIconProvider',
-	'$mdThemingProvider', 
+	'$mdThemingProvider',
 	function($urlRouterProvider, $stateProvider, $mdIconProvider, $mdThemingProvider) {
 		$stateProvider
 			.state('home', {
 	      		url: '/',
-	      		templateUrl: 'home/home.tpl.html',
-	      		controller: 'homeCtrl'
+	      		templateUrl: 'homeView/homeView.tpl.html',
+	      		controller: 'HomeViewCtrl'
     		})
     		.state('login', {
-	      		url: '/login',
-	      		templateUrl: 'login/login.tpl.html',
-	      		controller: 'loginCtrl'
+	      		url: '/login?retState&retParams',
+	      		templateUrl: 'users/loginView/loginView.tpl.html',
+	      		controller: 'LoginViewCtrl'
     		})
     		.state('signup', {
     			url: '/signup',
-    			templateUrl: 'signup/signup.tpl.html',
-    			controller: 'signupCtrl'
+    			templateUrl: 'users/signupView/signupView.tpl.html',
+    			controller: 'SignupViewCtrl'
     		})
     		.state('account', {
     			url: '/account',
-    			templateUrl: 'account/account.tpl.html',
-    			controller: 'accountCtrl'
+    			templateUrl: 'users/accountView/accountView.tpl.html',
+    			controller: 'AccountViewCtrl'
     		})
-    		.state('ideasList', {
-    			url: '/ideasList',
-    			templateUrl: 'ideasList/ideasList.tpl.html',
-    			controller: 'ideasListCtrl'
+    		.state('ideaslist', {
+    			url: '/ideaslist',
+    			templateUrl: 'ideas/ideasList/ideasList.tpl.html',
+    			controller: 'IdeasListCtrl'
+    		})
+    		.state('idea', {
+    			url: '/idea/{ideaId}',
+    			templateUrl: 'ideas/ideasView/ideasView.tpl.html',
+    			controller: 'IdeasViewCtrl',
+    			controllerAs: 'ideasView'
+    		})
+    		.state('addidea', {
+    			url: '/addidea',
+    			templateUrl: 'ideas/addIdeaView/addIdeaView.tpl.html',
+    			controller: 'AddIdeaViewCtrl'
+    		})
+    		.state('ideabrowse', {
+    			url: '/ideabrowse',
+    			templateUrl: 'ideas/ideaBrowse/ideaBrowse.tpl.html',
+    			controller: 'IdeaBrowseCtrl'
     		});
 
 		$urlRouterProvider.otherwise('/');
@@ -64,15 +80,35 @@ angular.module('flintAndSteel', [
 	        .iconSet('social', './assets/icons/social-icons.svg', 24)
 	        .iconSet('toggle', './assets/icons/toggle-icons.svg', 24);
 
+		var rockstarterRedMap = $mdThemingProvider.extendPalette('red', {
+			'900': '650100'
+	    });
+	    var rockstarterGrayMap = $mdThemingProvider.extendPalette('grey', {
+			'900': '464b51'
+	    });
+
+	    $mdThemingProvider.definePalette('rokstarter-red', rockstarterRedMap);
+	    $mdThemingProvider.definePalette('rokstarter-gray', rockstarterGrayMap);
+
 	    $mdThemingProvider.theme('default')
-                          .primaryPalette('blue')
+                          .primaryPalette('rokstarter-gray', {
+                          	'default': '900'
+                          })
+                          .accentPalette('rokstarter-red', {
+                          	'default': '900',
+                          	'hue-1': 'A700'
+                          })
+                          .warnPalette('red');
+
+	    /*$mdThemingProvider.theme('default')
+                          .primaryPalette('gray')
                           .accentPalette('green', {
                           	'default': 'A200',
                           	'hue-1': '600'
                           })
-                          .warnPalette('red');
+                          .warnPalette('red');*/
 	}
-])
-.constant('appSettings', {
-	serverUrl: 'http://localhost:8080'
-});
+]);
+
+// red #650100
+// gray #464b51
