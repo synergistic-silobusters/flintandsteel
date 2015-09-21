@@ -173,7 +173,6 @@ describe('IdeasViewCtrl', function() {
 	});
 
 	describe('editing the idea', function() {
-
 		var authorAccount = {
 			id: 1,
 			username: 'MainManDarth',
@@ -187,7 +186,6 @@ describe('IdeasViewCtrl', function() {
 			name: 'Luke Skywalker',
 			likedIdeas: [ 'mock_idea' ]
 		};
-
 		var mockIdea;
 
 		beforeEach(function() {
@@ -200,13 +198,14 @@ describe('IdeasViewCtrl', function() {
 
 		it('should allow the author to edit the idea', function() {
 			loginSvcMock.checkLogin(authorAccount);
-			expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+			expect(ctrl.isUserAuthor()).toBe(true);
 			ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
 			expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
 		});
 
 		it('should not allow someone other than the author to edit the idea', function() {
 			loginSvcMock.checkLogin(nonAuthorAccount);
+			expect(ctrl.isUserAuthor()).toBe(false);
 			ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
 			expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
 		});
@@ -257,4 +256,41 @@ describe('IdeasViewCtrl', function() {
 		});
 	});
 
+	describe('deleting the idea', function() {
+		var authorAccount = {
+			id: 1,
+			username: 'MainManDarth',
+			name: 'Darth Vader',
+			likedIdeas: [ 'mock_idea' ]
+		};
+
+		var nonAuthorAccount = {
+			id: 2,
+			username: 'SonOfDarth',
+			name: 'Luke Skywalker',
+			likedIdeas: [ 'mock_idea' ]
+		};
+		var mockIdea;
+
+		beforeEach(function() {
+			loginSvcMock.checkLogin(authorAccount);
+			ideaSvcMock.getIdea(null, function(idea) {
+				mockIdea = idea;
+			});
+			spyOn(ideaSvcMock, 'deleteIdea').and.callThrough();
+		});
+
+		it('should allow the author to delete the idea', function() {
+			loginSvcMock.checkLogin(authorAccount);
+			expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+			ctrl.deleteIdea();
+			expect(ideaSvcMock.deleteIdea).toHaveBeenCalled();
+		});
+
+		it('should not allow someone other than the author to delete the idea', function() {
+			loginSvcMock.checkLogin(nonAuthorAccount);
+			ctrl.deleteIdea();
+			expect(ideaSvcMock.deleteIdea).not.toHaveBeenCalled();
+		});
+	});
 });
