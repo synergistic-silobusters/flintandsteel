@@ -39,6 +39,9 @@ gulp.task('usage', function() {
 		chalk.green('jshint'),
 		'\tRun jshint on the spec and the js folder under src.',
 		'',
+		chalk.green('generate:data'),
+		'\tGenerate sample data in the database.',
+		'',
 		chalk.green('clean:modules'),
 		'\tDeletes the npm_modules and the src/lib directories.',
 		'\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
