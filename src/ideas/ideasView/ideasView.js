@@ -9,7 +9,9 @@ angular.module('flintAndSteel')
 		'$mdDialog',
 		'ideaSvc',
 		'loginSvc',
-		function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc){
+		'$state',
+		'$mdToast',
+		function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast){
 
 			/*
 			The way this works
@@ -29,21 +31,52 @@ angular.module('flintAndSteel')
 			$scope.searchText = undefined;
 			ctrl.newComment = '';
 			ctrl.newBack = '';
+			ctrl.enableEdit = false;
 
-			ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
-				$scope.idea = data;
-			}, function getIdeaError(data, status, headers, config) {
-				console.log(status);
-			});
+			ctrl.refreshIdea = function() {
+				ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
+					if (data === 'IDEA_NOT_FOUND') {
+						$mdToast.show($mdToast.simple()
+		          .content('Sorry, that idea does not exist')
+		          .action('OK')
+		          .highlightAction(false)
+		          .position('top right'));
+						$state.go('home');
+					}
+					else {
+						$scope.idea = data;
+						ctrl.enableEdit = false;
+					}
+				}, function getIdeaError(data, status, headers, config) {
+					console.log(status);
+				});
+			}
+
+			ctrl.refreshIdea();
 
 			var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
 			ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
 				var idea = JSON.parse(event.data);
-	      if(typeof idea !== 'undefined') {
+	      if(typeof idea !== 'undefined' && idea !== null) {
 					$scope.$apply(function() {
 						$scope.idea = idea;
 					});
 	      }
+				else {
+					var content;
+					if (ctrl.isUserAuthor()) {
+						content = "Your idea was successfully deleted."
+					}
+					else {
+						content = 'Oh no! The author just deleted that idea.';
+					}
+					$mdToast.show($mdToast.simple()
+						.content(content)
+						.action('OK')
+						.highlightAction(false)
+						.position('top right'));
+					$state.go('home');
+				}
 	    });
 
 			$scope.$on('$stateChangeStart', function() {
@@ -120,7 +153,7 @@ angular.module('flintAndSteel')
 			};
 
 			$scope.querySearch = function querySearch(query) {
-				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : [];
+				var results = query ? $scope.typeChips.filter(createFilterFor(query)) : $scope.typeChips;
 				return results;
 	    	};
 
@@ -168,7 +201,62 @@ angular.module('flintAndSteel')
 
 			$scope.ideaHasImage = function() {
 				return typeof $scope.idea.image !== 'undefined';
+			};
+
+			ctrl.editIdea = function(title, description) {
+				if (ctrl.isUserAuthor()) {
+					ideaSvc.updateIdea($scope.idea.id, "title", title, function() {
+						ideaSvc.updateIdea($scope.idea.id, "description", description, function() {
+							ideaSvc.updateIdea($scope.idea.id, "editedOn", (new Date()).toISOString(), function() {
+								ctrl.refreshIdea();
+							},
+							function() {
+								console.log("ERR: Could not update idea.");
+							});
+						},
+						function() {
+							console.log("ERR: Could not update idea.");
+						});
+					},
+					function() {
+						console.log("ERR: Could not update idea.");
+					});
+				}
+			};
+
+			ctrl.deleteIdea = function() {
+				if (ctrl.isUserAuthor()) {
+					ideaSvc.deleteIdea($scope.idea.id, function() {
+						return;
+					},
+					function() {
+						console.log("ERR: Idea " + $scope.idea.id + " not deleted");
+					});
+				}
+			};
+
+			ctrl.confirmDeleteIdea = function(ev) {
+				$mdDialog.show($mdDialog.confirm()
+					.title('Deleting Your Idea...')
+					.content('Hey, ' + $scope.idea.author + '! Are you sure you want to delete \"' + $scope.idea.title + '\"? This action is irreversible :( ')
+					.ariaLabel('Delete idea confirmation')
+					.targetEvent(ev)
+					.ok('Yes. Delete it.')
+					.cancel('No thanks!')
+				).then(function() {
+					ctrl.deleteIdea();
+				},
+				function() {
+					return;
+				})
 			}
+
+			ctrl.isUserAuthor = function() {
+				if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
+					return true;
+				}
+				return false;
+			};
 
 			function createFilterFor(query) {
 				var lowercaseQuery = angular.lowercase(query);

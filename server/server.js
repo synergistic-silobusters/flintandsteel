@@ -154,6 +154,22 @@ app.post('/updateidea', function(req, res) {
 		}
 	});
 });
+app.post('/deleteidea', function(req, res) {
+	ideas.delete(req.body.id, function(err){
+		if (err) {
+			res.sendStatus(500);
+		}
+		else {
+			ideas.get(req.body.id, function(err, idea) {
+				IdeasInstance.updateIdea(null, req.body.id);
+			});
+			ideas.fetch(function(err, headers) {
+				IdeasInstance.newHeaders(headers);
+			});
+			res.sendStatus(200);
+		}
+	});
+});
 app.post('/updateaccount', function(req, res) {
 	userDb.get(req.body.username, function(err, doc) {
 		if (err) {
