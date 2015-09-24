@@ -136,7 +136,7 @@ function getHeaders(cb) {
             });
             var headers = [];
             for(var i = 0; i < docs.length; i++) {
-                var descFirstWords = _.take(_.words(docs[i].description), 12);
+                var descFirstWords = _.take(_.words(docs[i].description), 30);
 
                 headers.push({
                     id: docs[i].ideaId,
