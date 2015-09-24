@@ -167,4 +167,27 @@ describe('ideaSvc', function() {
 		});
 	});
 
+	describe('ideaSvc.deleteIdea', function() {
+		var deleteIdeaHandler, deletedIdea;
+
+		beforeEach(function() {
+			deletedIdea = {
+				id: 'dummy_idea'
+			};
+			updateIdeaHandler = $httpBackend.whenPOST('/deleteidea', deletedIdea).respond(200, 'OK');
+		});
+
+		it('should delete the idea', function() {
+			$httpBackend.expectPOST('/deleteidea', deletedIdea);
+
+			ideaSvc.deleteIdea('dummy_idea', function (data) {
+
+			}, function (data, status, headers, config) {
+
+			});
+
+			$httpBackend.flush();
+		});
+	});
+
 });

@@ -49,6 +49,17 @@ angular.module('flintAndSteel')
 						.error(errorCb);
 				}
 			};
+			this.deleteIdea = function deleteIdea(ideaId, successCb, errorCb) {
+				if (ideaId !== 'mock_idea') {
+					$http.post('/deleteidea',
+							{
+								id: ideaId
+							}
+						)
+						.success(successCb)
+						.error(errorCb);
+				}
+			};
 			this.getBackTypeChips = function getBackTypeChips() {
 				var types = [
 					{ name: 'Experience' },
@@ -71,6 +82,7 @@ angular.module('flintAndSteel')
 				getIdeaHeaders: this.getIdeaHeaders,
 				getUniqueId: this.getUniqueId,
 				updateIdea: this.updateIdea,
+				deleteIdea: this.deleteIdea,
 				getBackTypeChips: this.getBackTypeChips
 			};
 		}

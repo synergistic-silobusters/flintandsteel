@@ -9,7 +9,9 @@ angular.module('flintAndSteel')
 		'$mdDialog',
 		'ideaSvc',
 		'loginSvc',
-		function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc){
+		'$state',
+		'$mdToast',
+		function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast){
 
 			/*
 			The way this works
@@ -33,8 +35,18 @@ angular.module('flintAndSteel')
 
 			ctrl.refreshIdea = function() {
 				ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
-					$scope.idea = data;
-					ctrl.enableEdit = false;
+					if (data === 'IDEA_NOT_FOUND') {
+						$mdToast.show($mdToast.simple()
+		          .content('Sorry, that idea does not exist')
+		          .action('OK')
+		          .highlightAction(false)
+		          .position('top right'));
+						$state.go('home');
+					}
+					else {
+						$scope.idea = data;
+						ctrl.enableEdit = false;
+					}
 				}, function getIdeaError(data, status, headers, config) {
 					console.log(status);
 				});
@@ -45,11 +57,26 @@ angular.module('flintAndSteel')
 			var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
 			ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
 				var idea = JSON.parse(event.data);
-	      if(typeof idea !== 'undefined') {
+	      if(typeof idea !== 'undefined' && idea !== null) {
 					$scope.$apply(function() {
 						$scope.idea = idea;
 					});
 	      }
+				else {
+					var content;
+					if (ctrl.isUserAuthor()) {
+						content = "Your idea was successfully deleted."
+					}
+					else {
+						content = 'Oh no! The author just deleted that idea.';
+					}
+					$mdToast.show($mdToast.simple()
+						.content(content)
+						.action('OK')
+						.highlightAction(false)
+						.position('top right'));
+					$state.go('home');
+				}
 	    });
 
 			$scope.$on('$stateChangeStart', function() {
@@ -196,6 +223,33 @@ angular.module('flintAndSteel')
 					});
 				}
 			};
+
+			ctrl.deleteIdea = function() {
+				if (ctrl.isUserAuthor()) {
+					ideaSvc.deleteIdea($scope.idea.id, function() {
+						return;
+					},
+					function() {
+						console.log("ERR: Idea " + $scope.idea.id + " not deleted");
+					});
+				}
+			};
+
+			ctrl.confirmDeleteIdea = function(ev) {
+				$mdDialog.show($mdDialog.confirm()
+					.title('Deleting Your Idea...')
+					.content('Hey, ' + $scope.idea.author + '! Are you sure you want to delete \"' + $scope.idea.title + '\"? This action is irreversible :( ')
+					.ariaLabel('Delete idea confirmation')
+					.targetEvent(ev)
+					.ok('Yes. Delete it.')
+					.cancel('No thanks!')
+				).then(function() {
+					ctrl.deleteIdea();
+				},
+				function() {
+					return;
+				})
+			}
 
 			ctrl.isUserAuthor = function() {
 				if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
