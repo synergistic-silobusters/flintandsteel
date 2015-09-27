@@ -80,6 +80,7 @@ gulp.task('jshint', function() {
 
     return gulp.src([
         'src/!lib/*.js',
+        'server/**/*.js',
         'gulpfile.js'
     ])
     .pipe(jshint())
