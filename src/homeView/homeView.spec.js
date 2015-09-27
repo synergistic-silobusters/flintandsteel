@@ -1,4 +1,13 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+
 describe('HomeViewCtrl', function() {
+    "use strict";
+
     var scope, ctrl;
 
     beforeEach(module('flintAndSteel'));
