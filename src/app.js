@@ -1,6 +1,5 @@
 /* global angular */
 
-
 /*
     This sets up the main app module and also tells Angular
     what this module depends on to work correctly.
@@ -14,6 +13,8 @@ angular.module('flintAndSteel', [
 .config([
     '$urlRouterProvider', '$stateProvider', '$mdIconProvider', '$mdThemingProvider',
     function($urlRouterProvider, $stateProvider, $mdIconProvider, $mdThemingProvider) {
+        "use strict";
+        
         $stateProvider
             .state('home', {
                 url: '/',
