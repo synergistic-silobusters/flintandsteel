@@ -56,8 +56,8 @@ angular.module('flintAndSteel', [
     		})
     		.state('ideabrowse', {
     			url: '/ideabrowse',
-    			templateUrl: 'ideas/ideaBrowse/ideaBrowse.tpl.html',
-    			controller: 'IdeaBrowseCtrl'
+    			templateUrl: 'ideas/ideaBrowseView/ideaBrowseView.tpl.html',
+    			controller: 'IdeaBrowseViewCtrl'
     		});
 
 		$urlRouterProvider.otherwise('/');
