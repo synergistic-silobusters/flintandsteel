@@ -31,16 +31,13 @@ datastore.open('./server/datastore/users', function(err, store) {
 });
 
 exports.create = function(id, title, description, author, likes, comments, backs, cb) {
-  var idea = Idea.create(id, title, description, author, likes, comments, backs);
-  ideasDb.save(
-    idea
-        ,
-    function(err, doc) {
-      if (err) {
-        cb(err);
-      }
-      cb(null, doc);
-  });
+    var idea = Idea.create(id, title, description, author, likes, comments, backs);
+    ideasDb.save(idea, function(err, doc) {
+        if (err) {
+            cb(err);
+        }
+        cb(null, doc);
+    });
 };
 
 exports.get = function(id, cb) {
