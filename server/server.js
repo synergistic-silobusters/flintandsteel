@@ -1,3 +1,6 @@
+/* global __dirname */
+/* global process */
+
 var express = require('express'),
     morgan = require('morgan'),
     path = require('path'),
@@ -9,11 +12,13 @@ var express = require('express'),
     _ = require('lodash'),
     ideas = require('./ideas');
 
-var userDb, ideasDb, ipExternal;
+var userDb, ideasDb;
 
 var IdeasInstance = ideas.getInstance();
 
 datastore.open('./server/datastore/users', function(err, store) {
+    "use strict";
+
     if (err) {
         console.log(err);
     }
@@ -23,6 +28,8 @@ datastore.open('./server/datastore/users', function(err, store) {
 });
 
 datastore.open('./server/datastore/ideas', function(err, store) {
+    "use strict";
+
     if (err) {
         console.log(err);
     }
@@ -34,11 +41,15 @@ datastore.open('./server/datastore/ideas', function(err, store) {
 var app = express();
 
 // Datastore filter to find everything
-var filter = function dbFilter(doc) {
+var filter = function dbFilter() {
+    "use strict";
+
     return true;
 };
 
 function startSees(res) {
+    "use strict";
+
     res.writeHead(200, {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
@@ -53,7 +64,7 @@ function startSees(res) {
             res.write("id: " + id + "\n");    
         }
         res.write("data: " + JSON.stringify(data) + "\n\n");
-    }
+    };
 }
 
 app.use(morgan(':remote-addr - ' +
@@ -70,6 +81,8 @@ app.use(bodyParser.json());
 
 
 app.post('/login', function(req, res) {
+    "use strict";
+
     userDb.get(req.body.username, function(err, doc) {
         if (err) {
             res.status(200).json({ status: 'USER_NOT_FOUND' });
@@ -97,6 +110,8 @@ app.post('/login', function(req, res) {
     });
 });
 app.post('/signup', function(req, res) {
+    "use strict";
+
     userDb.save(
     {
         key: req.body.username,
@@ -118,6 +133,8 @@ app.post('/signup', function(req, res) {
     res.sendStatus(201);
 });
 app.post('/idea', function(req, res) {
+    "use strict";
+
     ideas.create(
         req.body.id,
         req.body.title,
@@ -141,6 +158,8 @@ app.post('/idea', function(req, res) {
     res.sendStatus(201);
 });
 app.post('/updateidea', function(req, res) {
+    "use strict";
+
     ideas.update(req.body.id, req.body.property, req.body.value, function(err){
         if (err) {
             res.sendStatus(500);
@@ -157,12 +176,14 @@ app.post('/updateidea', function(req, res) {
     });
 });
 app.post('/deleteidea', function(req, res) {
+    "use strict";
+
     ideas.delete(req.body.id, function(err){
         if (err) {
             res.sendStatus(500);
         }
         else {
-            ideas.get(req.body.id, function(err, idea) {
+            ideas.get(req.body.id, function(/* err, idea */) {
                 IdeasInstance.updateIdea(null, req.body.id);
             });
             ideas.fetch(function(err, headers) {
@@ -173,6 +194,8 @@ app.post('/deleteidea', function(req, res) {
     });
 });
 app.post('/updateaccount', function(req, res) {
+    "use strict";
+    
     userDb.get(req.body.username, function(err, doc) {
         if (err) {
             res.sendStatus(500);
@@ -195,6 +218,8 @@ app.post('/updateaccount', function(req, res) {
 });
 
 app.get('/idea', function(req, res) {
+    "use strict";
+
     ideas.get(req.query.id, function(err, idea) {
         if (err) {
             res.status(200).send('IDEA_NOT_FOUND');
@@ -205,18 +230,23 @@ app.get('/idea', function(req, res) {
     });
 });
 app.get('/idea/:id/events', function (req, res) {
+    "use strict";
+
     var sse = startSees(res);
+
+    function updateIdea(idea) {
+        sse("updateIdea_" + req.params.id, idea, req.params.id);
+    }
+
     IdeasInstance.on("updateIdea_" + req.params.id, updateIdea);
 
     req.on("close", function() {
         IdeasInstance.removeListener("updateIdea_" + req.params.id, updateIdea);
     });
-
-    function updateIdea(idea) {
-        sse("updateIdea_" + req.params.id, idea, req.params.id);
-    }
 });
 app.get('/ideaheaders', function(req, res) {
+    "use strict";
+
     ideas.fetch(function(err, headers) {
         if (err) {
             res.sendStatus(500);
@@ -230,18 +260,23 @@ app.get('/ideaheaders', function(req, res) {
     });
 });
 app.get('/ideaheaders/events', function (req, res) {
+    "use strict";
+
     var sse = startSees(res);
+
+    function updateHeaders(headers) {
+        sse("newHeaders", headers);
+    }
+
     IdeasInstance.on("newHeaders", updateHeaders);
 
     req.on("close", function() {
         IdeasInstance.removeListener("newHeaders", updateHeaders);
     });
-
-    function updateHeaders(headers) {
-        sse("newHeaders", headers);
-    }
 });
 app.get('/uniqueid', function(req, res) {
+    "use strict";
+
     var dbToSearch,
         propName = '';
     if (req.query.for === 'idea') {
@@ -274,15 +309,14 @@ app.get('/uniqueid', function(req, res) {
     }
 });
 app.get('/isuniqueuser', function(req, res) {
+    "use strict";
+
     userDb.scan(filter, function(err, docs) {
         if (err) {
             res.sendStatus(500);
         }
         else {
             var userFound = false;
-            var matcher = function matcher(item) {
-                return item === req.query.user;
-            };
             for (var i = 0; i < docs.length; i++) {
                 userFound = (docs[i].username === req.query.user);
                 if (userFound) {
@@ -295,6 +329,8 @@ app.get('/isuniqueuser', function(req, res) {
 });
 
 external(function (err, ipExternal) {
+    "use strict";
+
     if (err) {
         console.log(
             chalk.red('Could not determine network status, server running in local-only mode') +

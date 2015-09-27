@@ -1,3 +1,5 @@
+/* global exports */
+
 var Idea = require('./idea');
 var chalk = require('chalk');
 var datastore = require('docstore');
@@ -8,11 +10,15 @@ var ideasDb, userDb;
 var IdeasSingleton;
 
 // Datastore filter to find everything
-var filter = function dbFilter(doc) {
+var filter = function dbFilter() {
+    "use strict";
+
     return true;
 };
 
 datastore.open('./server/datastore/ideas', function(err, store) {
+    "use strict";
+
     if (err) {
         console.log(err);
     }
@@ -22,6 +28,8 @@ datastore.open('./server/datastore/ideas', function(err, store) {
 });
 
 datastore.open('./server/datastore/users', function(err, store) {
+    "use strict";
+
     if (err) {
         console.log(err);
     }
@@ -31,6 +39,8 @@ datastore.open('./server/datastore/users', function(err, store) {
 });
 
 exports.create = function(id, title, description, author, likes, comments, backs, cb) {
+    "use strict";
+
     var idea = Idea.create(id, title, description, author, likes, comments, backs);
     ideasDb.save(idea, function(err, doc) {
         if (err) {
@@ -41,6 +51,8 @@ exports.create = function(id, title, description, author, likes, comments, backs
 };
 
 exports.get = function(id, cb) {
+    "use strict";
+
     ideasDb.get('idea_' + id, function(err, doc) {
         if (err) {
             cb(err);
@@ -55,6 +67,8 @@ exports.get = function(id, cb) {
 };
 
 exports.update = function(id, property, value, cb) {
+    "use strict";
+
     ideasDb.get('idea_' + id, function(err, doc) {
         if (err) {
             cb(err);
@@ -73,11 +87,11 @@ exports.update = function(id, property, value, cb) {
             });
         }
     });
-}
-
-exports.fetch = getHeaders;
+};
 
 exports.delete = function(id, cb) {
+    "use strict";
+
     ideasDb.get('idea_' + id, function(err, doc) {
         if (err) {
             cb(err);
@@ -97,8 +111,8 @@ exports.delete = function(id, cb) {
                         console.log(ideaIdIndex);
                         if (ideaIdIndex >= 0) {
                             userDoc.likedIdeas.splice(ideaIdIndex, 1);
-                            userDb.save(userDoc, function(err) {
-                                console.log("ERR: Could not resave updated user during idea delete.")
+                            userDb.save(userDoc, function(/* err */) {
+                                console.log("ERR: Could not resave updated user during idea delete.");
                             });
                         }
                     });
@@ -117,10 +131,12 @@ exports.delete = function(id, cb) {
             });
         }
     });
-}
+};
 
 function getHeaders(cb) {
-  ideasDb.scan(filter, function(err, docs) {
+    "use strict";
+
+    ideasDb.scan(filter, function(err, docs) {
         if (err) {
             cb(err);
         }
@@ -148,11 +164,11 @@ function getHeaders(cb) {
     });
 }
 
-exports.getInstance = function() {
-    return new Ideas();
-}
+exports.fetch = getHeaders;
 
 function Ideas() {
+    "use strict";
+
     if (IdeasSingleton) {
         return IdeasSingleton;
     }
@@ -162,12 +178,22 @@ function Ideas() {
     }
 }
 
+exports.getInstance = function() {
+    "use strict";
+
+    return new Ideas();
+};
+
 require("util").inherits(Ideas, require("events").EventEmitter);
 
 Ideas.prototype.newHeaders = function(headers) {
+    "use strict";
+
     this.emit("newHeaders", headers);
-}
+};
 
 Ideas.prototype.updateIdea = function(idea, oldKey) {
+    "use strict";
+
     this.emit("updateIdea_" + oldKey || idea.key , idea);
-}
+};
