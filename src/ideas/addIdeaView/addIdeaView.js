@@ -5,6 +5,8 @@ angular.module('flintAndSteel')
     [
         '$scope', '$state', '$mdToast', 'ideaSvc', 'loginSvc',
         function($scope, $state, $mdToast, ideaSvc, loginSvc) {
+            "use strict";
+
             if (!loginSvc.isUserLoggedIn()) {
                 $state.go('login', {'retState': $state.current.name});
             }
@@ -28,7 +30,7 @@ angular.module('flintAndSteel')
                         $scope.$emit('newIdeaAdded');
                         $state.go('home');
                     }
-                }, function(data, status, header, config) {
+                }, function(data, status) {
                     console.log(status);
                 });
             };
