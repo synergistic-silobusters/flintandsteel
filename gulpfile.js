@@ -1,3 +1,5 @@
+/* global __dirname */
+
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     inject = require('gulp-inject'),
@@ -24,6 +26,8 @@ var paths = {
 gulp.task('default', ['usage']);
 
 gulp.task('usage', function() {
+    "use strict";
+
     var usageLines = [
         '',
         '',
@@ -55,6 +59,8 @@ gulp.task('usage', function() {
 });
 
 gulp.task('start', ['_cleanUp', 'test:client', 'inject'], function() {
+    "use strict";
+
     nodemon({
         script: 'server/server.js',
         'ignore': ['spec/*']
@@ -62,12 +68,16 @@ gulp.task('start', ['_cleanUp', 'test:client', 'inject'], function() {
 });
 
 gulp.task('inject', function() {
+    "use strict";
+
     gulp.src('./src/index.html')
         .pipe(inject(gulp.src(paths.js, {read: false}), {relative: true}))
         .pipe(gulp.dest('./src'));
-})
+});
 
 gulp.task('jshint', function() {
+    "use strict";
+
     return gulp.src([
         'src/!lib/*.js',
         'gulpfile.js'
@@ -77,6 +87,8 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('test:client', function(done) {
+    "use strict";
+
     karma.start({
         configFile: __dirname + '/karma.conf.js',
         singleRun: true
@@ -84,6 +96,8 @@ gulp.task('test:client', function(done) {
 });
 
 gulp.task('clean:modules', function() {
+    "use strict";
+
     return del([
         'node_modules',
         'src/lib'
@@ -91,6 +105,8 @@ gulp.task('clean:modules', function() {
 });
 
 gulp.task('clean:db', function() {
+    "use strict";
+
     return del([
         'server/datastore/users/*',
         'server/datastore/ideas/*'
@@ -98,12 +114,16 @@ gulp.task('clean:db', function() {
 });
 
 gulp.task('_createDataDirs', function() {
+    "use strict";
+
     return gulp.src('README.md')
     .pipe(gulp.dest('server/datastore/ideas'))
     .pipe(gulp.dest('server/datastore/users'));
 });
 
 gulp.task('_cleanUp', ['_createDataDirs'], function() {
+    "use strict";
+
     return del([
         'server/datastore/users/README.md',
         'server/datastore/ideas/README.md'
@@ -111,19 +131,20 @@ gulp.task('_cleanUp', ['_createDataDirs'], function() {
 });
 
 gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
-    filePattern = "server/datastore/ideas/idea_X.json";
-    fileName    = filePattern.replace("X", "0");
+    "use strict";
 
-    fs.stat(fileName, function(err, stat) {
-        var id = 0;
+    var filePattern = "server/datastore/ideas/idea_X.json";
+    var fileName    = filePattern.replace("X", "0");
+
+    fs.stat(fileName, function(err /*, stat */) {
 
         if (err === null) {
             // File exists
             gutil.log(chalk.red("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue"));
         } 
-        else if (err.code == 'ENOENT') {
+        else if (err.code === 'ENOENT') {
             // File does not exist, generate ideas
-            ideas.forEach(function(idea, index, arr) {
+            ideas.forEach(function(idea, index /*, arr */) {
                 fs.writeFile(filePattern.replace("X", index), JSON.stringify(idea), function(err) {
                     if (err) {
                         // Should no longer happen due to the gulp pre-requisite tasks.
