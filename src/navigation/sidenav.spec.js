@@ -1,5 +1,15 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('SidenavCtrl', function() {
-    var $rootScope, scope, ctrl, $mdSidenav, $state, ideaSvcMock, $loginSvcMock;
+    "use strict";
+
+    var $rootScope, scope, ctrl, $mdSidenav, $state, ideaSvcMock, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
@@ -47,16 +57,18 @@ describe('SidenavCtrl', function() {
         });
 
         it('should navigate to the login if user is guest and tries to add idea', function() {
+            var expectedState = 'login';
+
             state = 'addIdea';
             scope.navTo(state);
-            expectedState = 'login';
-
+            
             expect($state.go).toHaveBeenCalledWith(expectedState);
             // TODO - figure out how to test the $mdSidenav calls.
         });
 
         it('should navigate to the add idea page if user is logged in and tries to add idea', function() {
-            account = {'username': 'MainManDarth'};
+            var account = {'username': 'MainManDarth'};
+            
             loginSvcMock.checkLogin(account);
             state = 'addIdea';
             scope.navTo(state);

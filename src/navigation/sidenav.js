@@ -1,13 +1,16 @@
 /* global angular */
+/* global EventSource */
 
 angular.module('flintAndSteel')
 .controller('SidenavCtrl',
     [
         '$scope', '$state', '$mdSidenav', 'ideaSvc', 'loginSvc',
         function($scope, $state, $mdSidenav, ideaSvc, loginSvc) {
+            "use strict";
+
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
                 $scope.topIdeas = data;
-            }, function getIdeaHeadersError(data, status, headers, config) {
+            }, function getIdeaHeadersError(data, status) {
                 console.log(status);
             });
 
@@ -43,10 +46,10 @@ angular.module('flintAndSteel')
 
             $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 
-            $scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent(event) {
+            $scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent() {
                 ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
                     $scope.topIdeas = data;
-                },function getIdeaHeadersError(data, status, headers, config) {
+                },function getIdeaHeadersError(data, status) {
                     console.log(status);
                 });
             });
