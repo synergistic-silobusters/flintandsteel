@@ -1,42 +1,42 @@
 describe('SignupViewCtrl', function() {
-	var scope, ctrl, $state, $mdToast, loginSvcMock;
+    var scope, ctrl, $state, $mdToast, loginSvcMock;
 
-	beforeEach(module('flintAndSteel'));
-	beforeEach(module('ui.router'));
+    beforeEach(module('flintAndSteel'));
+    beforeEach(module('ui.router'));
 
-	beforeEach(inject(function ($rootScope, $controller, _$state_, _$mdToast_, _loginSvcMock_) {
-		scope = $rootScope.$new();
-		$state = _$state_;
-		$mdToast = _$mdToast_;
-		loginSvcMock = _loginSvcMock_;
+    beforeEach(inject(function ($rootScope, $controller, _$state_, _$mdToast_, _loginSvcMock_) {
+        scope = $rootScope.$new();
+        $state = _$state_;
+        $mdToast = _$mdToast_;
+        loginSvcMock = _loginSvcMock_;
 
-		spyOn($state, 'go');
-		spyOn($mdToast, 'show');
+        spyOn($state, 'go');
+        spyOn($mdToast, 'show');
 
-		ctrl = $controller('SignupViewCtrl', {
-			$scope: scope,
-			$state: $state,
-			$mdToast: $mdToast,
-			loginSvc: loginSvcMock
-		});
-	}));
+        ctrl = $controller('SignupViewCtrl', {
+            $scope: scope,
+            $state: $state,
+            $mdToast: $mdToast,
+            loginSvc: loginSvcMock
+        });
+    }));
 
-	it('should exist', function() {
-		expect(ctrl).toBeDefined();
-	});
+    it('should exist', function() {
+        expect(ctrl).toBeDefined();
+    });
 
-	describe('$scope.completeSignUp', function() {
-		beforeEach(function() {
-			spyOn(loginSvcMock, 'addUser').and.callFake(function(account, successCb, errorCb) {
-				successCb('Created');
-			});
-		});
+    describe('$scope.completeSignUp', function() {
+        beforeEach(function() {
+            spyOn(loginSvcMock, 'addUser').and.callFake(function(account, successCb, errorCb) {
+                successCb('Created');
+            });
+        });
 
-		it('should sign up a new user', function() {
-			scope.completeSignUp({ name: 'Guybrush Threepwood' });
+        it('should sign up a new user', function() {
+            scope.completeSignUp({ name: 'Guybrush Threepwood' });
 
-			expect($mdToast.show).toHaveBeenCalled();
-			expect($state.go).toHaveBeenCalledWith('login');
-		});	
-	});
+            expect($mdToast.show).toHaveBeenCalled();
+            expect($state.go).toHaveBeenCalledWith('login');
+        }); 
+    });
 });
