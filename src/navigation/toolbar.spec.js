@@ -1,4 +1,14 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('ToolbarCtrl', function() {
+    "use strict";
+    
     var scope, ctrl, $state, $stateParams, $mdSidenav, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
