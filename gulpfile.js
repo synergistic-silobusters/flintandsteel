@@ -79,9 +79,10 @@ gulp.task('jshint', function() {
     "use strict";
 
     return gulp.src([
-        'src/!lib/*.js',
+        'src/**/*.js',
         'server/**/*.js',
-        'gulpfile.js'
+        'gulpfile.js',
+        '!src/lib/**/*.*'
     ])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
