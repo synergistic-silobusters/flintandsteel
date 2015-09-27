@@ -3,11 +3,7 @@
 angular.module('flintAndSteel')
 .controller('AddIdeaViewCtrl',
     [
-        '$scope',
-        '$state',
-        '$mdToast',
-        'ideaSvc',
-        'loginSvc',
+        '$scope', '$state', '$mdToast', 'ideaSvc', 'loginSvc',
         function($scope, $state, $mdToast, ideaSvc, loginSvc) {
             if (!loginSvc.isUserLoggedIn()) {
                 $state.go('login', {'retState': $state.current.name});
