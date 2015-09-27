@@ -39,6 +39,19 @@ Refer to [README.md](./README.md) for installation and execution instructions.
 
 Please use 4 spaces as indentation for the sake of uniformity. 
 
+To do this in Sublime Text 3, edit the `Preferences.sublime-settings` file and add
+
+```json
+{
+  "tab_size": 4,
+  "translate_tabs_to_spaces": true,
+  "use_tab_stops": true
+}
+```
+
+For Notepad++ Use thanks to David Parisi:
+Settings -> Preferences -> Tab Settings.  Check Replace by space and make sure tab size is set to 4. 
+
 After you make your changes and before committing, make sure to
 * run `gulp jshint` to lint the code and solve any issues presented
 * change `package.json` and `bower.json` if a new module was installed using the `--save` command line switch, i.e. `[npm|bower] install --save <module_name>`
