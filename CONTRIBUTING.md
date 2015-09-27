@@ -49,7 +49,8 @@ To do this in Sublime Text 3, edit the `Preferences.sublime-settings` file and a
 }
 ```
 
-For Notepad++ Use thanks to David Parisi:
+For Notepad++, use (credit to David Parisi):
+
 Settings -> Preferences -> Tab Settings.  Check Replace by space and make sure tab size is set to 4. 
 
 After you make your changes and before committing, make sure to
