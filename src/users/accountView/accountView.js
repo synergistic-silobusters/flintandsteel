@@ -5,6 +5,8 @@ angular.module('flintAndSteel')
     [
         '$scope', '$state', '$mdToast', 'loginSvc',
         function($scope, $state, $mdToast, loginSvc) {
+            "use strict";
+            
             // NOTE: Nothing can go above this!
             if(!loginSvc.isUserLoggedIn()) {
                 $state.go('home');

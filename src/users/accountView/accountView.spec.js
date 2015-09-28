@@ -1,4 +1,14 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('AccountViewCtrl', function() {
+    "use strict";
+
     var scope, ctrl, $state, $mdToast, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
