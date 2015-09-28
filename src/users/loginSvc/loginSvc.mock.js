@@ -4,6 +4,8 @@ angular.module('flintAndSteel')
 .factory('loginSvcMock',
     [
         function() {
+            "use strict";
+
             var mockUserAccount = {
                 id: 1,
                 username: 'MainManDarth',
@@ -22,15 +24,15 @@ angular.module('flintAndSteel')
             var loggedIn = false;
 
             return {
-                checkLogin: function checkLogin(account, successCb, errorCb){
-                    if (account['username'] === mockUserAccount['username']) {
+                checkLogin: function checkLogin(account){
+                    if (account.username === mockUserAccount.username) {
                         loggedIn = true;
                     }
                     else {
                         loggedIn = false;
                     }
                 },
-                addUser: function addUser(account, successCb, errorCb) {
+                addUser: function addUser() {
                     throw new NotImplementedException('addUser');
                 },
                 isUserLoggedIn: function isUserLoggedIn() {
@@ -42,16 +44,16 @@ angular.module('flintAndSteel')
                 getProperty: function getProperty(propertyName) {
                     return mockUserAccount[propertyName];
                 },
-                likeIdea: function likeIdea(ideaId) {
+                likeIdea: function likeIdea() {
                     throw new NotImplementedException('likeIdea');
                 },
-                unlikeIdea: function unlikeIdea(ideaId) {
+                unlikeIdea: function unlikeIdea() {
                     throw new NotImplementedException('unlikeIdea');
                 },
-                updateAccount: function updateAccount(account, successCb, errorCb) {
+                updateAccount: function updateAccount() {
                     throw new NotImplementedException('updateAccount');
                 },
-                checkValidUsername: function checkValidUsername(username, successCb, errorCb) {
+                checkValidUsername: function checkValidUsername() {
                     throw new NotImplementedException('checkValidUsername');
                 }
             };

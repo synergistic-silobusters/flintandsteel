@@ -6,6 +6,8 @@ angular.module('flintAndSteel')
     [
         '$http', '$rootScope',
         function($http, $rootScope) {
+            "use strict";
+
             this.checkLogin = function checkLogin(account, successCb, errorCb){
                 //console.log(account);
                 $http.post('/login', account)
@@ -26,7 +28,7 @@ angular.module('flintAndSteel')
                             .success(successCb)
                             .error(errorCb);
                     })
-                    .error(function getIdFailed(data, status, headers, config) {
+                    .error(function getIdFailed(data, status) {
                         console.log(status);
                     });
             };
@@ -48,9 +50,9 @@ angular.module('flintAndSteel')
 
             this.likeIdea = function likeIdea(ideaId) {
                 $rootScope.account.likedIdeas.push(ideaId);
-                this.updateAccount($rootScope.account, function accountUpdateSuccess(data) {
+                this.updateAccount($rootScope.account, function accountUpdateSuccess() {
                     // nothing *really* needs to happen here
-                }, function accountUpdateError(data, status, headers, config) {
+                }, function accountUpdateError(data, status) {
                     console.log(status);
                 });
             };
@@ -59,9 +61,9 @@ angular.module('flintAndSteel')
                 _.remove($rootScope.account.likedIdeas, function (item) {
                     return item === ideaId;
                 });
-                this.updateAccount($rootScope.account, function accountUpdateSuccess(data) {
+                this.updateAccount($rootScope.account, function accountUpdateSuccess() {
                     // nothing *really* needs to happen here
-                }, function accountUpdateError(data, status, headers, config) {
+                }, function accountUpdateError(data, status) {
                     console.log(status);
                 });
             };

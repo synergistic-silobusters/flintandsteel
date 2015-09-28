@@ -1,4 +1,15 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+/* global jasmine */
+
 describe('loginSvc', function() {
+    "use strict";
+
     var loginSvc, $httpBackend, $rootScope, dummyUser, dummyRes;
 
     beforeEach(module('flintAndSteel'));
@@ -43,9 +54,7 @@ describe('loginSvc', function() {
 
             loginSvc.checkLogin(dummyUser, function (data) {
                 expect(data.status).toBe('AUTH_OKAY');
-            }, function (data, status, headers, config) {
-
-            });
+            }, function() { });
 
             $httpBackend.flush();
         });
@@ -67,9 +76,7 @@ describe('loginSvc', function() {
 
             loginSvc.addUser(dummyUser, function (data) {
                 expect(data).toBe('Created');
-            }, function (data, status, headers, config) {
-
-            });
+            }, function() { });
 
             $httpBackend.flush();
         });
@@ -185,9 +192,7 @@ describe('loginSvc', function() {
 
             loginSvc.updateAccount(updatedUser, function (data) {
                 expect(data).toBe('OK');
-            }, function (data, status, headers, config) {
-
-            });
+            }, function() { });
 
             $httpBackend.flush();
         });
@@ -207,9 +212,7 @@ describe('loginSvc', function() {
 
             loginSvc.checkValidUsername('dummy', function (data) {
                 expect(data).toBe(true);
-            }, function (data, status, headers, config) {
-
-            });
+            }, function() { });
 
             $httpBackend.flush();
         });
@@ -220,9 +223,7 @@ describe('loginSvc', function() {
 
             loginSvc.checkValidUsername('dummy', function (data) {
                 expect(data).toBe(false);
-            }, function (data, status, headers, config) {
-
-            });
+            }, function() { });
 
             $httpBackend.flush();
         });
