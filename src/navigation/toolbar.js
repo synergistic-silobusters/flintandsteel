@@ -10,19 +10,18 @@ angular.module('flintAndSteel')
             $scope.displayOverflow = false;
 
             $scope.accountClick = function accountClick() {
+                var returnState;
+
                 if (loginSvc.isUserLoggedIn()) {
                     $state.go('account');
                 }
-                /*
                 else {
-                    var returnState = $state.current.name +
+                    returnState = $state.current.name +
                         $state.go('login', { 
                             'retState': $state.current.name, 
                             'retParams': $stateParams.ideaId
                         });
                 }
-                */
-
             };
 
             $scope.stateIsHome = function checkState() {
