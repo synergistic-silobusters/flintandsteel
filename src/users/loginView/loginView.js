@@ -5,6 +5,7 @@ angular.module('flintAndSteel')
     [
         '$scope', '$state', '$stateParams', '$mdToast', 'loginSvc',
         function($scope, $state, $stateParams, $mdToast, loginSvc) {
+            "use strict";
 
             $scope.loginUser = function(account) {
                 loginSvc.checkLogin(account, function LoginSuccess(data) {
@@ -43,7 +44,7 @@ angular.module('flintAndSteel')
                         );
                     }
                 },
-                function loginError(data, status, headers, config) {
+                function loginError(data, status) {
                     console.log(status);
                 });
             };
