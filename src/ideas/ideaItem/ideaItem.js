@@ -4,6 +4,8 @@ angular.module('flintAndSteel')
 .directive('ideaItem', 
     [
         function() {
+            "use strict";
+            
             return {
                 restrict: 'E',
                 scope: {
