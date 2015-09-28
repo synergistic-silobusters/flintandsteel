@@ -85,7 +85,8 @@ gulp.task('jshint', function() {
         '!src/lib/**/*.*'
     ])
     .pipe(jshint())
-    .pipe(jshint.reporter(stylish));
+    .pipe(jshint.reporter(stylish))
+    .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('test:client', function(done) {
@@ -161,4 +162,4 @@ gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
             throw err;
         }
     });
-});
+})
