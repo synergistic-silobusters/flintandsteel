@@ -161,4 +161,4 @@ gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
             throw err;
         }
     });
-});
+})
