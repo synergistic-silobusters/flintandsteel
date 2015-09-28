@@ -1,6 +1,14 @@
-describe('SearchFilter', function() {
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
 
-    var search;
+describe('SearchFilter', function() {
+    "use strict";
+
+    var $filter, search;
 
     var testList = [
         {
@@ -38,7 +46,7 @@ describe('SearchFilter', function() {
     }));
 
     it('should return all results if the query is empty', function() {
-        var query = undefined;
+        var query;
         expect(search(testList, query).length).toEqual(4);
 
         query = "";
