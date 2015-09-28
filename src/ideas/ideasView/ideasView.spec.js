@@ -1,4 +1,14 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('IdeasViewCtrl', function() {
+    "use strict";
+
     var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
@@ -199,56 +209,56 @@ describe('IdeasViewCtrl', function() {
         it('should allow the author to edit the idea', function() {
             loginSvcMock.checkLogin(authorAccount);
             expect(ctrl.isUserAuthor()).toBe(true);
-            ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
+            ctrl.editIdea(mockIdea.title, mockIdea.description);
             expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
         });
 
         it('should not allow someone other than the author to edit the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
             expect(ctrl.isUserAuthor()).toBe(false);
-            ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
+            ctrl.editIdea(mockIdea.title, mockIdea.description);
             expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
         });
 
         it('should allow the author to add text to the idea description', function() {
-            var description = mockIdea["description"];
-            ctrl.editIdea(mockIdea["title"], mockIdea["description"] + " Booyah!");
+            var description = mockIdea.description;
+            ctrl.editIdea(mockIdea.title, mockIdea.description + " Booyah!");
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
-            expect(mockIdea["description"]).toBe(description + " Booyah!");
+            expect(mockIdea.description).toBe(description + " Booyah!");
         });
 
         it('should allow the author to delete text to the idea description', function() {
-            var description = mockIdea["description"];
-            ctrl.editIdea(mockIdea["title"], mockIdea["description"].substr(0, 4));
+            var description = mockIdea.description;
+            ctrl.editIdea(mockIdea.title, mockIdea.description.substr(0, 4));
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
-            expect(mockIdea["description"]).toBe(description.substr(0, 4));
+            expect(mockIdea.description).toBe(description.substr(0, 4));
         });
 
         it('should allow the author to overwrite the old idea title', function(){
-            var title = mockIdea["title"];
-            ctrl.editIdea("New Title", mockIdea["description"]);
+            var title = mockIdea.title;
+            ctrl.editIdea("New Title", mockIdea.description);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
-            expect(mockIdea["title"]).not.toBe(title);
-            expect(mockIdea["title"]).toBe("New Title");
+            expect(mockIdea.title).not.toBe(title);
+            expect(mockIdea.title).toBe("New Title");
         });
 
         it('should save the last edited date/time', function(){
             var now = (new Date()).toISOString();
-            ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
+            ctrl.editIdea(mockIdea.title, mockIdea.description);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
-            expect(mockIdea["editedOn"].substr(-7,6)).toBeCloseTo(now.substr(-7,6), 1);
+            expect(mockIdea.editedOn.substr(-7,6)).toBeCloseTo(now.substr(-7,6), 1);
         });
 
         it('should refresh $scope.idea with the new idea data', function() {
-            ctrl.editIdea(mockIdea["title"], mockIdea["description"]);
+            ctrl.editIdea(mockIdea.title, mockIdea.description);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });

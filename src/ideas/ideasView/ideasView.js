@@ -1,10 +1,14 @@
 /* global angular */
+/* global _ */
+/* global moment */
+/* global EventSource */
 
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
         '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', '$mdToast',
         function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast){
+            "use strict";
 
             /*
             The way this works
@@ -40,10 +44,10 @@ angular.module('flintAndSteel')
                         $scope.idea = data;
                         ctrl.enableEdit = false;
                     }
-                }, function getIdeaError(data, status, headers, config) {
+                }, function getIdeaError(data, status) {
                     console.log(status);
                 });
-            }
+            };
 
             ctrl.refreshIdea();
 
@@ -58,7 +62,7 @@ angular.module('flintAndSteel')
                 else {
                     var content;
                     if (ctrl.isUserAuthor()) {
-                        content = "Your idea was successfully deleted."
+                        content = "Your idea was successfully deleted.";
                     }
                     else {
                         content = 'Oh no! The author just deleted that idea.';
@@ -78,7 +82,7 @@ angular.module('flintAndSteel')
 
             $scope.momentizeTime = function momentizeTime(time) {
                 return moment(time).calendar();
-            }
+            };
 
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
@@ -99,10 +103,8 @@ angular.module('flintAndSteel')
                         });
                     }
                     ideaSvc.updateIdea($scope.idea.id, type, $scope.idea[type],
-                    function success(data) {
-                        //console.log(data);
-                    },
-                    function error(data, status, headers, config) {
+                    function success() { },
+                    function error(data, status) {
                         console.log(status);
                     });
 
@@ -116,10 +118,8 @@ angular.module('flintAndSteel')
             $scope.likeIdea = function likeIdea() {
                 $scope.idea.likes.push(loginSvc.getProperty('name'));
                 ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
-                    function success(data) {
-                        //console.log(data);
-                    },
-                    function error(data, status, headers, config) {
+                    function success() { },
+                    function error(data, status) {
                         console.log(status);
                     });
                 loginSvc.likeIdea($scope.idea.id);
@@ -130,10 +130,8 @@ angular.module('flintAndSteel')
                     return n === loginSvc.getProperty('name');
                 });
                 ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
-                    function success(data) {
-                        //console.log(data);
-                    },
-                    function error(data, status, headers, config) {
+                    function success() { },
+                    function error(data, status) {
                         console.log(status);
                     });
                 loginSvc.unlikeIdea($scope.idea.id);
@@ -241,8 +239,8 @@ angular.module('flintAndSteel')
                 },
                 function() {
                     return;
-                })
-            }
+                });
+            };
 
             ctrl.isUserAuthor = function() {
                 if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
