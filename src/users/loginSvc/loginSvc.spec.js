@@ -143,7 +143,7 @@ describe('loginSvc', function() {
             dummyLikedIdea = 'dummy_liked_idea';
             $rootScope.account = dummyUser;
 
-            spyOn(loginSvc, 'updateAccount').and.callFake(function(account, successCb, errorCb) {
+            spyOn(loginSvc, 'updateAccount').and.callFake(function(account, successCb) {
                 successCb('OK');
             });
         });
@@ -163,7 +163,7 @@ describe('loginSvc', function() {
             $rootScope.account = dummyUser;
             $rootScope.account.likedIdeas.push(dummyLikedIdea);
 
-            spyOn(loginSvc, 'updateAccount').and.callFake(function(account, successCb, errorCb) {
+            spyOn(loginSvc, 'updateAccount').and.callFake(function(account, successCb) {
                 successCb('OK');
             });
         });
