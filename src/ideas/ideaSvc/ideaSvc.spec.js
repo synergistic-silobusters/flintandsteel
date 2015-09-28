@@ -1,4 +1,14 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global moment */
+
 describe('ideaSvc', function() {
+    "use strict";
+
     var ideaSvc, $httpBackend, dummyIdea;
 
     beforeEach(module('flintAndSteel'));
@@ -58,9 +68,7 @@ describe('ideaSvc', function() {
 
             ideaSvc.postIdea(dummyIdea, function (data) {
                 expect(data).toBe('Created');
-            }, function (data, status, headers, config) {
-
-            });
+            }, function() { });
 
             $httpBackend.flush();
         });
@@ -77,11 +85,7 @@ describe('ideaSvc', function() {
         it('it should return an idea when provided an idea', function() {
             $httpBackend.expectGET('/idea?id=9001');
 
-            ideaSvc.getIdea(9001, function (data) {
-
-            }, function (data, status, headers, config) {
-
-            });
+            ideaSvc.getIdea(9001, function () { }, function() { });
 
             $httpBackend.flush();
         });
@@ -107,11 +111,7 @@ describe('ideaSvc', function() {
         it('should return idea headers', function() {
             $httpBackend.expectGET('/ideaheaders');
 
-            ideaSvc.getIdeaHeaders(function (data) {
-
-            }, function (data, status, headers, config) {
-
-            });
+            ideaSvc.getIdeaHeaders(function() { }, function() { });
 
             $httpBackend.flush();
         });
@@ -132,11 +132,7 @@ describe('ideaSvc', function() {
         it('should update the idea with new passed in information', function() {
             $httpBackend.expectPOST('/updateidea', updatedIdea);
 
-            ideaSvc.updateIdea('dummy_idea', 'likes', 24, function (data) {
-
-            }, function (data, status, headers, config) {
-
-            });
+            ideaSvc.updateIdea('dummy_idea', 'likes', 24, function() { }, function() { });
 
             $httpBackend.flush();
         });
@@ -155,7 +151,7 @@ describe('ideaSvc', function() {
     });
 
     describe('ideaSvc.deleteIdea', function() {
-        var deleteIdeaHandler, deletedIdea;
+        var deletedIdea, updateIdeaHandler;
 
         beforeEach(function() {
             deletedIdea = {
@@ -167,11 +163,7 @@ describe('ideaSvc', function() {
         it('should delete the idea', function() {
             $httpBackend.expectPOST('/deleteidea', deletedIdea);
 
-            ideaSvc.deleteIdea('dummy_idea', function (data) {
-
-            }, function (data, status, headers, config) {
-
-            });
+            ideaSvc.deleteIdea('dummy_idea', function() { }, function() { });
 
             $httpBackend.flush();
         });

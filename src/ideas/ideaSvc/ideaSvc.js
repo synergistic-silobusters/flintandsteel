@@ -5,6 +5,7 @@ angular.module('flintAndSteel')
     [
         '$http',
         function($http) {
+            "use strict";
 
             this.postIdea = function postIdea(idea, successCb, errorCb){
                 $http.get('/uniqueid?for=idea')
@@ -14,7 +15,7 @@ angular.module('flintAndSteel')
                             .success(successCb)
                             .error(errorCb);
                     })
-                    .error(function getIdFailed(data, status, headers, config) {
+                    .error(function getIdFailed(data, status) {
                         console.log(status);
                     });
             };

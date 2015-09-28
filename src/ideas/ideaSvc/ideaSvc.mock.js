@@ -1,9 +1,12 @@
 /* global angular */
+/* global moment */
 
 angular.module('flintAndSteel')
 .factory('ideaSvcMock',
     [
         function() {
+            "use strict";
+
             var mockIdea = {
                 id: 'mock_idea',
                 title: 'The bestest Idea ever!',
@@ -75,13 +78,13 @@ angular.module('flintAndSteel')
             }
 
             return {
-                postIdea: function postIdea(idea, successCb, errorCb) {
+                postIdea: function postIdea(idea, successCb) {
                     successCb('Created');
                 },
-                getIdea: function getIdea(ideaId, successCb, errorCb) {
+                getIdea: function getIdea(ideaId, successCb) {
                     successCb(mockIdea);
                 },
-                getIdeaHeaders: function getIdeaHeaders(successCb, errorCb) {
+                getIdeaHeaders: function getIdeaHeaders() {
                     return [
                         {
                             id: 'mock_idea',
@@ -91,14 +94,14 @@ angular.module('flintAndSteel')
                         }
                     ];
                 },
-                getUniqueId: function getUniqueId(successCb, errorCb) {
+                getUniqueId: function getUniqueId() {
                     throw new NotImplementedException('getUniqueId');
                 },
-                updateIdea: function updateIdea(ideaId, property, data, successCb, errorCb) {
+                updateIdea: function updateIdea(ideaId, property, data, successCb) {
                     mockIdea[property] = data;
                     successCb('OK');
                 },
-                deleteIdea: function deleteIdea(ideaId, successCb, errorCb) {
+                deleteIdea: function deleteIdea(ideaId, successCb) {
                     successCb('Deleted!');
                 },
                 getBackTypeChips: function getBackTypeChips() {
