@@ -7,6 +7,8 @@
 /* global spyOn */
 
 describe('LoginViewCtrl', function() {
+    "use strict";
+
     var scope, ctrl, $state, $stateParams, $mdToast, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
@@ -40,7 +42,7 @@ describe('LoginViewCtrl', function() {
     describe('$scope.loginUser', function() {
 
         it('should log in a user with valid credentials', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb, errorCb) {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb) {
                 successCb({
                     status: 'AUTH_OK',
                     name: account.name
@@ -56,7 +58,7 @@ describe('LoginViewCtrl', function() {
         });
 
         it('should deny logon for a user with incorrect credentials', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb, errorCb) {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb) {
                 successCb({
                     status: 'AUTH_ERROR'
                 });
@@ -69,7 +71,7 @@ describe('LoginViewCtrl', function() {
         });
 
         it('should deny logon for an unregistered user', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb, errorCb) {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb) {
                 successCb({
                     status: 'USER_NOT_FOUND'
                 });
