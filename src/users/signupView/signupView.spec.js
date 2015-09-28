@@ -1,4 +1,14 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('SignupViewCtrl', function() {
+    "use strict";
+
     var scope, ctrl, $state, $mdToast, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
@@ -27,7 +37,7 @@ describe('SignupViewCtrl', function() {
 
     describe('$scope.completeSignUp', function() {
         beforeEach(function() {
-            spyOn(loginSvcMock, 'addUser').and.callFake(function(account, successCb, errorCb) {
+            spyOn(loginSvcMock, 'addUser').and.callFake(function(account, successCb) {
                 successCb('Created');
             });
         });
