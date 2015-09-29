@@ -10,4 +10,5 @@ before_script:
   
 script: 
   - gulp jshint
+  - gulp jscs
   - gulp test:client
