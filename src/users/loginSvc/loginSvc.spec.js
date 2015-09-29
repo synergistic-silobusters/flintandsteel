@@ -14,7 +14,7 @@ describe('loginSvc', function() {
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function (_loginSvc_, _$httpBackend_, _$rootScope_) {
+    beforeEach(inject(function(_loginSvc_, _$httpBackend_, _$rootScope_) {
         loginSvc = _loginSvc_;
         $httpBackend = _$httpBackend_;
         $rootScope = _$rootScope_;
@@ -52,7 +52,7 @@ describe('loginSvc', function() {
         it('should return a good response for valid details', function() {
             $httpBackend.expectPOST('/login', dummyUser);
 
-            loginSvc.checkLogin(dummyUser, function (data) {
+            loginSvc.checkLogin(dummyUser, function(data) {
                 expect(data.status).toBe('AUTH_OKAY');
             }, function() { });
 
@@ -74,7 +74,7 @@ describe('loginSvc', function() {
             $httpBackend.expectGET('/uniqueid?for=user');
             $httpBackend.expectPOST('/signup', dummyUser);
 
-            loginSvc.addUser(dummyUser, function (data) {
+            loginSvc.addUser(dummyUser, function(data) {
                 expect(data).toBe('Created');
             }, function() { });
 
@@ -84,25 +84,25 @@ describe('loginSvc', function() {
 
     describe('loginSvc.isUserLoggedIn', function() {
 
-         it('should return false for no logged in user', function() {
+        it('should return false for no logged in user', function() {
             expect(loginSvc.isUserLoggedIn()).not.toBeTruthy();
-         });
+        });
 
-         it('should return true for a logged in user', function() {
+        it('should return true for a logged in user', function() {
             $rootScope.account = {
                 status: 'AUTH_OK'
             };
 
             expect(loginSvc.isUserLoggedIn()).toBeTruthy();
-         });
+        });
 
-         it('should return false in the case of login complications', function() {
+        it('should return false in the case of login complications', function() {
             $rootScope.account = {
                 status: 'AUTH_ERROR'
             };
 
             expect(loginSvc.isUserLoggedIn()).not.toBeTruthy();
-         });
+        });
     });
 
     describe('loginSvc.logout', function() {
@@ -190,7 +190,7 @@ describe('loginSvc', function() {
         it('should update the user account', function() {
             $httpBackend.expectPOST('/updateaccount', updatedUser);
 
-            loginSvc.updateAccount(updatedUser, function (data) {
+            loginSvc.updateAccount(updatedUser, function(data) {
                 expect(data).toBe('OK');
             }, function() { });
 
@@ -210,7 +210,7 @@ describe('loginSvc', function() {
         it('should return true for a unique user', function() {
             $httpBackend.expectGET('/isuniqueuser?user=dummy');
 
-            loginSvc.checkValidUsername('dummy', function (data) {
+            loginSvc.checkValidUsername('dummy', function(data) {
                 expect(data).toBe(true);
             }, function() { });
 
@@ -221,7 +221,7 @@ describe('loginSvc', function() {
             checkValidUsernameHandler.respond(200, false);
             $httpBackend.expectGET('/isuniqueuser?user=dummy');
 
-            loginSvc.checkValidUsername('dummy', function (data) {
+            loginSvc.checkValidUsername('dummy', function(data) {
                 expect(data).toBe(false);
             }, function() { });
 

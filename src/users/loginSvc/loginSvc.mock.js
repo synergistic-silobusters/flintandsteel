@@ -24,7 +24,7 @@ angular.module('flintAndSteel')
             var loggedIn = false;
 
             return {
-                checkLogin: function checkLogin(account){
+                checkLogin: function checkLogin(account) {
                     if (account.username === mockUserAccount.username) {
                         loggedIn = true;
                     }

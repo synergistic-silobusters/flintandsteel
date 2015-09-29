@@ -8,10 +8,10 @@ angular.module('flintAndSteel')
         function($http, $rootScope) {
             "use strict";
 
-            this.checkLogin = function checkLogin(account, successCb, errorCb){
+            this.checkLogin = function checkLogin(account, successCb, errorCb) {
                 //console.log(account);
                 $http.post('/login', account)
-                    .success(function (data, status, headers, config) {
+                    .success(function(data, status, headers, config) {
                         $rootScope.account = data;
                         successCb(data, status, headers, config);
                     })
@@ -58,7 +58,7 @@ angular.module('flintAndSteel')
             };
 
             this.unlikeIdea = function unlikeIdea(ideaId) {
-                _.remove($rootScope.account.likedIdeas, function (item) {
+                _.remove($rootScope.account.likedIdeas, function(item) {
                     return item === ideaId;
                 });
                 this.updateAccount($rootScope.account, function accountUpdateSuccess() {
@@ -75,7 +75,7 @@ angular.module('flintAndSteel')
             };
             
             this.checkValidUsername = function checkValidUsername(username, successCb, errorCb) {
-                if(username) {
+                if (username) {
                     $http.get('/isuniqueuser?user=' + username)
                         .success(successCb)
                         .error(errorCb);
