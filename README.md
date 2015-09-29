@@ -29,9 +29,11 @@ To run the website server, execute `gulp start` from a terminal window. Then nav
 
 To run the client side tests, execute `gulp test:client` from a terminal window.
 
-### Linting
+### Linting and style check
 
-Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib`.
+Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib` and `server` as well as `gulpfile.js`.
+
+Running `gulp jscs` will check the code style for the aforementioned files. 
 
 ### Clearing Persistent storage
 
