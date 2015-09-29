@@ -13,7 +13,7 @@ describe('IdeasViewCtrl', function() {
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function ($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_) {
+    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_) {
         scope = $rootScope.$new();
         $stateParams = _$stateParams_;
         $mdDialog = _$mdDialog_;
@@ -238,7 +238,7 @@ describe('IdeasViewCtrl', function() {
             expect(mockIdea.description).toBe(description.substr(0, 4));
         });
 
-        it('should allow the author to overwrite the old idea title', function(){
+        it('should allow the author to overwrite the old idea title', function() {
             var title = mockIdea.title;
             ctrl.editIdea("New Title", mockIdea.description);
             ideaSvcMock.getIdea(null, function(idea) {
@@ -248,7 +248,7 @@ describe('IdeasViewCtrl', function() {
             expect(mockIdea.title).toBe("New Title");
         });
 
-        it('should save the last edited date/time', function(){
+        it('should save the last edited date/time', function() {
             var now = (new Date()).toISOString();
             ctrl.editIdea(mockIdea.title, mockIdea.description);
             ideaSvcMock.getIdea(null, function(idea) {

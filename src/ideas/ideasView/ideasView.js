@@ -7,7 +7,7 @@ angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
         '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', '$mdToast',
-        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast){
+        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast) {
             "use strict";
 
             /*
@@ -54,7 +54,7 @@ angular.module('flintAndSteel')
             var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
             ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
                 var idea = JSON.parse(event.data);
-                if(typeof idea !== 'undefined' && idea !== null) {
+                if (typeof idea !== 'undefined' && idea !== null) {
                     $scope.$apply(function() {
                         $scope.idea = idea;
                     });
@@ -126,7 +126,7 @@ angular.module('flintAndSteel')
             };
 
             $scope.unlikeIdea = function unlikeIdea() {
-                _.remove($scope.idea.likes, function (n) {
+                _.remove($scope.idea.likes, function(n) {
                     return n === loginSvc.getProperty('name');
                 });
                 ideaSvc.updateIdea($scope.idea.id, 'likes', $scope.idea.likes,
@@ -178,7 +178,7 @@ angular.module('flintAndSteel')
                     locals: {
                         users: likesArray
                     },
-                    controller: function ($scope, $mdDialog, users) {
+                    controller: function($scope, $mdDialog, users) {
                         $scope.users = users;
                         console.log($scope.users);
                         $scope.closeDialog = function() {
