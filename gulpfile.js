@@ -165,7 +165,7 @@ gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
             // File exists
             gutil.log(chalk.red("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue"));
         } 
-        else if (err.code === 'ENOENT') {
+        else if(err.code === 'ENOENT') {
             // File does not exist, generate ideas
             ideas.forEach(function(idea, index /*, arr */) {
                 fs.writeFile(filePattern.replace("X", index), JSON.stringify(idea), function(err) {
