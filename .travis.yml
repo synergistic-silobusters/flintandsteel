@@ -9,4 +9,6 @@ before_script:
   - npm install -g gulp
   
 script: 
+  - gulp jshint
+  - gulp jscs
   - gulp test:client

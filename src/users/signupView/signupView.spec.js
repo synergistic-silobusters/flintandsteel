@@ -1,42 +1,52 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('SignupViewCtrl', function() {
-	var scope, ctrl, $state, $mdToast, loginSvcMock;
+    "use strict";
 
-	beforeEach(module('flintAndSteel'));
-	beforeEach(module('ui.router'));
+    var scope, ctrl, $state, $mdToast, loginSvcMock;
 
-	beforeEach(inject(function ($rootScope, $controller, _$state_, _$mdToast_, _loginSvcMock_) {
-		scope = $rootScope.$new();
-		$state = _$state_;
-		$mdToast = _$mdToast_;
-		loginSvcMock = _loginSvcMock_;
+    beforeEach(module('flintAndSteel'));
+    beforeEach(module('ui.router'));
 
-		spyOn($state, 'go');
-		spyOn($mdToast, 'show');
+    beforeEach(inject(function($rootScope, $controller, _$state_, _$mdToast_, _loginSvcMock_) {
+        scope = $rootScope.$new();
+        $state = _$state_;
+        $mdToast = _$mdToast_;
+        loginSvcMock = _loginSvcMock_;
 
-		ctrl = $controller('SignupViewCtrl', {
-			$scope: scope,
-			$state: $state,
-			$mdToast: $mdToast,
-			loginSvc: loginSvcMock
-		});
-	}));
+        spyOn($state, 'go');
+        spyOn($mdToast, 'show');
 
-	it('should exist', function() {
-		expect(ctrl).toBeDefined();
-	});
+        ctrl = $controller('SignupViewCtrl', {
+            $scope: scope,
+            $state: $state,
+            $mdToast: $mdToast,
+            loginSvc: loginSvcMock
+        });
+    }));
 
-	describe('$scope.completeSignUp', function() {
-		beforeEach(function() {
-			spyOn(loginSvcMock, 'addUser').and.callFake(function(account, successCb, errorCb) {
-				successCb('Created');
-			});
-		});
+    it('should exist', function() {
+        expect(ctrl).toBeDefined();
+    });
 
-		it('should sign up a new user', function() {
-			scope.completeSignUp({ name: 'Guybrush Threepwood' });
+    describe('$scope.completeSignUp', function() {
+        beforeEach(function() {
+            spyOn(loginSvcMock, 'addUser').and.callFake(function(account, successCb) {
+                successCb('Created');
+            });
+        });
 
-			expect($mdToast.show).toHaveBeenCalled();
-			expect($state.go).toHaveBeenCalledWith('login');
-		});	
-	});
+        it('should sign up a new user', function() {
+            scope.completeSignUp({ name: 'Guybrush Threepwood' });
+
+            expect($mdToast.show).toHaveBeenCalled();
+            expect($state.go).toHaveBeenCalledWith('login');
+        }); 
+    });
 });
