@@ -27,9 +27,9 @@ angular.module('flintAndSteel')
             };
 
             $scope.$watch('account.username', function(newValue) {
-                loginSvc.checkValidUsername(newValue, function (data) {
+                loginSvc.checkValidUsername(newValue, function(data) {
                     $scope.duplicateUser = !data;
-                }, function (data, status) {
+                }, function(data, status) {
                     console.log(status);
                 });
             });
