@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     del = require('del'),
     chalk = require('chalk'),
     jshint = require('gulp-jshint'),
+    jscs = require('gulp-jscs'),
     stylish = require('jshint-stylish-ex'),
     nodemon = require('gulp-nodemon'),
     karma = require('karma').server,
@@ -14,13 +15,15 @@ var gulp = require('gulp'),
     ideas = require('./ideas').ideas;
 
 var paths = {
-        js: ['src/**/*.js',
-      '!src/dist/**/*.js',
+    js: [
+        'src/**/*.js',
+        '!src/dist/**/*.js',
         '!src/lib/**/*.js',
-      '!src/**/*.spec.js',
+        '!src/**/*.spec.js',
         '!src/**/*.mock.js',
-      '!src/**/*.conf.js',
-      '!src/**/*.e2e.js']
+        '!src/**/*.conf.js',
+        '!src/**/*.e2e.js'
+    ]
 };
 
 gulp.task('default', ['usage']);
@@ -41,7 +44,10 @@ gulp.task('usage', function() {
         '\t runs the client side tests using karma.',
         '',
         chalk.green('jshint'),
-        '\tRun jshint on the spec and the js folder under src.',
+        '\tRun jshint on all .spec.js and .js files under src and server.',
+        '',
+        chalk.green('jscs'),
+        '\tRun jscs on all .spec.js and .js files under src and server.',
         '',
         chalk.green('generate:data'),
         '\tGenerate sample data in the database.',
@@ -87,6 +93,20 @@ gulp.task('jshint', function() {
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
     .pipe(jshint.reporter('fail'));
+});
+
+gulp.task('jscs', function() {
+    "use strict";
+
+    return gulp.src([
+        'src/**/*.js',
+        'server/**/*.js',
+        'gulpfile.js',
+        '!src/lib/**/*.*'
+    ])
+    .pipe(jscs({ configPath: './.jscsrc' }))
+    .pipe(jscs.reporter())
+    .pipe(jscs.reporter('fail'));
 });
 
 gulp.task('test:client', function(done) {
