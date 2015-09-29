@@ -14,7 +14,7 @@ describe('LoginViewCtrl', function() {
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
 
-    beforeEach(inject(function ($rootScope, $controller, _$state_, _$stateParams_, _$mdToast_, _loginSvcMock_) {
+    beforeEach(inject(function($rootScope, $controller, _$state_, _$stateParams_, _$mdToast_, _loginSvcMock_) {
         scope = $rootScope.$new();
         $state = _$state_;
         $stateParams = _$stateParams_;
