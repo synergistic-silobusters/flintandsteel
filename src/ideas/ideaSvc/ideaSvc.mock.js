@@ -10,7 +10,15 @@ angular.module('flintAndSteel')
             var mockIdea = {
                 id: 'mock_idea',
                 title: 'The bestest Idea ever!',
-                description: 'Apophenia order-flow systema futurity garage sentient car advert. Footage 3D-printed Legba free-market lights courier camera Kowloon youtube fluidity euro-pop garage bicycle augmented reality. Dome military-grade faded meta--space vehicle warehouse. Computer concrete corrupted vehicle tower dead knife cyber-camera augmented reality table shrine apophenia tiger-team-ware soul-delay. Hacker pistol into plastic realism sub-orbital futurity girl geodesic disposable boat sentient tanto urban. Plastic alcohol bicycle carbon courier spook gang wristwatch katana sensory sign long-chain hydrocarbons assault nano. ',
+                description: 'Apophenia order-flow systema futurity garage sentient car advert. ' + 
+                    'Footage 3D-printed Legba free-market lights courier camera Kowloon youtube ' + 
+                    'fluidity euro-pop garage bicycle augmented reality. Dome military-grade ' + 
+                    'faded meta--space vehicle warehouse. Computer concrete corrupted vehicle ' + 
+                    'tower dead knife cyber-camera augmented reality table shrine apophenia ' + 
+                    'tiger-team-ware soul-delay. Hacker pistol into plastic realism sub-orbital ' + 
+                    'futurity girl geodesic disposable boat sentient tanto urban. Plastic alcohol ' + 
+                    'bicycle carbon courier spook gang wristwatch katana sensory sign long-chain ' + 
+                    'hydrocarbons assault nano. ',
                 author: 'Darth Vader',
                 image: '../assets/defaultideahero.jpg',
                 likes: [
@@ -114,7 +122,7 @@ angular.module('flintAndSteel')
                         { name: 'Materials' },
                         { name: 'Test Chip'}
                     ];
-                    return types.map(function (type) {
+                    return types.map(function(type) {
                         type._lowername = type.name.toLowerCase();
                         return type;
                     });

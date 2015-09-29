@@ -7,7 +7,7 @@ angular.module('flintAndSteel')
         function($http) {
             "use strict";
 
-            this.postIdea = function postIdea(idea, successCb, errorCb){
+            this.postIdea = function postIdea(idea, successCb, errorCb) {
                 $http.get('/uniqueid?for=idea')
                     .success(function getIdSucess(data) {
                         idea.id = data;
@@ -66,7 +66,7 @@ angular.module('flintAndSteel')
                     { name: 'Materials' },
                     { name: 'How can I help?' }
                 ];
-                return types.map(function (type) {
+                return types.map(function(type) {
                     type._lowername = type.name.toLowerCase();
                     return type;
                 });

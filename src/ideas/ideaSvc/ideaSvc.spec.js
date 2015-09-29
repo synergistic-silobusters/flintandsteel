@@ -13,7 +13,7 @@ describe('ideaSvc', function() {
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function (_ideaSvc_, _$httpBackend_) {
+    beforeEach(inject(function(_ideaSvc_, _$httpBackend_) {
         ideaSvc = _ideaSvc_;
         $httpBackend = _$httpBackend_;
 
@@ -66,7 +66,7 @@ describe('ideaSvc', function() {
             $httpBackend.expectGET('/uniqueid?for=idea');
             $httpBackend.expectPOST('/idea', dummyIdea);
 
-            ideaSvc.postIdea(dummyIdea, function (data) {
+            ideaSvc.postIdea(dummyIdea, function(data) {
                 expect(data).toBe('Created');
             }, function() { });
 
@@ -85,7 +85,7 @@ describe('ideaSvc', function() {
         it('it should return an idea when provided an idea', function() {
             $httpBackend.expectGET('/idea?id=9001');
 
-            ideaSvc.getIdea(9001, function () { }, function() { });
+            ideaSvc.getIdea(9001, function() { }, function() { });
 
             $httpBackend.flush();
         });
