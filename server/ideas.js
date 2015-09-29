@@ -100,7 +100,7 @@ exports.delete = function(id, cb) {
             doc.likes.map(function(user) {
                 userDb.scan(function(doc) {
                     return doc.name === user;
-                }, function(err,docs) {
+                }, function(err, docs) {
                     if (err) {
                         cb(err);
                     }
@@ -144,11 +144,11 @@ function getHeaders(cb) {
             cb(null, docs);
         }
         else {
-            docs.sort(function(a,b) {
+            docs.sort(function(a, b) {
                 return a.key - b.key;
             });
             var headers = [];
-            for(var i = 0; i < docs.length; i++) {
+            for (var i = 0; i < docs.length; i++) {
                 var descFirstWords = _.take(_.words(docs[i].description), 30);
 
                 headers.push({

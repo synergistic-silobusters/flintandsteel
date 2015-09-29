@@ -58,9 +58,9 @@ function startSees(res) {
     });
     res.write("\n");
 
-    return function sendSse(name,data,id) {
+    return function sendSse(name, data, id) {
         res.write("event: " + name + "\n");
-        if(id) {
+        if (id) {
             res.write("id: " + id + "\n");    
         }
         res.write("data: " + JSON.stringify(data) + "\n\n");
@@ -160,7 +160,7 @@ app.post('/idea', function(req, res) {
 app.post('/updateidea', function(req, res) {
     "use strict";
 
-    ideas.update(req.body.id, req.body.property, req.body.value, function(err){
+    ideas.update(req.body.id, req.body.property, req.body.value, function(err) {
         if (err) {
             res.sendStatus(500);
         }
@@ -178,7 +178,7 @@ app.post('/updateidea', function(req, res) {
 app.post('/deleteidea', function(req, res) {
     "use strict";
 
-    ideas.delete(req.body.id, function(err){
+    ideas.delete(req.body.id, function(err) {
         if (err) {
             res.sendStatus(500);
         }
@@ -229,7 +229,7 @@ app.get('/idea', function(req, res) {
         }
     });
 });
-app.get('/idea/:id/events', function (req, res) {
+app.get('/idea/:id/events', function(req, res) {
     "use strict";
 
     var sse = startSees(res);
@@ -259,7 +259,7 @@ app.get('/ideaheaders', function(req, res) {
         }
     });
 });
-app.get('/ideaheaders/events', function (req, res) {
+app.get('/ideaheaders/events', function(req, res) {
     "use strict";
 
     var sse = startSees(res);
@@ -283,7 +283,7 @@ app.get('/uniqueid', function(req, res) {
         dbToSearch = ideasDb;
         propName = 'ideaId';
     }
-    else if (req.query.for === 'user'){
+    else if (req.query.for === 'user') {
         dbToSearch = userDb;
         propName = 'accountId';
     }
@@ -300,7 +300,7 @@ app.get('/uniqueid', function(req, res) {
                 for (var i = 0; i < docs.length; i++) {
                     listofIds.push(docs[i][propName]);
                 }
-                while(_.findIndex(listofIds, matcher) !== -1) {
+                while (_.findIndex(listofIds, matcher) !== -1) {
                     id++;
                 }
                 res.status(200).json(id);
@@ -328,7 +328,7 @@ app.get('/isuniqueuser', function(req, res) {
     });
 });
 
-external(function (err, ipExternal) {
+external(function(err, ipExternal) {
     "use strict";
 
     if (err) {
