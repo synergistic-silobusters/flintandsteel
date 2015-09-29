@@ -14,7 +14,7 @@ describe('SidenavCtrl', function() {
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
 
-    beforeEach(inject(function (_$rootScope_, $controller, _$state_, _$mdSidenav_, _ideaSvcMock_, _loginSvcMock_) {
+    beforeEach(inject(function(_$rootScope_, $controller, _$state_, _$mdSidenav_, _ideaSvcMock_, _loginSvcMock_) {
         $rootScope = _$rootScope_;
         scope = $rootScope.$new();
         $state = _$state_;
@@ -26,7 +26,8 @@ describe('SidenavCtrl', function() {
         /*
         // TODO - figure out how to test the $mdSidenav calls
         spyOn($mdSidenav, 'isLockedOpen');
-        spyOn($mdSidenav, 'close');*/
+        spyOn($mdSidenav, 'close');
+        */
 
         ctrl = $controller('SidenavCtrl', {
             $scope: scope,

@@ -17,7 +17,7 @@ angular.module('flintAndSteel')
             var ideaAddEvents = new EventSource('/ideaheaders/events');
             ideaAddEvents.addEventListener("newHeaders", function(event) {
                 var headers = JSON.parse(event.data);
-                if(headers.length > 0) {
+                if (headers.length > 0) {
                     $scope.$apply(function() {
                         $scope.topIdeas = headers;
                     });
