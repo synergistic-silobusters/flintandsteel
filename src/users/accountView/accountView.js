@@ -8,7 +8,7 @@ angular.module('flintAndSteel')
             "use strict";
             
             // NOTE: Nothing can go above this!
-            if(!loginSvc.isUserLoggedIn()) {
+            if (!loginSvc.isUserLoggedIn()) {
                 $state.go('home');
             }
             
@@ -17,8 +17,8 @@ angular.module('flintAndSteel')
                 username: loginSvc.getProperty('username'),
                 password: loginSvc.getProperty('password'),
                 name: loginSvc.getProperty('name'),
-                email: loginSvc.getProperty('email'),
-             };
+                email: loginSvc.getProperty('email')
+            };
             // /Replace
 
             $scope.logout = function logout() {
