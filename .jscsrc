@@ -1,0 +1,25 @@
+{
+    "preset": "google",
+    "maximumLineLength": 160,
+    "validateIndentation": 4,
+    "validateQuoteMarks": false,
+    "requireSemicolons": true,
+    "requireParenthesesAroundIIFE": true,
+    "requireLineFeedAtFileEnd": false,
+    "requireKeywordsOnNewLine": ["else"],
+    "disallowTrailingComma": true,
+    "disallowUnusedParams": true,
+    "disallowMultipleSpaces": { "allowEOLComments": true },
+    "disallowMultipleLineStrings": false,
+    "disallowSpacesInsideObjectBrackets": false,
+    "disallowSpacesInsideArrayBrackets": false,
+    "disallowKeywordsOnNewLine": false,
+    "disallowTrailingWhitespace": false,
+    "disallowMultipleVarDecl": false,
+    "disallowYodaConditions": [
+        "==",
+        "===",
+        "!=",
+        "!=="
+    ]
+}
