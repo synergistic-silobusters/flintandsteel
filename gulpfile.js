@@ -157,7 +157,7 @@ gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
     "use strict";
 
     var filePattern = "server/datastore/ideas/idea_X.json";
-    var fileName    = filePattern.replace("X", "0");
+    var fileName = filePattern.replace("X", "0");
 
     fs.stat(fileName, function(err /*, stat */) {
 
