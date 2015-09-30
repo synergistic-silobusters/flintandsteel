@@ -2,15 +2,17 @@
 
 angular.module('flintAndSteel')
 .directive('ideaItem', 
-	[
-		function() {
-			return {
-				restrict: 'E',
-				scope: {
-					idea: '='
-				},
-				templateUrl: 'ideas/ideaItem/ideaItem.tpl.html'
-			};
-		}
-	]
+    [
+        function() {
+            "use strict";
+            
+            return {
+                restrict: 'E',
+                scope: {
+                    idea: '='
+                },
+                templateUrl: 'ideas/ideaItem/ideaItem.tpl.html'
+            };
+        }
+    ]
 );
