@@ -31,7 +31,7 @@ var paths = {
 var runCommand = function(command) {
     "use strict";
 
-    return exec(command, function (err, stdout, stderr) {
+    return exec(command, function(err) {
         if (err !== null) {
             console.log(chalk.red(err));
         }
