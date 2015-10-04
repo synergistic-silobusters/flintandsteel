@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "0.10.40"
+  
+before_install:
+  - npm install -g bower
+  
+before_script:
+  - npm install -g gulp
+  
+script: 
+  - gulp jshint
+  - gulp jscs
+  - gulp test:client

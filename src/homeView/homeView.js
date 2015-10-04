@@ -1,9 +1,15 @@
+/* global angular */
+
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
-	[
-		'$scope',
-		function($scope){
-			
-		}
-	]
+    [
+        '$scope', '$state',
+        function($scope, $state) {
+            "use strict";
+
+            $scope.navToBrowse = function navToBrowse() {
+                $state.go('ideabrowse');
+            };
+        }
+    ]
 );

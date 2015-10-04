@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.directive('ideaItem', 
+.directive('ideaItemBrowse', 
     [
         function() {
             "use strict";
@@ -11,7 +11,7 @@ angular.module('flintAndSteel')
                 scope: {
                     idea: '='
                 },
-                templateUrl: 'ideas/ideaItem/ideaItem.tpl.html'
+                templateUrl: 'ideas/ideaItemBrowse/ideaItemBrowse.tpl.html'
             };
         }
     ]

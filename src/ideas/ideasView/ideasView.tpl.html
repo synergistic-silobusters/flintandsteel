@@ -1,101 +1,145 @@
 <md-card>
-	<img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
-	<md-card-content>
-		<h1>{{idea.title}}</h1>
-		<h3>by {{idea.author}}</h3>
-		<p>{{idea.description}}</p>
-	</md-card-content>
+    <img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
+    <md-card-content>
+        <div ng-hide="ideasView.enableEdit">
+            <h1>{{idea.title}}</h1>
+            <h3>by {{idea.author}}</h3>
+            <p>{{idea.description}}</p>
+        </div>
+        <form ng-show="ideasView.enableEdit" name="newIdeaForm">
+            <div layout="column">
+                <md-input-container>
+                    <label>Title</label>
+                    <input ng-model="idea.title" required>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Description</label>
+                    <textarea ng-model="idea.description" columns="1" md-maxlength="1000" required></textarea>
+                </md-input-container>
+                <p></p>
+                <div layout="row" layout-align="end center">
+                    <md-button class="md-raised md-primary" ng-click="ideasView.editIdea(idea.title, idea.description)">Submit</md-button>
+                    <md-button class="md-raised md-primary" ng-click="ideasView.refreshIdea()">Cancel</md-button>
+                </div>
+            </div>
+        </form>
+    </md-card-content>
+    <md-card-footer>
+        <md-fab-speed-dial md-direction="right" class="md-fling" md-open="isOpen" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
+        <md-fab-trigger class="align-with-text">
+            <md-button aria-label="menu" class="md-fab md-primary">
+                <md-icon md-svg-icon="navigation:menu"></md-icon>
+            </md-button>
+        </md-fab-trigger>
+        <md-fab-actions>
+            <div>
+                <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;">
+                    <md-tooltip md-direction="top">Edit Idea</md-tooltip>
+                    <md-icon md-svg-icon="editor:mode_edit"></md-icon>
+                </md-button>
+            </div>
+            <div>
+                <md-button aria-label="delete" class="md-icon-button" ng-click="ideasView.confirmDeleteIdea($event);">
+                    <md-tooltip md-direction="top">Delete Idea</md-tooltip>
+                    <md-icon md-svg-icon="action:delete"></md-icon>
+                </md-button>
+            </div>
+        </md-fab-actions>
+        </md-fab-speed-dial>
+            <i ng-show="idea.editedOn && !ideasView.enableEdit">Edited {{momentizeTime(idea.editedOn)}}</i>
+    </md-card-footer>
 </md-card>
 <md-card>
-	<md-card-content>
-		<span flex ng-if="isUserLoggedIn() && !isUserLiked()">
-			<md-button class="md-icon-button" aria-label="Like" ng-click="likeIdea()">
-				<md-icon md-svg-icon="action:favorite_outline"></md-icon>
-			</md-button>
-		</span>
-		<span flex ng-if="isUserLoggedIn() && isUserLiked()">
-			<md-button class="md-icon-button" aria-label="Unlike" ng-click="unlikeIdea()">
-				<md-icon md-svg-icon="action:favorite"></md-icon>
-			</md-button>
-		</span>
-		<span flex>{{idea.likes.length}} <a class="idea-likes-click" ng-click="openLikes($event, idea.likes)">likes</a> and {{idea.backs.length}} backs</span>
-	</md-card-content>
+    <md-card-content>
+        <span flex ng-if="isUserLoggedIn() && !isUserLiked()">
+            <md-button class="md-icon-button" aria-label="Like" ng-click="likeIdea()">
+                <md-icon md-svg-icon="action:favorite_outline"></md-icon>
+            </md-button>
+        </span>
+        <span flex ng-if="isUserLoggedIn() && isUserLiked()">
+            <md-button class="md-icon-button" aria-label="Unlike" ng-click="unlikeIdea()">
+                <md-icon md-svg-icon="action:favorite"></md-icon>
+            </md-button>
+        </span>
+        <span flex>{{idea.likes.length}} <a class="idea-likes-click" ng-click="openLikes($event, idea.likes)">likes</a> and {{idea.backs.length}} backs</span>
+    </md-card-content>
 </md-card>
 <md-card>
-	<md-card-content>
-		<md-tabs md-dynamic-height md-border-bottom>
-			<md-tab label="Comments">
-				<md-content class="md-padding">
-					<md-list>
-						<md-list-item class="md-2-line" ng-repeat="comment in idea.comments">
-							<div class="md-list-item-text">
-								<h3>{{comment.text}}</h3>
-								<p>{{comment.from}} <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
-							</div>
-						</md-list-item>
-					</md-list>
-					<div layout="row" ng-if="isUserLoggedIn()">
-						<md-input-container id="comment-box-container" class="no-padding-bottom" flex>
-							<label>Add a comment</label>
-							<input id="comment-box" ng-model="ideasView.newComment" type="text" />
-						</md-input-container>
-						<md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
-					        <md-icon md-svg-icon="action:done"></md-icon>
-						</md-button>
-					</div>
-				</md-content>
-			</md-tab>
-			<md-tab label="Backers">
-				<md-content class="md-padding">
-					<md-list>
-						<md-list-item class="md-2-line" ng-repeat="back in idea.backs">
-							<div class="md-list-item-text">
-								<h3>{{back.text}}</h3>
-								<p>
-									{{back.from}} <small class="extra-space-left" ng-bind="momentizeTime(back.time)"></small>
-									<span class="extra-space-left">
-										<small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
-									</span>
-								</p>
-								</span>
-							</div>
-						</md-list-item>
-					</md-list>
-					<div layout="row" ng-if="isUserLoggedIn()">
-						<div layout="column" flex>
-							<md-input-container id="back-box-container" class="no-padding-bottom">
-								<label>Back this idea...</label>
-								<input id="back-box" ng-model="ideasView.newBack" type="text" />
-							</md-input-container>
-							<md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match ng-show="ideasView.newBack">
-								<md-autocomplete
-									md-selected-item="selectedType"
-									md-selected-item-change=""
-									md-search-text="searchText"
-									md-search-text-change=""
-									md-items="type in querySearch(searchText)"
-									md-item-text="type.name"
-									placeholder="Type of backing">
-									<span md-highlight-text="ctrl.searchText">{{type.name}}</span>
-								</md-autocomplete>
-								<md-chip-template>
-									<span>
-										<strong>{{$chip.name}}</strong>
-									</span>
-								</md-chip-template>
-						    </md-chips>
-						</div>
-						<div layout="column" layout-align="center end">
-							<md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newBack === ''" ng-click="addNewInteraction('backs')">
-						        <md-icon md-svg-icon="action:done"></md-icon>
-							</md-button>
-						</div>
-					</div>
-				</md-content>
-			</md-tab>
-			<!--<div layout="row" ng-if="isUserLoggedIn()==true">-->
-				Please log in
-			<!--</div>-->
-		</md-tabs>
-	</md-card-content>
+    <md-card-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Comments">
+                <md-content class="md-padding">
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="comment in idea.comments">
+                            <div class="md-list-item-text">
+                                <h3>{{comment.text}}</h3>
+                                <p>{{comment.from}} <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                    <div layout="row" ng-if="isUserLoggedIn()">
+                        <md-input-container id="comment-box-container" class="no-padding-bottom" flex>
+                            <label>Add a comment</label>
+                            <input id="comment-box" ng-model="ideasView.newComment" type="text" />
+                        </md-input-container>
+                        <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
+                            <md-icon md-svg-icon="action:done"></md-icon>
+                        </md-button>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="Backers">
+                <md-content class="md-padding">
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="back in idea.backs">
+                            <div class="md-list-item-text">
+                                <h3>{{back.text}}</h3>
+                                <p>
+                                    {{back.from}} <small class="extra-space-left" ng-bind="momentizeTime(back.time)"></small>
+                                    <span class="extra-space-left">
+                                        <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
+                                    </span>
+                                </p>
+                                </span>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                    <div layout="row" ng-if="isUserLoggedIn()">
+                        <div layout="column" flex>
+                            <md-input-container id="back-box-container" class="no-padding-bottom">
+                                <label>Back this idea...</label>
+                                <input id="back-box" ng-model="ideasView.newBack" type="text" />
+                            </md-input-container>
+                            <md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match="true" ng-show="ideasView.newBack">
+                                <md-autocomplete
+                                    md-selected-item="selectedType"
+                                    md-selected-item-change=""
+                                    md-search-text="searchText"
+                                    md-search-text-change=""
+                                    md-min-length="0"
+                                    md-items="type in querySearch(searchText)"
+                                    md-item-text="type.name"
+                                    placeholder="Type of backing">
+                                    <span md-highlight-text="ctrl.searchText">{{type.name}}</span>
+                                </md-autocomplete>
+                                <md-chip-template>
+                                    <span>
+                                        <strong>{{$chip.name}}</strong>
+                                    </span>
+                                </md-chip-template>
+                            </md-chips>
+                        </div>
+                        <div layout="column" layout-align="center end">
+                            <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newBack === ''" ng-click="addNewInteraction('backs')">
+                                <md-icon md-svg-icon="action:done"></md-icon>
+                            </md-button>
+                        </div>
+                    </div>
+                </md-content>
+            </md-tab>
+            <!--<div layout="row" ng-if="isUserLoggedIn()==true">-->
+                Please log in
+            <!--</div>-->
+        </md-tabs>
+    </md-card-content>
 </md-card>

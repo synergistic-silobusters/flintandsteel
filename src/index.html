@@ -1,88 +1,92 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-	<title>Rok-Starter</title>
+    <title>Rok-Starter</title>
 
-	<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="./lib/angular-material/angular-material.css"/>
-	<link rel="stylesheet" type="text/css" href="assets/app.css">
+    <link rel="stylesheet" type="text/css" href="assets/app.css">
 
-	<script src="lib/angular/angular.js"></script>
-	<script src="lib/angular-animate/angular-animate.js"></script>
-	<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
-	<script src="lib/angular-mocks/angular-mocks.js"></script>
-	<script src="lib/angular-material/angular-material.js"></script>
-	<script src="lib/angular-aria/angular-aria.js"></script>
-	<script src="lib/lodash/lodash.js"></script>
-	<script src="lib/moment/moment.js"></script>
-	<script src="lib/event-source-polyfill/eventsource.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="lib/angular-mocks/angular-mocks.js"></script>
+    <script src="lib/angular-material/angular-material.js"></script>
+    <script src="lib/angular-aria/angular-aria.js"></script>
+    <script src="lib/lodash/lodash.js"></script>
+    <script src="lib/moment/moment.js"></script>
+    <script src="lib/event-source-polyfill/eventsource.js"></script>
 
-	<script src="app.js"></script>
-	<script src="homeView/homeView.js"></script>
-	<script src="navigation/toolbar.js"></script>
-	<script src="navigation/sidenav.js"></script>
-	<script src="users/loginView/loginView.js"></script>
-	<script src="users/signupView/signupView.js"></script>
-	<script src="users/accountView/accountView.js"></script>
-	<script src="users/loginSvc/loginSvc.js"></script>
-	<script src="ideas/ideaItem/ideaItem.js"></script>
-	<script src="ideas/ideaSvc/ideaSvc.js"></script>
-	<script src="ideas/ideaSvc/ideaSvc.mock.js"></script>
-	<script src="ideas/ideasView/ideasView.js"></script>
-	<script src="ideas/addIdeaView/addIdeaView.js"></script>
+    <!-- inject:js -->
+  <script src="app.js"></script>
+  <script src="homeView/homeView.js"></script>
+  <script src="navigation/sidenav.js"></script>
+  <script src="navigation/toolbar.js"></script>
+  <script src="ideas/addIdeaView/addIdeaView.js"></script>
+  <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
+  <script src="ideas/ideaItem/ideaItem.js"></script>
+  <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
+  <script src="ideas/ideaSvc/ideaSvc.js"></script>
+  <script src="ideas/ideasView/ideasView.js"></script>
+  <script src="ideas/searchFilter/searchFilter.js"></script>
+  <script src="users/accountView/accountView.js"></script>
+  <script src="users/loginSvc/loginSvc.js"></script>
+  <script src="users/loginView/loginView.js"></script>
+  <script src="users/signupView/signupView.js"></script>
+    <!-- endinject -->
 
 </head>
 
 <body ng-app="flintAndSteel" layout="column">
 
-	<md-toolbar ng-controller="ToolbarCtrl">
-		<div class="md-toolbar-tools">
-			<md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
-          		<md-icon md-svg-icon="navigation:menu"></md-icon>
-        	</md-button>
-			<h2 ng-if="!stateIsHome()"><span><a ui-sref="home">Rok-Starter</a></span></h2>
-			<span flex></span>
-        	<md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
-          		<md-icon md-svg-icon="action:perm_identity" ng-if="!isUserLoggedIn()"></md-icon>
-          		<md-icon md-svg-icon="action:account_box" ng-if="isUserLoggedIn()"></md-icon>
-        	</md-button>
-        	<md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
-          		<md-icon md-svg-icon="navigation:more_vert"></md-icon>
-        	</md-button>
-		</div>
-	</md-toolbar>
+    <md-toolbar ng-controller="ToolbarCtrl">
+        <div class="md-toolbar-tools">
+            <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
+                <md-icon md-svg-icon="navigation:menu"></md-icon>
+            </md-button>
+            <h2 ng-if="!stateIsHome()"><span><a ui-sref="home">Rok-Starter</a></span></h2>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
+                <md-icon md-svg-icon="action:perm_identity" ng-if="!isUserLoggedIn()"></md-icon>
+                <md-icon md-svg-icon="action:account_box" ng-if="isUserLoggedIn()"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
+                <md-icon md-svg-icon="navigation:more_vert"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
 
-	<div flex layout="row">
-		<md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
-			<md-content ng-controller="SidenavCtrl" flex>
-				<div layout="column" flex>
-					<div flex>
-						<md-list class="top-ideas-list">
-							<md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
-							<md-item ng-repeat="idea in topIdeas">
-								<idea-item idea="idea" ui-sref="idea({ ideaId: idea.id })" class="idea-pointer"></idea-item>
-							</md-item>
-						</md-list>
-						<md-divider></md-divider>
-						<!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('home')" flex>Home</md-button></div> -->
-						<!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('idea')" flex>Idea (Test only)</md-button></div> -->
-					</div>
-				</div>
-			</md-content>
-			<div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
-				<md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-show="isUserLoggedIn()">
-					<md-icon md-svg-icon="content:add"></md-icon>
-				</md-button>
-			</div>
-		</md-sidenav>
+    <div flex layout="row">
+        <md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
+            <md-content ng-controller="SidenavCtrl" flex>
+                <div layout="column" flex>
+                    <div flex>
+                        <md-list class="top-ideas-list">
+                            <md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
+                            <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:5">
+                                <idea-item idea="idea" ui-sref="idea({ ideaId: idea.id })" class="idea-pointer"></idea-item>
+                            </md-item>
+                        </md-list>
+                        <md-divider></md-divider>
+                        <!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('home')" flex>Home</md-button></div> -->
+                        <!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('idea')" flex>Idea (Test only)</md-button></div> -->
+                    </div>
+                </div>
+            </md-content>
+            <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
+                <md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-show="isUserLoggedIn()">
+                    <md-icon md-svg-icon="content:add"></md-icon>
+                </md-button>
+            </div>
+        </md-sidenav>
 
-		<md-content ui-view flex class="scroll-container"></md-content>
-	</div>
+        <md-content ui-view flex class="scroll-container"></md-content>
+    </div>
 
 </body>
 </html>
