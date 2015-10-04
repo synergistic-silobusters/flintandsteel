@@ -9,6 +9,19 @@
 
 ## Installation
 
+### Prerequisites
+
+The following applications need to be installed: 
+
+* [Git](http://git-scm.com/)
+* [Node.js](https://nodejs.org/en/) - this project tests against v0.10.40
+* [MongoDB](https://www.mongodb.org/)
+* A text editor like [Notepad++](https://notepad-plus-plus.org/) or [Sublime Text 3](http://www.sublimetext.com/3)
+
+Make sure that the directories containing `node`, `npm`, `mongod` and `mongo` are added to the path making them accessible from the terminal. 
+
+### Get the code
+
 After cloning the git repo run `npm install` from a terminal window.
 
 You will likely also have to run `npm install gulp -g` in order to run gulp. This command installs `gulp` globally so it can be used in the command line.
