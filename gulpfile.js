@@ -12,7 +12,9 @@ var gulp = require('gulp'),
     nodemon = require('gulp-nodemon'),
     karma = require('karma').server,
     fs = require('fs'),
-    ideas = require('./ideas').ideas;
+    ideas = require('./ideas').ideas,
+    exec = require('child_process').exec,
+    mkdirs = require('mkdirs');
 
 var paths = {
     js: [
@@ -26,6 +28,16 @@ var paths = {
     ]
 };
 
+var runCommand = function(command) {
+    "use strict";
+
+    return exec(command, function (err, stdout, stderr) {
+        if (err !== null) {
+            console.log(chalk.red(err));
+        }
+    });
+};
+
 gulp.task('default', ['usage']);
 
 gulp.task('usage', function() {
@@ -35,36 +47,64 @@ gulp.task('usage', function() {
         '',
         '',
         chalk.green('usage'),
-        '\tDisplay this help page.',
+        '\tdisplay this help page.',
+        '',
+        chalk.green('mongo:start'),
+        '\truns the mongodb server - this is required for the app to work.',
+        '',
+        chalk.green('mongo:stop'),
+        '\tstops the mongodb server.',
         '',
         chalk.green('start'),
-        '\t runs the app server using express.',
+        '\truns the app server using express.',
         '',
         chalk.green('test:client'),
-        '\t runs the client side tests using karma.',
+        '\truns the client side tests using karma.',
         '',
         chalk.green('jshint'),
-        '\tRun jshint on all .spec.js and .js files under src and server.',
+        '\trun jshint on all .spec.js and .js files under src and server.',
         '',
         chalk.green('jscs'),
-        '\tRun jscs on all .spec.js and .js files under src and server.',
+        '\trun jscs on all .spec.js and .js files under src and server.',
         '',
         chalk.green('generate:data'),
-        '\tGenerate sample data in the database.',
+        '\tgenerate sample data in the database.',
         '',
         chalk.green('clean:modules'),
-        '\tDeletes the npm_modules and the src/lib directories.',
+        '\tdeletes the npm_modules and the src/lib directories.',
         '\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
         ' will be required before running the app.',
         '',
         chalk.green('clean:db'),
-        '\tResets the persistent app storage by clearing out the datastore folder.',
+        '\tresets the persistent app storage by clearing out the datastore folder.',
         ''
     ];
     gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('start', ['_cleanUp', 'test:client', 'inject'], function() {
+gulp.task('mongo:start', function() {
+    "use strict";
+
+    var command = 'mongod --config ./server/mongod.conf';
+    var mongodProc;
+    mkdirs('server/datastore/db');
+    mkdirs('server/datastore/log');
+    mongodProc = runCommand(command);
+    gutil.log('Mongodb server is now ' + chalk.green('running') + '.');
+
+    mongodProc.on('exit', function(code) {
+        gutil.log('Mongodb server exited with exit code ' + code + '.');
+    });
+});
+
+gulp.task('mongo:stop', function() {
+    "use strict";
+
+    var command = 'mongo admin --eval "db.shutdownServer();"';
+    runCommand(command);
+});
+
+gulp.task('start', ['_cleanUp', 'test:client', 'inject', 'mongo:start'], function() {
     "use strict";
 
     nodemon({
@@ -136,21 +176,11 @@ gulp.task('clean:db', function() {
     ]);
 });
 
-gulp.task('_createDataDirs', function() {
+gulp.task('_cleanUp', function() {
     "use strict";
 
-    return gulp.src('README.md')
-    .pipe(gulp.dest('server/datastore/ideas'))
-    .pipe(gulp.dest('server/datastore/users'));
-});
-
-gulp.task('_cleanUp', ['_createDataDirs'], function() {
-    "use strict";
-
-    return del([
-        'server/datastore/users/README.md',
-        'server/datastore/ideas/README.md'
-    ]);
+    mkdirs('server/datastore/users');
+    mkdirs('server/datastore/ideas');
 });
 
 gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
