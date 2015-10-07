@@ -70,8 +70,13 @@
             <md-tab label="Comments">
                 <md-content class="md-padding">
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="comment in idea.comments">
-                            <div class="md-list-item-text">
+                        <md-list-item class="md-2-line" ng-repeat="comment in idea.comments" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                            <div ng-show="hovered === true && ideasView.isUserAuthorOfComment($index) && comment.deleted !== true">
+                                <md-button class="md-icon-button" aria-label="Delete Comment" ng-click="ideasView.deleteComment($index)">
+                                    <md-icon md-svg-icon="content:clear"></md-icon>
+                                </md-button>
+                            </div>
+                            <div class="md-list-item-text" ng-class="{'deleted': comment.deleted === true}">
                                 <h3>{{comment.text}}</h3>
                                 <p>{{comment.from}} <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
                             </div>
