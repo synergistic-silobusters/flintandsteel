@@ -1,16 +1,16 @@
-<md-card aria-label="insert Drive">
-<md-tooltip md-visible="demo.showTooltip" layout-wrap>
-{{idea.abstract}}
-</md-tooltip>
-<md-card-content layout="column">
-<div flex="85" layout= "column">
-    <div><strong>{{idea.title}}</strong></div>
-    <div class="accent-text">{{idea.author}}</div>
-</div>
-<div flex layout="row" class="extra-padding-left-md">
-    <div layout="row">
-        <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs.length}} Backs and 0 People</span>
+<md-card>
+    <md-tooltip md-visible="demo.showTooltip" layout-wrap>
+    {{idea.abstract}}
+    </md-tooltip>
+    <md-card-content>
+    <div flex="85">
+        <div><strong>{{idea.title}}</strong></div>
+        <div class="accent-text">{{idea.author}}</div>
     </div>
-</div>
-</md-card-content>
+    <div flex layout="row">
+        <div layout="row">
+            <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs.length}} Backs and 0 People</span>
+        </div>
+    </div>
+    </md-card-content>
 </md-card>

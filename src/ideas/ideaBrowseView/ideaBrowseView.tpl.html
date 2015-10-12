@@ -6,18 +6,15 @@
         <label>Search</label>
         <input name="search" ng-model="searchText">
     </md-input-container>
-    <md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
     <div layout="row" layout-align="center center">
         <div flex="10"></div>
         <div flex="80">
-
-        
-    <div layout="row" flex layout-wrap>
-                <md-item ng-repeat="idea in topIdeas | search:searchText">
-                    <idea-item-browse idea="idea" ui-sref="idea({ ideaId: idea.id })" class="idea-pointer"></idea-item-browse>
-                </md-item>
-        <md-divider></md-divider>        
+            <div layout="row" flex layout-wrap>
+                    <md-item ng-repeat="idea in topIdeas | search:searchText">
+                        <idea-item-browse idea="idea" ui-sref="idea({ ideaId: idea.id })" class="idea-pointer"></idea-item-browse>
+                    </md-item>
+                <md-divider></md-divider>        
+            </div>
+        </div>
     </div>
-</div>
-</div>
 </md-content>
