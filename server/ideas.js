@@ -149,7 +149,7 @@ function getHeaders(cb) {
             });
             var headers = [];
             for (var i = 0; i < docs.length; i++) {
-                var descFirstWords = _.take(_.words(docs[i].description), 30);
+                var descFirstWords = _.take(_.words(docs[i].description), 20);
 
                 headers.push({
                     id: docs[i].ideaId,
