@@ -1,12 +1,16 @@
 <md-card>
-     <md-card-content layout="row">
-    <div flex="85" layout="column">
+    <md-tooltip md-visible="demo.showTooltip" layout-wrap>
+    {{idea.abstract}}
+    </md-tooltip>
+    <md-card-content>
+    <div flex="85">
         <div><strong>{{idea.title}}</strong></div>
         <div class="accent-text">{{idea.author}}</div>
     </div>
-    <div flex layout="row" layout-align="center center" class="extra-padding-left-md">
-        {{idea.likes}}
-        <md-icon md-svg-icon="action:favorite" class="extra-padding-left-sm"></md-icon>
+    <div flex layout="row">
+        <div layout="row">
+            <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs.length}} Backs and 0 People</span>
+        </div>
     </div>
     </md-card-content>
 </md-card>

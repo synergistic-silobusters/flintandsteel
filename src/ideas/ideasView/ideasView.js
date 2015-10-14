@@ -249,6 +249,30 @@ angular.module('flintAndSteel')
                 return false;
             };
 
+            ctrl.isUserAuthorOfComment = function(commentIndex) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.comments[commentIndex].from) {
+                    return true;
+                }
+                return false;
+            };
+
+            ctrl.deleteComment = function(commentIndex) {
+                if (ctrl.isUserAuthorOfComment(commentIndex)) {
+                    $scope.idea.comments.splice(commentIndex, 1, {
+                        text: "This comment was deleted",
+                        from: loginSvc.getProperty('name'),
+                        deleted: true,
+                        time: new Date().toISOString()
+                    });
+                    ideaSvc.updateIdea($scope.idea.id, "comments", $scope.idea.comments, function() {
+                        return;
+                    },
+                    function() {
+                        console.log("ERR: Comment " + commentIndex + " not deleted");
+                    });
+                }
+            };
+
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
                 return function filterFn(type) {
