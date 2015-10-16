@@ -50,10 +50,13 @@ describe('loginSvc', function() {
         });
 
         it('should return a good response for valid details', function() {
-            $httpBackend.expectPOST('/login', dummyUser);
+            var encodedDummy = {};
+            encodedDummy.username = dummyUser.username;
+            encodedDummy.password = window.btoa(dummyUser.password);
+            $httpBackend.expectPOST('/login', encodedDummy).respond({status: 'AUTH_OK'});
 
             loginSvc.checkLogin(dummyUser, function(data) {
-                expect(data.status).toBe('AUTH_OKAY');
+                expect(data.status).toBe('AUTH_OK');
             }, function() { });
 
             $httpBackend.flush();
