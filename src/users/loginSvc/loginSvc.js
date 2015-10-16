@@ -9,8 +9,10 @@ angular.module('flintAndSteel')
             "use strict";
 
             this.checkLogin = function checkLogin(account, successCb, errorCb) {
-                account.password = window.btoa(account.password);
-                $http.post('/login', account)
+                var encodedAccount = {};
+                encodedAccount.username = account.username;
+                encodedAccount.password = window.btoa(account.password);
+                $http.post('/login', encodedAccount)
                     .success(function(data, status, headers, config) {
                         $rootScope.account = data;
                         successCb(data, status, headers, config);

@@ -119,7 +119,6 @@ passport.deserializeUser(function(id, done) {
 
 app.post('/login', function handleAuthentication(req, res, next) {
     "use strict";
-    console.log(req.body.password);
     req.body.password = new Buffer(req.body.password, "base64").toString("ascii");
     passport.authenticate('WindowsAuthentication', function(err, user) {
         if (err) {
@@ -143,54 +142,42 @@ app.post('/login', function handleAuthentication(req, res, next) {
                     name: undefined
                 });
             }
-            userDb.get(user._json.sAMAccountName, function(err, doc) {
-                if (err) {
-                    userDb.save(
-                        {
-                            key: user._json.sAMAccountName,
-                            _id: user._json.sAMAccountName,
-                            accountId: user.id,
-                            email: user._json.mail,
-                            full: user.displayName,
-                            first: user._json.givenName,
-                            last: user._json.sn,
-                            likedIdeas: []
-                        },
-                        function(err, doc) {
-                            if (err) {
-                                console.log(chalk.bgRed(err));
-                                return res.status(200).json({
-                                    status: 'AUTH_ERROR',
-                                    id: undefined,
-                                    username: undefined,
-                                    name: undefined
-                                });
-                            }
-                            else {
-                                console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
-                                return res.sendStatus(200).json({
-                                    status: 'AUTH_OK',
-                                    id: doc.accountId,
-                                    username: doc.key,
-                                    email: doc.email,
-                                    name: doc.full,
-                                    likedIdeas: doc.likedIdeas
-                                });
-                            }
-                        }
-                    );
+            userDb.save(
+                {
+                    key: user._json.sAMAccountName,
+                    _id: user._json.sAMAccountName,
+                    username: user._json.sAMAccountName,
+                    accountId: user.id,
+                    email: user._json.mail,
+                    full: user.displayName,
+                    first: user._json.givenName,
+                    last: user._json.sn,
+                    nick: user._json.cn,
+                    likedIdeas: []
+                },
+                function(err, doc) {
+                    if (err) {
+                        console.log(chalk.bgRed(err));
+                        return res.status(200).json({
+                            status: 'AUTH_ERROR',
+                            id: undefined,
+                            username: undefined,
+                            name: undefined
+                        });
+                    }
+                    else {
+                        console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
+                        return res.status(200).json({
+                            status: 'AUTH_OK',
+                            id: doc.accountId,
+                            username: doc.key,
+                            email: doc.email,
+                            name: doc.full,
+                            likedIdeas: doc.likedIdeas
+                        });
+                    }
                 }
-                else {
-                    return res.status(200).json({
-                        status: 'AUTH_OK',
-                        id: doc.accountId,
-                        username: req.key,
-                        email: doc.email,
-                        name: doc.full,
-                        likedIdeas: doc.likedIdeas
-                    });
-                }
-            });
+            );
         });
     })(req, res, next);
 });
