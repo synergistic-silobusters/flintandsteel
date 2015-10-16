@@ -1,5 +1,6 @@
 /* global __dirname */
 /* global process */
+/* global Buffer */
 
 var express = require('express'),
     morgan = require('morgan'),
@@ -84,101 +85,114 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 passport.use(new WindowsStrategy(ldapAuth.config, function(profile, done) {
-  if (profile) {
-    done(null, profile);
-  }
-  else {
-    done(null, false, "Invalid Credentials");
-  }
+    "use strict";
+    if (profile) {
+        done(null, profile);
+    }
+    else {
+        done(null, false, "Invalid Credentials");
+    }
 }));
 
 passport.serializeUser(function(user, done) {
-    console.log('serializeUser: ' + user.id)
+    "use strict";
+    console.log('serializeUser: ' + user.id);
     done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-    db.users.findById(id, function(err, user){
-        console.log(user);
-        if(!err) done(null, user);
-        else done(err, null);
-    })
+    "use strict";
+    if (id) {
+        done(null);
+    }
+    //TODO: Not sure what this is or why we need it, but we'll do it later.
+    // db.users.findById(id, function(err, user){
+    //     console.log(user);
+    //     if (!err) {
+    //         done(null, user);
+    //     }
+    //     else {
+    //         done(err, null);
+    //     }
+    // });
 });
 
 app.post('/login', function handleAuthentication(req, res, next) {
-  console.log(req.body.password);
-  req.body.password = new Buffer(req.body.password, "base64").toString("ascii");
-  passport.authenticate('WindowsAuthentication', function(err, user, info) {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.status(200).json({
-          status: 'AUTH_ERROR',
-          id: undefined,
-          username: undefined,
-          name: undefined
-      });
-    }
+    "use strict";
+    console.log(req.body.password);
+    req.body.password = new Buffer(req.body.password, "base64").toString("ascii");
+    passport.authenticate('WindowsAuthentication', function(err, user) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(200).json({
+                status: 'AUTH_ERROR',
+                id: undefined,
+                username: undefined,
+                name: undefined
+            });
+        }
 
-    req.login(user, function(err) {
-      if (err) {
-        return res.status(200).json({
-            status: 'AUTH_ERROR',
-            id: undefined,
-            username: undefined,
-            name: undefined
-        });
-      }
-      userDb.get(user._json.sAMAccountName, function(err, doc) {
-          if (err) {
-            userDb.save(
-            {
-                key: user._json.sAMAccountName,
-                _id: user._json.sAMAccountName,
-                accountId: user.id,
-                email: user._json.mail,
-                full: user.displayName,
-                first: user._json.givenName,
-                last: user._json.sn,
-                likedIdeas: []
-            },
-            function(err, doc) {
+        req.login(user, function(err) {
+            if (err) {
+                return res.status(200).json({
+                    status: 'AUTH_ERROR',
+                    id: undefined,
+                    username: undefined,
+                    name: undefined
+                });
+            }
+            userDb.get(user._json.sAMAccountName, function(err, doc) {
                 if (err) {
-                    console.log(chalk.bgRed(err));
-                    return res.status(200).json({
-                        status: 'AUTH_ERROR',
-                        id: undefined,
-                        username: undefined,
-                        name: undefined
-                    });
+                    userDb.save(
+                        {
+                            key: user._json.sAMAccountName,
+                            _id: user._json.sAMAccountName,
+                            accountId: user.id,
+                            email: user._json.mail,
+                            full: user.displayName,
+                            first: user._json.givenName,
+                            last: user._json.sn,
+                            likedIdeas: []
+                        },
+                        function(err, doc) {
+                            if (err) {
+                                console.log(chalk.bgRed(err));
+                                return res.status(200).json({
+                                    status: 'AUTH_ERROR',
+                                    id: undefined,
+                                    username: undefined,
+                                    name: undefined
+                                });
+                            }
+                            else {
+                                console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
+                                return res.sendStatus(200).json({
+                                    status: 'AUTH_OK',
+                                    id: doc.accountId,
+                                    username: doc.key,
+                                    email: doc.email,
+                                    name: doc.full,
+                                    likedIdeas: doc.likedIdeas
+                                });
+                            }
+                        }
+                    );
                 }
                 else {
-                    console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
-                    return res.sendStatus(200).json({
+                    return res.status(200).json({
                         status: 'AUTH_OK',
                         id: doc.accountId,
-                        username: doc.key,
+                        username: req.key,
                         email: doc.email,
                         name: doc.full,
                         likedIdeas: doc.likedIdeas
                     });
                 }
             });
-          }
-          else {
-              return res.status(200).json({
-                  status: 'AUTH_OK',
-                  id: doc.accountId,
-                  username: req.key,
-                  email: doc.email,
-                  name: doc.full,
-                  likedIdeas: doc.likedIdeas
-              });
-          }
-      });
-    });
-  })(req, res, next);
+        });
+    })(req, res, next);
 });
 app.post('/idea', function(req, res) {
     "use strict";
