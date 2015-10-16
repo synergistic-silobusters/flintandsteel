@@ -2,15 +2,17 @@
 /* global _ */
 
 angular.module('flintAndSteel')
-.factory('loginSvc', 
+.factory('loginSvc',
     [
         '$http', '$rootScope',
         function($http, $rootScope) {
             "use strict";
 
             this.checkLogin = function checkLogin(account, successCb, errorCb) {
-                //console.log(account);
-                $http.post('/login', account)
+                var encodedAccount = {};
+                encodedAccount.username = account.username;
+                encodedAccount.password = window.btoa(account.password);
+                $http.post('/login', encodedAccount)
                     .success(function(data, status, headers, config) {
                         $rootScope.account = data;
                         successCb(data, status, headers, config);
@@ -73,7 +75,7 @@ angular.module('flintAndSteel')
                     .success(successCb)
                     .error(errorCb);
             };
-            
+
             this.checkValidUsername = function checkValidUsername(username, successCb, errorCb) {
                 if (username) {
                     $http.get('/isuniqueuser?user=' + username)
