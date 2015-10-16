@@ -1,7 +1,7 @@
-<md-content layout="column" layout-align="start">
+<md-content layout="column" layout-align="start center">
     <p></p>
-    <h1><center>Ideas</center></h1>
-    <h3><center>A strategy that enables collaboration and development by providing visibility to innovative ideas.</center></h3>
+    <h1>Ideas</h1>
+    <h3>A strategy that enables collaboration and development by providing visibility to innovative ideas.</h3>
     <md-input-container class="search-bar md-accent md-hue-1">
         <label>Search</label>
         <input name="search" ng-model="searchText">
@@ -13,7 +13,7 @@
                     <md-item ng-repeat="idea in topIdeas | search:searchText">
                         <idea-item-browse idea="idea" ui-sref="idea({ ideaId: idea.id })" class="idea-pointer"></idea-item-browse>
                     </md-item>
-                <md-divider></md-divider>        
+                <md-divider></md-divider>
             </div>
         </div>
     </div>
