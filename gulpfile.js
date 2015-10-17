@@ -102,6 +102,8 @@ gulp.task('mongo:stop', function() {
 
     var command = 'mongo admin --eval "db.shutdownServer();"';
     runCommand(command);
+
+    del('server/datastore/mongod-pids');
 });
 
 gulp.task('start', ['_cleanUp', 'test:client', 'inject', 'mongo:start'], function() {
