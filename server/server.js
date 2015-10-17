@@ -6,50 +6,40 @@ var express = require('express'),
     morgan = require('morgan'),
     path = require('path'),
     chalk = require('chalk'),
-    datastore = require('docstore'),
     bodyParser = require('body-parser'),
     external = require('external-ip')(),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
     _ = require('lodash'),
-    ideas = require('./ideas'),
-    ldapAuth = require('./secrets/ldapAuth');
+    ldapAuth = require('./secrets/ldapAuth'),
+    mongodb = require('mongodb'),
+    ideas = require('./ideas');
 
-var userDb, ideasDb;
+var db = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+
+db.open(function(err, db) {
+    db.createCollection('ideas', function(errIdea, collectionIdea) {
+        if(errIdea) {
+            console.log(errIdea);
+        }
+        else {
+            db.createCollection('users', function(errUsers, collectionUsers) {
+                if (errUsers) {
+                    console.log(errUsers);
+                }
+                else {
+                    collectionUsers.insert({ "myUser": "Test Testerson III" });
+                    db.close();
+                }
+            });
+        }
+    });
+});
 
 var IdeasInstance = ideas.getInstance();
 
-datastore.open('./server/datastore/users', function(err, store) {
-    "use strict";
-
-    if (err) {
-        console.log(err);
-    }
-    else {
-        userDb = store;
-    }
-});
-
-datastore.open('./server/datastore/ideas', function(err, store) {
-    "use strict";
-
-    if (err) {
-        console.log(err);
-    }
-    else {
-        ideasDb = store;
-    }
-});
-
 var app = express();
-
-// Datastore filter to find everything
-var filter = function dbFilter() {
-    "use strict";
-
-    return true;
-};
 
 function startSees(res) {
     "use strict";
@@ -105,16 +95,6 @@ passport.deserializeUser(function(id, done) {
     if (id) {
         done(null);
     }
-    //TODO: Not sure what this is or why we need it, but we'll do it later.
-    // db.users.findById(id, function(err, user){
-    //     console.log(user);
-    //     if (!err) {
-    //         done(null, user);
-    //     }
-    //     else {
-    //         done(err, null);
-    //     }
-    // });
 });
 
 app.post('/login', function handleAuthentication(req, res, next) {
@@ -142,41 +122,47 @@ app.post('/login', function handleAuthentication(req, res, next) {
                     name: undefined
                 });
             }
-            userDb.save(
-                {
-                    key: user._json.sAMAccountName,
-                    _id: user._json.sAMAccountName,
-                    username: user._json.sAMAccountName,
-                    accountId: user.id,
-                    email: user._json.mail,
-                    full: user.displayName,
-                    first: user._json.givenName,
-                    last: user._json.sn,
-                    nick: user._json.cn,
-                    likedIdeas: []
-                },
-                function(err, doc) {
-                    if (err) {
-                        console.log(chalk.bgRed(err));
-                        return res.status(200).json({
-                            status: 'AUTH_ERROR',
-                            id: undefined,
-                            username: undefined,
-                            name: undefined
-                        });
-                    }
-                    else {
-                        console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
-                        return res.status(200).json({
-                            status: 'AUTH_OK',
-                            id: doc.accountId,
-                            username: doc.key,
-                            email: doc.email,
-                            name: doc.full,
-                            likedIdeas: doc.likedIdeas
-                        });
-                    }
+            db.open(function(err, db) {
+                if (err) {
+                    console.log(err);
                 }
+                else {
+                    db.collection('users', function(err, collection) {
+                        collection.insert({
+                            "username": user._json.sAMAccountName,
+                            "accountId": user.id,
+                            "email": user._json.mail,
+                            "full": user.displayName,
+                            "first": user._json.givenName,
+                            "last": user._json.sn,
+                            "nick": user._json.cn,
+                            "likedIdeas": []
+                        },
+                        function(err, collection) {
+                            if (err) {
+                                console.log(chalk.bgRed(err));
+                                return res.status(200).json({
+                                    status: 'AUTH_ERROR',
+                                    id: undefined,
+                                    username: undefined,
+                                    name: undefined
+                                });
+                            }
+                            else {
+                                console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
+                                return res.status(200).json({
+                                    status: 'AUTH_OK',
+                                    id: user.id,
+                                    username: user._json.sAMAccountName,
+                                    email: user._json.mail,
+                                    name: user.displayName,
+                                    likedIdeas: []
+                                });
+                            }
+                            db.close();
+                        });
+                    });
+                    
             );
         });
     })(req, res, next);
@@ -326,55 +312,10 @@ app.get('/ideaheaders/events', function(req, res) {
 app.get('/uniqueid', function(req, res) {
     "use strict";
 
-    var dbToSearch,
-        propName = '';
-    if (req.query.for === 'idea') {
-        dbToSearch = ideasDb;
-        propName = 'ideaId';
-    }
-    else if (req.query.for === 'user') {
-        dbToSearch = userDb;
-        propName = 'accountId';
-    }
-    if (dbToSearch) {
-        dbToSearch.scan(filter, function(err, docs) {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else {
-                var listofIds = [], id = 0;
-                var matcher = function matcher(item) {
-                    return item === id;
-                };
-                for (var i = 0; i < docs.length; i++) {
-                    listofIds.push(docs[i][propName]);
-                }
-                while (_.findIndex(listofIds, matcher) !== -1) {
-                    id++;
-                }
-                res.status(200).json(id);
-            }
-        });
-    }
 });
 app.get('/isuniqueuser', function(req, res) {
     "use strict";
 
-    userDb.scan(filter, function(err, docs) {
-        if (err) {
-            res.sendStatus(500);
-        }
-        else {
-            var userFound = false;
-            for (var i = 0; i < docs.length; i++) {
-                userFound = (docs[i].username === req.query.user);
-                if (userFound) {
-                    break;
-                }
-            }
-            res.status(200).json(!userFound);
-        }
-    });
 });
 
 external(function(err, ipExternal) {
