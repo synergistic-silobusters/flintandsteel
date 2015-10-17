@@ -303,4 +303,49 @@ describe('IdeasViewCtrl', function() {
             expect(ideaSvcMock.deleteIdea).not.toHaveBeenCalled();
         });
     });
+
+    describe('deleting a comment', function() {
+        var authorAccount = {
+            id: 1,
+            username: 'MainManDarth',
+            name: 'Darth Vader',
+            likedIdeas: [ 'mock_idea' ]
+        };
+
+        var nonAuthorAccount = {
+            id: 2,
+            username: 'SonOfDarth',
+            name: 'Luke Skywalker',
+            likedIdeas: [ 'mock_idea' ]
+        };
+
+        var commentIndex = 0;
+        var originalLength = 0;
+
+        beforeEach(function() {
+            ctrl.newComment = 'This is a test comment!';
+            scope.addNewInteraction('comments');
+            spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            commentIndex = scope.idea.comments.length - 1;
+            originalLength = scope.idea.comments.length;
+        });
+
+        it('should allow the author to delete it', function() {
+            loginSvcMock.checkLogin(authorAccount);
+            expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+            ctrl.deleteComment(commentIndex);
+            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+            expect(scope.idea.comments.length).toBe(originalLength);
+            expect(scope.idea.comments[commentIndex].text).toBe("This comment was deleted");
+            expect(scope.idea.comments[commentIndex].deleted).toBe(true);
+        });
+
+        it('should not allow someone other than the author to delete the idea', function() {
+            loginSvcMock.checkLogin(nonAuthorAccount);
+            ctrl.deleteComment(commentIndex);
+            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+            expect(scope.idea.comments.length).toBe(originalLength);
+            expect(scope.idea.comments[commentIndex].deleted).not.toBe(true);
+        });
+    });
 });

@@ -1,0 +1,64 @@
+{
+    "user": {
+        "_id": "",
+        "name": "",
+        "username": "",
+        "email": "",
+        "password": "",
+        "title": ""
+    },
+    "idea": {
+        "_id": "",
+        "title": "",
+        "description": "",
+        "authorId": "a user._id",
+        "eventId": "",
+        "timeCreated": "",
+        "timeModified": "",
+        "tags": [
+            "5 strings to assist in searching"
+        ],
+        "likes": [
+            "bunch of user._id"
+        ],
+        "updates": [
+            {
+                "text": "",
+                "timeCreated": "",
+                "timeModified": ""
+            }
+        ],
+        "comments": [
+            "bunch of comment._id"
+        ],
+        "backs": [
+            {
+                "text": "",
+                "author": "",
+                "type": "",
+                "timeCreated": "",
+                "timeModified": ""
+            }
+        ],
+        "team": [
+            "bunch of user._id"
+        ]
+    },
+    "comment": {
+        "_id": "",
+        "parentId": "either an idea._id or a comment._id",
+        "text": "",
+        "authorId": "a user._id",
+        "timeCreated": "",
+        "timeModified": ""
+    },
+    "events": [
+        {
+            "_id": "",
+            "name": "",
+            "location": "",
+            "startDate": "",
+            "endDate": ""
+        }
+    ]
+}

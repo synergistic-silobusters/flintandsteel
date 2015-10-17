@@ -1,10 +1,9 @@
 <md-content layout="column" layout-align="start center">
-    <h1>This will be the Flint and Steel account page</h1>
+    <h1>Account</h1>
     <div>
         <!-- Need to figure out page layout -->
-        <h2><p>Name: {{user.name}}</p></h2>
-        <h4><p>User Name: {{user.username}}</p><h4>
-        <h4><p>Email: {{user.email}}</p><h4>
+        <h2><center>{{user.name}} (<i>{{user.username}}</i>)</center></h2>
+        <h4><center>{{user.email}}</center><h4>
     </div>
     <md-button class="md-raised md-warn" ng-click="logout()" flex>Logout</md-button>
 </md-content>

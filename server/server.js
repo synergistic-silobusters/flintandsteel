@@ -1,5 +1,6 @@
 /* global __dirname */
 /* global process */
+/* global Buffer */
 
 var express = require('express'),
     morgan = require('morgan'),
@@ -8,9 +9,12 @@ var express = require('express'),
     datastore = require('docstore'),
     bodyParser = require('body-parser'),
     external = require('external-ip')(),
+    passport = require('passport'),
+    WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
     _ = require('lodash'),
-    ideas = require('./ideas');
+    ideas = require('./ideas'),
+    ldapAuth = require('./secrets/ldapAuth');
 
 var userDb, ideasDb;
 
@@ -61,7 +65,7 @@ function startSees(res) {
     return function sendSse(name, data, id) {
         res.write("event: " + name + "\n");
         if (id) {
-            res.write("id: " + id + "\n");    
+            res.write("id: " + id + "\n");
         }
         res.write("data: " + JSON.stringify(data) + "\n\n");
     };
@@ -78,59 +82,104 @@ app.use(morgan(':remote-addr - ' +
 ));
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
+app.use(passport.initialize());
 
-
-app.post('/login', function(req, res) {
+passport.use(new WindowsStrategy(ldapAuth.config, function(profile, done) {
     "use strict";
+    if (profile) {
+        done(null, profile);
+    }
+    else {
+        done(null, false, "Invalid Credentials");
+    }
+}));
 
-    userDb.get(req.body.username, function(err, doc) {
+passport.serializeUser(function(user, done) {
+    "use strict";
+    console.log('serializeUser: ' + user.id);
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    "use strict";
+    if (id) {
+        done(null);
+    }
+    //TODO: Not sure what this is or why we need it, but we'll do it later.
+    // db.users.findById(id, function(err, user){
+    //     console.log(user);
+    //     if (!err) {
+    //         done(null, user);
+    //     }
+    //     else {
+    //         done(err, null);
+    //     }
+    // });
+});
+
+app.post('/login', function handleAuthentication(req, res, next) {
+    "use strict";
+    req.body.password = new Buffer(req.body.password, "base64").toString("ascii");
+    passport.authenticate('WindowsAuthentication', function(err, user) {
         if (err) {
-            res.status(200).json({ status: 'USER_NOT_FOUND' });
+            return next(err);
         }
-        else {
-            if (req.body.password === doc.password) {
-                res.status(200).json({
-                    status: 'AUTH_OK',
-                    id: doc.accountId,
-                    username: req.body.username,
-                    email: doc.email,
-                    name: doc.name,
-                    likedIdeas: doc.likedIdeas
-                });
-            }
-            else {
-                res.status(200).json({
+        if (!user) {
+            return res.status(200).json({
+                status: 'AUTH_ERROR',
+                id: undefined,
+                username: undefined,
+                name: undefined
+            });
+        }
+
+        req.login(user, function(err) {
+            if (err) {
+                return res.status(200).json({
                     status: 'AUTH_ERROR',
                     id: undefined,
                     username: undefined,
                     name: undefined
                 });
             }
-        }
-    });
-});
-app.post('/signup', function(req, res) {
-    "use strict";
-
-    userDb.save(
-    {
-        key: req.body.username,
-        _id: req.body.username,
-        accountId: req.body.id,
-        password: req.body.password,
-        email: req.body.email,
-        name: req.body.name,
-        likedIdeas: req.body.likedIdeas
-    },
-    function(err, doc) {
-        if (err) {
-            console.log(chalk.bgRed(err));
-        }
-        else {
-            console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
-        }
-    });
-    res.sendStatus(201);
+            userDb.save(
+                {
+                    key: user._json.sAMAccountName,
+                    _id: user._json.sAMAccountName,
+                    username: user._json.sAMAccountName,
+                    accountId: user.id,
+                    email: user._json.mail,
+                    full: user.displayName,
+                    first: user._json.givenName,
+                    last: user._json.sn,
+                    nick: user._json.cn,
+                    likedIdeas: []
+                },
+                function(err, doc) {
+                    if (err) {
+                        console.log(chalk.bgRed(err));
+                        return res.status(200).json({
+                            status: 'AUTH_ERROR',
+                            id: undefined,
+                            username: undefined,
+                            name: undefined
+                        });
+                    }
+                    else {
+                        console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
+                        return res.status(200).json({
+                            status: 'AUTH_OK',
+                            id: doc.accountId,
+                            username: doc.key,
+                            email: doc.email,
+                            name: doc.full,
+                            likedIdeas: doc.likedIdeas
+                        });
+                    }
+                }
+            );
+        });
+    })(req, res, next);
 });
 app.post('/idea', function(req, res) {
     "use strict";
@@ -195,7 +244,7 @@ app.post('/deleteidea', function(req, res) {
 });
 app.post('/updateaccount', function(req, res) {
     "use strict";
-    
+
     userDb.get(req.body.username, function(err, doc) {
         if (err) {
             res.sendStatus(500);
