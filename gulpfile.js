@@ -106,7 +106,7 @@ gulp.task('mongo:stop', function() {
     del('server/datastore/mongod-pids');
 });
 
-gulp.task('start', ['_cleanUp', 'test:client', 'inject', 'mongo:start'], function() {
+gulp.task('start', ['test:client', 'inject', 'mongo:start'], function() {
     "use strict";
 
     nodemon({
