@@ -1,85 +1,95 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('LoginViewCtrl', function() {
-	var scope, ctrl, $state, $stateParams, $mdToast, loginSvcMock;
+    "use strict";
 
-	beforeEach(module('flintAndSteel'));
-	beforeEach(module('ui.router'));
+    var scope, ctrl, $state, $stateParams, $mdToast, loginSvcMock;
 
-	beforeEach(inject(function ($rootScope, $controller, _$state_, _$stateParams_, _$mdToast_, _loginSvcMock_) {
-		scope = $rootScope.$new();
-		$state = _$state_;
-		$stateParams = _$stateParams_;
-		$mdToast = _$mdToast_;
-		loginSvcMock = _loginSvcMock_;
+    beforeEach(module('flintAndSteel'));
+    beforeEach(module('ui.router'));
 
-		$stateParams.retState = '';
+    beforeEach(inject(function($rootScope, $controller, _$state_, _$stateParams_, _$mdToast_, _loginSvcMock_) {
+        scope = $rootScope.$new();
+        $state = _$state_;
+        $stateParams = _$stateParams_;
+        $mdToast = _$mdToast_;
+        loginSvcMock = _loginSvcMock_;
 
-		spyOn($state, 'go');
-		spyOn($mdToast, 'show');
+        $stateParams.retState = '';
 
-		ctrl = $controller('LoginViewCtrl', {
-			$scope: scope,
-			$state: $state,
-			$stateParams: $stateParams,
-			$mdToast: $mdToast,
-			loginSvc: loginSvcMock
-		});
-	}));
+        spyOn($state, 'go');
+        spyOn($mdToast, 'show');
 
-	it('should exist', function() {
-		expect(ctrl).toBeDefined();
-	});
+        ctrl = $controller('LoginViewCtrl', {
+            $scope: scope,
+            $state: $state,
+            $stateParams: $stateParams,
+            $mdToast: $mdToast,
+            loginSvc: loginSvcMock
+        });
+    }));
 
-	describe('$scope.loginUser', function() {
+    it('should exist', function() {
+        expect(ctrl).toBeDefined();
+    });
 
-		it('should log in a user with valid credentials', function() {
-			spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb, errorCb) {
-				successCb({
-					status: 'AUTH_OK',
-					name: account.name
-				});
-			});
+    describe('$scope.loginUser', function() {
 
-			$state.current.name = 'home';
+        it('should log in a user with valid credentials', function() {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb) {
+                successCb({
+                    status: 'AUTH_OK',
+                    name: account.name
+                });
+            });
 
-			scope.loginUser({ name: 'Guybrush Threepwood' });
+            $state.current.name = 'home';
 
-			expect($mdToast.show).toHaveBeenCalled();
-			expect($state.go).toHaveBeenCalledWith('home');
-		});
+            scope.loginUser({ name: 'Guybrush Threepwood' });
 
-		it('should deny logon for a user with incorrect credentials', function() {
-			spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb, errorCb) {
-				successCb({
-					status: 'AUTH_ERROR'
-				});
-			});
+            expect($mdToast.show).toHaveBeenCalled();
+            expect($state.go).toHaveBeenCalledWith('home');
+        });
 
-			scope.loginUser({ name: 'Guybrush Threepwood' });
+        it('should deny logon for a user with incorrect credentials', function() {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb) {
+                successCb({
+                    status: 'AUTH_ERROR'
+                });
+            });
 
-			expect($mdToast.show).toHaveBeenCalled();
-			expect($state.go).not.toHaveBeenCalled();
-		});
+            scope.loginUser({ name: 'Guybrush Threepwood' });
 
-		it('should deny logon for an unregistered user', function() {
-			spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb, errorCb) {
-				successCb({
-					status: 'USER_NOT_FOUND'
-				});
-			});
+            expect($mdToast.show).toHaveBeenCalled();
+            expect($state.go).not.toHaveBeenCalled();
+        });
 
-			scope.loginUser({ name: 'Guybrush Threepwood' });
+        it('should deny logon for an unregistered user', function() {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function(account, successCb) {
+                successCb({
+                    status: 'USER_NOT_FOUND'
+                });
+            });
 
-			expect($mdToast.show).toHaveBeenCalled();
-			expect($state.go).not.toHaveBeenCalled();
-		});
-	});
+            scope.loginUser({ name: 'Guybrush Threepwood' });
 
-	describe('$scope.signUpUser', function() {
+            expect($mdToast.show).toHaveBeenCalled();
+            expect($state.go).not.toHaveBeenCalled();
+        });
+    });
 
-		it('should navigate to the signup view', function() {
-			scope.signUpUser({ name: 'Guybrush Threepwood' });
+    describe('$scope.signUpUser', function() {
 
-			expect($state.go).toHaveBeenCalled();
-		});
-	});
+        it('should navigate to the signup view', function() {
+            scope.signUpUser({ name: 'Guybrush Threepwood' });
+
+            expect($state.go).toHaveBeenCalled();
+        });
+    });
 });

@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/YashdalfTheGray/flintandsteel.svg?branch=master)](https://travis-ci.org/YashdalfTheGray/flintandsteel)
+[![Dependency Status](https://gemnasium.com/YashdalfTheGray/flintandsteel.svg)](https://gemnasium.com/YashdalfTheGray/flintandsteel)
 [![Issue Stats](http://issuestats.com/github/yashdalfthegray/flintandsteel/badge/pr?style=flat)](http://issuestats.com/github/yashdalfthegray/flintandsteel)
 [![Issue Stats](http://issuestats.com/github/yashdalfthegray/flintandsteel/badge/issue?style=flat)](http://issuestats.com/github/yashdalfthegray/flintandsteel)
 
@@ -28,9 +29,11 @@ To run the website server, execute `gulp start` from a terminal window. Then nav
 
 To run the client side tests, execute `gulp test:client` from a terminal window.
 
-### Linting
+### Linting and style check
 
-Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib`.
+Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib` and `server` as well as `gulpfile.js`.
+
+Running `gulp jscs` will check the code style for the aforementioned files. 
 
 ### Clearing Persistent storage
 
