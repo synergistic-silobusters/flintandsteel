@@ -135,11 +135,11 @@ app.post('/login', function handleAuthentication(req, res, next) {
         if (req.body.username === 'testUser' && req.body.password === 'PaswordForTest') {
             res.status(200).json({
                 status: 'AUTH_OK',
-                id: doc.accountId,
+                id: 'test_user_id',
                 username: req.body.username,
-                email: doc.email,
-                name: doc.name,
-                likedIdeas: doc.likedIdeas
+                email: 'test@testersoninc.com',
+                name: 'Guybrush Threepwood',
+                likedIdeas: []
             });
         }
         else {
