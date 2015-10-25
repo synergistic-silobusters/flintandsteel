@@ -11,7 +11,6 @@ var express = require('express'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
-    _ = require('lodash'),
     ldapAuth = require('./secrets/ldapAuth'),
     mongodb = require('mongodb'),
     ideas = require('./ideas');
@@ -19,7 +18,9 @@ var express = require('express'),
 var db = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
 
 db.open(function(err, db) {
-    db.createCollection('ideas', function(errIdea, collectionIdea) {
+    "use strict";
+
+    db.createCollection('ideas', function(errIdea) {
         if(errIdea) {
             console.log(errIdea);
         }
@@ -30,14 +31,14 @@ db.open(function(err, db) {
                 }
                 else {
                     collectionUsers.insert({ "myUser": "Test Testerson III" });
-                    db.createCollection('events', function(errUsers, collectionUsers) {
+                    db.createCollection('events', function(errUsers) {
                         if (errUsers) {
                             console.log(errUsers);
                         }
                         else {
                             db.close();        
                         }
-                    }
+                    });
                 }
             });
         }
@@ -144,7 +145,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
                             "nick": user._json.cn,
                             "likedIdeas": []
                         },
-                        function(err, collection) {
+                        function(err, results) {
                             if (err) {
                                 console.log(chalk.bgRed(err));
                                 return res.status(200).json({
@@ -156,6 +157,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
                             }
                             else {
                                 console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
+                                console.log(results);
                                 return res.status(200).json({
                                     status: 'AUTH_OK',
                                     id: user.id,
@@ -166,10 +168,10 @@ app.post('/login', function handleAuthentication(req, res, next) {
                                 });
                             }
                             db.close();
-                        });
-                    });
-                    
-            );
+                        }
+                    );
+                }
+            });
         });
     })(req, res, next);
 });
@@ -247,11 +249,12 @@ app.post('/updateaccount', function(req, res) {
             }
             else {
                 console.log(chalk.bgGreen('Document with id %s updated in the database.'), req.body._id);
+                console.log(results);
                 res.sendStatus(200);
             }
             db.close();
         }
-    };
+    );
 });
 
 app.get('/idea', function(req, res) {
@@ -310,14 +313,6 @@ app.get('/ideaheaders/events', function(req, res) {
     req.on("close", function() {
         IdeasInstance.removeListener("newHeaders", updateHeaders);
     });
-});
-app.get('/uniqueid', function(req, res) {
-    "use strict";
-
-});
-app.get('/isuniqueuser', function(req, res) {
-    "use strict";
-
 });
 
 external(function(err, ipExternal) {

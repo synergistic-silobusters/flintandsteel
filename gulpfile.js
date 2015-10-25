@@ -11,8 +11,6 @@ var gulp = require('gulp'),
     stylish = require('jshint-stylish-ex'),
     nodemon = require('gulp-nodemon'),
     karma = require('karma').server,
-    fs = require('fs'),
-    ideas = require('./ideas').ideas,
     exec = require('child_process').exec,
     mkdirs = require('mkdirs');
 
