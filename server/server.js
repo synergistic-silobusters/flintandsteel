@@ -30,7 +30,14 @@ db.open(function(err, db) {
                 }
                 else {
                     collectionUsers.insert({ "myUser": "Test Testerson III" });
-                    db.close();
+                    db.createCollection('events', function(errUsers, collectionUsers) {
+                        if (errUsers) {
+                            console.log(errUsers);
+                        }
+                        else {
+                            db.close();        
+                        }
+                    }
                 }
             });
         }
@@ -127,8 +134,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
                     console.log(err);
                 }
                 else {
-                    db.collection('users', function(err, collection) {
-                        collection.insert({
+                    db.collection('users').insertOne({
                             "username": user._json.sAMAccountName,
                             "accountId": user.id,
                             "email": user._json.mail,
@@ -231,25 +237,20 @@ app.post('/deleteidea', function(req, res) {
 app.post('/updateaccount', function(req, res) {
     "use strict";
 
-    userDb.get(req.body.username, function(err, doc) {
-        if (err) {
-            res.sendStatus(500);
+    // This will probably become an every login thing with LDAP anyway.
+    db.collection('users').updateOne(
+        { _id: req.body._id },
+        { $set: req.body.userObject },
+        function(err, results) {
+            if (err) {
+                console.log(chalk.bgRed(err));
+            }
+            else {
+                console.log(chalk.bgGreen('Document with id %s updated in the database.'), req.body._id);
+                res.sendStatus(200);
+            }
         }
-        else {
-            _.assign(doc, req.body);
-            doc.status = undefined;
-            doc.id = undefined;
-            userDb.save(doc, function(err, doc) {
-                if (err) {
-                    console.log(chalk.bgRed(err));
-                }
-                else {
-                    console.log(chalk.bgGreen('Document with key %s updated in account.'), doc.key);
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
+    };
 });
 
 app.get('/idea', function(req, res) {
