@@ -249,6 +249,7 @@ app.post('/updateaccount', function(req, res) {
                 console.log(chalk.bgGreen('Document with id %s updated in the database.'), req.body._id);
                 res.sendStatus(200);
             }
+            db.close();
         }
     };
 });
