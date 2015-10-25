@@ -29,46 +29,51 @@ var paths = {
 gulp.task('default', ['usage']);
 
 gulp.task('usage', function() {
-    "use strict";
-
-    var usageLines = [
-        '',
-        '',
-        chalk.green('usage'),
-        '\tDisplay this help page.',
-        '',
+	var usageLines = [
+		'',
+		'',
+		chalk.green('usage'),
+		'\tDisplay this help page.',
+		'',
+		chalk.green('start:dev'),
+		'\t runs the app server in development mode (doesn\'t use LDAP).',
+		'',
         chalk.green('start'),
-        '\t runs the app server using express.',
+        '\t runs the app server in production mode (uses LDAP).',
         '',
-        chalk.green('test:client'),
-        '\t runs the client side tests using karma.',
-        '',
-        chalk.green('jshint'),
-        '\tRun jshint on all .spec.js and .js files under src and server.',
-        '',
-        chalk.green('jscs'),
-        '\tRun jscs on all .spec.js and .js files under src and server.',
-        '',
-        chalk.green('generate:data'),
-        '\tGenerate sample data in the database.',
-        '',
-        chalk.green('clean:modules'),
-        '\tDeletes the npm_modules and the src/lib directories.',
-        '\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
-        ' will be required before running the app.',
-        '',
-        chalk.green('clean:db'),
-        '\tResets the persistent app storage by clearing out the datastore folder.',
-        ''
-    ];
-    gutil.log(usageLines.join(os.EOL));
+		chalk.green('test:client'),
+		'\t runs the client side tests using karma.',
+		'',
+		chalk.green('jshint'),
+		'\tRun jshint on the spec and the js folder under src.',
+		'',
+		chalk.green('generate:data'),
+		'\tGenerate sample data in the database.',
+		'',
+		chalk.green('clean:modules'),
+		'\tDeletes the npm_modules and the src/lib directories.',
+		'\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
+		' will be required before running the app.',
+		'',
+		chalk.green('clean:db'),
+		'\tResets the persistent app storage by clearing out the datastore folder.',
+		''
+	];
+	gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('start', ['_cleanUp', 'test:client', 'inject'], function() {
-    "use strict";
+gulp.task('start:dev', ['_cleanUp', 'test:client', 'inject'], function() {
+	nodemon({
+		script: 'server/server.js',
+        env: { 'NODE_ENV': 'development' }
+		'ignore': ['spec/*']
+	});
+});
 
+gulp.task('start:prod', ['_cleanUp', 'test:client', 'inject'], function() {
     nodemon({
         script: 'server/server.js',
+        env: { 'NODE_ENV': 'production' }
         'ignore': ['spec/*']
     });
 });

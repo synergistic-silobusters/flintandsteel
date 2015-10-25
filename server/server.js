@@ -398,4 +398,11 @@ external(function(err, ipExternal) {
     }
 });
 
+if (process.env.NODE_ENV === 'development') {
+    console.log('Server running in ' + chalk.cyan('development') + ' mode.');
+}
+else if (process.env.NODE_ENV === 'production') {
+    console.log('Server running in ' + chalk.cyan('production') + ' mode.');
+}
+
 app.listen(process.argv[2] || 8080);
