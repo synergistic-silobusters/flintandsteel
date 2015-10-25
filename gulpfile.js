@@ -65,7 +65,7 @@ gulp.task('usage', function() {
 gulp.task('start:dev', ['_cleanUp', 'test:client', 'inject'], function() {
 	nodemon({
 		script: 'server/server.js',
-        env: { 'NODE_ENV': 'development' }
+        env: { 'NODE_ENV': 'development' },
 		'ignore': ['spec/*']
 	});
 });
@@ -73,7 +73,7 @@ gulp.task('start:dev', ['_cleanUp', 'test:client', 'inject'], function() {
 gulp.task('start:prod', ['_cleanUp', 'test:client', 'inject'], function() {
     nodemon({
         script: 'server/server.js',
-        env: { 'NODE_ENV': 'production' }
+        env: { 'NODE_ENV': 'production' },
         'ignore': ['spec/*']
     });
 });
