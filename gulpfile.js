@@ -67,16 +67,15 @@ gulp.task('usage', function() {
         chalk.green('jscs'),
         '\trun jscs on all .spec.js and .js files under src and server.',
         '',
+        /*
         chalk.green('generate:data'),
         '\tgenerate sample data in the database.',
         '',
+        */
         chalk.green('clean:modules'),
         '\tdeletes the npm_modules and the src/lib directories.',
         '\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
         ' will be required before running the app.',
-        '',
-        chalk.green('clean:db'),
-        '\tresets the persistent app storage by clearing out the datastore folder.',
         ''
     ];
     gutil.log(usageLines.join(os.EOL));
@@ -106,7 +105,7 @@ gulp.task('mongo:stop', function() {
     del('server/datastore/mongod-pids');
 });
 
-gulp.task('start', ['test:client', 'inject', 'mongo:start'], function() {
+gulp.task('start', ['test:client', 'inject'], function() {
     "use strict";
 
     nodemon({
@@ -169,29 +168,14 @@ gulp.task('clean:modules', function() {
     ]);
 });
 
-gulp.task('clean:db', function() {
-    "use strict";
-
-    return del([
-        'server/datastore/users/*',
-        'server/datastore/ideas/*'
-    ]);
-});
-
-gulp.task('_cleanUp', function() {
-    "use strict";
-
-    mkdirs('server/datastore/users');
-    mkdirs('server/datastore/ideas');
-});
-
+/*
 gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
     "use strict";
 
     var filePattern = "server/datastore/ideas/idea_X.json";
     var fileName = filePattern.replace("X", "0");
 
-    fs.stat(fileName, function(err /*, stat */) {
+    fs.stat(fileName, function(err, stat) {
 
         if (err === null) {
             // File exists
@@ -199,7 +183,7 @@ gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
         } 
         else if (err.code === 'ENOENT') {
             // File does not exist, generate ideas
-            ideas.forEach(function(idea, index /*, arr */) {
+            ideas.forEach(function(idea, index , arr) {
                 fs.writeFile(filePattern.replace("X", index), JSON.stringify(idea), function(err) {
                     if (err) {
                         // Should no longer happen due to the gulp pre-requisite tasks.
@@ -215,3 +199,4 @@ gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
         }
     });
 });
+*/
