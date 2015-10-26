@@ -9,7 +9,7 @@
 
 ## Installation
 
-After cloning the git repo run `npm install` from a terminal window.
+After cloning the git repo run `npm install` from a terminal window. If this process fails complaining about bower, you will need to run `npm install bower -g`, then run `npm install` again. If you receive another error involving Git, then you will need to ensure that Git is installed and the `*\Git\bin` directory is added to your PATH.
 
 You will likely also have to run `npm install gulp -g` in order to run gulp. This command installs `gulp` globally so it can be used in the command line.
 
