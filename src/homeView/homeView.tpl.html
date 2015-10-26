@@ -1,27 +1,27 @@
-<md-content layout="column" layout-align="start">
+<md-content layout="column" layout-align="start center">
     <p></p>
     
 
-    <!--<font size="12"><b><center>Rok-Starter</center></b></font>-->
-    <center><img src="assets/InnovationChallengeLogo.png" width="43%"></center>
+    <!--<font size="12"><b>Rok-Starter</b></font>-->
+    <img src="assets/InnovationChallengeLogo.png" width="43%">
 
     <!--<img src="assets/fire.png"/>-->
-    <h3><center>A strategy that enables collaboration and development by providing visibility to innovative ideas.</center></h3>
+    <h3>A strategy that enables collaboration and development by providing visibility to innovative ideas.</h3>
 
-    <div layout="row" layout-margin>
-        <div flex flex-order="1" >
-            <center><img src="assets/icons/ic_wb_incandescent_black_24px.svg" width="13%"/></center>
-            <center><h2>Innovate</h2></center>
+    <div layout="column" layout-align="center center" layout-gt-sm="row" >
+        <div flex layout="column" layout-align="center center" >
+            <i class="material-icons">&#xE42E;</i>
+            <h2>Innovate</h2>
             <p>Create an innovative idea and post it to Rok-Starter.  This idea will be visible to other innovators around the world.</p>
         </div>
-        <div flex flex-order="2" ng-click="navToBrowse()">
-            <center><img src="assets/icons/ic_group_black_24px.svg" width="13%" /></center>
-            <center><h2>Collaborate</h2></center>
+        <div flex  ng-click="navToBrowse()" layout="column" layout-align="center center" >
+            <img src="assets/icons/ic_group_black_24px.svg" width="13%" />
+            <h2>Collaborate</h2>
             <p>Browse through posted innovations and give support to ones that are viable.  Share ideas with others who may be interested in supporting it.  Post comments to an innovator to help mold their vision.</p>
         </div>
-        <div flex flex-order="3">
-             <center><img src="assets/icons/ic_grade_black_24px.svg" width="13%"/></center>
-            <center><h2>Achieve</h2></center>
+        <div flex  layout="column" layout-align="center center" >
+             <img src="assets/icons/ic_grade_black_24px.svg" width="13%"/>
+            <h2>Achieve</h2>
             <p>Sharing innovations allows all departments to reap the benefits of a single idea.  Together we can grow our ideas to make a better company.</p>
         </div>
     </div>
