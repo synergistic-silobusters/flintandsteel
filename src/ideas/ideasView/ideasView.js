@@ -28,6 +28,7 @@ angular.module('flintAndSteel')
             $scope.searchText = undefined;
             ctrl.newComment = '';
             ctrl.newBack = '';
+            ctrl.newTeam = '';
             ctrl.enableEdit = false;
 
             ctrl.refreshIdea = function() {
@@ -42,6 +43,9 @@ angular.module('flintAndSteel')
                     }
                     else {
                         $scope.idea = data;
+                        if(typeof $scope.idea.team ==="undefined")	{
+                            $scope.idea.team = [];
+						}
                         ctrl.enableEdit = false;
                     }
                 }, function getIdeaError(data, status) {
@@ -86,7 +90,7 @@ angular.module('flintAndSteel')
 
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
-                if (type === 'comments' || type === 'backs') {
+                if (type === 'comments' || type === 'backs' || type === 'team') {
                     if (type === 'comments') {
                         $scope.idea[type].push({
                             text: ctrl.newComment,
@@ -102,6 +106,13 @@ angular.module('flintAndSteel')
                             types: $scope.selectedTypes
                         });
                     }
+                    else if (type === 'team') {
+                        $scope.idea[type].push({
+                            text: ctrl.newTeam,
+                            from: loginSvc.getProperty('name'),
+                            time: now
+                        });
+                    }
                     ideaSvc.updateIdea($scope.idea.id, type, $scope.idea[type],
                     function success() { },
                     function error(data, status) {
@@ -112,6 +123,7 @@ angular.module('flintAndSteel')
                     $scope.selectedType = undefined;
                     ctrl.newComment = '';
                     ctrl.newBack = '';
+                    ctrl.newTeam = '';
                 }
             };
 
@@ -241,7 +253,48 @@ angular.module('flintAndSteel')
                     return;
                 });
             };
-
+            
+            ctrl.updateTeam = function(title, description) {
+                // Zero out the array
+                $scope.idea.team = [];
+                // Write to DB
+                $scope.idea.backs.forEach(function(back) {
+                    if (back.isInTeam) {
+                    $scope.idea.team.push(back.from);    
+                    }
+                });
+                
+                ideaSvc.updateIdea($scope.idea.id, 'team', $scope.idea.team,
+					function success(data) {
+						//console.log(data);
+					},
+					function error(data, status, headers, config) {
+						console.log(status);
+				});
+                // Refresh from DB
+                //ctrl.refreshTeam(); //needed?
+            };            
+            
+            ctrl.refreshTeam = function(title, description) {
+                // Read from DB
+                ctrl.refreshIdea();
+                
+                // Quick and dirty optimization: if user can only back a single time:
+                // If team size is the same as back size we good
+                //console.log(ctrl.idea.backs);
+                
+                // Refresh ideas based on DB //Set switches properly
+                $scope.idea.backs.forEach(function(back) {		
+                    back.isInTeam = false;
+                    for (var i = 0; i<$scope.idea.team.length; i++ ){
+                        if ($scope.idea.team[i] === back.from){
+                            back.isInTeam = true; 
+                            break;
+                        }
+                    }
+                });
+            };
+            
             ctrl.isUserAuthor = function() {
                 if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
                     return true;

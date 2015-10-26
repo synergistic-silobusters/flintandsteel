@@ -142,6 +142,51 @@
                     </div>
                 </md-content>
             </md-tab>
+            <md-tab label="Team">
+                <md-content class="md-padding">
+                    <div layout="row">
+                        <div layout="column">
+                            <md-list ng-if="ideasView.isUserAuthor()">
+                                <md-list-item class="md-1-line" ng-repeat="back in idea.backs">
+                                    <div class="md-list-item-text">
+                                        <p>
+                                            <md-switch ng-model="back.isInTeam" class="md-warn"> <!-- Be careful when editing backs because of this -->
+                                                {{back.from}}
+                                                <span class="extra-space-left">
+                                                    <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
+                                                </span>
+                                            </md-switch>
+                                        </p>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                        <div layout="column" layout-align="start center" flex>
+                            <md-list>
+                                <md-list-item class="md-2-line" ng-repeat="member in idea.team">
+                                    <div class="md-list-item-text">
+                                        <h3>{{member}}</h3> <!-- now displays, but doesn't seem to save-->
+                                        <p>
+                                            <span class="extra-space-left">
+                                                <small class="custom-chip" ng-repeat="type in member.types">{{type.name}}</small>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </md-list-item>
+                                <md-list-item class="md-2-line" ng-show="idea.team.length === 0"> <!-- auto add author: needed logic for ||| if there is only one person on the team and it's the author-->
+                                    <div class="md-list-item-text">
+                                        No Team has been formed yet :)
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+						</div>
+                    </div>
+                    <div ng-if="ideasView.isUserAuthor()">
+                        <md-button class="md-raised md-primary" ng-click="ideasView.updateTeam()">Submit</md-button>  <!-- write to database and refresh in ng-click -->
+                        <md-button class="md-raised md-primary" ng-click="ideasView.refreshTeam()">Cancel</md-button>  <!-- refresh from the database in ng-click -->
+                    </div>
+                </md-content>
+            </md-tab>
             <!--<div layout="row" ng-if="isUserLoggedIn()==true">-->
                 Please log in
             <!--</div>-->
