@@ -5,7 +5,7 @@
 
 # flintandsteel
 
-![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/Logo2.PNG)
+![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/InnovationChallengeLogo.PNG)
 
 ## Installation
 
