@@ -1,17 +1,18 @@
 {
     "user": {
-        "_id": "",
-        "name": "",
+        "_id": "mongo_generated",
+        "firstName": "",
+        "lastName": "",
         "username": "",
         "email": "",
-        "password": "",
+        "nickname": "",
         "title": ""
     },
     "idea": {
-        "_id": "",
+        "_id": "mongo_generated",
         "title": "",
         "description": "",
-        "authorId": "a user._id",
+        "authorId": "one user._id",
         "eventId": "",
         "timeCreated": "",
         "timeModified": "",
@@ -19,7 +20,7 @@
             "5 strings to assist in searching"
         ],
         "likes": [
-            "bunch of user._id"
+            "set of user._id"
         ],
         "updates": [
             {
@@ -29,7 +30,7 @@
             }
         ],
         "comments": [
-            "bunch of comment._id"
+            "set of comment._id"
         ],
         "backs": [
             {
@@ -41,20 +42,20 @@
             }
         ],
         "team": [
-            "bunch of user._id"
+            "set of user._id"
         ]
     },
     "comment": {
-        "_id": "",
-        "parentId": "either an idea._id or a comment._id",
+        "_id": "mongo_generated",
+        "parentId": "one idea._id || one comment._id",
         "text": "",
-        "authorId": "a user._id",
+        "authorId": "one user._id",
         "timeCreated": "",
         "timeModified": ""
     },
     "events": [
         {
-            "_id": "",
+            "_id": "mongo_generated",
             "name": "",
             "location": "",
             "startDate": "",
