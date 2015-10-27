@@ -20,6 +20,8 @@ var userDb, ideasDb;
 
 var IdeasInstance = ideas.getInstance();
 
+var port = process.env.PORT_HTTP || process.argv[2] || 8080;
+
 datastore.open('./server/datastore/users', function(err, store) {
     "use strict";
 
@@ -418,16 +420,16 @@ external(function(err, ipExternal) {
         console.log(
             chalk.red('Could not determine network status, server running in local-only mode') +
             '\nServer listening at' +
-            '\n\tlocal:    ' + chalk.magenta('http://localhost:8080')
+            '\n\tlocal:    ' + chalk.magenta('http://localhost:' + port)
         );
     }
     else {
         console.log(
             'Server listening at' +
-            '\n\tlocal:    ' + chalk.magenta('http://localhost:8080') +
-            '\n\tnetwork:  ' + chalk.magenta('http://') + chalk.magenta(ip.address()) + chalk.magenta(':8080') +
-            '\n\tExternal: ' + chalk.magenta('http://') + chalk.magenta(ipExternal) + chalk.magenta(':8080') +
-            '\n\tExternal access requires port 8080 to be configured properly.'
+            '\n\tlocal:    ' + chalk.magenta('http://localhost:' + port) +
+            '\n\tnetwork:  ' + chalk.magenta('http://') + chalk.magenta(ip.address()) + chalk.magenta(':' + port) +
+            '\n\tExternal: ' + chalk.magenta('http://') + chalk.magenta(ipExternal) + chalk.magenta(':' + port) +
+            '\n\tExternal access requires port ' + port + ' to be configured properly.'
         );
     }
 });
@@ -439,4 +441,4 @@ else if (process.env.NODE_ENV === 'production') {
     console.log('Server running in ' + chalk.cyan('production') + ' mode.');
 }
 
-app.listen(process.argv[2] || 8080);
+app.listen(port);
