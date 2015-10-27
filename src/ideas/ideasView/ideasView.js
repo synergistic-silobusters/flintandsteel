@@ -56,8 +56,7 @@ angular.module('flintAndSteel')
                 });
             };
 
-            ctrl.refreshIdea();            
-                
+            ctrl.refreshIdea();
 
             var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
             ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
@@ -275,30 +274,23 @@ angular.module('flintAndSteel')
 					function error(data, status, headers, config) {
 						console.log(status);
 				});
-                // Refresh from DB
-                //ctrl.refreshTeam(); //needed?
             };            
             
             ctrl.refreshTeam = function(title, description) {
                 ideaPromise.promise.then(function() {
-                    // Read from DB
-                    //ctrl.refreshIdea();          
                     // Quick and dirty optimization: if user can only back a single time:
                     // If team size is the same as back size we good
                     
-                    console.log($scope.idea.backs);
                     // Refresh ideas based on DB //Set switches properly
                     $scope.idea.backs.forEach(function(back) {		
                         back.isInTeam = false;
                         for (var i = 0; i<$scope.idea.team.length; i++ ){
                             if ($scope.idea.team[i] === back.from){
-                                console.log("hollalalallalala");
                                 back.isInTeam = true; 
                                 break;
                             }
                         }
                     });
-                    console.log($scope.idea.backs); 
                 });
             };
             

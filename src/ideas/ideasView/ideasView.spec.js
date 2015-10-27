@@ -348,4 +348,74 @@ describe('IdeasViewCtrl', function() {
             expect(scope.idea.comments[commentIndex].deleted).not.toBe(true);
         });
     });
+    
+    describe('forming a team', function() {
+		var authorAccount = {
+			id: 1,
+			username: 'SciGuy',
+			name: 'Rick',
+			likedIdeas: [ 'mock_idea' ]
+		};
+ 
+        var teamLength = 0;
+        var mockIdea; 
+        
+        beforeEach(function() {
+            loginSvcMock.checkLogin(authorAccount);
+            ideaSvcMock.getIdea(null, function(idea) {
+                mockIdea = idea;
+            });
+            // Zero out the array            
+            scope.idea.team = [];
+            teamLength = scope.idea.team.length;
+        });
+
+        it('Should not display a team when no team exists', function() {
+            expect(scope.idea.team.length).toBe(0);
+        });	
+
+        it('Should allow additions and deletions of team members', function() {
+            // Add backer, check team length is 0
+            ctrl.newBack = 'Rick backs this idea!'; //how to add author to back?            
+            scope.idea.backs[teamLength].from = 'Rick';
+            scope.addNewInteraction('backs');
+            
+            expect(scope.idea.team.length).toBe(teamLength);            
+            // Add backer to team, check team length is 1
+            // & Check backer's name matches the team member name
+            scope.idea.backs[teamLength].isInTeam = true;       
+            ctrl.updateTeam();  
+            
+            expect(scope.idea.team.length).toBe(teamLength + 1);
+            expect(scope.idea.team[teamLength]).toBe('Rick');
+            // Remove backer from team, check team length is 0
+            scope.idea.backs[teamLength].isInTeam = false;
+            ctrl.updateTeam(); 
+            
+            expect(scope.idea.team.length).toBe(0);
+        });	
+
+        it('Should correctly update the switches', function() {
+            //add backer, check switch isInTeam is false
+            ctrl.newBack = 'Rick backs this idea!';
+            scope.addNewInteraction('backs');
+            ctrl.refreshIdea();
+            ctrl.updateTeam(); 
+            ctrl.refreshTeam();
+            
+            expect(scope.idea.backs[teamLength].isInTeam).not.toBe(true);
+            //add backer to team, check isInTeam is true
+            scope.idea.backs[teamLength].isInTeam = true;
+            ctrl.updateTeam(); 
+            ctrl.refreshTeam();
+            
+            expect(scope.idea.backs[teamLength].isInTeam).toBe(true);
+            //remove backer from team, check isInTeam is false
+            scope.idea.backs[teamLength].isInTeam = false;
+            ctrl.updateTeam(); 
+            ctrl.refreshTeam();
+            
+            expect(scope.idea.backs[teamLength].isInTeam).toBe(false);
+        });	
+    });
 });
