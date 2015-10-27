@@ -6,8 +6,8 @@
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
-        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', '$mdToast',
-        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast) {
+        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', '$mdToast', '$q',
+        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast, $q) {
             "use strict";
 
             /*
@@ -31,6 +31,8 @@ angular.module('flintAndSteel')
             ctrl.newTeam = '';
             ctrl.enableEdit = false;
 
+            var ideaPromise = $q.defer();
+            
             ctrl.refreshIdea = function() {
                 ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
                     if (data === 'IDEA_NOT_FOUND') {
@@ -47,13 +49,15 @@ angular.module('flintAndSteel')
                             $scope.idea.team = [];
 						}
                         ctrl.enableEdit = false;
+                        ideaPromise.resolve();
                     }
                 }, function getIdeaError(data, status) {
                     console.log(status);
                 });
             };
 
-            ctrl.refreshIdea();
+            ctrl.refreshIdea();            
+                
 
             var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
             ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
@@ -276,24 +280,29 @@ angular.module('flintAndSteel')
             };            
             
             ctrl.refreshTeam = function(title, description) {
-                // Read from DB
-                ctrl.refreshIdea();
-                
-                // Quick and dirty optimization: if user can only back a single time:
-                // If team size is the same as back size we good
-                //console.log(ctrl.idea.backs);
-                
-                // Refresh ideas based on DB //Set switches properly
-                $scope.idea.backs.forEach(function(back) {		
-                    back.isInTeam = false;
-                    for (var i = 0; i<$scope.idea.team.length; i++ ){
-                        if ($scope.idea.team[i] === back.from){
-                            back.isInTeam = true; 
-                            break;
+                ideaPromise.promise.then(function() {
+                    // Read from DB
+                    //ctrl.refreshIdea();          
+                    // Quick and dirty optimization: if user can only back a single time:
+                    // If team size is the same as back size we good
+                    
+                    console.log($scope.idea.backs);
+                    // Refresh ideas based on DB //Set switches properly
+                    $scope.idea.backs.forEach(function(back) {		
+                        back.isInTeam = false;
+                        for (var i = 0; i<$scope.idea.team.length; i++ ){
+                            if ($scope.idea.team[i] === back.from){
+                                console.log("hollalalallalala");
+                                back.isInTeam = true; 
+                                break;
+                            }
                         }
-                    }
+                    });
+                    console.log($scope.idea.backs); 
                 });
             };
+            
+            ctrl.refreshTeam();
             
             ctrl.isUserAuthor = function() {
                 if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
