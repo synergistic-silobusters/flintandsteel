@@ -72,3 +72,6 @@ npm-debug.log
 
 # Database files
 server/datastore
+
+# Secrets files
+server/secrets

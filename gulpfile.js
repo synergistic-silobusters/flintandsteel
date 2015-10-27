@@ -37,17 +37,17 @@ gulp.task('usage', function() {
         chalk.green('usage'),
         '\tDisplay this help page.',
         '',
+        chalk.green('start:dev'),
+        '\t runs the app server in development mode (doesn\'t use LDAP).',
+        '',
         chalk.green('start'),
-        '\t runs the app server using express.',
+        '\t runs the app server in production mode (uses LDAP).',
         '',
         chalk.green('test:client'),
         '\t runs the client side tests using karma.',
         '',
         chalk.green('jshint'),
-        '\tRun jshint on all .spec.js and .js files under src and server.',
-        '',
-        chalk.green('jscs'),
-        '\tRun jscs on all .spec.js and .js files under src and server.',
+        '\tRun jshint on the spec and the js folder under src.',
         '',
         chalk.green('generate:data'),
         '\tGenerate sample data in the database.',
@@ -64,11 +64,22 @@ gulp.task('usage', function() {
     gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('start', ['_cleanUp', 'test:client', 'inject'], function() {
+gulp.task('start:dev', ['_cleanUp', 'test:client', 'inject'], function() {
     "use strict";
 
     nodemon({
         script: 'server/server.js',
+        env: { 'NODE_ENV': 'development' },
+        'ignore': ['spec/*']
+    });
+});
+
+gulp.task('start:prod', ['_cleanUp', 'test:client', 'inject'], function() {
+    "use strict";
+
+    nodemon({
+        script: 'server/server.js',
+        env: { 'NODE_ENV': 'production' },
         'ignore': ['spec/*']
     });
 });
@@ -88,7 +99,8 @@ gulp.task('jshint', function() {
         'src/**/*.js',
         'server/**/*.js',
         'gulpfile.js',
-        '!src/lib/**/*.*'
+        '!src/lib/**/*.*',
+        '!server/secrets/*.*'
     ])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
@@ -102,7 +114,8 @@ gulp.task('jscs', function() {
         'src/**/*.js',
         'server/**/*.js',
         'gulpfile.js',
-        '!src/lib/**/*.*'
+        '!src/lib/**/*.*',
+        '!server/secrets/*.*'
     ])
     .pipe(jscs({ configPath: './.jscsrc' }))
     .pipe(jscs.reporter())

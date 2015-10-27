@@ -1,5 +1,6 @@
 /* global __dirname */
 /* global process */
+/* global Buffer */
 
 var express = require('express'),
     morgan = require('morgan'),
@@ -8,13 +9,18 @@ var express = require('express'),
     datastore = require('docstore'),
     bodyParser = require('body-parser'),
     external = require('external-ip')(),
+    passport = require('passport'),
+    WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
     _ = require('lodash'),
-    ideas = require('./ideas');
+    ideas = require('./ideas'),
+    ldapAuth = require('./secrets/ldapAuth');
 
 var userDb, ideasDb;
 
 var IdeasInstance = ideas.getInstance();
+
+var port = process.env.PORT_HTTP || process.argv[2] || 8080;
 
 datastore.open('./server/datastore/users', function(err, store) {
     "use strict";
@@ -61,7 +67,7 @@ function startSees(res) {
     return function sendSse(name, data, id) {
         res.write("event: " + name + "\n");
         if (id) {
-            res.write("id: " + id + "\n");    
+            res.write("id: " + id + "\n");
         }
         res.write("data: " + JSON.stringify(data) + "\n\n");
     };
@@ -79,58 +85,137 @@ app.use(morgan(':remote-addr - ' +
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(passport.initialize());
 
-app.post('/login', function(req, res) {
-    "use strict";
-
-    userDb.get(req.body.username, function(err, doc) {
-        if (err) {
-            res.status(200).json({ status: 'USER_NOT_FOUND' });
+    passport.use(new WindowsStrategy(ldapAuth.config, function(profile, done) {
+        "use strict";
+        if (profile) {
+            done(null, profile);
         }
         else {
-            if (req.body.password === doc.password) {
-                res.status(200).json({
-                    status: 'AUTH_OK',
-                    id: doc.accountId,
-                    username: req.body.username,
-                    email: doc.email,
-                    name: doc.name,
-                    likedIdeas: doc.likedIdeas
-                });
+            done(null, false, "Invalid Credentials");
+        }
+    }));
+
+    passport.serializeUser(function(user, done) {
+        "use strict";
+        console.log('serializeUser: ' + user.id);
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(function(id, done) {
+        "use strict";
+        if (id) {
+            done(null);
+        }
+        //TODO: Not sure what this is or why we need it, but we'll do it later.
+        // db.users.findById(id, function(err, user){
+        //     console.log(user);
+        //     if (!err) {
+        //         done(null, user);
+        //     }
+        //     else {
+        //         done(err, null);
+        //     }
+        // });
+    });
+}
+
+app.post('/login', function handleAuthentication(req, res, next) {
+    "use strict";
+    if (process.env.NODE_ENV === 'development') {
+
+        /*
+        NOTE - Yash - 10/24/2015
+        This is super crude but it'll be temporary. We can have our dummy users in mongo
+        once that is implemented so that we can just query the server instead of...this.
+
+        It'll also provide more configurabilty for our users. 
+         */
+
+        if (req.body.username === 'testUser' && req.body.password === 'PaswordForTest') {
+            res.status(200).json({
+                status: 'AUTH_OK',
+                id: 'test_user_id',
+                username: req.body.username,
+                email: 'test@testersoninc.com',
+                name: 'Guybrush Threepwood',
+                likedIdeas: []
+            });
+        }
+        else {
+            res.status(200).json({
+                status: 'AUTH_ERROR',
+                id: undefined,
+                username: undefined,
+                name: undefined
+            });
+        }
+    }
+    else if (process.env.NODE_ENV === 'production') {
+        req.body.password = new Buffer(req.body.password, "base64").toString("ascii");
+        passport.authenticate('WindowsAuthentication', function(err, user) {
+            if (err) {
+                return next(err);
             }
-            else {
-                res.status(200).json({
+            if (!user) {
+                return res.status(200).json({
                     status: 'AUTH_ERROR',
                     id: undefined,
                     username: undefined,
                     name: undefined
                 });
             }
-        }
-    });
-});
-app.post('/signup', function(req, res) {
-    "use strict";
 
-    userDb.save(
-    {
-        key: req.body.username,
-        _id: req.body.username,
-        accountId: req.body.id,
-        password: req.body.password,
-        email: req.body.email,
-        name: req.body.name,
-        likedIdeas: req.body.likedIdeas
-    },
-    function(err, doc) {
-        if (err) {
-            console.log(chalk.bgRed(err));
-        }
-        else {
-            console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
-        }
-    });
-    res.sendStatus(201);
+            req.login(user, function(err) {
+                if (err) {
+                    return res.status(200).json({
+                        status: 'AUTH_ERROR',
+                        id: undefined,
+                        username: undefined,
+                        name: undefined
+                    });
+                }
+                userDb.save(
+                    {
+                        key: user._json.sAMAccountName,
+                        _id: user._json.sAMAccountName,
+                        username: user._json.sAMAccountName,
+                        accountId: user.id,
+                        email: user._json.mail,
+                        full: user.displayName,
+                        first: user._json.givenName,
+                        last: user._json.sn,
+                        nick: user._json.cn,
+                        likedIdeas: []
+                    },
+                    function(err, doc) {
+                        if (err) {
+                            console.log(chalk.bgRed(err));
+                            return res.status(200).json({
+                                status: 'AUTH_ERROR',
+                                id: undefined,
+                                username: undefined,
+                                name: undefined
+                            });
+                        }
+                        else {
+                            console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
+                            return res.status(200).json({
+                                status: 'AUTH_OK',
+                                id: doc.accountId,
+                                username: doc.key,
+                                email: doc.email,
+                                name: doc.full,
+                                likedIdeas: doc.likedIdeas
+                            });
+                        }
+                    }
+                );
+            });
+        })(req, res, next);
+    }
 });
 app.post('/idea', function(req, res) {
     "use strict";
@@ -195,7 +280,7 @@ app.post('/deleteidea', function(req, res) {
 });
 app.post('/updateaccount', function(req, res) {
     "use strict";
-    
+
     userDb.get(req.body.username, function(err, doc) {
         if (err) {
             res.sendStatus(500);
@@ -335,18 +420,25 @@ external(function(err, ipExternal) {
         console.log(
             chalk.red('Could not determine network status, server running in local-only mode') +
             '\nServer listening at' +
-            '\n\tlocal:    ' + chalk.magenta('http://localhost:8080')
+            '\n\tlocal:    ' + chalk.magenta('http://localhost:' + port)
         );
     }
     else {
         console.log(
             'Server listening at' +
-            '\n\tlocal:    ' + chalk.magenta('http://localhost:8080') +
-            '\n\tnetwork:  ' + chalk.magenta('http://') + chalk.magenta(ip.address()) + chalk.magenta(':8080') +
-            '\n\tExternal: ' + chalk.magenta('http://') + chalk.magenta(ipExternal) + chalk.magenta(':8080') +
-            '\n\tExternal access requires port 8080 to be configured properly.'
+            '\n\tlocal:    ' + chalk.magenta('http://localhost:' + port) +
+            '\n\tnetwork:  ' + chalk.magenta('http://') + chalk.magenta(ip.address()) + chalk.magenta(':' + port) +
+            '\n\tExternal: ' + chalk.magenta('http://') + chalk.magenta(ipExternal) + chalk.magenta(':' + port) +
+            '\n\tExternal access requires port ' + port + ' to be configured properly.'
         );
     }
 });
 
-app.listen(process.argv[2] || 8080);
+if (process.env.NODE_ENV === 'development') {
+    console.log('Server running in ' + chalk.cyan('development') + ' mode.');
+}
+else if (process.env.NODE_ENV === 'production') {
+    console.log('Server running in ' + chalk.cyan('production') + ' mode.');
+}
+
+app.listen(port);
