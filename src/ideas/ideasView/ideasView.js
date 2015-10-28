@@ -45,9 +45,9 @@ angular.module('flintAndSteel')
                     }
                     else {
                         $scope.idea = data;
-                        if(typeof $scope.idea.team ==="undefined")	{
+                        if (typeof $scope.idea.team === "undefined")	{
                             $scope.idea.team = [];
-						}
+                        }
                         ctrl.enableEdit = false;
                         ideaPromise.resolve();
                     }
@@ -257,26 +257,26 @@ angular.module('flintAndSteel')
                 });
             };
             
-            ctrl.updateTeam = function(title, description) {
+            ctrl.updateTeam = function() {
                 // Zero out the array
                 $scope.idea.team = [];
                 // Write to DB
                 $scope.idea.backs.forEach(function(back) {
                     if (back.isInTeam) {
-                    $scope.idea.team.push(back.from);    
+                        $scope.idea.team.push(back.from);    
                     }
                 });
                 
                 ideaSvc.updateIdea($scope.idea.id, 'team', $scope.idea.team,
-					function success(data) {
-						//console.log(data);
-					},
-					function error(data, status, headers, config) {
-						console.log(status);
-				});
+                    function success() {
+                        //console.log(data);
+                    },
+                    function error(data, status) {
+                        console.log(status);
+                    });
             };            
             
-            ctrl.refreshTeam = function(title, description) {
+            ctrl.refreshTeam = function() {
                 ideaPromise.promise.then(function() {
                     // Quick and dirty optimization: if user can only back a single time:
                     // If team size is the same as back size we good
@@ -284,8 +284,8 @@ angular.module('flintAndSteel')
                     // Refresh ideas based on DB //Set switches properly
                     $scope.idea.backs.forEach(function(back) {		
                         back.isInTeam = false;
-                        for (var i = 0; i<$scope.idea.team.length; i++ ){
-                            if ($scope.idea.team[i] === back.from){
+                        for (var i = 0; i < $scope.idea.team.length; i++) {
+                            if ($scope.idea.team[i] === back.from) {
                                 back.isInTeam = true; 
                                 break;
                             }

@@ -350,13 +350,13 @@ describe('IdeasViewCtrl', function() {
     });
     
     describe('forming a team', function() {
-		var authorAccount = {
-			id: 1,
-			username: 'SciGuy',
-			name: 'Rick',
-			likedIdeas: [ 'mock_idea' ]
-		};
- 
+        var authorAccount = {
+            id: 1,
+            username: 'SciGuy',
+            name: 'Rick',
+            likedIdeas: [ 'mock_idea' ]
+        };
+        
         var teamLength = 0;
         var mockIdea; 
         
