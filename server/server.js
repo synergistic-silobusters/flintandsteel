@@ -47,6 +47,8 @@ db.open(function(err, db) {
 
 var IdeasInstance = ideas.getInstance();
 
+var port = process.env.PORT_HTTP || process.argv[2] || 8080;
+
 var app = express();
 
 function startSees(res) {
@@ -206,8 +208,8 @@ app.post('/login', function handleAuthentication(req, res, next) {
                     );
                 }
             });
-        });
-    })(req, res, next);
+        })(req, res, next);
+    }
 });
 app.post('/idea', function(req, res) {
     "use strict";

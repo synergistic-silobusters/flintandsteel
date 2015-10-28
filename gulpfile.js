@@ -106,7 +106,7 @@ gulp.task('mongo:stop', function() {
     del('server/datastore/mongod-pids');
 });
 
-gulp.task('start:dev', ['_cleanUp', 'test:client', 'inject'], function() {
+gulp.task('start:dev', ['test:client', 'inject'], function() {
     "use strict";
 
     nodemon({
@@ -116,7 +116,7 @@ gulp.task('start:dev', ['_cleanUp', 'test:client', 'inject'], function() {
     });
 });
 
-gulp.task('start:prod', ['_cleanUp', 'test:client', 'inject'], function() {
+gulp.task('start:prod', ['test:client', 'inject'], function() {
     "use strict";
 
     nodemon({
