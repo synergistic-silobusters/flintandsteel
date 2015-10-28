@@ -22,7 +22,7 @@ Make sure that the directories containing `node`, `npm`, `mongod` and `mongo` ar
 
 ### Get the code
 
-After cloning the git repo run `npm install` from a terminal window.
+After cloning the git repo run `npm install` from a terminal window. If this process fails complaining about bower, you will need to run `npm install bower -g`, then run `npm install` again. If you receive another error involving Git, then you will need to ensure that Git is installed and the `*\Git\bin` directory is added to your PATH.
 
 You will likely also have to run `npm install gulp -g` in order to run gulp. This command installs `gulp` globally so it can be used in the command line.
 
@@ -36,7 +36,9 @@ This will reduce the amount of conflicts rising from versioning and previous exp
 
 ## Running
 
-To run the website server, execute `gulp start` from a terminal window. Then navigate to http://localhost:8080.
+To run the website server, execute `gulp start:dev` or `gulp start:prod` from a terminal window. Then navigate to http://localhost:8080.
+
+Running the server in development mode disables LDAP login and falls back to hard-coded credentials. 
 
 ### Testing
 

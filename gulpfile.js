@@ -53,8 +53,11 @@ gulp.task('usage', function() {
         chalk.green('mongo:stop'),
         '\tstops the mongodb server.',
         '',
-        chalk.green('start'),
-        '\truns the app server using express.',
+        chalk.green('start:dev'),
+        '\t runs the app server in development mode (doesn\'t use LDAP).',
+        '',
+        chalk.green('start:prod'),
+        '\t runs the app server in production mode (uses LDAP).',
         '',
         chalk.green('test:client'),
         '\truns the client side tests using karma.',
@@ -103,11 +106,22 @@ gulp.task('mongo:stop', function() {
     del('server/datastore/mongod-pids');
 });
 
-gulp.task('start', ['test:client', 'inject'], function() {
+gulp.task('start:dev', ['_cleanUp', 'test:client', 'inject'], function() {
     "use strict";
 
     nodemon({
         script: 'server/server.js',
+        env: { 'NODE_ENV': 'development' },
+        'ignore': ['spec/*']
+    });
+});
+
+gulp.task('start:prod', ['_cleanUp', 'test:client', 'inject'], function() {
+    "use strict";
+
+    nodemon({
+        script: 'server/server.js',
+        env: { 'NODE_ENV': 'production' },
         'ignore': ['spec/*']
     });
 });
@@ -127,7 +141,8 @@ gulp.task('jshint', function() {
         'src/**/*.js',
         'server/**/*.js',
         'gulpfile.js',
-        '!src/lib/**/*.*'
+        '!src/lib/**/*.*',
+        '!server/secrets/*.*'
     ])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
@@ -141,7 +156,8 @@ gulp.task('jscs', function() {
         'src/**/*.js',
         'server/**/*.js',
         'gulpfile.js',
-        '!src/lib/**/*.*'
+        '!src/lib/**/*.*',
+        '!server/secrets/*.*'
     ])
     .pipe(jscs({ configPath: './.jscsrc' }))
     .pipe(jscs.reporter())
