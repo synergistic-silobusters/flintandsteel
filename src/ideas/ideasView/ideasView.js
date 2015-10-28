@@ -28,7 +28,6 @@ angular.module('flintAndSteel')
             $scope.searchText = undefined;
             ctrl.newComment = '';
             ctrl.newBack = '';
-            ctrl.newTeam = '';
             ctrl.enableEdit = false;
             
             ctrl.refreshTeam = function() {
