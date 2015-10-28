@@ -21,7 +21,7 @@ db.open(function(err, db) {
     "use strict";
 
     db.createCollection('ideas', function(errIdea) {
-        if(errIdea) {
+        if (errIdea) {
             console.log(errIdea);
         }
         else {
