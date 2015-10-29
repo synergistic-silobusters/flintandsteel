@@ -42,6 +42,7 @@
             }
         ],
         "team": [
+            "idea.authorId",
             "set of user._id"
         ]
     },
