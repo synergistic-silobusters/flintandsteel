@@ -85,3 +85,16 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+
+.center-text {
+  text-align: center;
+}
+
+.center-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.img-padding{
+    padding-top: 15px;
+}
