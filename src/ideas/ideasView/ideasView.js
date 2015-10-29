@@ -29,7 +29,23 @@ angular.module('flintAndSteel')
             ctrl.newComment = '';
             ctrl.newBack = '';
             ctrl.enableEdit = false;
-
+            
+            ctrl.refreshTeam = function() {
+                // Quick and dirty optimization: if user can only back a single time:
+                // If team size is the same as back size we good
+                
+                // Refresh ideas based on DB //Set switches properly
+                $scope.idea.backs.forEach(function(back) {		
+                    back.isInTeam = false;
+                    for (var i = 0; i < $scope.idea.team.length; i++) {
+                        if ($scope.idea.team[i] === back.from) {
+                            back.isInTeam = true; 
+                            break;
+                        }
+                    }
+                });
+            };
+            
             ctrl.refreshIdea = function() {
                 ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
                     if (data === 'IDEA_NOT_FOUND') {
@@ -42,7 +58,11 @@ angular.module('flintAndSteel')
                     }
                     else {
                         $scope.idea = data;
+                        if (typeof $scope.idea.team === "undefined")	{
+                            $scope.idea.team = [];
+                        }
                         ctrl.enableEdit = false;
+                        ctrl.refreshTeam();
                     }
                 }, function getIdeaError(data, status) {
                     console.log(status);
@@ -241,7 +261,26 @@ angular.module('flintAndSteel')
                     return;
                 });
             };
-
+            
+            ctrl.updateTeam = function() {
+                // Zero out the array
+                $scope.idea.team = [];
+                // Write to DB
+                $scope.idea.backs.forEach(function(back) {
+                    if (back.isInTeam) {
+                        $scope.idea.team.push(back.from);    
+                    }
+                });
+                
+                ideaSvc.updateIdea($scope.idea.id, 'team', $scope.idea.team,
+                    function success() {
+                        //console.log(data);
+                    },
+                    function error(data, status) {
+                        console.log(status);
+                    });
+            };            
+            
             ctrl.isUserAuthor = function() {
                 if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
                     return true;
