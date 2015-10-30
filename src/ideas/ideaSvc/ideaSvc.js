@@ -8,16 +8,9 @@ angular.module('flintAndSteel')
             "use strict";
 
             this.postIdea = function postIdea(idea, successCb, errorCb) {
-                $http.get('/uniqueid?for=idea')
-                    .success(function getIdSucess(data) {
-                        idea.id = data;
-                        $http.post('/idea', idea)
-                            .success(successCb)
-                            .error(errorCb);
-                    })
-                    .error(function getIdFailed(data, status) {
-                        console.log(status);
-                    });
+                $http.post('/idea', idea)
+                    .success(successCb)
+                    .error(errorCb);
             };
 
             this.getIdea = function getIdea(ideaId, successCb, errorCb) {
@@ -55,7 +48,7 @@ angular.module('flintAndSteel')
                         .error(errorCb);
                 }
             };
-            
+
             this.getBackTypeChips = function getBackTypeChips() {
                 var types = [
                     { name: 'Experience' },

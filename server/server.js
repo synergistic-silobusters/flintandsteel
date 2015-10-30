@@ -35,7 +35,7 @@ db.open(function(err, db) {
                             console.log(errUsers);
                         }
                         else {
-                            db.close();        
+                            db.close();
                         }
                     });
                 }
@@ -176,64 +176,68 @@ app.post('/login', function handleAuthentication(req, res, next) {
                     });
                 }
                 else {
-                    var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
-                    var userObj = {
-                        "username": user._json.sAMAccountName,
-                        "accountId": user.id,
-                        "email": user._json.mail,
-                        "full": user.displayName,
-                        "first": user._json.givenName,
-                        "last": user._json.sn,
-                        "nick": user._json.cn,
-                        "likedIdeas": []
-                    };
-                    var responseObj = {
-                        status: 'AUTH_OK',
-                        id: user.id,
-                        username: user._json.sAMAccountName,
-                        email: user._json.mail,
-                        name: user.displayName,
-                        likedIdeas: []
-                    };
+                    db.open(function(err, db) {
+                        var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
+                        var userObj = {
+                            "username": user._json.sAMAccountName,
+                            "accountId": user.id,
+                            "email": user._json.mail,
+                            "full": user.displayName,
+                            "first": user._json.givenName,
+                            "last": user._json.sn,
+                            "nick": user._json.cn,
+                            "likedIdeas": []
+                        };
+                        var responseObj = {
+                            status: 'AUTH_OK',
+                            id: user._id,
+                            username: user._json.sAMAccountName,
+                            email: user._json.mail,
+                            name: user.displayName,
+                            likedIdeas: []
+                        };
 
-                    if (!cursor) {
-                        db.collection('users').insertOne(userObj,
-                            function(err, results) {
-                                if (err) {
-                                    console.log(chalk.bgRed(err));
-                                    return res.status(200).json({
-                                        status: 'AUTH_ERROR',
-                                        id: undefined,
-                                        username: undefined,
-                                        name: undefined
-                                    });
+                        console.log(cursor);
+                        console.log(responseObj);
+                        if (cursor.count() !== 1) {
+                            db.collection('users').insertOne(userObj,
+                                function(err, results) {
+                                    if (err) {
+                                        console.log(chalk.bgRed(err));
+                                        return res.status(200).json({
+                                            status: 'AUTH_ERROR',
+                                            id: undefined,
+                                            username: undefined,
+                                            name: undefined
+                                        });
+                                    }
+                                    else {
+                                        console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
+                                        console.log(results);
+                                        return res.status(200).json(responseObj);
+                                    }
+                                    db.close();
                                 }
-                                else {
-                                    console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
-                                    console.log(results);
-                                    return res.status(200).json(responseObj);
+                            );
+                        }
+                        else {
+                            db.collection('users').updateOne(
+                                { email: user._json.mail },
+                                { $set: userObj },
+                                function(err, results) {
+                                    if (err) {
+                                        console.log(chalk.bgRed(err));
+                                    }
+                                    else {
+                                        console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
+                                        console.log(results);
+                                        return res.status(200).json(responseObj);
+                                    }
+                                    db.close();
                                 }
-                                db.close();
-                            }
-                        );
-                    }
-                    else {
-                        db.collection('users').updateOne(
-                            { email: user._json.mail },
-                            { $set: userObj },
-                            function(err, results) {
-                                if (err) {
-                                    console.log(chalk.bgRed(err));
-                                }
-                                else {
-                                    console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
-                                    console.log(results);
-                                    return res.status(200).json(responseObj);
-                                }
-                                db.close();
-                            }
-                        );
-                    }
+                            );
+                        }
+                    });
                 }
             });
         })(req, res, next);
@@ -243,7 +247,6 @@ app.post('/idea', function(req, res) {
     "use strict";
 
     ideas.create(
-        req.body.id,
         req.body.title,
         req.body.description,
         req.body.author,
@@ -255,7 +258,7 @@ app.post('/idea', function(req, res) {
                 console.log(chalk.bgRed(err));
             }
             else {
-                console.log(chalk.bgGreen('Document with key %s stored in ideas.'), doc.key);
+                console.log(chalk.bgGreen('Document with id %s stored in ideas.'), doc._id);
                 ideas.fetch(function(err, headers) {
                     IdeasInstance.newHeaders(headers);
                 });
