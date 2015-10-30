@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('LoginViewCtrl', 
+.controller('LoginViewCtrl',
     [
         '$scope', '$state', '$stateParams', '$mdToast', 'loginSvc',
         function($scope, $state, $stateParams, $mdToast, loginSvc) {

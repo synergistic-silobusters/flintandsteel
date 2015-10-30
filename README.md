@@ -5,7 +5,7 @@
 
 # flintandsteel
 
-![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/Logo2.PNG)
+![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/InnovationChallengeLogo.png)
 
 ## Installation
 
@@ -23,7 +23,9 @@ This will reduce the amount of conflicts rising from versioning and previous exp
 
 ## Running
 
-To run the website server, execute `gulp start` from a terminal window. Then navigate to http://localhost:8080.
+To run the website server, execute `gulp start:dev` or `gulp start:prod` from a terminal window. Then navigate to http://localhost:8080.
+
+Running the server in development mode disables LDAP login and falls back to hard-coded credentials. 
 
 ### Testing
 

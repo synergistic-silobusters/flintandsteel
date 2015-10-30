@@ -75,8 +75,26 @@ body {
 	cursor: pointer;
 }
 
+.deleted  h3, .deleted p{
+  text-decoration: line-through;
+  color: red;
+}
+
 .search-bar {
   width: 50%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.center-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.img-padding{
+    padding-top: 15px;
 }
