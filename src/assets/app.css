@@ -101,3 +101,7 @@ body {
 .padding-left-20{
     padding-left: 20px;
 }
+
+.identicon {
+    vertical-align: middle;
+}

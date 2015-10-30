@@ -22,6 +22,7 @@ module.exports = function(config) {
             'src/lib/angular-aria/angular-aria.js',
             'src/lib/angular-material/angular-material.js',
             'src/lib/angular-material/angular-material-mocks.js',
+            'src/lib/angular-identicon/src/identiconDirective.js',            
             'src/lib/moment/moment.js',
             'src/lib/lodash/lodash.js',
             'src/app.js',
