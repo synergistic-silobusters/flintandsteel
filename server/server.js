@@ -131,10 +131,10 @@ app.post('/login', function handleAuthentication(req, res, next) {
         This is super crude but it'll be temporary. We can have our dummy users in mongo
         once that is implemented so that we can just query the server instead of...this.
 
-        It'll also provide more configurabilty for our users. 
+        It'll also provide more configurabilty for our users.
          */
 
-        if (req.body.username === 'testUser' && req.body.password === 'PaswordForTest') {
+        if (req.body.username === 'test' && new Buffer(req.body.password, "base64").toString() === 'test') {
             res.status(200).json({
                 status: 'AUTH_OK',
                 id: 'test_user_id',
