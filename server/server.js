@@ -25,7 +25,7 @@ db.open(function(err, db) {
             console.log(errIdea);
         }
         else {
-            db.createCollection('users', function(errUsers, collectionUsers) {
+            db.createCollection('users', function(errUsers) {
                 if (errUsers) {
                     console.log(errUsers);
                 }
@@ -167,13 +167,13 @@ app.post('/login', function handleAuthentication(req, res, next) {
 
             req.login(user, function(err) {
                 if (err) {
+                    console.log(err);
                     return res.status(200).json({
                         status: 'AUTH_ERROR',
                         id: undefined,
                         username: undefined,
                         name: undefined
                     });
-                    console.log(err);
                 }
                 else {
                     var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
