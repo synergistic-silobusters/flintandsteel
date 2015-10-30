@@ -5,9 +5,22 @@
 
 # flintandsteel
 
-![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/Logo2.PNG)
+![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/InnovationChallengeLogo.png)
 
 ## Installation
+
+### Prerequisites
+
+The following applications need to be installed: 
+
+* [Git](http://git-scm.com/)
+* [Node.js](https://nodejs.org/en/) - this project tests against v0.10.40
+* [MongoDB](https://www.mongodb.org/)
+* A text editor like [Notepad++](https://notepad-plus-plus.org/) or [Sublime Text 3](http://www.sublimetext.com/3)
+
+Make sure that the directories containing `node`, `npm`, `mongod` and `mongo` are added to the path making them accessible from the terminal. 
+
+### Get the code
 
 After cloning the git repo run `npm install` from a terminal window. If this process fails complaining about bower, you will need to run `npm install bower -g`, then run `npm install` again. If you receive another error involving Git, then you will need to ensure that Git is installed and the `*\Git\bin` directory is added to your PATH.
 
@@ -23,7 +36,7 @@ This will reduce the amount of conflicts rising from versioning and previous exp
 
 ## Running
 
-To run the website server, execute `gulp start:dev` or `gulp start:prod` from a terminal window. Then navigate to http://localhost:8080.
+To run the website server, execute `gulp start:dev` or `gulp start:prod` from a terminal window. Then navigate to [localhost:8080](http://localhost:8080).
 
 Running the server in development mode disables LDAP login and falls back to hard-coded credentials. 
 

@@ -53,17 +53,14 @@ describe('ideaSvc', function() {
     });
 
     describe('ideaSvc.postIdea', function() {
-        var postIdeaHandler, uniqueIdHandler;
+        var postIdeaHandler;
 
         beforeEach(function() {
             postIdeaHandler = $httpBackend.whenPOST('/idea')
                                 .respond(201, 'Created');
-            uniqueIdHandler = $httpBackend.whenGET('/uniqueid?for=idea')
-                                .respond(200, 9001);
         });
 
         it('should add a newly submitted idea', function() {
-            $httpBackend.expectGET('/uniqueid?for=idea');
             $httpBackend.expectPOST('/idea', dummyIdea);
 
             ideaSvc.postIdea(dummyIdea, function(data) {
