@@ -57,16 +57,11 @@ angular.module('flintAndSteel', [
                 templateUrl: 'ideas/ideaBrowseView/ideaBrowseView.tpl.html',
                 controller: 'IdeaBrowseViewCtrl'
             })
-            .state('license', {
-                url: '/license',
-                templateUrl: 'about/licenseAbout.tpl.html',
-                controller: ''
-            })
             .state('about', {
                 url: '/about',
                 templateUrl: 'about/about.tpl.html',
                 controller: ''
-            });;
+            });
 
         $urlRouterProvider.otherwise('/');
 
