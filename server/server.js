@@ -6,52 +6,49 @@ var express = require('express'),
     morgan = require('morgan'),
     path = require('path'),
     chalk = require('chalk'),
-    datastore = require('docstore'),
     bodyParser = require('body-parser'),
     external = require('external-ip')(),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
-    _ = require('lodash'),
-    ideas = require('./ideas'),
-    ldapAuth = require('./secrets/ldapAuth');
+    ldapAuth = require('./secrets/ldapAuth'),
+    mongodb = require('mongodb'),
+    ideas = require('./ideas');
 
-var userDb, ideasDb;
+var db = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+
+db.open(function(err, db) {
+    "use strict";
+
+    db.createCollection('ideas', function(errIdea) {
+        if (errIdea) {
+            console.log(errIdea);
+        }
+        else {
+            db.createCollection('users', function(errUsers) {
+                if (errUsers) {
+                    console.log(errUsers);
+                }
+                else {
+                    db.createCollection('events', function(errUsers) {
+                        if (errUsers) {
+                            console.log(errUsers);
+                        }
+                        else {
+                            db.close();        
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
 
 var IdeasInstance = ideas.getInstance();
 
 var port = process.env.PORT_HTTP || process.argv[2] || 8080;
 
-datastore.open('./server/datastore/users', function(err, store) {
-    "use strict";
-
-    if (err) {
-        console.log(err);
-    }
-    else {
-        userDb = store;
-    }
-});
-
-datastore.open('./server/datastore/ideas', function(err, store) {
-    "use strict";
-
-    if (err) {
-        console.log(err);
-    }
-    else {
-        ideasDb = store;
-    }
-});
-
 var app = express();
-
-// Datastore filter to find everything
-var filter = function dbFilter() {
-    "use strict";
-
-    return true;
-};
 
 function startSees(res) {
     "use strict";
@@ -170,6 +167,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
 
             req.login(user, function(err) {
                 if (err) {
+                    console.log(err);
                     return res.status(200).json({
                         status: 'AUTH_ERROR',
                         id: undefined,
@@ -177,42 +175,66 @@ app.post('/login', function handleAuthentication(req, res, next) {
                         name: undefined
                     });
                 }
-                userDb.save(
-                    {
-                        key: user._json.sAMAccountName,
-                        _id: user._json.sAMAccountName,
+                else {
+                    var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
+                    var userObj = {
+                        "username": user._json.sAMAccountName,
+                        "accountId": user.id,
+                        "email": user._json.mail,
+                        "full": user.displayName,
+                        "first": user._json.givenName,
+                        "last": user._json.sn,
+                        "nick": user._json.cn,
+                        "likedIdeas": []
+                    };
+                    var responseObj = {
+                        status: 'AUTH_OK',
+                        id: user.id,
                         username: user._json.sAMAccountName,
-                        accountId: user.id,
                         email: user._json.mail,
-                        full: user.displayName,
-                        first: user._json.givenName,
-                        last: user._json.sn,
-                        nick: user._json.cn,
+                        name: user.displayName,
                         likedIdeas: []
-                    },
-                    function(err, doc) {
-                        if (err) {
-                            console.log(chalk.bgRed(err));
-                            return res.status(200).json({
-                                status: 'AUTH_ERROR',
-                                id: undefined,
-                                username: undefined,
-                                name: undefined
-                            });
-                        }
-                        else {
-                            console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
-                            return res.status(200).json({
-                                status: 'AUTH_OK',
-                                id: doc.accountId,
-                                username: doc.key,
-                                email: doc.email,
-                                name: doc.full,
-                                likedIdeas: doc.likedIdeas
-                            });
-                        }
+                    };
+
+                    if (!cursor) {
+                        db.collection('users').insertOne(userObj,
+                            function(err, results) {
+                                if (err) {
+                                    console.log(chalk.bgRed(err));
+                                    return res.status(200).json({
+                                        status: 'AUTH_ERROR',
+                                        id: undefined,
+                                        username: undefined,
+                                        name: undefined
+                                    });
+                                }
+                                else {
+                                    console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
+                                    console.log(results);
+                                    return res.status(200).json(responseObj);
+                                }
+                                db.close();
+                            }
+                        );
                     }
-                );
+                    else {
+                        db.collection('users').updateOne(
+                            { email: user._json.mail },
+                            { $set: userObj },
+                            function(err, results) {
+                                if (err) {
+                                    console.log(chalk.bgRed(err));
+                                }
+                                else {
+                                    console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
+                                    console.log(results);
+                                    return res.status(200).json(responseObj);
+                                }
+                                db.close();
+                            }
+                        );
+                    }
+                }
             });
         })(req, res, next);
     }
@@ -281,25 +303,22 @@ app.post('/deleteidea', function(req, res) {
 app.post('/updateaccount', function(req, res) {
     "use strict";
 
-    userDb.get(req.body.username, function(err, doc) {
-        if (err) {
-            res.sendStatus(500);
+    // This will probably become an every login thing with LDAP anyway.
+    db.collection('users').updateOne(
+        { _id: req.body._id },
+        { $set: req.body.userObject },
+        function(err, results) {
+            if (err) {
+                console.log(chalk.bgRed(err));
+            }
+            else {
+                console.log(chalk.bgGreen('Document with id %s updated in the database.'), req.body._id);
+                console.log(results);
+                res.sendStatus(200);
+            }
+            db.close();
         }
-        else {
-            _.assign(doc, req.body);
-            doc.status = undefined;
-            doc.id = undefined;
-            userDb.save(doc, function(err, doc) {
-                if (err) {
-                    console.log(chalk.bgRed(err));
-                }
-                else {
-                    console.log(chalk.bgGreen('Document with key %s updated in account.'), doc.key);
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
+    );
 });
 
 app.get('/idea', function(req, res) {
@@ -357,59 +376,6 @@ app.get('/ideaheaders/events', function(req, res) {
 
     req.on("close", function() {
         IdeasInstance.removeListener("newHeaders", updateHeaders);
-    });
-});
-app.get('/uniqueid', function(req, res) {
-    "use strict";
-
-    var dbToSearch,
-        propName = '';
-    if (req.query.for === 'idea') {
-        dbToSearch = ideasDb;
-        propName = 'ideaId';
-    }
-    else if (req.query.for === 'user') {
-        dbToSearch = userDb;
-        propName = 'accountId';
-    }
-    if (dbToSearch) {
-        dbToSearch.scan(filter, function(err, docs) {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else {
-                var listofIds = [], id = 0;
-                var matcher = function matcher(item) {
-                    return item === id;
-                };
-                for (var i = 0; i < docs.length; i++) {
-                    listofIds.push(docs[i][propName]);
-                }
-                while (_.findIndex(listofIds, matcher) !== -1) {
-                    id++;
-                }
-                res.status(200).json(id);
-            }
-        });
-    }
-});
-app.get('/isuniqueuser', function(req, res) {
-    "use strict";
-
-    userDb.scan(filter, function(err, docs) {
-        if (err) {
-            res.sendStatus(500);
-        }
-        else {
-            var userFound = false;
-            for (var i = 0; i < docs.length; i++) {
-                userFound = (docs[i].username === req.query.user);
-                if (userFound) {
-                    break;
-                }
-            }
-            res.status(200).json(!userFound);
-        }
     });
 });
 
