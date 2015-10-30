@@ -18,24 +18,21 @@ exports.create = function(id, title, description, author, likes, comments, backs
             cb(err);
         }
         cb(null, doc);
+        db.close();
     });
 };
 
 exports.get = function(id, cb) {
     "use strict";
 
-    var cursor = db.collection('ideas').find({ _id: id });
-    cursor.each(function(err, doc) {
-        if (err) {
-            cb(err);
-        }
-        else {
-            // There should only be one. If there is more than one
-            // then we have larger problems.
-            cb(null, doc);
-            db.close();
-        }
-    });
+    var doc = db.collection('ideas').findOne({ _id: id });
+    if (doc) {
+        cb(null, doc);
+    }
+    else {
+        cb("Document was not found in the database!");
+    }
+    db.close();
 };
 
 exports.update = function(id, property, value, cb) {
