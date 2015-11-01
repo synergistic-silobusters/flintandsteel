@@ -98,6 +98,11 @@ body {
 .img-padding{
     padding-top: 15px;
 }
+
+.padding-left-20{
+    padding-left: 20px;
+}
+
 .about-technologies{
     padding-top: 15px;
     padding-left: 15px;
@@ -115,3 +120,4 @@ body {
     text-decoration:none;
     color: #666;
 }
+
