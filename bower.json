@@ -26,7 +26,6 @@
     "lodash": "3.10.0",
     "moment": "2.10.3",
     "event-source-polyfill": "0.0.6",
-    "identicon": "*",
-    "angular-identicon": "~0.1.17"
+    "angular-identicon": "0.1.17"
   }
 }
