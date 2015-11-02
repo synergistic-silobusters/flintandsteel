@@ -11,7 +11,6 @@ var express = require('express'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
-    ldapAuth = require('./secrets/ldapAuth'),
     mongodb = require('mongodb'),
     ideas = require('./ideas');
 
@@ -83,9 +82,10 @@ app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === 'production') {
+
     app.use(passport.initialize());
 
-    passport.use(new WindowsStrategy(ldapAuth.config, function(profile, done) {
+    passport.use(new WindowsStrategy(require('./secrets/ldapAuth').config, function(profile, done) {
         "use strict";
         if (profile) {
             done(null, profile);
@@ -409,5 +409,3 @@ if (process.env.NODE_ENV === 'development') {
 else if (process.env.NODE_ENV === 'production') {
     console.log('Server running in ' + chalk.cyan('production') + ' mode.');
 }
-
-app.listen(port);
