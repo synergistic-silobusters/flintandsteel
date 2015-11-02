@@ -8,6 +8,7 @@ var express = require('express'),
     chalk = require('chalk'),
     bodyParser = require('body-parser'),
     external = require('external-ip')(),
+    fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
@@ -409,14 +410,18 @@ if (process.env.NODE_ENV === 'development') {
 }
 else if (process.env.NODE_ENV === 'production') {
     console.log('Server running in ' + chalk.cyan('production') + ' mode.');
-    var https = https = require('https');
+    var https = require('https');
+    var http = require('http');
     var options = {
         key: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.key'),
         cert: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.crt')
     };
+
     https.createServer(options, app).listen(443);
-    http = express.createServer();
-    http.get('*',function(req,res){
-        res.redirect('https://innovate.ra.rockwell.com'+req.url)
-    });
+
+    http.createServer(function (req, res) {
+        res.writeHead(302, { "Location": "https://" + req.headers['host'] + req.url });
+        res.end();
+    }).listen(80);
+    
 }
