@@ -405,7 +405,18 @@ external(function(err, ipExternal) {
 
 if (process.env.NODE_ENV === 'development') {
     console.log('Server running in ' + chalk.cyan('development') + ' mode.');
+    app.listen(port);
 }
 else if (process.env.NODE_ENV === 'production') {
     console.log('Server running in ' + chalk.cyan('production') + ' mode.');
+    var https = https = require('https');
+    var options = {
+        key: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.key'),
+        cert: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.crt')
+    };
+    https.createServer(options, app).listen(443);
+    http = express.createServer();
+    http.get('*',function(req,res){
+        res.redirect('https://innovate.ra.rockwell.com'+req.url)
+    });
 }
