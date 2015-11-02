@@ -419,8 +419,10 @@ else if (process.env.NODE_ENV === 'production') {
 
     https.createServer(options, app).listen(443);
 
-    http.createServer(function (req, res) {
-        res.writeHead(302, { "Location": "https://" + req.headers['host'] + req.url });
+    http.createServer(function(req, res) {
+        "use strict";
+        
+        res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
         res.end();
     }).listen(80);
     
