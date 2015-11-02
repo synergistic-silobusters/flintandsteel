@@ -18,6 +18,10 @@
     <script src="lib/angular-mocks/angular-mocks.js"></script>
     <script src="lib/angular-material/angular-material.js"></script>
     <script src="lib/angular-aria/angular-aria.js"></script>
+    <script src="lib/angular-identicon/dist/angular-identicon.js"></script>
+    <script src="lib/angular-identicon/src/md5.js"></script>
+    <script src="lib/identicon/identicon.js"></script>
+    <script src="lib/identicon/pnglib.js"></script>    
     <script src="lib/lodash/lodash.js"></script>
     <script src="lib/moment/moment.js"></script>
     <script src="lib/event-source-polyfill/eventsource.js"></script>
@@ -55,7 +59,7 @@
             <span flex></span>
             <md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
                 <md-icon md-svg-icon="action:perm_identity" ng-if="!isUserLoggedIn()"></md-icon>
-                <md-icon md-svg-icon="action:account_box" ng-if="isUserLoggedIn()"></md-icon>
+                <identicon username='username' size='24' ng-if="isUserLoggedIn()" ng-init="getUsername()" class="identicon"></identicon>                
             </md-button>
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
                 <md-icon md-svg-icon="navigation:more_vert"></md-icon>

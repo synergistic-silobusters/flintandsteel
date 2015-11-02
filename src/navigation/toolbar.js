@@ -33,6 +33,12 @@ angular.module('flintAndSteel')
             };
 
             $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+
+            $scope.getUsername = function getUsername() {
+                if ($scope.isUserLoggedIn()) {
+                    $scope.username = loginSvc.getProperty('username');                    
+                }
+            };            
         }
     ]
 );
