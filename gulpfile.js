@@ -196,3 +196,6 @@ gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
         }
     });
 });
+
+// A shorter call for generating colon data
+gulp.task('poop', ['generate:data']);
