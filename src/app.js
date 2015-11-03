@@ -7,7 +7,8 @@
 angular.module('flintAndSteel', [
         'ngAnimate',
         'ui.router',
-        'ngMaterial'
+        'ngMaterial',
+        'ui.identicon'
     ]
 )
 .config([
@@ -56,6 +57,11 @@ angular.module('flintAndSteel', [
                 url: '/ideabrowse',
                 templateUrl: 'ideas/ideaBrowseView/ideaBrowseView.tpl.html',
                 controller: 'IdeaBrowseViewCtrl'
+            })
+            .state('about', {
+                url: '/about',
+                templateUrl: 'about/about.tpl.html',
+                controller: ''
             });
 
         $urlRouterProvider.otherwise('/');

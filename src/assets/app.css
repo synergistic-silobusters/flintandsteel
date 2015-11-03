@@ -98,6 +98,29 @@ body {
 .img-padding{
     padding-top: 15px;
 }
+
 .padding-left-20{
     padding-left: 20px;
+}
+
+.about-technologies{
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+}
+.about-padding-bottom{
+    padding-bottom: 15px;
+}
+.about-padding-top{
+    padding-top: 15px;
+}
+.mailto-format{
+    text-decoration:none !important; 
+    text-decoration:none;
+    color: #666;
+}
+
+.identicon {
+    vertical-align: middle;
 }
