@@ -8,10 +8,10 @@ var express = require('express'),
     chalk = require('chalk'),
     bodyParser = require('body-parser'),
     external = require('external-ip')(),
+    fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
-    ldapAuth = require('./secrets/ldapAuth'),
     mongodb = require('mongodb'),
     ideas = require('./ideas');
 
@@ -83,9 +83,10 @@ app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === 'production') {
+
     app.use(passport.initialize());
 
-    passport.use(new WindowsStrategy(ldapAuth.config, function(profile, done) {
+    passport.use(new WindowsStrategy(require('./secrets/ldapAuth').config, function(profile, done) {
         "use strict";
         if (profile) {
             done(null, profile);
@@ -405,9 +406,24 @@ external(function(err, ipExternal) {
 
 if (process.env.NODE_ENV === 'development') {
     console.log('Server running in ' + chalk.cyan('development') + ' mode.');
+    app.listen(port);
 }
 else if (process.env.NODE_ENV === 'production') {
     console.log('Server running in ' + chalk.cyan('production') + ' mode.');
-}
+    var https = require('https');
+    var http = require('http');
+    var options = {
+        key: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.key'),
+        cert: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.crt')
+    };
 
-app.listen(port);
+    https.createServer(options, app).listen(443);
+
+    http.createServer(function(req, res) {
+        "use strict";
+        
+        res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
+        res.end();
+    }).listen(80);
+    
+}
