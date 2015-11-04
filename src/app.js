@@ -7,7 +7,8 @@
 angular.module('flintAndSteel', [
         'ngAnimate',
         'ui.router',
-        'ngMaterial'
+        'ngMaterial',
+        'ui.identicon'
     ]
 )
 .config([
