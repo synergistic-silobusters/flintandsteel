@@ -318,7 +318,7 @@ app.post('/updateaccount', function(req, res) {
     "use strict";
 
     DB.open(function(err, db) {
-        DB.collection('users').findAndModify(
+        db.collection('users').findAndModify(
             { username: req.body.username },
             [],
             { $set: {likedIdeas: req.body.likedIdeas } },
@@ -331,7 +331,7 @@ app.post('/updateaccount', function(req, res) {
                     console.log(results);
                     res.sendStatus(200);
                 }
-                DB.close();
+                // db.close();
             }
         );
     });
