@@ -15,9 +15,15 @@ var express = require('express'),
     mongodb = require('mongodb'),
     ideas = require('./ideas');
 
-var db = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+var DB;
+if (process.env.NODE_ENV === 'development') {
+    DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
+}
+else if (process.env.NODE_ENV === 'production') {
+    DB = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+}
 
-db.open(function(err, db) {
+DB.open(function(err, db) {
     "use strict";
 
     db.createCollection('ideas', function(errIdea) {
@@ -177,7 +183,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
                     });
                 }
                 else {
-                    db.open(function(err, db) {
+                    DB.open(function(err, db) {
                         var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
                         var userObj = {
                             "username": user._json.sAMAccountName,
@@ -308,7 +314,7 @@ app.post('/updateaccount', function(req, res) {
     "use strict";
 
     // This will probably become an every login thing with LDAP anyway.
-    db.collection('users').updateOne(
+    DB.collection('users').updateOne(
         { _id: req.body._id },
         { $set: req.body.userObject },
         function(err, results) {
@@ -320,7 +326,7 @@ app.post('/updateaccount', function(req, res) {
                 console.log(results);
                 res.sendStatus(200);
             }
-            db.close();
+            DB.close();
         }
     );
 });
@@ -421,9 +427,9 @@ else if (process.env.NODE_ENV === 'production') {
 
     http.createServer(function(req, res) {
         "use strict";
-        
+
         res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
         res.end();
     }).listen(80);
-    
+
 }

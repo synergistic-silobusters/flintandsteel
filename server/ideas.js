@@ -6,13 +6,19 @@ var Idea = require('./idea'),
     ObjectId = require('mongodb').ObjectID,
     _ = require('lodash');
 
-var db = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+    var DB;
+    if (process.env.NODE_ENV === 'development') {
+        DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
+    }
+    else if (process.env.NODE_ENV === 'production') {
+        DB = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+    }
 
 var IdeasSingleton;
 
 exports.create = function(title, description, author, likes, comments, backs, cb) {
     "use strict";
-    db.open(function(err, db) {
+    DB.open(function(err, db) {
         var idea = Idea.create(title, description, author, likes, comments, backs);
         db.collection('ideas').insertOne(idea, function(err, doc) {
             if (err) {
@@ -29,7 +35,7 @@ exports.get = function(id, cb) {
 
     var objId = new ObjectId(id);
 
-    db.open(function(err, db) {
+    DB.open(function(err, db) {
         db.collection('ideas').findOne({_id: objId}, function(err, doc) {
             if (doc) {
                 cb(null, doc);
@@ -49,7 +55,7 @@ exports.update = function(id, property, value, cb) {
     updateObj[property] = value;
     var objId = new ObjectId(id);
 
-    db.open(function(err, db) {
+    DB.open(function(err, db) {
         db.collection('ideas').updateOne(
             { _id: objId },
             { $set: updateObj },
@@ -73,7 +79,7 @@ exports.delete = function(id, cb) {
 
     var objId = new ObjectId(id);
 
-    db.open(function(err, db) {
+    DB.open(function(err, db) {
         db.collection('ideas').deleteOne({ _id: objId },
         function(err, results) {
             if (err) {
@@ -92,7 +98,7 @@ exports.delete = function(id, cb) {
 function getHeaders(cb) {
     "use strict";
 
-    db.open(function(err, db) {
+    DB.open(function(err, db) {
         // Have to figure out how to sort the documents if we need them sorted.
         // Pretty sure find() can do it for us.
         db.collection('ideas').find().toArray(function(err, docs) {
