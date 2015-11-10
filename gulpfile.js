@@ -185,12 +185,14 @@ gulp.task('clean:modules', function() {
 });
 
 gulp.task('_cleanUp', function() {
+    "use strict";
     var command = "mongo flintandsteel-dev --eval \"db.dropDatabase()\"";
     runCommand(command);
 });
 
 
 gulp.task('generate:data', ['_cleanUp'], function() {
+    "use strict";
     var command = "node generateData.js";
     runCommand(command);
 });

@@ -1,4 +1,5 @@
 /* global exports */
+/* global process */
 
 var Idea = require('./idea'),
     chalk = require('chalk'),
