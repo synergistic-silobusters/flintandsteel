@@ -317,22 +317,24 @@ app.post('/deleteidea', function(req, res) {
 app.post('/updateaccount', function(req, res) {
     "use strict";
 
-    // This will probably become an every login thing with LDAP anyway.
-    DB.collection('users').updateOne(
-        { _id: req.body._id },
-        { $set: req.body.userObject },
-        function(err, results) {
-            if (err) {
-                console.log(chalk.bgRed(err));
+    DB.open(function(err, db) {
+        DB.collection('users').findAndModify(
+            { username: req.body.username },
+            [],
+            { $set: {likedIdeas: req.body.likedIdeas } },
+            function(err, results) {
+                if (err) {
+                    console.log(chalk.bgRed(err));
+                }
+                else {
+                    console.log(chalk.bgGreen('Document with id %s updated in the database.'), results.updateId);
+                    console.log(results);
+                    res.sendStatus(200);
+                }
+                DB.close();
             }
-            else {
-                console.log(chalk.bgGreen('Document with id %s updated in the database.'), req.body._id);
-                console.log(results);
-                res.sendStatus(200);
-            }
-            DB.close();
-        }
-    );
+        );
+    });
 });
 
 app.get('/idea', function(req, res) {
