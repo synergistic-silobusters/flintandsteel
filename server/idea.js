@@ -16,5 +16,7 @@ function Idea(title, description, author, likes, comments, backs) {
 exports.create = function(title, description, author, likes, comments, backs) {
     "use strict";
 
+    console.log(author);
+
     return new Idea(title, description, author, likes, comments, backs);
 };

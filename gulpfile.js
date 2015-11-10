@@ -29,10 +29,12 @@ var paths = {
 var runCommand = function(command) {
     "use strict";
 
-    return exec(command, function(err) {
+    return exec(command, function(err, stdout, stderr) {
         if (err !== null) {
             console.log(chalk.red(err));
         }
+        console.log(stdout);
+        console.log(stderr);
     });
 };
 
