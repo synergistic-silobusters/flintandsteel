@@ -6,13 +6,13 @@ var Idea = require('./idea'),
     ObjectId = require('mongodb').ObjectID,
     _ = require('lodash');
 
-    var DB;
-    if (process.env.NODE_ENV === 'development') {
-        DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
-    }
-    else if (process.env.NODE_ENV === 'production') {
-        DB = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
-    }
+var DB;
+if (process.env.NODE_ENV === 'development') {
+    DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
+}
+else if (process.env.NODE_ENV === 'production') {
+    DB = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+}
 
 var IdeasSingleton;
 
@@ -25,7 +25,7 @@ exports.create = function(title, description, author, likes, comments, backs, cb
                 cb(err);
             }
             cb(null, doc);
-            db.close();
+            // db.close();
         });
     });
 };

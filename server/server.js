@@ -138,14 +138,18 @@ app.post('/login', function handleAuthentication(req, res, next) {
         It'll also provide more configurabilty for our users.
          */
 
-        if (req.body.username === 'test' && new Buffer(req.body.password, "base64").toString() === 'test') {
-            res.status(200).json({
-                status: 'AUTH_OK',
-                id: 'test_user_id',
-                username: req.body.username,
-                email: 'test@testersoninc.com',
-                name: 'Guybrush Threepwood',
-                likedIdeas: []
+        if (new Buffer(req.body.password, "base64").toString() === 'test') {
+            DB.open(function(err, db) {
+                db.collection('users').find({username: req.body.username}).limit(1).toArray(function(err, docs) {
+                    res.status(200).json({
+                        status: 'AUTH_OK',
+                        id: docs[0].accountId,
+                        username: docs[0].username,
+                        email: docs[0].email,
+                        name: docs[0].full,
+                        likedIdeas: docs[0].likedIdeas
+                    });
+                });
             });
         }
         else {
@@ -265,7 +269,7 @@ app.post('/idea', function(req, res) {
                 console.log(chalk.bgRed(err));
             }
             else {
-                console.log(chalk.bgGreen('Document with id %s stored in ideas.'), doc._id);
+                console.log(chalk.bgGreen('Document with id %s stored in ideas.'), doc.insertedId);
                 ideas.fetch(function(err, headers) {
                     IdeasInstance.newHeaders(headers);
                 });

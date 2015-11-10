@@ -106,7 +106,7 @@ gulp.task('mongo:stop', function() {
     del('server/datastore/mongod-pids');
 });
 
-gulp.task('start:dev', ['test:client', 'inject'], function() {
+gulp.task('start:dev', ['test:client', 'inject', 'generate:data'], function() {
     "use strict";
 
     nodemon({
@@ -182,35 +182,13 @@ gulp.task('clean:modules', function() {
     ]);
 });
 
-/*
-gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
-    "use strict";
-
-    var filePattern = "server/datastore/ideas/idea_X.json";
-    var fileName = filePattern.replace("X", "0");
-
-    fs.stat(fileName, function(err, stat) {
-
-        if (err === null) {
-            // File exists
-            gutil.log(chalk.red("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue"));
-        }
-        else if (err.code === 'ENOENT') {
-            // File does not exist, generate ideas
-            ideas.forEach(function(idea, index , arr) {
-                fs.writeFile(filePattern.replace("X", index), JSON.stringify(idea), function(err) {
-                    if (err) {
-                        // Should no longer happen due to the gulp pre-requisite tasks.
-                        gutil.log(chalk.red("ERROR: Try to create the 'server/datastore/ideas' directory path to continue."));
-                    }
-                });
-            });
-        }
-        else {
-            // Something went very wrong.
-            console.error("ERROR: ", err.code);
-            throw err;
-        }
-    });
+gulp.task('_cleanUp', function() {
+    var command = "mongo flintandsteel-dev --eval \"db.dropDatabase()\"";
+    runCommand(command);
 });
-*/
+
+
+gulp.task('generate:data', ['_cleanUp'], function() {
+    var command = "node generateData.js";
+    runCommand(command);
+});
