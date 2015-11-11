@@ -131,15 +131,6 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/login', function handleAuthentication(req, res, next) {
     "use strict";
     if (process.env.NODE_ENV === 'development') {
-
-        /*
-        NOTE - Yash - 10/24/2015
-        This is super crude but it'll be temporary. We can have our dummy users in mongo
-        once that is implemented so that we can just query the server instead of...this.
-
-        It'll also provide more configurabilty for our users.
-         */
-
         if (new Buffer(req.body.password, "base64").toString() === 'test') {
             db.collection('users').find({username: req.body.username}).limit(1).toArray(function(err, docs) {
                 res.status(200).json({
@@ -223,7 +214,6 @@ app.post('/login', function handleAuthentication(req, res, next) {
                                     console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
                                     return res.status(200).json(responseObj);
                                 }
-                                db.close();
                             }
                         );
                     }
@@ -239,7 +229,6 @@ app.post('/login', function handleAuthentication(req, res, next) {
                                     console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
                                     return res.status(200).json(responseObj);
                                 }
-                                db.close();
                             }
                         );
                     }
@@ -320,11 +309,9 @@ app.post('/updateaccount', function(req, res) {
                 console.log(chalk.bgRed(err));
             }
             else {
-                console.log(chalk.bgGreen('Document with id %s updated in the database.'), results.updateId);
-                console.log(results);
+                console.log(chalk.bgGreen('Document with id %s updated in the database.'), results.value._id);
                 res.sendStatus(200);
             }
-            // db.close();
         }
     );
 });

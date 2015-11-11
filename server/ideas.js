@@ -34,7 +34,6 @@ exports.create = function(title, description, author, likes, comments, backs, cb
             cb(err);
         }
         cb(null, doc);
-        // db.close();
     });
 };
 
@@ -50,7 +49,6 @@ exports.get = function(id, cb) {
         else {
             cb("Document was not found in the database!");
         }
-        // db.close();
     });
 };
 
@@ -73,7 +71,6 @@ exports.update = function(id, property, value, cb) {
                 console.log(chalk.bgGreen('Document with id %s updated in the database.'), id);
                 cb(null, results);
             }
-            // db.close();
         }
     );
 };
@@ -92,16 +89,15 @@ exports.delete = function(id, cb) {
             console.log(chalk.bgGreen('Document with id %s removed from the database.'), id);
             cb(null, results);
         }
-        // db.close();
     });
 };
 
 function getHeaders(cb) {
     "use strict";
 
-    // Have to figure out how to sort the documents if we need them sorted.
-    // Pretty sure find() can do it for us.
-    db.collection('ideas').find().toArray(function(err, docs) {
+    // TODO: In between find() and toArray() we can put sort() with the fields
+    // we want to sort by, eg. {title: 1}.
+    db.collection('ideas').find({}, {title: 1, author: 1, likes: 1, description: 1 }).toArray(function(err, docs) {
         if (err) {
             cb(err);
         }
@@ -109,22 +105,16 @@ function getHeaders(cb) {
             cb(null, docs);
         }
         else {
-
             var headers = [];
-            for (var i = 0; i < docs.length; i++) {
-                var descFirstWords = _.take(_.words(docs[i].description), 20);
+            docs.forEach(function(doc) {
+                doc.id = doc._id;
+                doc.abstract = _.take(_.words(doc.description), 20);
+                doc.likes = doc.likes.length;
 
-                headers.push({
-                    id: docs[i]._id,
-                    title: docs[i].title,
-                    author: docs[i].author,
-                    likes: docs[i].likes.length,
-                    abstract: descFirstWords.join(' ')
-                });
-            }
+                headers.push(doc);
+            });
             cb(null, headers);
         }
-        // db.close();
     });
 }
 
