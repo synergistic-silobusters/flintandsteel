@@ -112,7 +112,7 @@ gulp.task('start:dev', ['test:client', 'inject'], function() {
     nodemon({
         script: 'server/server.js',
         env: { 'NODE_ENV': 'development' },
-        'ignore': ['spec/*']
+        'ignore': ['server/datastore/*']
     });
 });
 
@@ -122,7 +122,7 @@ gulp.task('start:prod', ['test:client', 'inject'], function() {
     nodemon({
         script: 'server/server.js',
         env: { 'NODE_ENV': 'production' },
-        'ignore': ['spec/*']
+        'ignore': ['server/datastore/*']
     });
 });
 
@@ -194,7 +194,7 @@ gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
         if (err === null) {
             // File exists
             gutil.log(chalk.red("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue"));
-        } 
+        }
         else if (err.code === 'ENOENT') {
             // File does not exist, generate ideas
             ideas.forEach(function(idea, index , arr) {
