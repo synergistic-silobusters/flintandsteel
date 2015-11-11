@@ -8,7 +8,7 @@ var express = require('express'),
     chalk = require('chalk'),
     bodyParser = require('body-parser'),
     external = require('external-ip')(),
-    // fs = require('fs'),
+    fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
@@ -209,7 +209,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
 
                     if (cursor.count() !== 1) {
                         db.collection('users').insertOne(userObj,
-                            function(err, results) {
+                            function(err) {
                                 if (err) {
                                     console.log(chalk.bgRed(err));
                                     return res.status(200).json({
@@ -231,7 +231,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
                         db.collection('users').updateOne(
                             { email: user._json.mail },
                             { $set: userObj },
-                            function(err, results) {
+                            function(err) {
                                 if (err) {
                                     console.log(chalk.bgRed(err));
                                 }
@@ -431,8 +431,6 @@ else if (process.env.NODE_ENV === 'production') {
         https.createServer(options, app).listen(443);
 
         http.createServer(function(req, res) {
-            "use strict";
-
             res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
             res.end();
         }).listen(80);
