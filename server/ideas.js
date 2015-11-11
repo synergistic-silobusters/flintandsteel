@@ -5,29 +5,34 @@ var Idea = require('./idea'),
     chalk = require('chalk'),
     mongodb = require('mongodb'),
     ObjectId = require('mongodb').ObjectID,
+    MongoClient = mongodb.MongoClient,
     _ = require('lodash');
 
-var DB;
+require('events').EventEmitter.prototype._maxListeners = 102;
+
+var db;
 if (process.env.NODE_ENV === 'development') {
-    DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
+    MongoClient.connect("mongodb://localhost:27017/flintandsteel-dev", function(err, database) {
+        db = database;
+    });
 }
 else if (process.env.NODE_ENV === 'production') {
-    DB = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+    MongoClient.connect("mongodb://localhost:27017/flintandsteel", function(err, database) {
+        db = database;
+    });
 }
 
 var IdeasSingleton;
 
 exports.create = function(title, description, author, likes, comments, backs, cb) {
     "use strict";
-    DB.open(function(err, db) {
-        var idea = Idea.create(title, description, author, likes, comments, backs);
-        db.collection('ideas').insertOne(idea, function(err, doc) {
-            if (err) {
-                cb(err);
-            }
-            cb(null, doc);
-            // db.close();
-        });
+    var idea = Idea.create(title, description, author, likes, comments, backs);
+    db.collection('ideas').insertOne(idea, function(err, doc) {
+        if (err) {
+            cb(err);
+        }
+        cb(null, doc);
+        // db.close();
     });
 };
 
@@ -36,16 +41,14 @@ exports.get = function(id, cb) {
 
     var objId = new ObjectId(id);
 
-    DB.open(function(err, db) {
-        db.collection('ideas').findOne({_id: objId}, function(err, doc) {
-            if (doc) {
-                cb(null, doc);
-            }
-            else {
-                cb("Document was not found in the database!");
-            }
-            // db.close();
-        });
+    db.collection('ideas').findOne({_id: objId}, function(err, doc) {
+        if (doc) {
+            cb(null, doc);
+        }
+        else {
+            cb("Document was not found in the database!");
+        }
+        // db.close();
     });
 };
 
@@ -56,23 +59,21 @@ exports.update = function(id, property, value, cb) {
     updateObj[property] = value;
     var objId = new ObjectId(id);
 
-    DB.open(function(err, db) {
-        db.collection('ideas').updateOne(
-            { _id: objId },
-            { $set: updateObj },
-            function(err, results) {
-                if (err) {
-                    console.log(chalk.bgRed(err));
-                    cb(err);
-                }
-                else {
-                    console.log(chalk.bgGreen('Document with id %s updated in the database.'), id);
-                    cb(null, results);
-                }
-                // db.close();
+    db.collection('ideas').updateOne(
+        { _id: objId },
+        { $set: updateObj },
+        function(err, results) {
+            if (err) {
+                console.log(chalk.bgRed(err));
+                cb(err);
             }
-        );
-    });
+            else {
+                console.log(chalk.bgGreen('Document with id %s updated in the database.'), id);
+                cb(null, results);
+            }
+            // db.close();
+        }
+    );
 };
 
 exports.delete = function(id, cb) {
@@ -80,53 +81,48 @@ exports.delete = function(id, cb) {
 
     var objId = new ObjectId(id);
 
-    DB.open(function(err, db) {
-        db.collection('ideas').deleteOne({ _id: objId },
-        function(err, results) {
-            if (err) {
-                console.log(chalk.bgRed(err));
-                cb(err);
-            }
-            else {
-                console.log(chalk.bgGreen('Document with id %s removed from the database.'), id);
-                cb(null, results);
-            }
-            // db.close();
-        });
+    db.collection('ideas').deleteOne({ _id: objId },function(err, results) {
+        if (err) {
+            console.log(chalk.bgRed(err));
+            cb(err);
+        }
+        else {
+            console.log(chalk.bgGreen('Document with id %s removed from the database.'), id);
+            cb(null, results);
+        }
+        // db.close();
     });
 };
 
 function getHeaders(cb) {
     "use strict";
 
-    DB.open(function(err, db) {
-        // Have to figure out how to sort the documents if we need them sorted.
-        // Pretty sure find() can do it for us.
-        db.collection('ideas').find().toArray(function(err, docs) {
-            if (err) {
-                cb(err);
-            }
-            else if (docs.length === 0) {
-                cb(null, docs);
-            }
-            else {
+    // Have to figure out how to sort the documents if we need them sorted.
+    // Pretty sure find() can do it for us.
+    db.collection('ideas').find().toArray(function(err, docs) {
+        if (err) {
+            cb(err);
+        }
+        else if (docs.length === 0) {
+            cb(null, docs);
+        }
+        else {
 
-                var headers = [];
-                for (var i = 0; i < docs.length; i++) {
-                    var descFirstWords = _.take(_.words(docs[i].description), 20);
+            var headers = [];
+            for (var i = 0; i < docs.length; i++) {
+                var descFirstWords = _.take(_.words(docs[i].description), 20);
 
-                    headers.push({
-                        id: docs[i]._id,
-                        title: docs[i].title,
-                        author: docs[i].author,
-                        likes: docs[i].likes.length,
-                        abstract: descFirstWords.join(' ')
-                    });
-                }
-                cb(null, headers);
+                headers.push({
+                    id: docs[i]._id,
+                    title: docs[i].title,
+                    author: docs[i].author,
+                    likes: docs[i].likes.length,
+                    abstract: descFirstWords.join(' ')
+                });
             }
-            // db.close();
-        });
+            cb(null, headers);
+        }
+        // db.close();
     });
 }
 
