@@ -13,11 +13,13 @@ require('events').EventEmitter.prototype._maxListeners = 102;
 var db;
 if (process.env.NODE_ENV === 'development') {
     MongoClient.connect("mongodb://localhost:27017/flintandsteel-dev", function(err, database) {
+        "use strict";
         db = database;
     });
 }
 else if (process.env.NODE_ENV === 'production') {
     MongoClient.connect("mongodb://localhost:27017/flintandsteel", function(err, database) {
+        "use strict";
         db = database;
     });
 }

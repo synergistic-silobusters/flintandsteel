@@ -8,7 +8,7 @@ var express = require('express'),
     chalk = require('chalk'),
     bodyParser = require('body-parser'),
     external = require('external-ip')(),
-    fs = require('fs'),
+    // fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
@@ -207,8 +207,6 @@ app.post('/login', function handleAuthentication(req, res, next) {
                         likedIdeas: []
                     };
 
-                    console.log(cursor);
-                    console.log(responseObj);
                     if (cursor.count() !== 1) {
                         db.collection('users').insertOne(userObj,
                             function(err, results) {
@@ -223,7 +221,6 @@ app.post('/login', function handleAuthentication(req, res, next) {
                                 }
                                 else {
                                     console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
-                                    console.log(results);
                                     return res.status(200).json(responseObj);
                                 }
                                 db.close();
@@ -240,7 +237,6 @@ app.post('/login', function handleAuthentication(req, res, next) {
                                 }
                                 else {
                                     console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
-                                    console.log(results);
                                     return res.status(200).json(responseObj);
                                 }
                                 db.close();
@@ -415,12 +411,14 @@ external(function(err, ipExternal) {
 if (process.env.NODE_ENV === 'development') {
     console.log('Server running in ' + chalk.cyan('development') + ' mode.');
     MongoClient.connect("mongodb://localhost:27017/flintandsteel-dev", function(err, database) {
+        "use strict";
         db = database;
         app.listen(port);
     });
 }
 else if (process.env.NODE_ENV === 'production') {
     MongoClient.connect("mongodb://localhost:27017/flintandsteel", function(err, database) {
+        "use strict";
         db = database;
         console.log('Server running in ' + chalk.cyan('production') + ' mode.');
         var https = require('https');
