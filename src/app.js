@@ -7,7 +7,8 @@
 angular.module('flintAndSteel', [
         'ngAnimate',
         'ui.router',
-        'ngMaterial'
+        'ngMaterial',
+        'ui.identicon'
     ]
 )
 .config([
@@ -56,6 +57,11 @@ angular.module('flintAndSteel', [
                 url: '/ideabrowse',
                 templateUrl: 'ideas/ideaBrowseView/ideaBrowseView.tpl.html',
                 controller: 'IdeaBrowseViewCtrl'
+            })
+            .state('about', {
+                url: '/about',
+                templateUrl: 'about/about.tpl.html',
+                controller: ''
             });
 
         $urlRouterProvider.otherwise('/');
@@ -79,10 +85,10 @@ angular.module('flintAndSteel', [
             .iconSet('toggle', './assets/icons/toggle-icons.svg', 24);
 
         var rockstarterRedMap = $mdThemingProvider.extendPalette('red', {
-            '900': '650100'
+            '900': 'bb1e32'
         });
         var rockstarterGrayMap = $mdThemingProvider.extendPalette('grey', {
-            '900': '464b51'
+            '900': '6d6e71'
         });
 
         $mdThemingProvider.definePalette('rokstarter-red', rockstarterRedMap);
