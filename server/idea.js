@@ -9,14 +9,13 @@ function Idea(title, description, author, likes, comments, backs) {
     this.likes = likes;
     this.comments = comments;
     this.backs = backs;
+    this.team = [];
 
     return this;
 }
 
 exports.create = function(title, description, author, likes, comments, backs) {
     "use strict";
-
-    console.log(author);
 
     return new Idea(title, description, author, likes, comments, backs);
 };
