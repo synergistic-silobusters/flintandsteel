@@ -107,10 +107,8 @@ function getHeaders(cb) {
         else {
             var headers = [];
             docs.forEach(function(doc) {
-                doc.id = doc._id;
-                doc.abstract = _.take(_.words(doc.description), 20);
+                doc.abstract = _.take(_.words(doc.description), 20).join(' ');
                 doc.likes = doc.likes.length;
-
                 headers.push(doc);
             });
             cb(null, headers);
