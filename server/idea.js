@@ -3,12 +3,15 @@
 function Idea(title, description, authorId, likes, comments, backs) {
     "use strict";
 
+
+
     this.title = title;
     this.description = description;
     this.authorId = authorId;
     this.likes = likes;
     this.comments = comments;
-    this.backs = [{
+    this.backs = backs;
+    this.backs.push({
         text: "Idea Owner",
         authorId: this.authorId,
         time: new Date().toISOString(),

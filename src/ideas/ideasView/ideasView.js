@@ -30,6 +30,13 @@ angular.module('flintAndSteel')
             ctrl.newBack = '';
             ctrl.enableEdit = false;
 
+            function createFilterFor(query) {
+                var lowercaseQuery = angular.lowercase(query);
+                return function filterFn(type) {
+                    return (type._lowername.indexOf(lowercaseQuery) === 0);
+                };
+            }
+
             ctrl.refreshTeam = function() {
                 // Quick and dirty optimization: if user can only back a single time:
                 // If team size is the same as back size we good
@@ -372,13 +379,6 @@ angular.module('flintAndSteel')
                     });
                 }
             };
-
-            function createFilterFor(query) {
-                var lowercaseQuery = angular.lowercase(query);
-                return function filterFn(type) {
-                    return (type._lowername.indexOf(lowercaseQuery) === 0);
-                };
-            }
         }
     ]
 );
