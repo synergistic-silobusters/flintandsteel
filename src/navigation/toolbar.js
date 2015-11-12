@@ -80,7 +80,7 @@ angular.module('flintAndSteel')
                 .then(function(answer) {
                     $scope.loginUser(answer);
                 }, function() {
-                    $scope.status = 'You cancelled the dialog.';
+                    $scope.status = 'You canceled the dialog.';
                 });
             };         
 
