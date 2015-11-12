@@ -61,13 +61,13 @@ Unlike `gulp test:client`, these commands do not automatically run when executin
 
 ### Clearing persistent storage
 
-The express server app uses [mongodb](https://www.npmjs.com/package/mongodb) to store users and ideas. There are two databases, `flintandsteel` for production and `flintandsteel-dev` for development. If the development database gets messy, `gulp clean:db:dev` can be used to drop the database.
+The express server app uses [mongodb](https://www.npmjs.com/package/mongodb) to store users and ideas. There are two databases, `flintandsteel` for production and `flintandsteel-dev` for development. If the development database gets messy, `gulp clean:db-dev` can be used to drop the database.
 
-At this point in time `gulp clean:db:dev` runs automatically when calling `gulp generate:data`, which runs automatically when executing `gulp start:dev`.
+At this point in time `gulp clean:db-dev` runs automatically when calling `gulp generate:data`, which runs automatically when executing `gulp start:dev`.
 
 ### Generating canned data for development database
 
-To start with some predefined data, `gulp generate:data` clears the development database (using `gulp clean:db:dev`) and populates the database with pre-populated ideas and users. This happens automatically if you run `gulp start:dev`.
+To start with some predefined data, `gulp generate:data` clears the development database (using `gulp clean:db-dev`) and populates the database with pre-populated ideas and users. This happens automatically if you run `gulp start:dev`.
 
 ## Contributing
 
