@@ -8,8 +8,13 @@ function Idea(title, description, author, likes, comments, backs) {
     this.author = author;
     this.likes = likes;
     this.comments = comments;
-    this.backs = backs;
-    this.team = [];
+    this.backs = [{
+        text: "Idea Owner",
+        from: this.author,
+        time: new Date(),
+        types: [{name: "Owner", _lowername: "owner"}]
+    }];
+    this.team = [this.author];
 
     return this;
 }
