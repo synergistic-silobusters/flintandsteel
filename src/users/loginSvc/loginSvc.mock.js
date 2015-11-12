@@ -7,7 +7,7 @@ angular.module('flintAndSteel')
             "use strict";
 
             var mockUserAccount = {
-                id: 1,
+                _id: 1,
                 username: 'MainManDarth',
                 name: 'Darth Vader',
                 likedIdeas: [ 'mock_idea' ]
@@ -55,6 +55,9 @@ angular.module('flintAndSteel')
                 },
                 checkValidUsername: function checkValidUsername() {
                     throw new NotImplementedException('checkValidUsername');
+                },
+                getUserById: function getUserById(id) {
+                    return mockUserAccount;
                 }
             };
         }

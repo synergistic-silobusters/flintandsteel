@@ -1,26 +1,26 @@
 /* global exports */
 
-function Idea(title, description, author, likes, comments, backs) {
+function Idea(title, description, authorId, likes, comments, backs) {
     "use strict";
 
     this.title = title;
     this.description = description;
-    this.author = author;
+    this.authorId = authorId;
     this.likes = likes;
     this.comments = comments;
     this.backs = [{
         text: "Idea Owner",
-        from: this.author,
-        time: new Date(),
+        authorId: this.authorId,
+        time: new Date().toISOString(),
         types: [{name: "Owner", _lowername: "owner"}]
     }];
-    this.team = [this.author];
+    this.team = [{memberId: this.authorId}];
 
     return this;
 }
 
-exports.create = function(title, description, author, likes, comments, backs) {
+exports.create = function(title, description, authorId, likes, comments, backs) {
     "use strict";
 
-    return new Idea(title, description, author, likes, comments, backs);
+    return new Idea(title, description, authorId, likes, comments, backs);
 };
