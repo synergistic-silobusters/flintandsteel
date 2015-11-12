@@ -16,7 +16,7 @@ function Idea(title, description, authorId, likes, comments, backs) {
         authorId: this.authorId,
         time: new Date().toISOString(),
         types: [{name: "Owner", _lowername: "owner"}]
-    }];
+    });
     this.team = [{memberId: this.authorId}];
 
     return this;

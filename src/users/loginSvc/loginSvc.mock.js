@@ -56,7 +56,7 @@ angular.module('flintAndSteel')
                 checkValidUsername: function checkValidUsername() {
                     throw new NotImplementedException('checkValidUsername');
                 },
-                getUserById: function getUserById(id) {
+                getUserById: function getUserById() {
                     return mockUserAccount;
                 }
             };

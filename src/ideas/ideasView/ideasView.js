@@ -69,9 +69,9 @@ angular.module('flintAndSteel')
                                 like.user = userObj;
                             }, function getUserByIdError(data, status) {
                                 like.user = {
-                                  name: "Unknown User",
-                                  mail: "unknown@unknown.com",
-                                  username: "unknown"
+                                    name: "Unknown User",
+                                    mail: "unknown@unknown.com",
+                                    username: "unknown"
                                 };
                                 console.log(status);
                             });
@@ -81,9 +81,9 @@ angular.module('flintAndSteel')
                                 comment.author = userObj;
                             }, function getUserByIdError(data, status) {
                                 comment.author = {
-                                  name: "Unknown User",
-                                  mail: "unknown@unknown.com",
-                                  username: "unknown"
+                                    name: "Unknown User",
+                                    mail: "unknown@unknown.com",
+                                    username: "unknown"
                                 };
                                 console.log(status);
                             });
@@ -93,9 +93,9 @@ angular.module('flintAndSteel')
                                 back.author = userObj;
                             }, function getUserByIdError(data, status) {
                                 back.author = {
-                                  name: "Unknown User",
-                                  mail: "unknown@unknown.com",
-                                  username: "unknown"
+                                    name: "Unknown User",
+                                    mail: "unknown@unknown.com",
+                                    username: "unknown"
                                 };
                                 console.log(status);
                             });
@@ -105,9 +105,9 @@ angular.module('flintAndSteel')
                                 member.member = userObj;
                             }, function getUserByIdError(data, status) {
                                 member.member = {
-                                  name: "Unknown User",
-                                  mail: "unknown@unknown.com",
-                                  username: "unknown"
+                                    name: "Unknown User",
+                                    mail: "unknown@unknown.com",
+                                    username: "unknown"
                                 };
                                 console.log(status);
                             });
@@ -116,9 +116,9 @@ angular.module('flintAndSteel')
                             data.author = userObj;
                         }, function getUserByIdError(data, status) {
                             data.author = {
-                              name: "Unknown User",
-                              mail: "unknown@unknown.com",
-                              username: "unknown"
+                                name: "Unknown User",
+                                mail: "unknown@unknown.com",
+                                username: "unknown"
                             };
                             console.log(status);
                         });

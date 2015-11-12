@@ -332,21 +332,21 @@ app.post('/updateaccount', function(req, res) {
     );
 });
 app.get('/user', function(req, res) {
-    "user strict";
+    "use strict";
 
     var objId = new ObjectId(req.query.id);
 
     db.collection('users').find({_id: objId}).limit(1).toArray(function(err, docs) {
         var responseObj = {
-          name: docs[0].full,
-          mail: docs[0].email,
-          username: docs[0].username
-        }
+            name: docs[0].full,
+            mail: docs[0].email,
+            username: docs[0].username
+        };
         if (err) {
-          res.status(200).send('USER_NOT_FOUND');
+            res.status(200).send('USER_NOT_FOUND');
         }
         else {
-          res.status(200).json(responseObj);
+            res.status(200).json(responseObj);
         }
     });
 });
