@@ -133,14 +133,24 @@ app.post('/login', function handleAuthentication(req, res, next) {
     if (process.env.NODE_ENV === 'development') {
         if (new Buffer(req.body.password, "base64").toString() === 'test') {
             db.collection('users').find({username: req.body.username}).limit(1).toArray(function(err, docs) {
-                res.status(200).json({
-                    status: 'AUTH_OK',
-                    id: docs[0].accountId,
-                    username: docs[0].username,
-                    email: docs[0].email,
-                    name: docs[0].full,
-                    likedIdeas: docs[0].likedIdeas
-                });
+                if (docs.length === 1) {
+                    res.status(200).json({
+                        status: 'AUTH_OK',
+                        id: docs[0].accountId,
+                        username: docs[0].username,
+                        email: docs[0].email,
+                        name: docs[0].full,
+                        likedIdeas: docs[0].likedIdeas
+                    });
+                }
+                else {
+                    res.status(200).json({
+                        status: 'AUTH_ERROR',
+                        id: undefined,
+                        username: undefined,
+                        name: undefined
+                    });
+                }
             });
         }
         else {
