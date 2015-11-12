@@ -32,16 +32,15 @@
   <script src="homeView/homeView.js"></script>
   <script src="navigation/sidenav.js"></script>
   <script src="navigation/toolbar.js"></script>
-  <script src="ideas/addIdeaView/addIdeaView.js"></script>
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/ideaItem/ideaItem.js"></script>
-  <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
+  <script src="ideas/addIdeaView/addIdeaView.js"></script>
   <script src="ideas/ideaSvc/ideaSvc.js"></script>
   <script src="ideas/ideasView/ideasView.js"></script>
+  <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
   <script src="ideas/searchFilter/searchFilter.js"></script>
   <script src="users/accountView/accountView.js"></script>
   <script src="users/loginSvc/loginSvc.js"></script>
-  <!--<script src="users/loginView/loginView.js"></script>-->
   <script src="users/signupView/signupView.js"></script>
   <!-- endinject -->
 
@@ -64,8 +63,9 @@
                 <md-icon md-svg-icon="action:perm_identity"></md-icon>   
               </md-button>
               <!-- Profile button -->
-              <a href="#/account" ng-show="isUserLoggedIn()">
-                <md-button class="md-icon-button" aria-label="Account" ng-click="" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="isUserLoggedIn()">
+              <a href="#/account" ng-show="isUserLoggedIn()" style="font-size:14px">
+                {{currentUser}}
+                <md-button class="md-icon-button" aria-label="Account" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="isUserLoggedIn()">
                   <identicon username='username' size='24' ng-init="getUsername()" class="identicon"></identicon>   
                 </md-button>
               </a>

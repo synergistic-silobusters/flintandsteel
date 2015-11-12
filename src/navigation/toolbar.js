@@ -1,5 +1,33 @@
 /* global angular */
 
+
+// Dialog Controller used for controlling the behavior of the dialog 
+//   used for login.
+function DialogController($scope, $mdDialog) {
+    "use strict";
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+    // what happens when you hit the cancel button
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+    // what happens when you hit the login button
+    $scope.login = function(answer) {
+        $mdDialog.hide($scope.loginUser(answer));
+    };
+
+    //pass the account object to the dialog window
+    $scope.loginUser = function(account) {
+        var status = {
+            username: account.username, 
+            password: account.password
+        };
+        return status;
+    };
+}
+
 angular.module('flintAndSteel')
 .controller('ToolbarCtrl',
     [
@@ -40,25 +68,27 @@ angular.module('flintAndSteel')
                 }
             };
 
+            //Login controller showing current login and logging in a new user
             $scope.showLogin = function(ev) {
                 $mdDialog.show({
                     controller: DialogController,
                     templateUrl: 'users/loginView/loginView.tpl.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
-                    clickOutsideToClose:true
+                    clickOutsideToClose: true
                 })
                 .then(function(answer) {
                     $scope.loginUser(answer);
                 }, function() {
                     $scope.status = 'You cancelled the dialog.';
                 });
-           };         
+            };         
 
-           
+            // Function used to display feedback on login - OK, Error, or User Not Found
             $scope.loginUser = function(account) {
                 loginSvc.checkLogin(account, function LoginSuccess(data) {
                     if (data.status === 'AUTH_OK') {
+                        $scope.currentUser = data.name;
                         $mdToast.show(
                             $mdToast.simple()
                                 .content(data.name + ' has successfully signed in!')
@@ -101,23 +131,3 @@ angular.module('flintAndSteel')
     ]
 );
 
-function DialogController($scope, $mdDialog) {
-    $scope.hide = function() {
-        $mdDialog.hide();
-    };
-    $scope.cancel = function() {
-        $mdDialog.cancel();
-    };
-    $scope.login = function(answer) {
-        $mdDialog.hide($scope.loginUser(answer));
-    };
-
-    //pass the account object to the dialog window
-    $scope.loginUser = function(account) {
-        var status = {
-            username: account.username, 
-            password: account.password
-        };
-        return status;
-   };
-}
