@@ -58,17 +58,17 @@
             <span flex></span>
 
             <div class="md-padding" id="popupContainer" ng-cloak="">
-              <!-- Login Button -->
-              <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($evevent)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
-                <md-icon md-svg-icon="action:perm_identity"></md-icon>   
-              </md-button>
-              <!-- Profile button -->
-              <a href="#/account" ng-show="isUserLoggedIn()" style="font-size:14px">
-                {{currentUser}}
-                <md-button class="md-icon-button" aria-label="Account" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="isUserLoggedIn()">
-                  <identicon username='username' size='24' ng-init="getUsername()" class="identicon"></identicon>   
+                <!-- Login Button -->
+                <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
+                    <md-icon md-svg-icon="action:perm_identity"></md-icon>   
                 </md-button>
-              </a>
+                <!-- Profile button -->
+                <a href="#/account" ng-show="isUserLoggedIn()" style="font-size:14px">
+                    {{currentUser}}
+                    <md-button class="md-icon-button" aria-label="Account" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="isUserLoggedIn()">
+                      <identicon username='username' size='24' ng-init="getUsername()" class="identicon"></identicon>   
+                    </md-button>
+                </a>
             </div>
 
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
