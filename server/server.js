@@ -13,11 +13,19 @@ var express = require('express'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
     mongodb = require('mongodb'),
+    MongoClient = mongodb.MongoClient,
     ideas = require('./ideas');
 
-var db = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+var DB;
+var db;
+if (process.env.NODE_ENV === 'development') {
+    DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
+}
+else if (process.env.NODE_ENV === 'production') {
+    DB = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
+}
 
-db.open(function(err, db) {
+DB.open(function(err, db) {
     "use strict";
 
     db.createCollection('ideas', function(errIdea) {
@@ -123,23 +131,26 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/login', function handleAuthentication(req, res, next) {
     "use strict";
     if (process.env.NODE_ENV === 'development') {
-
-        /*
-        NOTE - Yash - 10/24/2015
-        This is super crude but it'll be temporary. We can have our dummy users in mongo
-        once that is implemented so that we can just query the server instead of...this.
-
-        It'll also provide more configurabilty for our users.
-         */
-
-        if (req.body.username === 'test' && new Buffer(req.body.password, "base64").toString() === 'test') {
-            res.status(200).json({
-                status: 'AUTH_OK',
-                id: 'test_user_id',
-                username: req.body.username,
-                email: 'test@testersoninc.com',
-                name: 'Guybrush Threepwood',
-                likedIdeas: []
+        if (new Buffer(req.body.password, "base64").toString() === 'test') {
+            db.collection('users').find({username: req.body.username}).limit(1).toArray(function(err, docs) {
+                if (docs.length === 1) {
+                    res.status(200).json({
+                        status: 'AUTH_OK',
+                        id: docs[0].accountId,
+                        username: docs[0].username,
+                        email: docs[0].email,
+                        name: docs[0].full,
+                        likedIdeas: docs[0].likedIdeas
+                    });
+                }
+                else {
+                    res.status(200).json({
+                        status: 'AUTH_ERROR',
+                        id: undefined,
+                        username: undefined,
+                        name: undefined
+                    });
+                }
             });
         }
         else {
@@ -177,68 +188,60 @@ app.post('/login', function handleAuthentication(req, res, next) {
                     });
                 }
                 else {
-                    db.open(function(err, db) {
-                        var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
-                        var userObj = {
-                            "username": user._json.sAMAccountName,
-                            "accountId": user.id,
-                            "email": user._json.mail,
-                            "full": user.displayName,
-                            "first": user._json.givenName,
-                            "last": user._json.sn,
-                            "nick": user._json.cn,
-                            "likedIdeas": []
-                        };
-                        var responseObj = {
-                            status: 'AUTH_OK',
-                            id: user._id,
-                            username: user._json.sAMAccountName,
-                            email: user._json.mail,
-                            name: user.displayName,
-                            likedIdeas: []
-                        };
+                    var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
+                    var userObj = {
+                        "username": user._json.sAMAccountName,
+                        "accountId": user.id,
+                        "email": user._json.mail,
+                        "full": user.displayName,
+                        "first": user._json.givenName,
+                        "last": user._json.sn,
+                        "nick": user._json.cn,
+                        "likedIdeas": []
+                    };
+                    var responseObj = {
+                        status: 'AUTH_OK',
+                        id: user._id,
+                        username: user._json.sAMAccountName,
+                        email: user._json.mail,
+                        name: user.displayName,
+                        likedIdeas: []
+                    };
 
-                        console.log(cursor);
-                        console.log(responseObj);
-                        if (cursor.count() !== 1) {
-                            db.collection('users').insertOne(userObj,
-                                function(err, results) {
-                                    if (err) {
-                                        console.log(chalk.bgRed(err));
-                                        return res.status(200).json({
-                                            status: 'AUTH_ERROR',
-                                            id: undefined,
-                                            username: undefined,
-                                            name: undefined
-                                        });
-                                    }
-                                    else {
-                                        console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
-                                        console.log(results);
-                                        return res.status(200).json(responseObj);
-                                    }
-                                    db.close();
+                    if (cursor.count() !== 1) {
+                        db.collection('users').insertOne(userObj,
+                            function(err) {
+                                if (err) {
+                                    console.log(chalk.bgRed(err));
+                                    return res.status(200).json({
+                                        status: 'AUTH_ERROR',
+                                        id: undefined,
+                                        username: undefined,
+                                        name: undefined
+                                    });
                                 }
-                            );
-                        }
-                        else {
-                            db.collection('users').updateOne(
-                                { email: user._json.mail },
-                                { $set: userObj },
-                                function(err, results) {
-                                    if (err) {
-                                        console.log(chalk.bgRed(err));
-                                    }
-                                    else {
-                                        console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
-                                        console.log(results);
-                                        return res.status(200).json(responseObj);
-                                    }
-                                    db.close();
+                                else {
+                                    console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
+                                    return res.status(200).json(responseObj);
                                 }
-                            );
-                        }
-                    });
+                            }
+                        );
+                    }
+                    else {
+                        db.collection('users').updateOne(
+                            { email: user._json.mail },
+                            { $set: userObj },
+                            function(err) {
+                                if (err) {
+                                    console.log(chalk.bgRed(err));
+                                }
+                                else {
+                                    console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
+                                    return res.status(200).json(responseObj);
+                                }
+                            }
+                        );
+                    }
                 }
             });
         })(req, res, next);
@@ -259,7 +262,7 @@ app.post('/idea', function(req, res) {
                 console.log(chalk.bgRed(err));
             }
             else {
-                console.log(chalk.bgGreen('Document with id %s stored in ideas.'), doc._id);
+                console.log(chalk.bgGreen('Document with id %s stored in ideas.'), doc.insertedId);
                 ideas.fetch(function(err, headers) {
                     IdeasInstance.newHeaders(headers);
                 });
@@ -307,20 +310,18 @@ app.post('/deleteidea', function(req, res) {
 app.post('/updateaccount', function(req, res) {
     "use strict";
 
-    // This will probably become an every login thing with LDAP anyway.
-    db.collection('users').updateOne(
-        { _id: req.body._id },
-        { $set: req.body.userObject },
+    db.collection('users').findAndModify(
+        { username: req.body.username },
+        [],
+        { $set: {likedIdeas: req.body.likedIdeas } },
         function(err, results) {
             if (err) {
                 console.log(chalk.bgRed(err));
             }
             else {
-                console.log(chalk.bgGreen('Document with id %s updated in the database.'), req.body._id);
-                console.log(results);
+                console.log(chalk.bgGreen('Document with id %s updated in the database.'), results.value._id);
                 res.sendStatus(200);
             }
-            db.close();
         }
     );
 });
@@ -406,24 +407,29 @@ external(function(err, ipExternal) {
 
 if (process.env.NODE_ENV === 'development') {
     console.log('Server running in ' + chalk.cyan('development') + ' mode.');
-    app.listen(port);
+    MongoClient.connect("mongodb://localhost:27017/flintandsteel-dev", function(err, database) {
+        "use strict";
+        db = database;
+        app.listen(port);
+    });
 }
 else if (process.env.NODE_ENV === 'production') {
-    console.log('Server running in ' + chalk.cyan('production') + ' mode.');
-    var https = require('https');
-    var http = require('http');
-    var options = {
-        key: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.key'),
-        cert: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.crt')
-    };
-
-    https.createServer(options, app).listen(443);
-
-    http.createServer(function(req, res) {
+    MongoClient.connect("mongodb://localhost:27017/flintandsteel", function(err, database) {
         "use strict";
-        
-        res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
-        res.end();
-    }).listen(80);
-    
+        db = database;
+        console.log('Server running in ' + chalk.cyan('production') + ' mode.');
+        var https = require('https');
+        var http = require('http');
+        var options = {
+            key: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.key'),
+            cert: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.crt')
+        };
+
+        https.createServer(options, app).listen(443);
+
+        http.createServer(function(req, res) {
+            res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
+            res.end();
+        }).listen(80);
+    });
 }
