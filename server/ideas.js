@@ -1,48 +1,35 @@
 /* global exports */
+/* global process */
 
-var Idea = require('./idea');
-var chalk = require('chalk');
-var datastore = require('docstore');
-var _ = require('lodash');
+var Idea = require('./idea'),
+    chalk = require('chalk'),
+    mongodb = require('mongodb'),
+    ObjectId = require('mongodb').ObjectID,
+    MongoClient = mongodb.MongoClient,
+    _ = require('lodash');
 
-var ideasDb, userDb;
+require('events').EventEmitter.prototype._maxListeners = 102;
+
+var db;
+if (process.env.NODE_ENV === 'development') {
+    MongoClient.connect("mongodb://localhost:27017/flintandsteel-dev", function(err, database) {
+        "use strict";
+        db = database;
+    });
+}
+else if (process.env.NODE_ENV === 'production') {
+    MongoClient.connect("mongodb://localhost:27017/flintandsteel", function(err, database) {
+        "use strict";
+        db = database;
+    });
+}
 
 var IdeasSingleton;
 
-// Datastore filter to find everything
-var filter = function dbFilter() {
+exports.create = function(title, description, author, likes, comments, backs, cb) {
     "use strict";
-
-    return true;
-};
-
-datastore.open('./server/datastore/ideas', function(err, store) {
-    "use strict";
-
-    if (err) {
-        console.log(err);
-    }
-    else {
-        ideasDb = store;
-    }
-});
-
-datastore.open('./server/datastore/users', function(err, store) {
-    "use strict";
-
-    if (err) {
-        console.log(err);
-    }
-    else {
-        userDb = store;
-    }
-});
-
-exports.create = function(id, title, description, author, likes, comments, backs, cb) {
-    "use strict";
-
-    var idea = Idea.create(id, title, description, author, likes, comments, backs);
-    ideasDb.save(idea, function(err, doc) {
+    var idea = Idea.create(title, description, author, likes, comments, backs);
+    db.collection('ideas').insertOne(idea, function(err, doc) {
         if (err) {
             cb(err);
         }
@@ -53,15 +40,14 @@ exports.create = function(id, title, description, author, likes, comments, backs
 exports.get = function(id, cb) {
     "use strict";
 
-    ideasDb.get('idea_' + id, function(err, doc) {
-        if (err) {
-            cb(err);
+    var objId = new ObjectId(id);
+
+    db.collection('ideas').findOne({_id: objId}, function(err, doc) {
+        if (doc) {
+            cb(null, doc);
         }
         else {
-            var idea = doc;
-            idea.id = doc.ideaId;
-            idea.ideaId = undefined;
-            cb(null, idea);
+            cb("Document was not found in the database!");
         }
     });
 };
@@ -69,66 +55,39 @@ exports.get = function(id, cb) {
 exports.update = function(id, property, value, cb) {
     "use strict";
 
-    ideasDb.get('idea_' + id, function(err, doc) {
-        if (err) {
-            cb(err);
+    var updateObj = {};
+    updateObj[property] = value;
+    var objId = new ObjectId(id);
+
+    db.collection('ideas').updateOne(
+        { _id: objId },
+        { $set: updateObj },
+        function(err, results) {
+            if (err) {
+                console.log(chalk.bgRed(err));
+                cb(err);
+            }
+            else {
+                console.log(chalk.bgGreen('Document with id %s updated in the database.'), id);
+                cb(null, results);
+            }
         }
-        else {
-            doc[property] = value;
-            ideasDb.save(doc, function(err, doc) {
-                if (err) {
-                    console.log(chalk.bgRed(err));
-                    cb(err);
-                }
-                else {
-                    console.log(chalk.bgGreen('Document with key %s updated in ideas.'), doc.key);
-                    cb(null);
-                }
-            });
-        }
-    });
+    );
 };
 
 exports.delete = function(id, cb) {
     "use strict";
 
-    ideasDb.get('idea_' + id, function(err, doc) {
+    var objId = new ObjectId(id);
+
+    db.collection('ideas').deleteOne({ _id: objId },function(err, results) {
         if (err) {
+            console.log(chalk.bgRed(err));
             cb(err);
         }
         else {
-            doc.likes.map(function(user) {
-                userDb.scan(function(doc) {
-                    return doc.name === user;
-                }, function(err, docs) {
-                    if (err) {
-                        cb(err);
-                    }
-                    docs.map(function(userDoc) {
-                        var ideaIdIndex = userDoc.likedIdeas.indexOf(id);
-                        console.log(userDoc.likedIdeas);
-                        console.log(id);
-                        console.log(ideaIdIndex);
-                        if (ideaIdIndex >= 0) {
-                            userDoc.likedIdeas.splice(ideaIdIndex, 1);
-                            userDb.save(userDoc, function(/* err */) {
-                                console.log("ERR: Could not resave updated user during idea delete.");
-                            });
-                        }
-                    });
-
-                });
-            });
-            ideasDb.remove('idea_' + id, function(err) {
-                if (err) {
-                    console.log(chalk.bgRed(err));
-                    cb(err);
-                }
-                else {
-                    console.log(chalk.bgGreen('Document with key %s removed in ideas.'), ('idea_' + id));
-                    cb(null);
-                }
-            });
+            console.log(chalk.bgGreen('Document with id %s removed from the database.'), id);
+            cb(null, results);
         }
     });
 };
@@ -136,7 +95,9 @@ exports.delete = function(id, cb) {
 function getHeaders(cb) {
     "use strict";
 
-    ideasDb.scan(filter, function(err, docs) {
+    // TODO: In between find() and toArray() we can put sort() with the fields
+    // we want to sort by, eg. {title: 1}.
+    db.collection('ideas').find({}, {title: 1, author: 1, likes: 1, description: 1 }).toArray(function(err, docs) {
         if (err) {
             cb(err);
         }
@@ -144,21 +105,12 @@ function getHeaders(cb) {
             cb(null, docs);
         }
         else {
-            docs.sort(function(a, b) {
-                return a.key - b.key;
-            });
             var headers = [];
-            for (var i = 0; i < docs.length; i++) {
-                var descFirstWords = _.take(_.words(docs[i].description), 20);
-
-                headers.push({
-                    id: docs[i].ideaId,
-                    title: docs[i].title,
-                    author: docs[i].author,
-                    likes: docs[i].likes.length,
-                    abstract: descFirstWords.join(' ')
-                });
-            }
+            docs.forEach(function(doc) {
+                doc.abstract = _.take(_.words(doc.description), 20).join(' ');
+                doc.likes = doc.likes.length;
+                headers.push(doc);
+            });
             cb(null, headers);
         }
     });

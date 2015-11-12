@@ -1,31 +1,32 @@
 {
-    "name": "flintandsteel",
-    "version": "0.0.1",
-    "homepage": "https://github.com/YashdalfTheGray/flintandsteel",
-    "authors": [
-        "YashdalfTheGray <yash.kulshrestha@gmail.com>"
-    ],
-    "main": "index.html",
-    "moduleType": [
-        "node"
-    ],
-    "keywords": [
-        "flint",
-        "and",
-        "steel"
-    ],
-    "license": "MIT",
-    "private": true,
-    "dependencies": {
-        "angular": "1.4.7",
-        "angular-aria": "1.4.7",
-        "angular-mocks": "1.4.7",
-        "angular-animate": "1.4.7",
-        "angular-material": "0.11.2",
-        "angular-ui-router": "0.2.15",
-        "lodash": "3.10.0",
-        "moment": "2.10.3",
-        "event-source-polyfill": "0.0.6",
-        "identicon": "*"
-    }
+  "name": "flintandsteel",
+  "version": "0.0.1",
+  "homepage": "https://github.com/YashdalfTheGray/flintandsteel",
+  "authors": [
+    "YashdalfTheGray <yash.kulshrestha@gmail.com>"
+  ],
+  "main": "index.html",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "flint",
+    "and",
+    "steel"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "1.4.7",
+    "angular-aria": "1.4.7",
+    "angular-mocks": "1.4.7",
+    "angular-animate": "1.4.7",
+    "angular-material": "0.11.2",
+    "angular-ui-router": "0.2.15",
+    "lodash": "3.10.0",
+    "moment": "2.10.3",
+    "event-source-polyfill": "0.0.6",
+    "identicon": "*",
+    "angular-identicon": "0.1.17"
+  }
 }
