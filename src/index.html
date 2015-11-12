@@ -28,16 +28,16 @@
 
     <!-- inject:js -->
   <script src="app.js"></script>
-  <script src="about/about.js"></script>
   <script src="homeView/homeView.js"></script>
   <script src="navigation/sidenav.js"></script>
   <script src="navigation/toolbar.js"></script>
+  <script src="about/about.js"></script>
+  <script src="ideas/addIdeaView/addIdeaView.js"></script>
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/ideaItem/ideaItem.js"></script>
-  <script src="ideas/addIdeaView/addIdeaView.js"></script>
+  <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
   <script src="ideas/ideaSvc/ideaSvc.js"></script>
   <script src="ideas/ideasView/ideasView.js"></script>
-  <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
   <script src="ideas/searchFilter/searchFilter.js"></script>
   <script src="users/accountView/accountView.js"></script>
   <script src="users/loginSvc/loginSvc.js"></script>
@@ -57,7 +57,7 @@
             <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">All Ideas</span>
             <span flex></span>
 
-            <div class="md-padding dialogdemoBasicUsage" id="popupContainer" ng-cloak="">
+            <div class="md-padding" id="popupContainer" ng-cloak="">
               <!-- Login Button -->
               <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($evevent)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
                 <md-icon md-svg-icon="action:perm_identity"></md-icon>   
