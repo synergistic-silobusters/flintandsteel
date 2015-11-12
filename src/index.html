@@ -28,10 +28,10 @@
 
     <!-- inject:js -->
   <script src="app.js"></script>
-  <script src="about/about.js"></script>
   <script src="homeView/homeView.js"></script>
   <script src="navigation/sidenav.js"></script>
   <script src="navigation/toolbar.js"></script>
+  <script src="about/about.js"></script>
   <script src="ideas/addIdeaView/addIdeaView.js"></script>
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/ideaItem/ideaItem.js"></script>
@@ -41,7 +41,6 @@
   <script src="ideas/searchFilter/searchFilter.js"></script>
   <script src="users/accountView/accountView.js"></script>
   <script src="users/loginSvc/loginSvc.js"></script>
-  <script src="users/loginView/loginView.js"></script>
   <script src="users/signupView/signupView.js"></script>
   <!-- endinject -->
 
@@ -57,10 +56,21 @@
             <h2><span><img ui-sref="home" class="center-img" src="assets/Innovation_Challenge_Bulb.png" width="25"/></span></h2>
             <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">All Ideas</span>
             <span flex></span>
-            <md-button class="md-icon-button" aria-label="Account" ng-click="accountClick()">
-                <md-icon md-svg-icon="action:perm_identity" ng-if="!isUserLoggedIn()"></md-icon>
-                <identicon username='username' size='24' ng-if="isUserLoggedIn()" ng-init="getUsername()" class="identicon"></identicon>
-            </md-button>
+
+
+            <div class="md-padding" id="popupContainer" ng-cloak="">
+                <!-- Login Button -->
+                <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
+                    <md-icon md-svg-icon="action:perm_identity"></md-icon>   
+                </md-button>
+                <!-- Profile button -->
+                <a href="#/account" ng-show="isUserLoggedIn()" style="font-size:14px">
+                    {{currentUser}}
+                    <md-button class="md-icon-button" aria-label="Account" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="isUserLoggedIn()">
+                        <identicon username='username' size='24' ng-init="getUsername()" class="identicon"></identicon>   
+                    </md-button>
+                </a>
+            </div>
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
                 <md-icon md-svg-icon="navigation:more_vert"></md-icon>
             </md-button>
