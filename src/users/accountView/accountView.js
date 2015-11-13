@@ -27,6 +27,7 @@ angular.module('flintAndSteel')
                 $mdToast.show(
                     $mdToast.simple()
                         .content(accountName + ' has been logged out!')
+                        .action('OK')
                         .position('top right')
                         .hideDelay(5000)
                 );
