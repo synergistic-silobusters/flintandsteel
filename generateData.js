@@ -44,7 +44,7 @@ DB.open(function(err, db) {
                     "likedIdeas": []
                 }
             ];
-
+            var insertedIds;
             db.collection('users').insert(userObjs,
                 function(err, results) {
                     if (err) {
@@ -53,6 +53,7 @@ DB.open(function(err, db) {
                     }
                     else {
                         console.log(chalk.bgGreen('Users created in the users collection.'));
+                        insertedIds = results.insertedIds;
                     }
                 }
             );
@@ -62,9 +63,9 @@ DB.open(function(err, db) {
                 }
                 else {
                     var ideaObjs = [];
-                    ideaObjs.push(Idea.create("Guybrush's Test Idea", "This is an idea description.", "Guybrush Threepwood", [], [], []));
-                    ideaObjs.push(Idea.create("Rick's Test Idea", "This is Mr. Sanchez\'s brilliant idea.", "Rick Sanchez", [], [], []));
-                    ideaObjs.push(Idea.create("Dick's Test Idea", "This is \"The Fracker\'s\" master plan.", "Dick Dickerson", [], [], []));
+                    ideaObjs.push(Idea.create("Guybrush's Test Idea", "This is an idea description.", insertedIds[0], [], [], []));
+                    ideaObjs.push(Idea.create("Rick's Test Idea", "This is Mr. Sanchez\'s brilliant idea.", insertedIds[1], [], [], []));
+                    ideaObjs.push(Idea.create("Dick's Test Idea", "This is \"The Fracker\'s\" master plan.", insertedIds[2], [], [], []));
                     console.log(ideaObjs.length);
                     db.collection('ideas').insert(ideaObjs,
                         function(err, results) {

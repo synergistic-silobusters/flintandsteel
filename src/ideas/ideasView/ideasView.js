@@ -45,7 +45,7 @@ angular.module('flintAndSteel')
                 $scope.idea.backs.forEach(function(back) {
                     back.isInTeam = false;
                     for (var i = 0; i < $scope.idea.team.length; i++) {
-                        if ($scope.idea.team[i] === back.from) {
+                        if ($scope.idea.team[i].memberId === back.authorId) {
                             back.isInTeam = true;
                             break;
                         }
@@ -64,6 +64,64 @@ angular.module('flintAndSteel')
                         $state.go('home');
                     }
                     else {
+                        data.likes.forEach(function(like) {
+                            loginSvc.getUserById(like.userId, function getUserByIdSuccess(userObj) {
+                                like.user = userObj;
+                            }, function getUserByIdError(data, status) {
+                                like.user = {
+                                    name: "Unknown User",
+                                    mail: "unknown@unknown.com",
+                                    username: "unknown"
+                                };
+                                console.log(status);
+                            });
+                        });
+                        data.comments.forEach(function(comment) {
+                            loginSvc.getUserById(comment.authorId, function getUserByIdSuccess(userObj) {
+                                comment.author = userObj;
+                            }, function getUserByIdError(data, status) {
+                                comment.author = {
+                                    name: "Unknown User",
+                                    mail: "unknown@unknown.com",
+                                    username: "unknown"
+                                };
+                                console.log(status);
+                            });
+                        });
+                        data.backs.forEach(function(back) {
+                            loginSvc.getUserById(back.authorId, function getUserByIdSuccess(userObj) {
+                                back.author = userObj;
+                            }, function getUserByIdError(data, status) {
+                                back.author = {
+                                    name: "Unknown User",
+                                    mail: "unknown@unknown.com",
+                                    username: "unknown"
+                                };
+                                console.log(status);
+                            });
+                        });
+                        data.team.forEach(function(member) {
+                            loginSvc.getUserById(member.memberId, function getUserByIdSuccess(userObj) {
+                                member.member = userObj;
+                            }, function getUserByIdError(data, status) {
+                                member.member = {
+                                    name: "Unknown User",
+                                    mail: "unknown@unknown.com",
+                                    username: "unknown"
+                                };
+                                console.log(status);
+                            });
+                        });
+                        loginSvc.getUserById(data.authorId, function getUserByIdSuccess(userObj) {
+                            data.author = userObj;
+                        }, function getUserByIdError(data, status) {
+                            data.author = {
+                                name: "Unknown User",
+                                mail: "unknown@unknown.com",
+                                username: "unknown"
+                            };
+                            console.log(status);
+                        });
                         $scope.idea = data;
                         if (typeof $scope.idea.team === "undefined")	{
                             $scope.idea.team = [];
@@ -117,14 +175,14 @@ angular.module('flintAndSteel')
                     if (type === 'comments') {
                         $scope.idea[type].push({
                             text: ctrl.newComment,
-                            from: loginSvc.getProperty('name'),
+                            authorId: loginSvc.getProperty('_id'),
                             time: now
                         });
                     }
                     else if (type === 'backs') {
                         $scope.idea[type].push({
                             text: ctrl.newBack,
-                            from: loginSvc.getProperty('name'),
+                            authorId: loginSvc.getProperty('_id'),
                             time: now,
                             types: $scope.selectedTypes
                         });
@@ -139,22 +197,24 @@ angular.module('flintAndSteel')
                     $scope.selectedType = undefined;
                     ctrl.newComment = '';
                     ctrl.newBack = '';
+                    ctrl.refreshIdea();
                 }
             };
 
             $scope.likeIdea = function likeIdea() {
-                $scope.idea.likes.push(loginSvc.getProperty('name'));
+                $scope.idea.likes.push({userId: loginSvc.getProperty('_id')});
                 ideaSvc.updateIdea($scope.idea._id, 'likes', $scope.idea.likes,
                     function success() { },
                     function error(data, status) {
                         console.log(status);
                     });
                 loginSvc.likeIdea($scope.idea._id);
+                ctrl.refreshIdea();
             };
 
             $scope.unlikeIdea = function unlikeIdea() {
                 _.remove($scope.idea.likes, function(n) {
-                    return n === loginSvc.getProperty('name');
+                    return n.userId === loginSvc.getProperty('_id');
                 });
                 ideaSvc.updateIdea($scope.idea._id, 'likes', $scope.idea.likes,
                     function success() { },
@@ -162,6 +222,7 @@ angular.module('flintAndSteel')
                         console.log(status);
                     });
                 loginSvc.unlikeIdea($scope.idea._id);
+                ctrl.refreshIdea();
             };
 
             $scope.isUserLiked = function isUserLiked() {
@@ -189,7 +250,7 @@ angular.module('flintAndSteel')
                         '   <md-dialog-content>' +
                         '       <md-list>' +
                         '           <md-list-item ng-if="users.length > 0" ng-repeat="user in users">' +
-                        '               <div>{{user}}</div>' +
+                        '               <div>{{user.user.name}}</div>' +
                         '           </md-list-item>' +
                         '           <md-list-item ng-if="users.length === 0">' +
                         '               <div>No likes yet!</div>' +
@@ -275,7 +336,7 @@ angular.module('flintAndSteel')
                 // Write to DB
                 $scope.idea.backs.forEach(function(back) {
                     if (back.isInTeam) {
-                        $scope.idea.team.push(back.from);
+                        $scope.idea.team.push({memberId: back.authorId});
                     }
                 });
 
@@ -289,14 +350,14 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserAuthor = function() {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.author) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.authorId) {
                     return true;
                 }
                 return false;
             };
 
             ctrl.isUserAuthorOfComment = function(commentIndex) {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('name') === $scope.idea.comments[commentIndex].from) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.comments[commentIndex].authorId) {
                     return true;
                 }
                 return false;
