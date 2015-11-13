@@ -1,7 +1,7 @@
 /* global angular */
 
 
-// Dialog Controller used for controlling the behavior of the dialog 
+// Dialog Controller used for controlling the behavior of the dialog
 //   used for login.
 function DialogController($scope, $mdDialog) {
     "use strict";
@@ -21,7 +21,7 @@ function DialogController($scope, $mdDialog) {
     //pass the account object to the dialog window
     $scope.loginUser = function(account) {
         var status = {
-            username: account.username, 
+            username: account.username,
             password: account.password
         };
         return status;
@@ -34,21 +34,16 @@ angular.module('flintAndSteel')
         '$scope', '$state', '$stateParams', '$mdSidenav', 'loginSvc', '$mdDialog', '$mdToast',
         function($scope, $state, $stateParams, $mdSidenav, loginSvc, $mdDialog, $mdToast) {
             "use strict";
-            
+
             $scope.displayOverflow = false;
 
             $scope.accountClick = function accountClick() {
-                var returnState;
 
                 if (loginSvc.isUserLoggedIn()) {
                     $state.go('account');
                 }
                 else {
-                    returnState = $state.current.name +
-                        $state.go('login', { 
-                            'retState': $state.current.name, 
-                            'retParams': $stateParams.ideaId
-                        });
+                    $state.go('home');
                 }
             };
 
@@ -64,7 +59,7 @@ angular.module('flintAndSteel')
 
             $scope.getUsername = function getUsername() {
                 if ($scope.isUserLoggedIn()) {
-                    $scope.username = loginSvc.getProperty('username');                    
+                    $scope.username = loginSvc.getProperty('username');
                 }
             };
 
@@ -82,7 +77,7 @@ angular.module('flintAndSteel')
                 }, function() {
                     $scope.status = 'You canceled the dialog.';
                 });
-            };         
+            };
 
             // Function used to display feedback on login - OK, Error, or User Not Found
             $scope.loginUser = function(account) {
@@ -96,13 +91,6 @@ angular.module('flintAndSteel')
                                 .position('top right')
                                 .hideDelay(3000)
                         );
-                        var retState = $stateParams.retState;
-                        if (typeof(retState) !== 'undefined' && retState !== '' && retState !== 'login') {
-                            $state.go(retState, {'ideaId': $stateParams.retParams});
-                        }
-                        else {
-                            $state.go('home');
-                        }
                     }
                     else if (data.status === 'AUTH_ERROR') {
                         $mdToast.show(
@@ -130,4 +118,3 @@ angular.module('flintAndSteel')
         }
     ]
 );
-
