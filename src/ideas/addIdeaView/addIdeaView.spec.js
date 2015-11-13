@@ -45,20 +45,20 @@ describe('AddIdeaViewCtrl', function() {
         scope.addNewIdea(idea);
 
         expect(ideaSvcMock.postIdea).toHaveBeenCalled();
-        expect(idea.likes.length).toBe(0);
-        expect(idea.comments.length).toBe(0);
-        expect(idea.backs.length).toBe(0);
+        expect(idea.eventId).toBe("");
+        expect(idea.tags.length).toBe(0);
+        expect(idea.rolesreq.length).toBe(0);
     });
 
-    it('should use the user\'s name as the author', function() {
+    it('should use the user\'s _id as the authorId', function() {
         var idea = {
             title: 'Test Title',
-            author: 3,
+            authorId: 3,
             description: 'This is a test idea.'
         };
         scope.addNewIdea(idea);
 
-        expect(idea.author).not.toBe(3);
-        expect(idea.author).toBe(1);
+        expect(idea.authorId).not.toBe(3);
+        expect(idea.authorId).toBe(1);
     });
 });

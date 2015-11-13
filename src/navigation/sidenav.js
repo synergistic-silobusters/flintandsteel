@@ -12,6 +12,7 @@ angular.module('flintAndSteel')
                 data.forEach(function(ideaHeader) {
                     loginSvc.getUserById(ideaHeader.authorId, function getUserByIdSuccess(userObj) {
                         ideaHeader.author = userObj;
+                        $scope.topIdeas = data;
                     }, function getUserByIdError(data, status) {
                         ideaHeader.author = {
                             name: "Unknown User",
@@ -19,9 +20,9 @@ angular.module('flintAndSteel')
                             username: "unknown"
                         };
                         console.log(status);
+                        $scope.topIdeas = data;
                     });
                 });
-                $scope.topIdeas = data;
             }, function getIdeaHeadersError(data, status) {
                 console.log(status);
             });
@@ -34,6 +35,7 @@ angular.module('flintAndSteel')
                         headers.forEach(function(ideaHeader) {
                             loginSvc.getUserById(ideaHeader.authorId, function getUserByIdSuccess(userObj) {
                                 ideaHeader.author = userObj;
+                                $scope.topIdeas = headers;
                             }, function getUserByIdError(data, status) {
                                 ideaHeader.author = {
                                     name: "Unknown User",
@@ -41,10 +43,9 @@ angular.module('flintAndSteel')
                                     username: "unknown"
                                 };
                                 console.log(status);
+                                $scope.topIdeas = headers;
                             });
-
                         });
-                        $scope.topIdeas = headers;
                     });
                 }
             });

@@ -26,9 +26,9 @@ else if (process.env.NODE_ENV === 'production') {
 
 var IdeasSingleton;
 
-exports.create = function(title, description, author, likes, comments, backs, cb) {
+exports.create = function(title, description, authorId, eventId, tags, rolesreq, cb) {
     "use strict";
-    var idea = Idea.create(title, description, author, likes, comments, backs);
+    var idea = Idea.create(title, description, authorId, eventId, tags, rolesreq);
     db.collection('ideas').insertOne(idea, function(err, doc) {
         if (err) {
             cb(err);

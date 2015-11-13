@@ -259,23 +259,24 @@ app.post('/idea', function(req, res) {
     ideas.create(
         req.body.title,
         req.body.description,
-        req.body.author,
-        req.body.likes,
-        req.body.comments,
-        req.body.backs,
+        req.body.authorId,
+        req.body.eventId,
+        req.body.tags,
+        req.body.rolesreq,
         function(err, doc) {
             if (err) {
                 console.log(chalk.bgRed(err));
+                res.sendStatus(500);
             }
             else {
                 console.log(chalk.bgGreen('Document with id %s stored in ideas.'), doc.insertedId);
                 ideas.fetch(function(err, headers) {
                     IdeasInstance.newHeaders(headers);
                 });
+                res.status(201).json({_id: doc.insertedId, status: "Created"});
             }
         }
     );
-    res.sendStatus(201);
 });
 app.post('/updateidea', function(req, res) {
     "use strict";
