@@ -97,7 +97,7 @@ function getHeaders(cb) {
 
     // TODO: In between find() and toArray() we can put sort() with the fields
     // we want to sort by, eg. {title: 1}.
-    db.collection('ideas').find({}, {title: 1, author: 1, likes: 1, description: 1 }).toArray(function(err, docs) {
+    db.collection('ideas').find({}, {title: 1, authorId: 1, likes: 1, description: 1 }).toArray(function(err, docs) {
         if (err) {
             cb(err);
         }
