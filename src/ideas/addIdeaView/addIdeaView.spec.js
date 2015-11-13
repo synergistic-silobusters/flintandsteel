@@ -53,12 +53,12 @@ describe('AddIdeaViewCtrl', function() {
     it('should use the user\'s name as the author', function() {
         var idea = {
             title: 'Test Title',
-            authorId: 3,
+            author: 3,
             description: 'This is a test idea.'
         };
         scope.addNewIdea(idea);
 
-        expect(idea.authorId).not.toBe(1);
-        expect(idea.authorId).toBe(3);
+        expect(idea.author).not.toBe(3);
+        expect(idea.author).toBe(1);
     });
 });
