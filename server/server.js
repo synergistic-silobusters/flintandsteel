@@ -13,6 +13,7 @@ var express = require('express'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
     mongodb = require('mongodb'),
+    ObjectId = require('mongodb').ObjectID,
     MongoClient = mongodb.MongoClient,
     ideas = require('./ideas');
 
@@ -133,14 +134,25 @@ app.post('/login', function handleAuthentication(req, res, next) {
     if (process.env.NODE_ENV === 'development') {
         if (new Buffer(req.body.password, "base64").toString() === 'test') {
             db.collection('users').find({username: req.body.username}).limit(1).toArray(function(err, docs) {
-                res.status(200).json({
-                    status: 'AUTH_OK',
-                    id: docs[0].accountId,
-                    username: docs[0].username,
-                    email: docs[0].email,
-                    name: docs[0].full,
-                    likedIdeas: docs[0].likedIdeas
-                });
+                if (docs.length === 1) {
+                    res.status(200).json({
+                        status: 'AUTH_OK',
+                        _id: docs[0]._id,
+                        id: docs[0].accountId,
+                        username: docs[0].username,
+                        email: docs[0].email,
+                        name: docs[0].full,
+                        likedIdeas: docs[0].likedIdeas
+                    });
+                }
+                else {
+                    res.status(200).json({
+                        status: 'AUTH_ERROR',
+                        id: undefined,
+                        username: undefined,
+                        name: undefined
+                    });
+                }
             });
         }
         else {
@@ -200,7 +212,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
 
                     if (cursor.count() !== 1) {
                         db.collection('users').insertOne(userObj,
-                            function(err) {
+                            function(err, results) {
                                 if (err) {
                                     console.log(chalk.bgRed(err));
                                     return res.status(200).json({
@@ -212,6 +224,8 @@ app.post('/login', function handleAuthentication(req, res, next) {
                                 }
                                 else {
                                     console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
+                                    console.log(results);
+                                    responseObj._id = results.insertedId;
                                     return res.status(200).json(responseObj);
                                 }
                             }
@@ -221,12 +235,14 @@ app.post('/login', function handleAuthentication(req, res, next) {
                         db.collection('users').updateOne(
                             { email: user._json.mail },
                             { $set: userObj },
-                            function(err) {
+                            function(err, results) {
                                 if (err) {
                                     console.log(chalk.bgRed(err));
                                 }
                                 else {
                                     console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
+                                    console.log(results);
+                                    responseObj._id = results.value._id;
                                     return res.status(200).json(responseObj);
                                 }
                             }
@@ -315,7 +331,25 @@ app.post('/updateaccount', function(req, res) {
         }
     );
 });
+app.get('/user', function(req, res) {
+    "use strict";
 
+    var objId = new ObjectId(req.query.id);
+
+    db.collection('users').find({_id: objId}).limit(1).toArray(function(err, docs) {
+        var responseObj = {
+            name: docs[0].full,
+            mail: docs[0].email,
+            username: docs[0].username
+        };
+        if (err) {
+            res.status(200).send('USER_NOT_FOUND');
+        }
+        else {
+            res.status(200).json(responseObj);
+        }
+    });
+});
 app.get('/idea', function(req, res) {
     "use strict";
 
