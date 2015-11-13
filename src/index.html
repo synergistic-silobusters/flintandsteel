@@ -21,7 +21,7 @@
     <script src="lib/angular-identicon/dist/angular-identicon.js"></script>
     <script src="lib/angular-identicon/src/md5.js"></script>
     <script src="lib/identicon/identicon.js"></script>
-    <script src="lib/identicon/pnglib.js"></script>    
+    <script src="lib/identicon/pnglib.js"></script>
     <script src="lib/lodash/lodash.js"></script>
     <script src="lib/moment/moment.js"></script>
     <script src="lib/event-source-polyfill/eventsource.js"></script>
@@ -57,6 +57,7 @@
             <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">All Ideas</span>
             <span flex></span>
 
+
             <div class="md-padding" id="popupContainer" ng-cloak="">
                 <!-- Login Button -->
                 <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
@@ -66,11 +67,10 @@
                 <a href="#/account" ng-show="isUserLoggedIn()" style="font-size:14px">
                     {{currentUser}}
                     <md-button class="md-icon-button" aria-label="Account" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="isUserLoggedIn()">
-                      <identicon username='username' size='24' ng-init="getUsername()" class="identicon"></identicon>   
+                        <identicon username='username' size='24' ng-init="getUsername()" class="identicon"></identicon>   
                     </md-button>
                 </a>
             </div>
-
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
                 <md-icon md-svg-icon="navigation:more_vert"></md-icon>
             </md-button>
@@ -85,7 +85,7 @@
                         <md-list class="top-ideas-list">
                             <md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
                             <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:5">
-                                <idea-item idea="idea" ui-sref="idea({ ideaId: idea.id })" class="idea-pointer"></idea-item>
+                                <idea-item idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item>
                             </md-item>
                         </md-list>
                         <md-divider></md-divider>
