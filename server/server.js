@@ -29,22 +29,29 @@ else if (process.env.NODE_ENV === 'production') {
 DB.open(function(err, db) {
     "use strict";
 
-    db.createCollection('ideas', function(errIdea) {
-        if (errIdea) {
-            console.log(errIdea);
+    db.createCollection('users', function(errUsers) {
+        if (errUsers) {
+            console.log(errUsers);
         }
         else {
-            db.createCollection('users', function(errUsers) {
-                if (errUsers) {
-                    console.log(errUsers);
+            db.createCollection('ideas', function(errIdea) {
+                if (errIdea) {
+                    console.log(errIdea);
                 }
                 else {
-                    db.createCollection('events', function(errUsers) {
-                        if (errUsers) {
-                            console.log(errUsers);
+                    db.createCollection('comments', function(errComments) {
+                        if (errComments) {
+                            console.log(errComments);
                         }
                         else {
-                            db.close();
+                            db.createCollection('events', function(errEvents) {
+                                if (errEvents) {
+                                    console.log(errEvents);
+                                }
+                                else {
+                                    db.close();
+                                }
+                            });
                         }
                     });
                 }
@@ -79,19 +86,20 @@ function startSees(res) {
     };
 }
 
-app.use(morgan(':remote-addr - ' +
-    chalk.cyan('[:date] ') +
-    chalk.green('":method :url ') +
-    chalk.gray('HTTP/:http-version" ') +
-    chalk.yellow(':status ') +
-    ':res[content-length] ' +
-    chalk.gray('":referrer" ":user-agent" ') +
-    'time=:response-time ms'
-));
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === 'production') {
+
+    app.use(morgan(':remote-addr - ' +
+        chalk.cyan('[:date] ') +
+        chalk.green('":method :url ') +
+        chalk.gray('HTTP/:http-version" ') +
+        chalk.yellow(':status ') +
+        ':res[content-length] ' +
+        chalk.gray('":referrer" ":user-agent" ') +
+        'time=:response-time ms'
+    ));
 
     app.use(passport.initialize());
 

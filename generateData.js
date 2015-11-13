@@ -78,12 +78,19 @@ DB.open(function(err, db) {
                             }
                         }
                     );
-                    db.createCollection('events', function(errUsers) {
-                        if (errUsers) {
-                            console.log(errUsers);
+                    db.createCollection('comments', function(errComments) {
+                        if (errComments) {
+                            console.log(errComments);
                         }
                         else {
-                            db.close();
+                          db.createCollection('events', function(errEvents) {
+                              if (errUsers) {
+                                  console.log(errEvents);
+                              }
+                              else {
+                                  db.close();
+                              }
+                          });
                         }
                     });
                 }
