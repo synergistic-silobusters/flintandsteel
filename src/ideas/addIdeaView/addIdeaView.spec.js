@@ -8,7 +8,7 @@
 
 describe('AddIdeaViewCtrl', function() {
     "use strict";
-    
+
     var scope, ctrl, $mdToast, $state, ideaSvcMock, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
@@ -53,12 +53,12 @@ describe('AddIdeaViewCtrl', function() {
     it('should use the user\'s name as the author', function() {
         var idea = {
             title: 'Test Title',
-            author: 'Test',
+            authorId: 3,
             description: 'This is a test idea.'
         };
         scope.addNewIdea(idea);
 
-        expect(idea.author).not.toBe("Test");
-        expect(idea.author).toBe("Darth Vader");
+        expect(idea.authorId).not.toBe(1);
+        expect(idea.authorId).toBe(3);
     });
 });

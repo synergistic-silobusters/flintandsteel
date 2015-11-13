@@ -8,7 +8,7 @@
 
 describe('ToolbarCtrl', function() {
     "use strict";
-    
+
     var scope, ctrl, $state, $stateParams, $mdSidenav, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
@@ -48,7 +48,7 @@ describe('ToolbarCtrl', function() {
             scope.accountClick();
 
             expect(loginSvcMock.isUserLoggedIn).toHaveBeenCalled();
-            expect($state.go).toHaveBeenCalledWith('login', {'retState': '', 'retParams': undefined});
+            expect($state.go).toHaveBeenCalledWith('home');
         });
 
         it('should navigate to account if user is logged in', function() {
