@@ -57,19 +57,19 @@ describe('SidenavCtrl', function() {
             // TODO - figure out how to test the $mdSidenav calls.
         });
 
-        it('should navigate to the login if user is guest and tries to add idea', function() {
-            var expectedState = 'login';
+        it('should navigate to the home if user is guest and tries to add idea', function() {
+            var expectedState = 'home';
 
             state = 'addIdea';
             scope.navTo(state);
-            
+
             expect($state.go).toHaveBeenCalledWith(expectedState);
             // TODO - figure out how to test the $mdSidenav calls.
         });
 
         it('should navigate to the add idea page if user is logged in and tries to add idea', function() {
             var account = {'username': 'MainManDarth'};
-            
+
             loginSvcMock.checkLogin(account);
             state = 'addIdea';
             scope.navTo(state);

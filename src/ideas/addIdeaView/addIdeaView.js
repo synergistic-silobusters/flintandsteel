@@ -8,13 +8,13 @@ angular.module('flintAndSteel')
             "use strict";
 
             if (!loginSvc.isUserLoggedIn()) {
-                $state.go('login', {'retState': $state.current.name});
+                $state.go('home');
             }
 
             $scope.idea = {};
 
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
-                ideaToAdd.author = loginSvc.getProperty('name');
+                ideaToAdd.author = loginSvc.getProperty('_id');
                 ideaToAdd.likes = [];
                 ideaToAdd.comments = [];
                 ideaToAdd.backs = [];

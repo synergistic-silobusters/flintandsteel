@@ -377,8 +377,8 @@ describe('IdeasViewCtrl', function() {
         it('Should allow additions and deletions of team members', function() {
             // Add backer, check team length is 0
             ctrl.newBack = 'Rick backs this idea!'; //how to add author to back?
-            scope.idea.backs[teamLength].from = 'Rick';
             scope.addNewInteraction('backs');
+            scope.idea.backs[teamLength].authorId = 1;
 
             expect(scope.idea.team.length).toBe(teamLength);
             // Add backer to team, check team length is 1
@@ -387,7 +387,7 @@ describe('IdeasViewCtrl', function() {
             ctrl.updateTeam();
 
             expect(scope.idea.team.length).toBe(teamLength + 1);
-            expect(scope.idea.team[teamLength]).toBe('Rick');
+            expect(scope.idea.team[teamLength].memberId).toBe(1);
             // Remove backer from team, check team length is 0
             scope.idea.backs[teamLength].isInTeam = false;
             ctrl.updateTeam();

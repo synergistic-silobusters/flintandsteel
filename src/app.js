@@ -15,22 +15,12 @@ angular.module('flintAndSteel', [
     '$urlRouterProvider', '$stateProvider', '$mdIconProvider', '$mdThemingProvider',
     function($urlRouterProvider, $stateProvider, $mdIconProvider, $mdThemingProvider) {
         "use strict";
-        
+
         $stateProvider
             .state('home', {
                 url: '/',
                 templateUrl: 'homeView/homeView.tpl.html',
                 controller: 'HomeViewCtrl'
-            })
-            .state('login', {
-                url: '/login?retState&retParams',
-                templateUrl: 'users/loginView/loginView.tpl.html',
-                controller: 'LoginViewCtrl'
-            })
-            .state('signup', {
-                url: '/signup',
-                templateUrl: 'users/signupView/signupView.tpl.html',
-                controller: 'SignupViewCtrl'
             })
             .state('account', {
                 url: '/account',
