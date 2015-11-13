@@ -55,8 +55,13 @@ body {
 	color: #424242;
 	border-radius: 10px;
 }
+
 .idea-pointer {
 	cursor: pointer;
+}
+
+.nav-bar-pointer {
+    cursor: pointer;
 }
 
 .extra-padding-left-sm {

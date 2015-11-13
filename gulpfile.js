@@ -196,3 +196,6 @@ gulp.task('generate:data', ['clean:db-dev'], function() {
     var command = "node generateData.js";
     runCommand(command);
 });
+
+// A shorter call for generating colon data
+gulp.task('poop', ['generate:data']);
