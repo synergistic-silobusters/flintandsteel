@@ -1,6 +1,7 @@
 var chalk = require('chalk'),
     mongodb = require('mongodb'),
-    Idea = require('./server/idea');
+    Idea = require('./server/idea'),
+    User = require('./server/user');
 
 var DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
 
@@ -12,38 +13,10 @@ DB.open(function(err, db) {
             console.log(errUsers);
         }
         else {
-            var userObjs = [
-                {
-                    "username": "test1",
-                    "accountId": "test_user_id1",
-                    "email": "test@test.com",
-                    "full": "Guybrush Threepwood",
-                    "first": "Guybrush",
-                    "last": "Threepwood",
-                    "nick": "Threepy",
-                    "likedIdeas": []
-                },
-                {
-                    "username": "test2",
-                    "accountId": "test_user_id2",
-                    "email": "test@test.com",
-                    "full": "Rick Sanchez",
-                    "first": "Rick",
-                    "last": "Sanchez",
-                    "nick": "Dirty",
-                    "likedIdeas": []
-                },
-                {
-                    "username": "test3",
-                    "accountId": "test_user_id3",
-                    "email": "test@test.com",
-                    "full": "Dick Dickerson",
-                    "first": "Dick",
-                    "last": "Dickerson",
-                    "nick": "The Fracker",
-                    "likedIdeas": []
-                }
-            ];
+            var userObjs = [];
+            userObjs.push(User.create("Guybrush", "Threepwood", "Guybrush Threepwood", "test1", "test1@test.com", "Threepy", "Hippy Lumberjack"));
+            userObjs.push(User.create("Rick", "Sanchez", "Rick Sanchez", "test2", "test2@test.com", "Dirty", "Street Pharmacist"));
+            userObjs.push(User.create("Dick", "Dickerson", "Dick Dickerson", "test3", "test3@test.com", "The Fracker", "Money Bags Oil Man"));
             var insertedIds;
             db.collection('users').insert(userObjs,
                 function(err, results) {

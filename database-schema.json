@@ -3,6 +3,7 @@
         "_id": "mongo_generated",
         "firstName": "",
         "lastName": "",
+        "fullName": "",
         "username": "",
         "email": "",
         "nickname": "",
@@ -19,11 +20,11 @@
         "tags": [
             "5 strings to assist in searching"
         ],
-		"rolereqs": [
-			"types of backs the author is requesting"
-		],
+        "rolereqs": [
+            "types of backs the author is requesting"
+        ],
         "likes": [
-			{"userId": "user._id"},
+            {"userId": "user._id"},
             "set of objects with user._id"
         ],
         "updates": [
@@ -34,7 +35,7 @@
             }
         ],
         "comments": [
-			{"commentId": "comment._id"},
+            {"commentId": "comment._id"},
             "set of objects with comment._id"
         ],
         "backs": [

@@ -146,10 +146,9 @@ app.post('/login', function handleAuthentication(req, res, next) {
                     res.status(200).json({
                         status: 'AUTH_OK',
                         _id: docs[0]._id,
-                        id: docs[0].accountId,
+                        name: docs[0].fullName,
                         username: docs[0].username,
                         email: docs[0].email,
-                        name: docs[0].full,
                         likedIdeas: docs[0].likedIdeas
                     });
                 }
@@ -200,13 +199,13 @@ app.post('/login', function handleAuthentication(req, res, next) {
                 else {
                     var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
                     var userObj = {
+                        "firstName": user._json.givenName,
+                        "lastName": user._json.sn,
+                        "fullName": user.displayName,
                         "username": user._json.sAMAccountName,
-                        "accountId": user.id,
                         "email": user._json.mail,
-                        "full": user.displayName,
-                        "first": user._json.givenName,
-                        "last": user._json.sn,
-                        "nick": user._json.cn,
+                        "nickname": user._json.cn,
+                        "title": user._json.title,
                         "likedIdeas": []
                     };
                     var responseObj = {
@@ -347,7 +346,7 @@ app.get('/user', function(req, res) {
 
     db.collection('users').find({_id: objId}).limit(1).toArray(function(err, docs) {
         var responseObj = {
-            name: docs[0].full,
+            name: docs[0].fullName,
             mail: docs[0].email,
             username: docs[0].username
         };
