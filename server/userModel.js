@@ -1,16 +1,17 @@
 /* global exports */
+/* global process */
 
 function User(firstName, lastName, fullName, username, email, nickname, title) {
     "use strict";
 
-    this.firstName = firstName,
-    this.lastName = lastName,
-    this.fullName = fullName,
-    this.username = username,
-    this.email = email,
-    this.nickname = nickname,
-    this.title = title,
-    this.likedIdeas = []
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.fullName = fullName;
+    this.username = username;
+    this.email = email;
+    this.nickname = nickname;
+    this.title = title;
+    this.likedIdeas = [];
 
     return this;
 }
@@ -19,14 +20,14 @@ function User(firstName, lastName, fullName, username, email, nickname, title) {
 function UserLDAP(ldapObj) {
     "use strict";
 
-    this.firstName = ldapObj.givenName,
-    this.lastName = ldapObj.sn,
-    this.fullName = ldapObj.displayName,
-    this.username = ldapObj.sAMAccountName,
-    this.email = ldapObj.mail,
-    this.nickname = ldapObj.cn,
-    this.title = ldapObj.title,
-    this.likedIdeas = []
+    this.firstName = ldapObj.givenName;
+    this.lastName = ldapObj.sn;
+    this.fullName = ldapObj.displayName;
+    this.username = ldapObj.sAMAccountName;
+    this.email = ldapObj.mail;
+    this.nickname = ldapObj.cn;
+    this.title = ldapObj.title;
+    this.likedIdeas = [];
 
     return this;
 }
@@ -38,14 +39,14 @@ if (process.env.NODE_ENV === 'production') {
         "use strict";
 
         return new UserLDAP(ldapObj);
-    }
+    };
 }
 else {
     createFn = function(firstName, lastName, fullName, username, email, nickname, title) {
         "use strict";
 
         return new User(firstName, lastName, fullName, username, email, nickname, title);
-    }
+    };
 }
 
 exports.create = createFn;

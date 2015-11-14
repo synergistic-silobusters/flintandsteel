@@ -192,7 +192,8 @@ angular.module('flintAndSteel')
                             function success() { },
                             function error(data, status) {
                                 console.log(status);
-                        });
+                            }
+                        );
                     }
 
                     $scope.selectedTypes = [];
@@ -309,7 +310,8 @@ angular.module('flintAndSteel')
             ctrl.confirmDeleteIdea = function(ev) {
                 $mdDialog.show($mdDialog.confirm()
                     .title('Deleting Your Idea...')
-                    .content('Hey, ' + $scope.idea.author.name + '! Are you sure you want to delete \"' + $scope.idea.title + '\"? This action is irreversible :( ')
+                    .content('Hey, ' + $scope.idea.author.name + '! Are you sure you want to delete \"' + $scope.idea.title + '\"? ' +
+                        'This action is irreversible :( ')
                     .ariaLabel('Delete idea confirmation')
                     .targetEvent(ev)
                     .ok('Yes. Delete it.')

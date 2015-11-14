@@ -63,7 +63,7 @@ angular.module('flintAndSteel')
                         text: 'This is gold, gold I tell you!',
                         authorId: 3,
                         timeCreated: moment().subtract(30, 'minutes').calendar(),
-                        timeModified: moment().subtract(30, 'minutes').calendar(),
+                        timeModified: moment().subtract(30, 'minutes').calendar()
                     }
                 ],
                 backs: [
@@ -117,7 +117,7 @@ angular.module('flintAndSteel')
                         }
                     ];
                 },
-                postComment: function postComment(parentId, text, authorId, successCb, errorCb) {
+                postComment: function postComment(parentId, text, authorId, successCb) {
                     mockIdea.comments.push(
                         {
                             commentId: 4,
@@ -128,14 +128,16 @@ angular.module('flintAndSteel')
                             timeModified: new Date().toISOString()
                         }
                     );
+                    successCb('Posted');
                 },
-                deleteComment: function deleteComment(commentId, successCb, errorCb) {
+                deleteComment: function deleteComment(commentId, successCb) {
                     for (var i = 0; i < mockIdea.comments.length; i++) {
                         if (mockIdea.comments[i].commentId === commentId) {
                             mockIdea.comments.splice(i, 1);
                             break;
                         }
                     }
+                    successCb('Deleted');
                 },
                 getUniqueId: function getUniqueId() {
                     throw new NotImplementedException('getUniqueId');
@@ -144,7 +146,7 @@ angular.module('flintAndSteel')
                     mockIdea[property] = data;
                     successCb('OK');
                 },
-                editIdea: function editIdea(ideaId, title, description, rolesreq, successCb, errorCb) {
+                editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
                     mockIdea.title = title;
                     mockIdea.description = description;
                     mockIdea.rolesreq = rolesreq;

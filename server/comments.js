@@ -1,12 +1,11 @@
 /* global exports */
 /* global process */
 
-var Comment = require('./commentModel'),
+var CommentModel = require('./commentModel'),
     chalk = require('chalk'),
     mongodb = require('mongodb'),
     ObjectId = require('mongodb').ObjectID,
-    MongoClient = mongodb.MongoClient,
-    _ = require('lodash');
+    MongoClient = mongodb.MongoClient;
 
 var db;
 if (process.env.NODE_ENV === 'development') {
@@ -24,7 +23,7 @@ else if (process.env.NODE_ENV === 'production') {
 
 exports.create = function(parentId, text, authorId, cb) {
     "use strict";
-    var comment = Comment.create(parentId, text, authorId);
+    var comment = CommentModel.create(parentId, text, authorId);
     db.collection('comments').insertOne(comment, function(err, doc) {
         if (err) {
             cb(err);

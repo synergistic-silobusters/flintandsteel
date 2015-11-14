@@ -1,7 +1,7 @@
 /* global exports */
 /* global process */
 
-var Idea = require('./ideaModel'),
+var IdeaModel = require('./ideaModel'),
     chalk = require('chalk'),
     mongodb = require('mongodb'),
     ObjectId = require('mongodb').ObjectID,
@@ -28,7 +28,7 @@ var IdeasSingleton;
 
 exports.create = function(title, description, authorId, eventId, tags, rolesreq, cb) {
     "use strict";
-    var idea = Idea.create(title, description, authorId, eventId, tags, rolesreq);
+    var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq);
     db.collection('ideas').insertOne(idea, function(err, doc) {
         if (err) {
             cb(err);
@@ -106,7 +106,7 @@ exports.removeComment = function(commentId, cb) {
       { comments: { commentId: objId } },
       [],
       { $pull: { comments: { commentId: objId } } },
-      function (err, results) {
+      function(err, results) {
           if (err) {
               console.log(chalk.bgRed(err));
               cb(err);
@@ -116,7 +116,7 @@ exports.removeComment = function(commentId, cb) {
               cb(null, results.value._id);
           }
       }
-    )
+    );
 };
 
 exports.edit = function(id, title, description, rolesreq, cb) {

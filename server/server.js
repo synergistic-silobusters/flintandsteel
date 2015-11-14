@@ -334,7 +334,9 @@ app.post('/updateidea', function(req, res) {
         }
     });
 });
-app.post('/editidea', function(req,res) {
+app.post('/editidea', function(req, res) {
+    "use strict";
+
     ideas.edit(req.body.id, req.body.title, req.body.description, req.body.rolesreq, function(err) {
         if (err) {
             res.sendStatus(500);
@@ -377,16 +379,16 @@ app.post('/deleteComment', function(req, res) {
             res.sendStatus(500);
         }
         else {
-            ideas.removeComment(req.body.commentId, function(err, doc_id) {
+            ideas.removeComment(req.body.commentId, function(err, docId) {
                 if (err) {
                     console.log(err);
                     res.sendStatus(500);
                 }
                 else {
-                    ideas.get(doc_id, function(err, idea) {
+                    ideas.get(docId, function(err, idea) {
                         IdeasInstance.updateIdea(idea);
                     });
-                    res.status(201).json({_id: doc_id, status: "Deleted"});
+                    res.status(201).json({_id: docId, status: "Deleted"});
                 }
             });
         }
@@ -442,20 +444,22 @@ app.get('/idea', function(req, res) {
             }
             else {
                 idea.comments.forEach(function(comment, i, arr) {
-                  comments.get(comment.commentId, function(err, commentData) {
-                      if (err) {
-                          console.log(err);
-                          res.status(200).send('COMMENT_NOT_FOUND');
-                      }
-                      else {
-                          for (var attrName in commentData) {
-                              comment[attrName] = commentData[attrName];
-                          }
-                          if (i === arr.length - 1) {
-                              res.status(200).json(idea);
-                          }
-                      }
-                  });
+                    comments.get(comment.commentId, function(err, commentData) {
+                        if (err) {
+                            console.log(err);
+                            res.status(200).send('COMMENT_NOT_FOUND');
+                        }
+                        else {
+                            for (var attrName in commentData) {
+                                if (commentData.hasOwnProperty(attrName)) {
+                                    comment[attrName] = commentData[attrName];
+                                }
+                            }
+                            if (i === arr.length - 1) {
+                                res.status(200).json(idea);
+                            }
+                        }
+                    });
                 });
             }
         }

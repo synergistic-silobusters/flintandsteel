@@ -38,9 +38,9 @@ angular.module('flintAndSteel')
             };
 
             this.deleteComment = function deleteComment(commentId, successCb, errorCb) {
-              $http.post('/deleteComment',
+                $http.post('/deleteComment',
                       {
-                          commentId: commentId,
+                          commentId: commentId
                       }
                   )
                   .success(successCb)
@@ -62,18 +62,18 @@ angular.module('flintAndSteel')
             };
 
             this.editIdea = function editIdea(ideaId, title, description, rolesreq, successCb, errorCb) {
-              if (ideaId !== 'mock_idea') {
-                  $http.post('/editidea',
-                          {
-                              id: ideaId,
-                              title: title,
-                              description: description,
-                              rolesreq: rolesreq
-                          }
-                      )
-                      .success(successCb)
-                      .error(errorCb);
-              }
+                if (ideaId !== 'mock_idea') {
+                    $http.post('/editidea',
+                            {
+                                id: ideaId,
+                                title: title,
+                                description: description,
+                                rolesreq: rolesreq
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
             };
 
             this.deleteIdea = function deleteIdea(ideaId, successCb, errorCb) {
