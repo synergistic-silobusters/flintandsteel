@@ -328,20 +328,14 @@ app.post('/deleteComment', function(req, res) {
 app.post('/updateaccount', function(req, res) {
     "use strict";
 
-    db.collection('users').findAndModify(
-        { username: req.body.username },
-        [],
-        { $set: {likedIdeas: req.body.likedIdeas } },
-        function(err, results) {
-            if (err) {
-                console.log(chalk.bgRed(err));
-            }
-            else {
-                console.log(chalk.bgGreen('Document with id %s updated in the database.'), results.value._id);
-                res.sendStatus(200);
-            }
+    users.update(req.body._id, "likedIdeas", req.body.likedIdeas, function(err, results) {
+        if (err || results.value === null) {
+            console.log(chalk.bgRed(err));
         }
-    );
+        else {
+            res.sendStatus(200);
+        }
+    });
 });
 app.get('/user', function(req, res) {
     "use strict";
