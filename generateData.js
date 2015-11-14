@@ -1,6 +1,6 @@
 var chalk = require('chalk'),
     mongodb = require('mongodb'),
-    Idea = require('./server/idea'),
+    Idea = require('./server/ideaModel'),
     User = require('./server/user');
 
 var DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));

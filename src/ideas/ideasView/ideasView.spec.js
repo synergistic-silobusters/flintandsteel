@@ -204,20 +204,21 @@ describe('IdeasViewCtrl', function() {
                 mockIdea = idea;
             });
             spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            spyOn(ideaSvcMock, 'editIdea').and.callThrough();
         });
 
         it('should allow the author to edit the idea', function() {
             loginSvcMock.checkLogin(authorAccount);
             expect(ctrl.isUserAuthor()).toBe(true);
             ctrl.editIdea(mockIdea.title, mockIdea.description);
-            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+            expect(ideaSvcMock.editIdea).toHaveBeenCalled();
         });
 
         it('should not allow someone other than the author to edit the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
             expect(ctrl.isUserAuthor()).toBe(false);
             ctrl.editIdea(mockIdea.title, mockIdea.description);
-            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+            expect(ideaSvcMock.editIdea).not.toHaveBeenCalled();
         });
 
         it('should allow the author to add text to the idea description', function() {
@@ -254,7 +255,7 @@ describe('IdeasViewCtrl', function() {
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
-            expect(mockIdea.editedOn.substr(-7,6)).toBeCloseTo(now.substr(-7,6), 1);
+            expect(mockIdea.timeModified.substr(-7,6)).toBeCloseTo(now.substr(-7,6), 1);
         });
 
         it('should refresh $scope.idea with the new idea data', function() {

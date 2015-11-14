@@ -303,6 +303,22 @@ app.post('/updateidea', function(req, res) {
         }
     });
 });
+app.post('/editidea', function(req,res) {
+    ideas.edit(req.body.id, req.body.title, req.body.description, req.body.rolesreq, function(err) {
+        if (err) {
+            res.sendStatus(500);
+        }
+        else {
+            ideas.get(req.body.id, function(err, idea) {
+                IdeasInstance.updateIdea(idea);
+            });
+            ideas.fetch(function(err, headers) {
+                IdeasInstance.newHeaders(headers);
+            });
+            res.sendStatus(200);
+        }
+    });
+});
 app.post('/deleteidea', function(req, res) {
     "use strict";
 

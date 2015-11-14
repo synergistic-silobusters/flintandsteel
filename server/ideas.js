@@ -1,7 +1,7 @@
 /* global exports */
 /* global process */
 
-var Idea = require('./idea'),
+var Idea = require('./ideaModel'),
     chalk = require('chalk'),
     mongodb = require('mongodb'),
     ObjectId = require('mongodb').ObjectID,
@@ -62,6 +62,35 @@ exports.update = function(id, property, value, cb) {
     db.collection('ideas').updateOne(
         { _id: objId },
         { $set: updateObj },
+        function(err, results) {
+            if (err) {
+                console.log(chalk.bgRed(err));
+                cb(err);
+            }
+            else {
+                console.log(chalk.bgGreen('Document with id %s updated in the database.'), id);
+                cb(null, results);
+            }
+        }
+    );
+};
+
+exports.edit = function(id, title, description, rolesreq, cb) {
+    "use strict";
+
+    var now = new Date().toISOString();
+
+    var editObj = {};
+    editObj.title = title;
+    editObj.description = description;
+    editObj.rolesreq = rolesreq;
+    editObj.timeModified = now;
+
+    var objId = new ObjectId(id);
+
+    db.collection('ideas').updateOne(
+        { _id: objId },
+        { $set: editObj },
         function(err, results) {
             if (err) {
                 console.log(chalk.bgRed(err));

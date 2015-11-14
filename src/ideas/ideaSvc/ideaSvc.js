@@ -39,6 +39,21 @@ angular.module('flintAndSteel')
                 }
             };
 
+            this.editIdea = function editIdea(ideaId, title, description, rolesreq, successCb, errorCb) {
+              if (ideaId !== 'mock_idea') {
+                  $http.post('/editidea',
+                          {
+                              id: ideaId,
+                              title: title,
+                              description: description,
+                              rolesreq: rolesreq
+                          }
+                      )
+                      .success(successCb)
+                      .error(errorCb);
+              }
+            };
+
             this.deleteIdea = function deleteIdea(ideaId, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
                     $http.post('/deleteidea',
@@ -71,6 +86,7 @@ angular.module('flintAndSteel')
                 getIdeaHeaders: this.getIdeaHeaders,
                 getUniqueId: this.getUniqueId,
                 updateIdea: this.updateIdea,
+                editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
                 getBackTypeChips: this.getBackTypeChips
             };

@@ -284,18 +284,8 @@ angular.module('flintAndSteel')
 
             ctrl.editIdea = function(title, description) {
                 if (ctrl.isUserAuthor()) {
-                    ideaSvc.updateIdea($scope.idea._id, "title", title, function() {
-                        ideaSvc.updateIdea($scope.idea._id, "description", description, function() {
-                            ideaSvc.updateIdea($scope.idea._id, "editedOn", (new Date()).toISOString(), function() {
-                                ctrl.refreshIdea();
-                            },
-                            function() {
-                                console.log("ERR: Could not update idea.");
-                            });
-                        },
-                        function() {
-                            console.log("ERR: Could not update idea.");
-                        });
+                    ideaSvc.editIdea($scope.idea._id, title, description, [], function() {
+                        ctrl.refreshIdea();
                     },
                     function() {
                         console.log("ERR: Could not update idea.");
@@ -317,7 +307,7 @@ angular.module('flintAndSteel')
             ctrl.confirmDeleteIdea = function(ev) {
                 $mdDialog.show($mdDialog.confirm()
                     .title('Deleting Your Idea...')
-                    .content('Hey, ' + $scope.idea.author + '! Are you sure you want to delete \"' + $scope.idea.title + '\"? This action is irreversible :( ')
+                    .content('Hey, ' + $scope.idea.author.name + '! Are you sure you want to delete \"' + $scope.idea.title + '\"? This action is irreversible :( ')
                     .ariaLabel('Delete idea confirmation')
                     .targetEvent(ev)
                     .ok('Yes. Delete it.')

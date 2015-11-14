@@ -114,6 +114,13 @@ angular.module('flintAndSteel')
                     mockIdea[property] = data;
                     successCb('OK');
                 },
+                editIdea: function editIdea(ideaId, title, description, rolesreq, successCb, errorCb) {
+                    mockIdea.title = title;
+                    mockIdea.description = description;
+                    mockIdea.rolesreq = rolesreq;
+                    mockIdea.timeModified = new Date().toISOString();
+                    successCb('Edited');
+                },
                 deleteIdea: function deleteIdea(ideaId, successCb) {
                     successCb('Deleted!');
                 },
