@@ -31,8 +31,8 @@ function DialogController($scope, $mdDialog) {
 angular.module('flintAndSteel')
 .controller('ToolbarCtrl',
     [
-        '$scope', '$state', '$stateParams', '$mdSidenav', 'loginSvc', '$mdDialog', '$mdToast',
-        function($scope, $state, $stateParams, $mdSidenav, loginSvc, $mdDialog, $mdToast) {
+        '$scope', '$state', '$stateParams', '$mdSidenav', 'loginSvc', '$mdDialog', 'toastSvc',
+        function($scope, $state, $stateParams, $mdSidenav, loginSvc, $mdDialog, toastSvc) {
             "use strict";
 
             $scope.displayOverflow = false;
@@ -82,34 +82,18 @@ angular.module('flintAndSteel')
             // Function used to display feedback on login - OK, Error, or User Not Found
             $scope.loginUser = function(account) {
                 loginSvc.checkLogin(account, function LoginSuccess(data) {
+                    var content;
                     if (data.status === 'AUTH_OK') {
                         $scope.currentUser = data.name;
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content(data.name + ' has successfully signed in!')
-                                .action('OK')
-                                .position('top right')
-                                .hideDelay(3000)
-                        );
+                        content = data.name + ' has successfully signed in!';
                     }
                     else if (data.status === 'AUTH_ERROR') {
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content('Your credentials don\'t match the stored ones :(')
-                                .action('OK')
-                                .position('top right')
-                                .hideDelay(3000)
-                        );
+                        content = 'Your credentials don\'t match the stored ones :(';
                     }
                     else if (data.status === 'USER_NOT_FOUND') {
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content('The user was not found in the server!')
-                                .action('OK')
-                                .position('top right')
-                                .hideDelay(3000)
-                        );
+                        content = 'The user was not found in the server!';
                     }
+                    toastSvc.show(content);
                 },
                 function loginError(data, status) {
                     console.log(status);

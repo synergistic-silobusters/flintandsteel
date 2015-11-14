@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('AddIdeaViewCtrl',
     [
-        '$scope', '$state', '$mdToast', 'ideaSvc', 'loginSvc',
-        function($scope, $state, $mdToast, ideaSvc, loginSvc) {
+        '$scope', '$state', 'toastSvc', 'ideaSvc', 'loginSvc',
+        function($scope, $state, toastSvc, ideaSvc, loginSvc) {
             "use strict";
 
             if (!loginSvc.isUserLoggedIn()) {
@@ -21,12 +21,7 @@ angular.module('flintAndSteel')
                 ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
                     console.log(data);
                     if (data === 'Created') {
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content('New idea created successfully!')
-                                .position('top right')
-                                .hideDelay(3000)
-                        );
+                        toastSvc.show('New idea created successfully!');
                         $scope.$emit('newIdeaAdded');
                         $state.go('home');
                     }
