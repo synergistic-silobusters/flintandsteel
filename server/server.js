@@ -1,6 +1,13 @@
 /* global __dirname */
 /* global process */
 /* global Buffer */
+/* global GLOBAL */
+
+var dbName = 'flintandsteel';
+
+if (process.env.NODE_ENV !== 'production') {
+    dbName += "-dev";
+}
 
 var express = require('express'),
     morgan = require('morgan'),
@@ -12,55 +19,11 @@ var express = require('express'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
-    mongodb = require('mongodb'),
-    MongoClient = mongodb.MongoClient,
-    users = require('./users'),
-    ideas = require('./ideas'),
-    comments = require('./comments'),
-    replaceIds = require('./replaceIds');
-
-var DB;
-var db;
-if (process.env.NODE_ENV === 'development') {
-    DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
-}
-else if (process.env.NODE_ENV === 'production') {
-    DB = new mongodb.Db('flintandsteel', new mongodb.Server('localhost', 27017));
-}
-
-DB.open(function(err, db) {
-    "use strict";
-
-    db.createCollection('users', function(errUsers) {
-        if (errUsers) {
-            console.log(errUsers);
-        }
-        else {
-            db.createCollection('ideas', function(errIdea) {
-                if (errIdea) {
-                    console.log(errIdea);
-                }
-                else {
-                    db.createCollection('comments', function(errComments) {
-                        if (errComments) {
-                            console.log(errComments);
-                        }
-                        else {
-                            db.createCollection('events', function(errEvents) {
-                                if (errEvents) {
-                                    console.log(errEvents);
-                                }
-                                else {
-                                    db.close();
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
-});
+    db = require('./db')(dbName),
+    users = require('./users/users')(db),
+    ideas = require('./ideas/ideas')(db),
+    comments = require('./comments/comments')(db),
+    replaceIds = require('./replaceIds')(db);
 
 var IdeasInstance = ideas.getInstance();
 
@@ -142,13 +105,6 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/login', function handleAuthentication(req, res, next) {
     "use strict";
 
-    var errorResObj = {
-        status: 'AUTH_ERROR',
-        id: undefined,
-        username: undefined,
-        name: undefined
-    };
-
     if (process.env.NODE_ENV === 'development') {
         if (new Buffer(req.body.password, "base64").toString() === 'test') {
             users.findForLogin(req.body.username, function(err, responseObj) {
@@ -159,7 +115,7 @@ app.post('/login', function handleAuthentication(req, res, next) {
             });
         }
         else {
-            res.status(200).json(errorResObj);
+            res.status(200).json(users.errResObj);
         }
     }
     else if (process.env.NODE_ENV === 'production') {
@@ -169,19 +125,19 @@ app.post('/login', function handleAuthentication(req, res, next) {
                 return next(err);
             }
             if (!user) {
-                return res.status(200).json(errorResObj);
+                return res.status(200).json(users.errResObj);
             }
 
             req.login(user, function(err) {
                 if (err) {
                     console.log(err);
-                    return res.status(200).json(errorResObj);
+                    return res.status(200).json(users.errResObj);
                 }
                 else {
                     users.findForLogin(user._json, function(err, responseObj) {
                         if (err) {
                             console.log(err);
-                            return res.status(200).json(errorResObj);
+                            return res.status(200).json(users.errResObj);
                         }
                         else {
                             return res.status(200).json(responseObj);
@@ -230,7 +186,6 @@ app.post('/comment', function(req, res) {
                 res.sendStatus(500);
             }
             else {
-                console.log(chalk.bgGreen('Document with id %s stored in comments.'), doc.insertedId);
                 ideas.addComment(req.body.parentId, doc.insertedId, function(err) {
                     if (err) {
                         console.log(chalk.bgRed(err));
@@ -291,9 +246,7 @@ app.post('/deleteidea', function(req, res) {
             res.sendStatus(500);
         }
         else {
-            ideas.get(req.body.id, function(/* err, idea */) {
-                IdeasInstance.updateIdea(null, req.body.id);
-            });
+            IdeasInstance.updateIdea(null, req.body.id);
             ideas.fetch(function(err, headers) {
                 IdeasInstance.newHeaders(headers);
             });
@@ -470,29 +423,21 @@ external(function(err, ipExternal) {
 
 if (process.env.NODE_ENV === 'development') {
     console.log('Server running in ' + chalk.cyan('development') + ' mode.');
-    MongoClient.connect("mongodb://localhost:27017/flintandsteel-dev", function(err, database) {
-        "use strict";
-        db = database;
-        app.listen(port);
-    });
+    app.listen(port);
 }
 else if (process.env.NODE_ENV === 'production') {
-    MongoClient.connect("mongodb://localhost:27017/flintandsteel", function(err, database) {
-        "use strict";
-        db = database;
-        console.log('Server running in ' + chalk.cyan('production') + ' mode.');
-        var https = require('https');
-        var http = require('http');
-        var options = {
-            key: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.key'),
-            cert: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.crt')
-        };
+    console.log('Server running in ' + chalk.cyan('production') + ' mode.');
+    var https = require('https');
+    var http = require('http');
+    var options = {
+        key: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.key'),
+        cert: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.crt')
+    };
 
-        https.createServer(options, app).listen(443);
+    https.createServer(options, app).listen(443);
 
-        http.createServer(function(req, res) {
-            res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
-            res.end();
-        }).listen(80);
-    });
+    http.createServer(function(req, res) {
+        res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
+        res.end();
+    }).listen(80);
 }
