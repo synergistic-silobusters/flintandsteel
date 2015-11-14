@@ -24,7 +24,7 @@ describe('SearchFilter', function() {
             id: 1,
             title: "Idea Dos",
             author: {
-                name: "Karl",
+                name: "Karl"
             },
             abstract: "OMG abstract",
             likes: 200
@@ -33,7 +33,7 @@ describe('SearchFilter', function() {
             id: 3,
             title: "cAsE iNsEnSiTiVe",
             author: {
-                name: "Aaron Rodgers",
+                name: "Aaron Rodgers"
             },
             abstract: "Relax",
             likes: 13
@@ -42,7 +42,7 @@ describe('SearchFilter', function() {
             id: 4,
             title: "Broken-Spacebar<Uses:Punctuation?Instead",
             author: {
-                name: "Please*Fix&My%Keyboard$#@!()\'\"{}[]|\\/`~",
+                name: "Please*Fix&My%Keyboard$#@!()\'\"{}[]|\\/`~"
             },
             abstract: "K()000*l",
             likes: 1
