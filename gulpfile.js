@@ -29,10 +29,12 @@ var paths = {
 var runCommand = function(command) {
     "use strict";
 
-    return exec(command, function(err) {
+    return exec(command, function(err, stdout, stderr) {
         if (err !== null) {
             console.log(chalk.red(err));
         }
+        console.log(stdout);
+        console.log(stderr);
     });
 };
 
@@ -106,13 +108,13 @@ gulp.task('mongo:stop', function() {
     del('server/datastore/mongod-pids');
 });
 
-gulp.task('start:dev', ['test:client', 'inject'], function() {
+gulp.task('start:dev', ['test:client', 'inject', 'generate:data'], function() {
     "use strict";
 
     nodemon({
         script: 'server/server.js',
         env: { 'NODE_ENV': 'development' },
-        'ignore': ['spec/*']
+        'ignore': ['server/datastore/*']
     });
 });
 
@@ -122,7 +124,7 @@ gulp.task('start:prod', ['test:client', 'inject'], function() {
     nodemon({
         script: 'server/server.js',
         env: { 'NODE_ENV': 'production' },
-        'ignore': ['spec/*']
+        'ignore': ['server/datastore/*']
     });
 });
 
@@ -182,35 +184,18 @@ gulp.task('clean:modules', function() {
     ]);
 });
 
-/*
-gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
+gulp.task('clean:db-dev', function() {
     "use strict";
-
-    var filePattern = "server/datastore/ideas/idea_X.json";
-    var fileName = filePattern.replace("X", "0");
-
-    fs.stat(fileName, function(err, stat) {
-
-        if (err === null) {
-            // File exists
-            gutil.log(chalk.red("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue"));
-        } 
-        else if (err.code === 'ENOENT') {
-            // File does not exist, generate ideas
-            ideas.forEach(function(idea, index , arr) {
-                fs.writeFile(filePattern.replace("X", index), JSON.stringify(idea), function(err) {
-                    if (err) {
-                        // Should no longer happen due to the gulp pre-requisite tasks.
-                        gutil.log(chalk.red("ERROR: Try to create the 'server/datastore/ideas' directory path to continue."));
-                    }
-                });
-            });
-        }
-        else {
-            // Something went very wrong.
-            console.error("ERROR: ", err.code);
-            throw err;
-        }
-    });
+    var command = "mongo flintandsteel-dev --eval \"db.dropDatabase()\"";
+    runCommand(command);
 });
-*/
+
+
+gulp.task('generate:data', ['clean:db-dev'], function() {
+    "use strict";
+    var command = "node generateData.js";
+    runCommand(command);
+});
+
+// A shorter call for generating colon data
+gulp.task('poop', ['generate:data']);
