@@ -170,7 +170,7 @@ function getHeaders(cb) {
 
     // TODO: In between find() and toArray() we can put sort() with the fields
     // we want to sort by, eg. {title: 1}.
-    db.collection('ideas').find({}, {title: 1, authorId: 1, likes: 1, description: 1 }).toArray(function(err, docs) {
+    db.collection('ideas').find({}, {title: 1, description: 1, authorId: 1, likes: 1, backs: 1, team: 1 }).toArray(function(err, docs) {
         if (err) {
             cb(err);
         }
@@ -182,6 +182,8 @@ function getHeaders(cb) {
             docs.forEach(function(doc) {
                 doc.abstract = _.take(_.words(doc.description), 20).join(' ');
                 doc.likes = doc.likes.length;
+                doc.backs = doc.backs.length;
+                doc.team = doc.team.length;
                 headers.push(doc);
             });
             cb(null, headers);

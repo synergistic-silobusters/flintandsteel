@@ -9,20 +9,7 @@ angular.module('flintAndSteel')
             "use strict";
 
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                data.forEach(function(ideaHeader) {
-                    loginSvc.getUserById(ideaHeader.authorId, function getUserByIdSuccess(userObj) {
-                        ideaHeader.author = userObj;
-                        $scope.topIdeas = data;
-                    }, function getUserByIdError(data, status) {
-                        ideaHeader.author = {
-                            name: "Unknown User",
-                            mail: "unknown@unknown.com",
-                            username: "unknown"
-                        };
-                        console.log(status);
-                        $scope.topIdeas = data;
-                    });
-                });
+                $scope.topIdeas = data;
             }, function getIdeaHeadersError(data, status) {
                 console.log(status);
             });
@@ -32,20 +19,7 @@ angular.module('flintAndSteel')
                 var headers = JSON.parse(event.data);
                 if (headers.length > 0) {
                     $scope.$apply(function() {
-                        headers.forEach(function(ideaHeader) {
-                            loginSvc.getUserById(ideaHeader.authorId, function getUserByIdSuccess(userObj) {
-                                ideaHeader.author = userObj;
-                                $scope.topIdeas = headers;
-                            }, function getUserByIdError(data, status) {
-                                ideaHeader.author = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                                $scope.topIdeas = headers;
-                            });
-                        });
+                        $scope.topIdeas = headers;
                     });
                 }
             });

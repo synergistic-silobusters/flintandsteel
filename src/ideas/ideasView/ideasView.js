@@ -64,64 +64,6 @@ angular.module('flintAndSteel')
                         $state.go('home');
                     }
                     else {
-                        data.likes.forEach(function(like) {
-                            loginSvc.getUserById(like.userId, function getUserByIdSuccess(userObj) {
-                                like.user = userObj;
-                            }, function getUserByIdError(data, status) {
-                                like.user = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-                        });
-                        data.comments.forEach(function(comment) {
-                            loginSvc.getUserById(comment.authorId, function getUserByIdSuccess(userObj) {
-                                comment.author = userObj;
-                            }, function getUserByIdError(data, status) {
-                                comment.author = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-                        });
-                        data.backs.forEach(function(back) {
-                            loginSvc.getUserById(back.authorId, function getUserByIdSuccess(userObj) {
-                                back.author = userObj;
-                            }, function getUserByIdError(data, status) {
-                                back.author = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-                        });
-                        data.team.forEach(function(member) {
-                            loginSvc.getUserById(member.memberId, function getUserByIdSuccess(userObj) {
-                                member.member = userObj;
-                            }, function getUserByIdError(data, status) {
-                                member.member = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-                        });
-                        loginSvc.getUserById(data.authorId, function getUserByIdSuccess(userObj) {
-                            data.author = userObj;
-                        }, function getUserByIdError(data, status) {
-                            data.author = {
-                                name: "Unknown User",
-                                mail: "unknown@unknown.com",
-                                username: "unknown"
-                            };
-                            console.log(status);
-                        });
                         $scope.idea = data;
                         if (typeof $scope.idea.team === "undefined")	{
                             $scope.idea.team = [];

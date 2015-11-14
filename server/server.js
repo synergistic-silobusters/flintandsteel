@@ -13,10 +13,11 @@ var express = require('express'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
     mongodb = require('mongodb'),
-    ObjectId = require('mongodb').ObjectID,
     MongoClient = mongodb.MongoClient,
+    users = require('./users'),
     ideas = require('./ideas'),
-    comments = require('./comments');
+    comments = require('./comments'),
+    replaceIds = require('./replaceIds');
 
 var DB;
 var db;
@@ -140,36 +141,25 @@ if (process.env.NODE_ENV === 'production') {
 
 app.post('/login', function handleAuthentication(req, res, next) {
     "use strict";
+
+    var errorResObj = {
+        status: 'AUTH_ERROR',
+        id: undefined,
+        username: undefined,
+        name: undefined
+    };
+
     if (process.env.NODE_ENV === 'development') {
         if (new Buffer(req.body.password, "base64").toString() === 'test') {
-            db.collection('users').find({username: req.body.username}).limit(1).toArray(function(err, docs) {
-                if (docs.length === 1) {
-                    res.status(200).json({
-                        status: 'AUTH_OK',
-                        _id: docs[0]._id,
-                        name: docs[0].fullName,
-                        username: docs[0].username,
-                        email: docs[0].email,
-                        likedIdeas: docs[0].likedIdeas
-                    });
+            users.findForLogin(req.body.username, function(err, responseObj) {
+                if (err) {
+                    console.log(chalk.bgRed(err));
                 }
-                else {
-                    res.status(200).json({
-                        status: 'AUTH_ERROR',
-                        id: undefined,
-                        username: undefined,
-                        name: undefined
-                    });
-                }
+                res.status(200).json(responseObj);
             });
         }
         else {
-            res.status(200).json({
-                status: 'AUTH_ERROR',
-                id: undefined,
-                username: undefined,
-                name: undefined
-            });
+            res.status(200).json(errorResObj);
         }
     }
     else if (process.env.NODE_ENV === 'production') {
@@ -179,83 +169,24 @@ app.post('/login', function handleAuthentication(req, res, next) {
                 return next(err);
             }
             if (!user) {
-                return res.status(200).json({
-                    status: 'AUTH_ERROR',
-                    id: undefined,
-                    username: undefined,
-                    name: undefined
-                });
+                return res.status(200).json(errorResObj);
             }
 
             req.login(user, function(err) {
                 if (err) {
                     console.log(err);
-                    return res.status(200).json({
-                        status: 'AUTH_ERROR',
-                        id: undefined,
-                        username: undefined,
-                        name: undefined
-                    });
+                    return res.status(200).json(errorResObj);
                 }
                 else {
-                    var cursor = db.collection('users').find({ email: user._json.mail }).limit(1);
-                    var userObj = {
-                        "firstName": user._json.givenName,
-                        "lastName": user._json.sn,
-                        "fullName": user.displayName,
-                        "username": user._json.sAMAccountName,
-                        "email": user._json.mail,
-                        "nickname": user._json.cn,
-                        "title": user._json.title,
-                        "likedIdeas": []
-                    };
-                    var responseObj = {
-                        status: 'AUTH_OK',
-                        id: user._id,
-                        username: user._json.sAMAccountName,
-                        email: user._json.mail,
-                        name: user.displayName,
-                        likedIdeas: []
-                    };
-
-                    if (cursor.count() !== 1) {
-                        db.collection('users').insertOne(userObj,
-                            function(err, results) {
-                                if (err) {
-                                    console.log(chalk.bgRed(err));
-                                    return res.status(200).json({
-                                        status: 'AUTH_ERROR',
-                                        id: undefined,
-                                        username: undefined,
-                                        name: undefined
-                                    });
-                                }
-                                else {
-                                    console.log(chalk.bgGreen('User %s created in the users collection.'), user.displayName);
-                                    console.log(results);
-                                    responseObj._id = results.insertedId;
-                                    return res.status(200).json(responseObj);
-                                }
-                            }
-                        );
-                    }
-                    else {
-                        db.collection('users').updateOne(
-                            { email: user._json.mail },
-                            { $set: userObj },
-                            function(err, results) {
-                                if (err) {
-                                    console.log(chalk.bgRed(err));
-                                }
-                                else {
-                                    console.log(chalk.bgGreen('Document with email %s updated in the database.'), user._json.mail);
-                                    console.log(results);
-                                    responseObj._id = results.value._id;
-                                    return res.status(200).json(responseObj);
-                                }
-                            }
-                        );
-                    }
+                    users.findForLogin(user._json, function(err, responseObj) {
+                        if (err) {
+                            console.log(err);
+                            return res.status(200).json(errorResObj);
+                        }
+                        else {
+                            return res.status(200).json(responseObj);
+                        }
+                    });
                 }
             });
         })(req, res, next);
@@ -415,14 +346,7 @@ app.post('/updateaccount', function(req, res) {
 app.get('/user', function(req, res) {
     "use strict";
 
-    var objId = new ObjectId(req.query.id);
-
-    db.collection('users').find({_id: objId}).limit(1).toArray(function(err, docs) {
-        var responseObj = {
-            name: docs[0].fullName,
-            mail: docs[0].email,
-            username: docs[0].username
-        };
+    users.get(req.query.id, function(err, responseObj) {
         if (err) {
             res.status(200).send('USER_NOT_FOUND');
         }
@@ -439,29 +363,14 @@ app.get('/idea', function(req, res) {
             res.status(200).send('IDEA_NOT_FOUND');
         }
         else {
-            if (idea.comments.length === 0) {
-                res.status(200).json(idea);
-            }
-            else {
-                idea.comments.forEach(function(comment, i, arr) {
-                    comments.get(comment.commentId, function(err, commentData) {
-                        if (err) {
-                            console.log(err);
-                            res.status(200).send('COMMENT_NOT_FOUND');
-                        }
-                        else {
-                            for (var attrName in commentData) {
-                                if (commentData.hasOwnProperty(attrName)) {
-                                    comment[attrName] = commentData[attrName];
-                                }
-                            }
-                            if (i === arr.length - 1) {
-                                res.status(200).json(idea);
-                            }
-                        }
-                    });
-                });
-            }
+            replaceIds.idea(idea, function(err, idea) {
+                if (err) {
+                    res.sendStatus(500);
+                }
+                else {
+                    res.status(200).json(idea);
+                }
+            });
         }
     });
 });
@@ -483,7 +392,14 @@ app.get('/idea/:id/events', function(req, res) {
     var sse = startSees(res);
 
     function updateIdea(idea) {
-        sse("updateIdea_" + req.params.id, idea, req.params.id);
+        replaceIds.idea(idea, function(err, ideaData) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                sse("updateIdea_" + req.params.id, ideaData, req.params.id);
+            }
+        });
     }
 
     IdeasInstance.on("updateIdea_" + req.params.id, updateIdea);
@@ -503,7 +419,14 @@ app.get('/ideaheaders', function(req, res) {
             res.status(200).send('NO_IDEAS_IN_STORAGE');
         }
         else {
-            res.status(200).json(headers);
+            replaceIds.headers(headers, function(err, headersData) {
+                if (err) {
+                    res.sendStatus(500);
+                }
+                else {
+                    res.status(200).json(headersData);
+                }
+            });
         }
     });
 });
@@ -513,7 +436,14 @@ app.get('/ideaheaders/events', function(req, res) {
     var sse = startSees(res);
 
     function updateHeaders(headers) {
-        sse("newHeaders", headers);
+        replaceIds.headers(headers, function(err, headersData) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                sse("newHeaders", headersData);
+            }
+        });
     }
 
     IdeasInstance.on("newHeaders", updateHeaders);
