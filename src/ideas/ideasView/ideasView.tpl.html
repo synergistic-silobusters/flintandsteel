@@ -46,7 +46,7 @@
             </div>
         </md-fab-actions>
         </md-fab-speed-dial>
-            <i ng-show="idea.editedOn && !ideasView.enableEdit">Edited {{momentizeTime(idea.editedOn)}}</i>
+            <i ng-show="idea.timeModified !== idea.timeCreated && !ideasView.enableEdit">Edited {{momentizeTime(idea.timeModified)}}</i>
     </md-card-footer>
 </md-card>
 <md-card>
