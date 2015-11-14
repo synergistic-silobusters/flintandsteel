@@ -55,7 +55,7 @@ angular.module('flintAndSteel')
                         $state.go(state);
                     }
                     else {
-                        $state.go('login');
+                        $state.go('home');
                     }
                 }
                 else if (state === 'idea') {
