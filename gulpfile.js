@@ -1,4 +1,5 @@
 /* global __dirname */
+/* global process */
 
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
@@ -33,8 +34,8 @@ var runCommand = function(command) {
         if (err !== null) {
             console.log(chalk.red(err));
         }
-        console.log(stdout);
-        console.log(stderr);
+        process.stdout.write(stdout);
+        process.stdout.write(stderr);
     });
 };
 

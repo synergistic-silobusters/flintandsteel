@@ -1,7 +1,18 @@
 var chalk = require('chalk'),
     mongodb = require('mongodb'),
+    UserModel = require('./server/userModel'),
     IdeaModel = require('./server/ideaModel'),
-    UserModel = require('./server/userModel');
+    EventModel = require('./server/eventModel');
+
+function getPreviousWeek(originalDate){
+    var lastWeek = new Date(originalDate.getFullYear(), originalDate.getMonth(), originalDate.getDate() - 7);
+    return lastWeek ;
+}
+
+function getFollowingWeek(originalDate){
+    var nextWeek = new Date(originalDate.getFullYear(), originalDate.getMonth(), originalDate.getDate() + 7);
+    return nextWeek ;
+}
 
 var DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
 
@@ -30,24 +41,24 @@ DB.open(function(err, db) {
                     }
                 }
             );
-            db.createCollection('ideas', function(errIdea) {
-                if (errIdea) {
-                    console.log(errIdea);
+            db.createCollection('events', function(errEvents) {
+                if (errUsers) {
+                    console.log(errEvents);
                 }
                 else {
-                    var ideaObjs = [];
-                    ideaObjs.push(IdeaModel.create("Guybrush's Test Idea", "This is an idea description.", insertedIds[0], [], [], []));
-                    ideaObjs.push(IdeaModel.create("Rick's Test Idea", "This is Mr. Sanchez\'s brilliant idea.", insertedIds[1], [], [], []));
-                    ideaObjs.push(IdeaModel.create("Dick's Test Idea", "This is \"The Fracker\'s\" master plan.", insertedIds[2], [], [], []));
-                    console.log(ideaObjs.length);
-                    db.collection('ideas').insert(ideaObjs,
+                    var now = new Date();
+                    var eventObjs = [];
+                    eventObjs.push(EventModel.create("In Progress Event 1", "USMAY", now.toISOString(), getFollowingWeek(now).toISOString()));
+                    eventObjs.push(EventModel.create("In Progress Event 2", "USMKE", now.toISOString(), getFollowingWeek(now).toISOString()));
+                    eventObjs.push(EventModel.create("Completed Event 1", "USTWB", getPreviousWeek(getPreviousWeek(now)).toISOString(), getPreviousWeek(now).toISOString()));
+                    db.collection('events').insert(eventObjs,
                         function(err, results) {
                             if (err) {
                                 console.log(chalk.bgRed(err));
                                 return;
                             }
                             else {
-                                console.log(chalk.bgGreen('Ideas created in the ideas collection.'));
+                                console.log(chalk.bgGreen('Events created in the events collection.'))
                             }
                         }
                     );
@@ -56,12 +67,27 @@ DB.open(function(err, db) {
                             console.log(errComments);
                         }
                         else {
-                          db.createCollection('events', function(errEvents) {
-                              if (errUsers) {
-                                  console.log(errEvents);
+                          db.createCollection('ideas', function(errIdea) {
+                              if (errIdea) {
+                                  console.log(errIdea);
                               }
                               else {
-                                  db.close();
+                                  var ideaObjs = [];
+                                  ideaObjs.push(IdeaModel.create("Guybrush's Test Idea", "This is an idea description.", insertedIds[0], [], [], []));
+                                  ideaObjs.push(IdeaModel.create("Rick's Test Idea", "This is Mr. Sanchez\'s brilliant idea.", insertedIds[1], [], [], []));
+                                  ideaObjs.push(IdeaModel.create("Dick's Test Idea", "This is \"The Fracker\'s\" master plan.", insertedIds[2], [], [], []));
+                                  db.collection('ideas').insert(ideaObjs,
+                                      function(err, results) {
+                                          if (err) {
+                                              console.log(chalk.bgRed(err));
+                                              return;
+                                          }
+                                          else {
+                                              console.log(chalk.bgGreen('Ideas created in the ideas collection.'));
+                                              db.close();
+                                          }
+                                      }
+                                  );
                               }
                           });
                         }
