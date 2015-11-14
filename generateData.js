@@ -1,8 +1,8 @@
 var chalk = require('chalk'),
     mongodb = require('mongodb'),
-    UserModel = require('./server/userModel'),
-    IdeaModel = require('./server/ideaModel'),
-    EventModel = require('./server/eventModel');
+    UserModel = require('./server/users/userModel'),
+    IdeaModel = require('./server/ideas/ideaModel'),
+    EventModel = require('./server/events/eventModel');
 
 function getPreviousWeek(originalDate){
     var lastWeek = new Date(originalDate.getFullYear(), originalDate.getMonth(), originalDate.getDate() - 7);
