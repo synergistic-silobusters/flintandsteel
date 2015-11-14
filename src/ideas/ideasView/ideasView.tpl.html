@@ -78,7 +78,7 @@
                             </div>
                             <div class="md-list-item-text" ng-class="{'deleted': comment.deleted === true}">
                                 <h3>{{comment.text}}</h3>
-                                <p>{{comment.author.name}} <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
+                                <p><a href="mailto:{{comment.author.mail}}?Subject=Hello%20again" target="_top">{{comment.author.name}}</a> <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
                             </div>
                         </md-list-item>
                     </md-list>
