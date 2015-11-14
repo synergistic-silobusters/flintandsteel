@@ -57,10 +57,10 @@ angular.module('flintAndSteel')
                 ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
                     if (data === 'IDEA_NOT_FOUND') {
                         $mdToast.show($mdToast.simple()
-                  .content('Sorry, that idea does not exist')
-                  .action('OK')
-                  .highlightAction(false)
-                  .position('top right'));
+                            .content('Sorry, that idea does not exist')
+                            .action('OK')
+                            .highlightAction(false)
+                            .position('top right'));
                         $state.go('home');
                     }
                     else {
@@ -173,11 +173,12 @@ angular.module('flintAndSteel')
                 var now = new Date().toISOString();
                 if (type === 'comments' || type === 'backs') {
                     if (type === 'comments') {
-                        $scope.idea[type].push({
-                            text: ctrl.newComment,
-                            authorId: loginSvc.getProperty('_id'),
-                            time: now
-                        });
+                        ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
+                            function success() {},
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
                     }
                     else if (type === 'backs') {
                         $scope.idea[type].push({
@@ -186,12 +187,13 @@ angular.module('flintAndSteel')
                             time: now,
                             types: $scope.selectedTypes
                         });
+
+                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
+                            function success() { },
+                            function error(data, status) {
+                                console.log(status);
+                        });
                     }
-                    ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
-                    function success() { },
-                    function error(data, status) {
-                        console.log(status);
-                    });
 
                     $scope.selectedTypes = [];
                     $scope.selectedType = undefined;
@@ -355,17 +357,11 @@ angular.module('flintAndSteel')
 
             ctrl.deleteComment = function(commentIndex) {
                 if (ctrl.isUserAuthorOfComment(commentIndex)) {
-                    $scope.idea.comments.splice(commentIndex, 1, {
-                        text: "This comment was deleted",
-                        from: loginSvc.getProperty('name'),
-                        deleted: true,
-                        time: new Date().toISOString()
-                    });
-                    ideaSvc.updateIdea($scope.idea._id, "comments", $scope.idea.comments, function() {
+                    ideaSvc.deleteComment($scope.idea.comments[commentIndex].commentId, function() {
                         return;
                     },
                     function() {
-                        console.log("ERR: Comment " + commentIndex + " not deleted");
+                        console.log("ERR: Idea " + $scope.idea._id + " not deleted");
                     });
                 }
             };

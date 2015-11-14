@@ -15,7 +15,8 @@ var express = require('express'),
     mongodb = require('mongodb'),
     ObjectId = require('mongodb').ObjectID,
     MongoClient = mongodb.MongoClient,
-    ideas = require('./ideas');
+    ideas = require('./ideas'),
+    comments = require('./comments');
 
 var DB;
 var db;
@@ -285,6 +286,36 @@ app.post('/idea', function(req, res) {
         }
     );
 });
+app.post('/comment', function(req, res) {
+    "use strict";
+
+    comments.create(
+        req.body.parentId,
+        req.body.text,
+        req.body.authorId,
+        function(err, doc) {
+            if (err) {
+                console.log(chalk.bgRed(err));
+                res.sendStatus(500);
+            }
+            else {
+                console.log(chalk.bgGreen('Document with id %s stored in comments.'), doc.insertedId);
+                ideas.addComment(req.body.parentId, doc.insertedId, function(err) {
+                    if (err) {
+                        console.log(chalk.bgRed(err));
+                        res.sendStatus(500);
+                    }
+                    else {
+                        ideas.get(req.body.parentId, function(err, idea) {
+                            IdeasInstance.updateIdea(idea);
+                        });
+                        res.status(201).json({_id: doc.insertedId, status: "Created"});
+                    }
+                });
+            }
+        }
+    );
+});
 app.post('/updateidea', function(req, res) {
     "use strict";
 
@@ -337,6 +368,30 @@ app.post('/deleteidea', function(req, res) {
         }
     });
 });
+app.post('/deleteComment', function(req, res) {
+    "use strict";
+
+    comments.delete(req.body.commentId, function(err) {
+        if (err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
+        else {
+            ideas.removeComment(req.body.commentId, function(err, doc_id) {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                }
+                else {
+                    ideas.get(doc_id, function(err, idea) {
+                        IdeasInstance.updateIdea(idea);
+                    });
+                    res.status(201).json({_id: doc_id, status: "Deleted"});
+                }
+            });
+        }
+    });
+});
 app.post('/updateaccount', function(req, res) {
     "use strict";
 
@@ -382,7 +437,39 @@ app.get('/idea', function(req, res) {
             res.status(200).send('IDEA_NOT_FOUND');
         }
         else {
-            res.status(200).json(idea);
+            if (idea.comments.length === 0) {
+                res.status(200).json(idea);
+            }
+            else {
+                idea.comments.forEach(function(comment, i, arr) {
+                  comments.get(comment.commentId, function(err, commentData) {
+                      if (err) {
+                          console.log(err);
+                          res.status(200).send('COMMENT_NOT_FOUND');
+                      }
+                      else {
+                          for (var attrName in commentData) {
+                              comment[attrName] = commentData[attrName];
+                          }
+                          if (i === arr.length - 1) {
+                              res.status(200).json(idea);
+                          }
+                      }
+                  });
+                });
+            }
+        }
+    });
+});
+app.get('/comment', function(req, res) {
+    "use strict";
+
+    comments.get(req.query.id, function(err, comment) {
+        if (err) {
+            res.status(200).send('COMMENT_NOT_FOUND');
+        }
+        else {
+            res.status(200).json(comment);
         }
     });
 });

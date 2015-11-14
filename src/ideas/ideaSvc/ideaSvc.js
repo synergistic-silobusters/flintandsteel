@@ -25,6 +25,28 @@ angular.module('flintAndSteel')
                     .error(errorCb);
             };
 
+            this.postComment = function postComment(parentId, text, authorId, successCb, errorCb) {
+                $http.post('/comment',
+                        {
+                            parentId: parentId,
+                            text: text,
+                            authorId: authorId
+                        }
+                    )
+                    .success(successCb)
+                    .error(errorCb);
+            };
+
+            this.deleteComment = function deleteComment(commentId, successCb, errorCb) {
+              $http.post('/deleteComment',
+                      {
+                          commentId: commentId,
+                      }
+                  )
+                  .success(successCb)
+                  .error(errorCb);
+            };
+
             this.updateIdea = function updateIdea(ideaId, property, data, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
                     $http.post('/updateidea',
@@ -84,6 +106,8 @@ angular.module('flintAndSteel')
                 postIdea: this.postIdea,
                 getIdea: this.getIdea,
                 getIdeaHeaders: this.getIdeaHeaders,
+                postComment: this.postComment,
+                deleteComment: this.deleteComment,
                 getUniqueId: this.getUniqueId,
                 updateIdea: this.updateIdea,
                 editIdea: this.editIdea,

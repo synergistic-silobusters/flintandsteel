@@ -75,6 +75,50 @@ exports.update = function(id, property, value, cb) {
     );
 };
 
+exports.addComment = function(id, objectId, cb) {
+    "use strict";
+
+    var objId = new ObjectId(id);
+
+    db.collection('ideas').updateOne(
+        { _id: objId },
+        { $push: { comments: { commentId: objectId } } },
+        { upsert: true },
+        function(err, results) {
+            if (err) {
+                console.log(chalk.bgRed(err));
+                cb(err);
+            }
+            else {
+                console.log(chalk.bgGreen('Document with id %s updated in the database.'), id);
+                cb(null, results);
+            }
+        }
+    );
+};
+
+exports.removeComment = function(commentId, cb) {
+    "use strict";
+
+    var objId = new ObjectId(commentId);
+
+    db.collection('ideas').findAndModify(
+      { comments: { commentId: objId } },
+      [],
+      { $pull: { comments: { commentId: objId } } },
+      function (err, results) {
+          if (err) {
+              console.log(chalk.bgRed(err));
+              cb(err);
+          }
+          else {
+              console.log(chalk.bgGreen('Document with id %s updated in the database.'), results.value._id);
+              cb(null, results.value._id);
+          }
+      }
+    )
+};
+
 exports.edit = function(id, title, description, rolesreq, cb) {
     "use strict";
 
@@ -176,5 +220,5 @@ Ideas.prototype.newHeaders = function(headers) {
 Ideas.prototype.updateIdea = function(idea, oldKey) {
     "use strict";
 
-    this.emit("updateIdea_" + oldKey || idea.key , idea);
+    this.emit("updateIdea_" + (oldKey || idea._id) , idea);
 };
