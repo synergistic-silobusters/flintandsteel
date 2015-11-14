@@ -12,6 +12,15 @@ angular.module('flintAndSteel')
             svc.DURATION_LONG = 3000;
             svc.DURATION_SHORT = 1000;
 
+            /**
+             * Creates a preconfigured toast using $mdToast.
+             * @param  {string} message the message to display in the toast
+             * @param  {object} options should have two members, one for customizing
+             *                          the position of the toast called position and
+             *                          one for customizing the hide delay called
+             *                          duration.
+             * @return {promise}         returns the promise from $mdToast.show().
+             */
             svc.show = function(message, options) {
                 var position, duration;
 
