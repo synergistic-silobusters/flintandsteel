@@ -14,6 +14,7 @@ angular.module('flintAndSteel')
 
             /**
              * Creates a preconfigured toast using $mdToast.
+             * 
              * @param  {string} message the message to display in the toast
              * @param  {object} options should have two members, one for customizing
              *                          the position of the toast called position and
