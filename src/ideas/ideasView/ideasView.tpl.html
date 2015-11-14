@@ -3,7 +3,7 @@
     <md-card-content>
         <div ng-hide="ideasView.enableEdit">
             <h1>{{idea.title}}</h1>
-            <h3>by {{idea.author.name}}</h3>
+            <h3>by <a href="mailto:{{idea.author.mail}}?Subject=Innovation%20Challenge" target="_top" style="text-decoration: none; color: black;">{{idea.author.name}}</a></h3>
             <p>{{idea.description}}</p>
         </div>
         <form ng-show="ideasView.enableEdit" name="newIdeaForm">
@@ -78,7 +78,7 @@
                             </div>
                             <div class="md-list-item-text" ng-class="{'deleted': comment.deleted === true}">
                                 <h3>{{comment.text}}</h3>
-                                <p><a href="mailto:{{comment.author.mail}}?Subject=Hello%20again" target="_top">{{comment.author.name}}</a> <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
+                                <p><a href="mailto:{{comment.author.mail}}?Subject=Innovation%20Challenge" target="_top" style="text-decoration: none; color: grey;">{{comment.author.name}}</a> <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
                             </div>
                         </md-list-item>
                     </md-list>
@@ -100,7 +100,7 @@
                             <div class="md-list-item-text">
                                 <h3>{{back.text}}</h3>
                                 <p>
-                                    {{back.author.name}} <small class="extra-space-left" ng-bind="momentizeTime(back.time)"></small>
+                                    <a href="mailto:{{back.author.name}}?Subject=Innovation%20Challenge" target="_top" style="text-decoration: none; color: grey;">{{back.author.name}}</a> <small class="extra-space-left" ng-bind="momentizeTime(back.time)"> </small>
                                     <span class="extra-space-left">
                                         <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
                                     </span>
