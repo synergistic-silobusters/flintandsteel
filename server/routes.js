@@ -274,9 +274,6 @@ module.exports = function(app) {
             if (err) {
                 res.sendStatus(500);
             }
-            else if (headers.length === 0) {
-                res.status(200).send('NO_IDEAS_IN_STORAGE');
-            }
             else {
                 replaceIds.headers(headers, function(err, headersData) {
                     if (err) {

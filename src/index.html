@@ -36,8 +36,8 @@
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/ideaItem/ideaItem.js"></script>
   <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
-  <script src="ideas/ideasView/ideasView.js"></script>
   <script src="ideas/ideaSvc/ideaSvc.js"></script>
+  <script src="ideas/ideasView/ideasView.js"></script>
   <script src="ideas/searchFilter/searchFilter.js"></script>
   <script src="users/accountView/accountView.js"></script>
   <script src="users/loginSvc/loginSvc.js"></script>
@@ -95,7 +95,7 @@
                     <div flex>
                         <md-list class="top-ideas-list">
                             <md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
-                            <md-item ng-hide="topIdeas === 'NO_IDEAS_IN_STORAGE'" ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:5">
+                            <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:5">
                                 <idea-item idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item>
                             </md-item>
                         </md-list>
