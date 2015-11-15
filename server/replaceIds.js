@@ -1,15 +1,16 @@
 /* global module */
 
 module.exports = function(db) {
+    "use strict";
+
     var module = {};
 
     var users = require('./users/users')(db),
         comments = require('./comments/comments')(db),
+        events = require('./events/events')(db),
         Promise = require('bluebird');
 
     module.idea = function idea(data, cb) {
-        "use strict";
-
         if (data === null) {
             return new Promise(function(resolve) {
                 resolve(null);
@@ -24,6 +25,23 @@ module.exports = function(db) {
                 }
                 else {
                     data.author = ideaAuthorObj;
+                    resolve(data);
+                }
+            });
+        });
+
+        var ideaEvent = new Promise(function(resolve, reject) {
+            if (data.eventId === "") {
+                resolve(null);
+                return;
+            }
+            events.get(data.eventId, function(err, ideaEventObj) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                else {
+                    data.event = ideaEventObj;
                     resolve(data);
                 }
             });
@@ -159,6 +177,7 @@ module.exports = function(db) {
 
         Promise.all([
             ideaAuthor,
+            ideaEvent,
             Promise.all(ideaLikes),
             Promise.all(ideaCommentAuthors),
             Promise.all(ideaBacks),
@@ -171,8 +190,6 @@ module.exports = function(db) {
     };
 
     module.headers = function headers(data, cb) {
-        "use strict";
-
         var ideaHeaders = [];
 
         if (data.length === 0) {

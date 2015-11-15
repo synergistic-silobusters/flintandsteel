@@ -1,4 +1,5 @@
 /* global module */
+/* global process */
 
 module.exports = function(db) {
     "use strict";
@@ -6,8 +7,7 @@ module.exports = function(db) {
     var module = {};
 
     var UserModel = require('./userModel'),
-        chalk = require('chalk'),
-        ObjectId = require('mongodb').ObjectID;
+        chalk = require('chalk');
 
     var COLLECTION = "users";
 
@@ -19,8 +19,6 @@ module.exports = function(db) {
     };
 
     function findUserUsingLDAP(ldap, cb) {
-        "use strict";
-
         var user = UserModel.create(ldap);
         db.collection('users').findAndModify(
             { email: user.email },
@@ -55,8 +53,6 @@ module.exports = function(db) {
     }
 
     function findUser(username, cb) {
-        "use strict";
-
         db.findOneByProperty(COLLECTION, "username", username, function(err, doc) {
             if (err || doc === null) {
                 cb(err, module.errResObj);
@@ -86,8 +82,6 @@ module.exports = function(db) {
     module.findForLogin = loginFn;
 
     module.get = function(id, cb) {
-        "use strict";
-
         db.findOneById(COLLECTION, id, function(err, doc) {
             if (err || doc === null) {
                 cb(err);
@@ -104,10 +98,6 @@ module.exports = function(db) {
     };
 
     module.update = function(id, property, value, cb) {
-        "use strict";
-
-        var now = new Date().toISOString();
-
         var updateObj = {};
         updateObj[property] = value;
 

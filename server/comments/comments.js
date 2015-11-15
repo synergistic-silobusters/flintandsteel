@@ -1,5 +1,4 @@
 /* global module */
-/* global dbTest */
 
 module.exports = function(db) {
     "use strict";

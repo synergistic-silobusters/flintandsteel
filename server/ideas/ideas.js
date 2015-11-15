@@ -22,8 +22,6 @@ module.exports = function(db) {
     };
 
     module.get = function(id, cb) {
-        var objId = new ObjectId(id);
-
         db.findOneById(COLLECTION, id, function(err, doc) {
             cb(err, doc);
         });
@@ -39,8 +37,6 @@ module.exports = function(db) {
     };
 
     module.addComment = function(id, objectId, cb) {
-        var objId = new ObjectId(id);
-
         var obj = {
             commentId: objectId
         };
