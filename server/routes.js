@@ -249,6 +249,10 @@ module.exports = function(app) {
         var sse = startSees(res);
 
         function updateIdea(idea) {
+            if (idea === null) {
+                sse("updateIdea_" + req.params.id, idea, req.params.id);
+                return;
+            }
             replaceIds.idea(idea, function(err, ideaData) {
                 if (err) {
                     console.error(chalk.bgRed(err));

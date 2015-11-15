@@ -132,7 +132,18 @@ module.exports = function(db) {
     };
 
     Ideas.prototype.updateIdea = function(idea, oldKey) {
-        this.emit("updateIdea_" + oldKey || idea._id, idea);
+        var key;
+        if (idea === null && oldKey === "undefined") {
+            console.error(chalk.bgRed("No idea (arg1) with an _id or manual id (arg2)"));
+        }
+        if (typeof oldKey === "undefined") {
+            key = idea._id
+        }
+        else {
+            key = oldKey;
+        }
+
+        this.emit("updateIdea_" + key, idea);
     };
 
     return module;
