@@ -218,7 +218,7 @@ module.exports = function(db) {
             cb(null, data);
         }, function() {
             var err = "Error replacing IDs";
-            console.log(err)
+            console.log(err);
             cb(err);
         });
     };
