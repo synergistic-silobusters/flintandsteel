@@ -6,8 +6,7 @@ module.exports = function(db) {
 
     var module = {};
 
-    var UserModel = require('./userModel'),
-        chalk = require('chalk');
+    var UserModel = require('./userModel');
 
     var COLLECTION = "users";
 
@@ -20,36 +19,28 @@ module.exports = function(db) {
 
     function findUserUsingLDAP(ldap, cb) {
         var user = UserModel.create(ldap);
-        db.collection('users').findAndModify(
-            { email: user.email },
-            [],
-            { $set: user },
-            { upsert: true },
-            function(err, results) {
-                if (err) {
-                    console.log(chalk.bgRed(err));
-                    cb(err);
+        db.findByPropertyAndSet(COLLECTION, user, "email", function(err, results) {
+            if (err) {
+                cb(err);
+            }
+            else {
+                if (results.value) {
+                    user._id = results.value._id;
                 }
                 else {
-                    console.log(chalk.bgGreen('Document with email %s updated in the database.'), user.email);
-                    if (results.value) {
-                        user._id = results.value._id;
-                    }
-                    else {
-                        user._id = results.upserted;
-                    }
-                    var responseObj = {
-                        status: 'AUTH_OK',
-                        _id: user._id,
-                        username: user.username,
-                        email: user.email,
-                        name: user.fullName,
-                        likedIdeas: []
-                    };
-                    cb(null, responseObj);
+                    user._id = results.upserted;
                 }
+                var responseObj = {
+                    status: 'AUTH_OK',
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    name: user.fullName,
+                    likedIdeas: []
+                };
+                cb(null, responseObj);
             }
-        );
+        });
     }
 
     function findUser(username, cb) {

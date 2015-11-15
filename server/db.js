@@ -184,6 +184,31 @@ module.exports = function(dbName) {
         );
     };
 
+    module.findByPropertyAndSet = function findByPropertyAndSet(collection, obj, property, cb) {
+        var find = {};
+        find[property] = obj[property];
+
+        var set = {};
+        set.$set = obj;
+
+        db.collection(collection).findAndModify(
+            find,
+            [],
+            set,
+            { upsert: true },
+            function(err, results) {
+                if (err) {
+                    console.log(chalk.bgRed(err));
+                    cb(err);
+                }
+                else {
+                    console.log(chalk.bgGreen('Document with ' + property + ' %s updated in the database.'), obj.email);
+                    cb(null, results);
+                }
+            }
+        );
+    };
+
     module.deleteOne = function deleteOne(collection, id, cb) {
         var objId = new ObjectId(id);
 
