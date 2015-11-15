@@ -217,7 +217,9 @@ module.exports = function(db) {
         Promise.all(ideaHeaders).then(function() {
             cb(null, data);
         }, function() {
-            cb("Error replacing IDs");
+            var err = "Error replacing IDs";
+            console.log(err)
+            cb(err);
         });
     };
 

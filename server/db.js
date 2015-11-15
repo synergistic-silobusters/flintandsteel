@@ -66,9 +66,11 @@ module.exports = function(dbName) {
         // we want to sort by, eg. {title: 1}.
         db.collection(collection).find({}, projection).toArray(function(err, docs) {
             if (err) {
+                console.log(chalk.bgRed(err));
                 cb(err);
             }
             else {
+                console.log(chalk.bgGreen('All documents in the ' + collection + ' collection found.'));
                 cb(null, docs);
             }
         });

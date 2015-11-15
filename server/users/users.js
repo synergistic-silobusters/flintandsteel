@@ -28,7 +28,7 @@ module.exports = function(db) {
                     user._id = results.value._id;
                 }
                 else {
-                    user._id = results.upserted;
+                    user._id = results.lastErrorObject.upserted;
                 }
                 var responseObj = {
                     status: 'AUTH_OK',
