@@ -35,8 +35,8 @@
   <script src="navigation/toolbar.js"></script>
   <script src="toastSvc/toastSvc.js"></script>
   <script src="ideas/addIdeaView/addIdeaView.js"></script>
-  <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/ideaItem/ideaItem.js"></script>
+  <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
   <script src="ideas/ideaSvc/ideaSvc.js"></script>
   <script src="ideas/ideasView/ideasView.js"></script>
@@ -52,7 +52,7 @@
     <md-toolbar ng-controller="ToolbarCtrl">
         <div class="md-toolbar-tools">
             <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
-                <i class="material-icons icon-button-adjust">menu</i>
+                <i class="material-icons icon-button-adjust">&#xE5D2;</i>
             </md-button>
             <h2><span><img ui-sref="home" class="center-img nav-bar-pointer" src="assets/Innovation_Challenge_Bulb.png" width="25"/></span></h2>
             <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">All Ideas</span>
@@ -62,7 +62,7 @@
             <div class="md-padding" id="popupContainer" ng-cloak="">
                 <!-- Login Button -->
                 <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust">perm_identity</i>
+                    <i class="material-icons icon-button-adjust">&#xE8A6;</i>
                 </md-button>
                 <!-- Profile button -->
                 <a href="#/account" ng-show="isUserLoggedIn()" style="font-size:14px">
@@ -73,7 +73,7 @@
                 </a>
             </div>
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
-                <i class="material-icons icon-button-adjust">more_vert</i>
+                <i class="material-icons icon-button-adjust">&#xE5D4;</i>
             </md-button>
         </div>
     </md-toolbar>
@@ -97,7 +97,7 @@
             </md-content>
             <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
                 <md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-show="isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust">add</i>
+                    <i class="material-icons icon-button-adjust">&#xE145;</i>
                 </md-button>
             </div>
         </md-sidenav>
