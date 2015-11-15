@@ -305,7 +305,7 @@ angular.module('flintAndSteel')
                         return;
                     },
                     function() {
-                        console.log("ERR: Idea " + $scope.idea._id + " not deleted");
+                        console.log("ERR: Comment " + commentIndex + " not deleted");
                     });
                 }
             };
