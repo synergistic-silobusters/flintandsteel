@@ -32,7 +32,7 @@ angular.module('flintAndSteel')
                         .hideDelay(5000)
                 );
                 $state.go('home');
-            };   
+            };  
         }
     ]   
 );
