@@ -9,6 +9,7 @@ module.exports = function(db) {
 
     var IdeaModel = require('./ideaModel'),
         ObjectId = require('mongodb').ObjectID,
+        chalk = require('chalk'),
         _ = require('lodash');
 
     var COLLECTION = "ideas";
@@ -137,7 +138,7 @@ module.exports = function(db) {
             console.error(chalk.bgRed("No idea (arg1) with an _id or manual id (arg2)"));
         }
         if (typeof oldKey === "undefined") {
-            key = idea._id
+            key = idea._id;
         }
         else {
             key = oldKey;
