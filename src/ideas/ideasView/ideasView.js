@@ -231,6 +231,18 @@ angular.module('flintAndSteel')
                 return typeof $scope.idea.image !== 'undefined';
             };
 
+            $scope.hasUserBacked = function() {
+                var hasUserBacked = false;
+                if (loginSvc.isUserLoggedIn() && typeof $scope.idea.backs !== 'undefined') {
+                    $scope.idea.backs.forEach(function(back) {
+                        if (loginSvc.getProperty('_id') === back.authorId) {
+                            hasUserBacked = true;
+                        }                        
+                    });
+                }
+                return hasUserBacked;
+            };            
+
             ctrl.editIdea = function(title, description) {
                 if (ctrl.isUserAuthor()) {
                     ideaSvc.editIdea($scope.idea._id, title, description, [], function() {
