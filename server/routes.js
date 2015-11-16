@@ -65,7 +65,7 @@ module.exports = function(app) {
                         return res.status(200).json(users.errResObj);
                     }
                     else {
-                        users.findForLogin(user._json, function(err, responseObj) {
+                        users.findForLogin(user, function(err, responseObj) {
                             if (err) {
                                 console.error(chalk.bgRed(err));
                                 return res.status(200).json(users.errResObj);

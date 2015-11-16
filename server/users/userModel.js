@@ -16,17 +16,22 @@ function User(firstName, lastName, fullName, username, email, nickname, title) {
     return this;
 }
 
-// NOTE: remember to pass in "user._json", not just "user"
 function UserLDAP(ldapObj) {
     "use strict";
 
-    this.firstName = ldapObj.givenName;
-    this.lastName = ldapObj.sn;
-    this.fullName = ldapObj.displayName;
-    this.username = ldapObj.sAMAccountName;
-    this.email = ldapObj.mail;
-    this.nickname = ldapObj.cn;
-    this.title = ldapObj.title;
+    if (typeof ldapObj._json === "undefined") {
+        throw "Invalid LDAP Object";
+    }
+
+    var ldapJson = ldapObj._json;
+
+    this.firstName = ldapJson.givenName;
+    this.lastName = ldapJson.sn;
+    this.fullName = ldapJson.displayName;
+    this.username = ldapJson.sAMAccountName;
+    this.email = ldapJson.mail;
+    this.nickname = ldapJson.cn;
+    this.title = ldapJson.title;
     this.likedIdeas = [];
 
     return this;
