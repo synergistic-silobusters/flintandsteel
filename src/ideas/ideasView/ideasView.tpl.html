@@ -112,7 +112,7 @@
                             </div>
                         </md-list-item>
                     </md-list>
-                    <div layout="row" ng-if="isUserLoggedIn()">
+                    <div layout="row" ng-if="isUserLoggedIn() && !hasUserBacked()">
                         <div layout="column" flex>
                             <md-input-container id="back-box-container" class="no-padding-bottom">
                                 <label>Back this idea...</label>
