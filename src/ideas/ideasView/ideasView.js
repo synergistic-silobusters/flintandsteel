@@ -84,6 +84,7 @@ angular.module('flintAndSteel')
                 if (typeof idea !== 'undefined' && idea !== null) {
                     $scope.$apply(function() {
                         $scope.idea = idea;
+                        ctrl.refreshTeam();
                     });
                 }
                 else {
