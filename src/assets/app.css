@@ -160,12 +160,15 @@ body {
 .about-technologies{
     padding: 15px;
 }
+
 .about-padding-bottom{
     padding-bottom: 15px;
 }
+
 .about-padding-top{
     padding-top: 15px;
 }
+
 .mailto-format{
     text-decoration:none !important;
     text-decoration:none;
