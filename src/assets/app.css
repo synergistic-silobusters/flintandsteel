@@ -1,63 +1,67 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
+.icon-button-adjust {
+    vertical-align: middle;
+}
+
 body {
-  font-family: 'Open Sans', sans-serif;
-  color: #666;
+    font-family: 'Open Sans', sans-serif;
+    color: #666;
 }
 
 .add-idea {
-  min-height: 40px;
-  max-height: 40px;
+    min-height: 40px;
+    max-height: 40px;
 }
 
 .md-icon-button {
-	margin-right: 10px;
+    margin-right: 10px;
 }
 
 .md-icon-button:last-child {
-	margin-right: 0px;
+    margin-right: 0px;
 }
 
 .login-button {
-	margin-right: 10px;
+    margin-right: 10px;
 }
 
 .signup-button {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 .scroll-container {
-	overflow: scroll;
+    overflow: scroll;
 }
 
 .extra-space-left {
-	padding-left: 20px;
+    padding-left: 20px;
 }
 
 .no-padding-bottom {
-	padding-bottom: 0px;
+    padding-bottom: 0px;
 }
 
 .fab-layout {
-	margin-right: 20px;
-	margin-bottom: 10px;
+    margin-right: 20px;
+    margin-bottom: 10px;
 }
 
 .top-ideas-list-item {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 
 .custom-chip {
-	margin-left: 5px;
-	margin-right: 5px;
-	padding: 3px 6px;
-	background-color: #e0e0e0;
-	color: #424242;
-	border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 3px 6px;
+    background-color: #e0e0e0;
+    color: #424242;
+    border-radius: 10px;
 }
 
 .idea-pointer {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .nav-bar-pointer {
@@ -65,40 +69,40 @@ body {
 }
 
 .extra-padding-left-sm {
-	padding-left: 5px;
+    padding-left: 5px;
 }
 
 .extra-padding-left-md {
-	padding-left: 10px;
+    padding-left: 10px;
 }
 
 .accent-text {
-	color: #650100;
+    color: #650100;
 }
 
 .idea-likes-click {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .deleted  h3, .deleted p{
-  text-decoration: line-through;
-  color: red;
+    text-decoration: line-through;
+    color: red;
 }
 
 .search-bar {
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .center-text {
-  text-align: center;
+    text-align: center;
 }
 
 .center-img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 .img-padding{
     padding-top: 15px;
@@ -109,10 +113,7 @@ body {
 }
 
 .about-technologies{
-    padding-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 15px;
+    padding: 15px;
 }
 .about-padding-bottom{
     padding-bottom: 15px;

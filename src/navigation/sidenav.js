@@ -9,18 +9,6 @@ angular.module('flintAndSteel')
             "use strict";
 
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                data.forEach(function(ideaHeader) {
-                    loginSvc.getUserById(ideaHeader.authorId, function getUserByIdSuccess(userObj) {
-                        ideaHeader.author = userObj;
-                    }, function getUserByIdError(data, status) {
-                        ideaHeader.author = {
-                            name: "Unknown User",
-                            mail: "unknown@unknown.com",
-                            username: "unknown"
-                        };
-                        console.log(status);
-                    });
-                });
                 $scope.topIdeas = data;
             }, function getIdeaHeadersError(data, status) {
                 console.log(status);
@@ -29,24 +17,9 @@ angular.module('flintAndSteel')
             var ideaAddEvents = new EventSource('/ideaheaders/events');
             ideaAddEvents.addEventListener("newHeaders", function(event) {
                 var headers = JSON.parse(event.data);
-                if (headers.length > 0) {
-                    $scope.$apply(function() {
-                        headers.forEach(function(ideaHeader) {
-                            loginSvc.getUserById(ideaHeader.authorId, function getUserByIdSuccess(userObj) {
-                                ideaHeader.author = userObj;
-                            }, function getUserByIdError(data, status) {
-                                ideaHeader.author = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-
-                        });
-                        $scope.topIdeas = headers;
-                    });
-                }
+                $scope.$apply(function() {
+                    $scope.topIdeas = headers;
+                });
             });
 
             $scope.navTo = function navTo(state) {
