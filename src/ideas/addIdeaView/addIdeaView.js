@@ -3,30 +3,26 @@
 angular.module('flintAndSteel')
 .controller('AddIdeaViewCtrl',
     [
-        '$scope', '$state', '$mdToast', 'ideaSvc', 'loginSvc',
-        function($scope, $state, $mdToast, ideaSvc, loginSvc) {
+        '$scope', '$state', 'toastSvc', 'ideaSvc', 'loginSvc',
+        function($scope, $state, toastSvc, ideaSvc, loginSvc) {
             "use strict";
 
             if (!loginSvc.isUserLoggedIn()) {
-                $state.go('login', {'retState': $state.current.name});
+                $state.go('home');
+                toastSvc.show('You need to be logged into to create an idea!');
             }
 
             $scope.idea = {};
 
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
-                ideaToAdd.author = loginSvc.getProperty('name');
+                ideaToAdd.author = loginSvc.getProperty('_id');
                 ideaToAdd.likes = [];
                 ideaToAdd.comments = [];
                 ideaToAdd.backs = [];
                 ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
                     console.log(data);
                     if (data === 'Created') {
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content('New idea created successfully!')
-                                .position('top right')
-                                .hideDelay(3000)
-                        );
+                        toastSvc.show('New idea created successfully!');
                         $scope.$emit('newIdeaAdded');
                         $state.go('home');
                     }
