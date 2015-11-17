@@ -1,180 +1,183 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
+.icon-button-adjust {
+  vertical-align: middle;
+}
+
 body {
-    font-family: 'Open Sans', sans-serif;
-    color: #666;
+  font-family: 'Open Sans', sans-serif;
+  color: #666;
 }
 
 .add-idea {
-    min-height: 40px;
-    max-height: 40px;
+  min-height: 40px;
+  max-height: 40px;
 }
 
 .md-icon-button {
-  	margin-right: 10px;
+	margin-right: 10px;
 }
 
 .md-icon-button:last-child {
-  	margin-right: 0px;
+  margin-right: 0px;
 }
 
 .login-button {
-  	margin-right: 10px;
+  margin-right: 10px;
 }
 
 .signup-button {
-  	margin-left: 10px;
+  margin-left: 10px;
 }
 
 .scroll-container {
-  	overflow: scroll;
+  overflow: scroll;
 }
 
 .extra-space-left {
-  	padding-left: 20px;
+  padding-left: 20px;
 }
 
 .no-padding-bottom {
-  	padding-bottom: 0px;
+  padding-bottom: 0px;
 }
 
 .fab-layout {
-  	margin-right: 20px;
-  	margin-bottom: 10px;
+  margin-right: 20px;
+  margin-bottom: 10px;
 }
 
 .top-ideas-list-item {
-  	margin-left: 20px;
+  margin-left: 20px;
 }
 
 .custom-chip-wrapper{
-    margin:2px 2px 2px 0px;
-    display:inline-block;
+  margin:2px 2px 2px 0px;
+  display:inline-block;
 }
 
 .custom-chip{
-  	margin-bottom: 3px;
-  	padding: 3px 10px;
-  	background-color: #e0e0e0;
-  	color: #424242;
-  	border-radius: 10px;
-    white-space:nowrap;
+	margin-bottom: 3px;
+	padding: 3px 10px;
+	background-color: #e0e0e0;
+	color: #424242;
+	border-radius: 10px;
+  white-space:nowrap;
 }
 
 .custom-chip.Knowledge{
-  	background-color: #F44336;
-  	color: #FFFFFF;
+	background-color: #F44336;
+	color: #FFFFFF;
 }
 
 .custom-chip.Time{
-  	background-color: #3F51B5;
-  	color: #FFFFFF;
+	background-color: #3F51B5;
+	color: #FFFFFF;
 }
 
 .custom-chip.Funding{
-  	background-color: #009688;
-  	color: #FFFFFF;
+	background-color: #009688;
+	color: #FFFFFF;
 }
 
 .custom-chip.Experience{
-  	background-color: #8BC34A;
-  	color: #FFFFFF;
+	background-color: #8BC34A;
+	color: #FFFFFF;
 }
 
 .custom-chip.Social{
-  	background-color: #FF9800;
-  	color: #FFFFFF;
+	background-color: #FF9800;
+	color: #FFFFFF;
 }
 
 .custom-chip.Materials{
-  	background-color: #795548;
-  	color: #FFFFFF;
+	background-color: #795548;
+	color: #FFFFFF;
 }
 .custom-chip.How{
-  	background-color: #E91E63;
-  	color: #FFFFFF;
+	background-color: #E91E63;
+	color: #FFFFFF;
 }
 
 .custom-chip.Owner{
-  	background-color: #03A9F4;
-  	color: #FFFFFF;
+	background-color: #03A9F4;
+	color: #FFFFFF;
 }
 
 .idea-pointer {
-  	cursor: pointer;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
 .nav-bar-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .extra-padding-left-sm {
-  	padding-left: 5px;
+	padding-left: 5px;
 }
 
 .extra-padding-left-md {
-  	padding-left: 10px;
+	padding-left: 10px;
 }
 
 .accent-text {
-  	color: #650100;
+	color: #650100;
 }
 
 .idea-likes-click {
-  	cursor: pointer;
+	cursor: pointer;
+  padding-left: 5px;
 }
 
 .deleted  h3, .deleted p{
-    text-decoration: line-through;
-    color: red;
+  text-decoration: line-through;
+  color: red;
 }
 
 .search-bar {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .center-text {
-    text-align: center;
+  text-align: center;
 }
 
 .center-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 .img-padding{
-    padding-top: 15px;
+  padding-top: 15px;
 }
 
 .padding-left-20{
-    padding-left: 20px;
+  padding-left: 20px;
 }
 
 .about-technologies{
-    padding-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 15px;
+  padding: 15px;
 }
 .about-padding-bottom{
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 .about-padding-top{
-    padding-top: 15px;
+  padding-top: 15px;
 }
 .mailto-format{
-    text-decoration:none !important;
-    text-decoration:none;
-    color: #666;
+  text-decoration:none !important;
+  text-decoration:none;
+  color: #666;
 }
 
 .identicon {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .md-tab.md-active {
-    background-color: #e0e0e0;
-    border-radius: 5px 5px 0px 0px;
+  background-color: #e0e0e0;
+  border-radius: 5px 5px 0px 0px;
 }

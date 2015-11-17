@@ -15,7 +15,7 @@ angular.module('flintAndSteel')
                 items.map(function(item) {
                     var normalizedSearch = searchTerm.replace(re,"").toLowerCase();
                     var normalizedTitle = item.title.replace(re,"").toLowerCase();
-                    var normalizedAuthor = item.author.replace(re,"").toLowerCase();
+                    var normalizedAuthor = item.author.name.replace(re,"").toLowerCase();
                     var normalizedAbstract = item.abstract.replace(re,"").toLowerCase();
                     if (normalizedTitle.indexOf(normalizedSearch) >= 0) {
                         retArray.push(item);
