@@ -9,6 +9,7 @@ angular.module('flintAndSteel')
 
             if (!loginSvc.isUserLoggedIn()) {
                 $state.go('home');
+                toastSvc.show('You need to be logged into to create an idea!');
             }
 
             $scope.idea = {};
