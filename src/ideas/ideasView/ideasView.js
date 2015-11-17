@@ -6,8 +6,8 @@
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
-        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', '$mdToast',
-        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast) {
+        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc',
+        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc) {
             "use strict";
 
             /*
@@ -56,11 +56,7 @@ angular.module('flintAndSteel')
             ctrl.refreshIdea = function() {
                 ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
                     if (data === 'IDEA_NOT_FOUND') {
-                        $mdToast.show($mdToast.simple()
-                            .content('Sorry, that idea does not exist')
-                            .action('OK')
-                            .highlightAction(false)
-                            .position('top right'));
+                        toastSvc.show('Sorry, that idea does not exist');
                         $state.go('home');
                     }
                     else {
@@ -95,11 +91,7 @@ angular.module('flintAndSteel')
                     else {
                         content = 'Oh no! The author just deleted that idea.';
                     }
-                    $mdToast.show($mdToast.simple()
-                        .content(content)
-                        .action('OK')
-                        .highlightAction(false)
-                        .position('top right'));
+                    toastSvc.show(content);
                     $state.go('home');
                 }
             });

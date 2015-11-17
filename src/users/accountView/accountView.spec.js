@@ -9,15 +9,15 @@
 describe('AccountViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $state, $mdToast, loginSvcMock;
+    var scope, ctrl, $state, toastSvc, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
 
-    beforeEach(inject(function($rootScope, $controller, _$state_, _$mdToast_, _loginSvcMock_) {
+    beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _loginSvcMock_) {
         scope = $rootScope.$new();
         $state = _$state_;
-        $mdToast = _$mdToast_;
+        toastSvc = _toastSvc_;
         loginSvcMock = _loginSvcMock_;
 
         spyOn($state, 'go');
@@ -28,7 +28,7 @@ describe('AccountViewCtrl', function() {
         ctrl = $controller('AccountViewCtrl', {
             $scope: scope,
             $state: $state,
-            $mdToast: $mdToast,
+            toastSvc: toastSvc,
             loginSvc: loginSvcMock
         });
     }));
@@ -45,14 +45,14 @@ describe('AccountViewCtrl', function() {
         
         beforeEach(function() {
             spyOn(loginSvcMock, 'logout').and.callFake(function() { });
-            spyOn($mdToast, 'show');
+            spyOn(toastSvc, 'show');
         });
 
         it('should log out the user', function() {
             scope.logout();
 
             expect(loginSvcMock.logout).toHaveBeenCalled();
-            expect($mdToast.show).toHaveBeenCalled();
+            expect(toastSvc.show).toHaveBeenCalled();
             expect($state.go).toHaveBeenCalledWith('home');
         });
     });

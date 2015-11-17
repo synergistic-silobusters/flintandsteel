@@ -13,7 +13,8 @@ var gulp = require('gulp'),
     nodemon = require('gulp-nodemon'),
     karma = require('karma').server,
     exec = require('child_process').exec,
-    mkdirs = require('mkdirs');
+    mkdirs = require('mkdirs'),
+    angularFilesort = require('gulp-angular-filesort');
 
 var paths = {
     js: [
@@ -133,7 +134,8 @@ gulp.task('inject', function() {
     "use strict";
 
     gulp.src('./src/index.html')
-        .pipe(inject(gulp.src(paths.js, {read: false}), {relative: true}))
+        .pipe(
+            inject(gulp.src(paths.js).pipe(angularFilesort()), {relative: true}))
         .pipe(gulp.dest('./src'));
 });
 
