@@ -15,7 +15,7 @@ body {
 }
 
 .md-icon-button {
-  	margin-right: 10px;
+    margin-right: 10px;
 }
 
 .md-icon-button:last-child {
@@ -57,51 +57,51 @@ body {
 }
 
 .custom-chip{
-  	margin-bottom: 3px;
-  	padding: 3px 10px;
-  	background-color: #e0e0e0;
-  	color: #424242;
-  	border-radius: 10px;
+    margin-bottom: 3px;
+    padding: 3px 10px;
+    background-color: #e0e0e0;
+    color: #424242;
+    border-radius: 10px;
     white-space:nowrap;
 }
 
 .custom-chip.Knowledge{
-  	background-color: #F44336;
-  	color: #FFFFFF;
+    background-color: #F44336;
+    color: #FFFFFF;
 }
 
 .custom-chip.Time{
-  	background-color: #3F51B5;
-  	color: #FFFFFF;
+    background-color: #3F51B5;
+    color: #FFFFFF;
 }
 
 .custom-chip.Funding{
-  	background-color: #009688;
-  	color: #FFFFFF;
+    background-color: #009688;
+    color: #FFFFFF;
 }
 
 .custom-chip.Experience{
-  	background-color: #8BC34A;
-  	color: #FFFFFF;
+    background-color: #8BC34A;
+    color: #FFFFFF;
 }
 
 .custom-chip.Social{
-  	background-color: #FF9800;
-  	color: #FFFFFF;
+    background-color: #FF9800;
+    color: #FFFFFF;
 }
 
 .custom-chip.Materials{
-  	background-color: #795548;
-  	color: #FFFFFF;
+    background-color: #795548;
+    color: #FFFFFF;
   }
 .custom-chip.How{
-  	background-color: #E91E63;
-  	color: #FFFFFF;
+    background-color: #E91E63;
+    color: #FFFFFF;
 }
 
 .custom-chip.Owner{
-  	background-color: #03A9F4;
-  	color: #FFFFFF;
+    background-color: #03A9F4;
+    color: #FFFFFF;
 }
 
 .idea-pointer {
@@ -113,19 +113,19 @@ body {
 }
 
 .extra-padding-left-sm {
-  	padding-left: 5px;
+    padding-left: 5px;
 }
 
 .extra-padding-left-md {
-  	padding-left: 10px;
+    padding-left: 10px;
 }
 
 .accent-text {
-  	color: #650100;
+    color: #650100;
 }
 
 .idea-likes-click {
-  	cursor: pointer;
+    cursor: pointer;
     padding-left: 5px;
 }
 
