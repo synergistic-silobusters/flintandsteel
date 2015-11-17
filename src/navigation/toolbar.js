@@ -104,15 +104,9 @@ angular.module('flintAndSteel')
             $scope.logout = function logout() {
                 var accountName = loginSvc.getProperty('name');
                 loginSvc.logout();
-                $mdToast.show(
-                    $mdToast.simple()
-                        .content(accountName + ' has been logged out!')
-                        .action('OK')
-                        .position('top right')
-                        .hideDelay(5000)
-                );
+                toastSvc.show(accountName + ' has been logged out!');
                 $state.go('home');
-            };   
+            };
 
             // Re-route to account page from menu
             $scope.settings = function settings() {
