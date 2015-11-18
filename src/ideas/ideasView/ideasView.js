@@ -284,6 +284,8 @@ angular.module('flintAndSteel')
                     function error(data, status) {
                         console.log(status);
                     });
+
+                toastSvc.show('Team has been updated!');
             };
 
             ctrl.isUserAuthor = function() {
@@ -291,6 +293,15 @@ angular.module('flintAndSteel')
                     return true;
                 }
                 return false;
+            };
+
+            ctrl.isUserMemberOfTeam = function() {
+                ctrl.isInTeam = false;
+                for (var i = 0; i < $scope.idea.team.length; i++) {
+                    if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.team[i].memberId) {
+                        ctrl.isInTeam = true;
+                    }
+                }
             };
 
             ctrl.isUserAuthorOfComment = function(commentIndex) {
