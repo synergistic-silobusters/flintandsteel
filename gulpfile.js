@@ -1,4 +1,5 @@
 /* global __dirname */
+/* global process */
 
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
@@ -12,7 +13,9 @@ var gulp = require('gulp'),
     nodemon = require('gulp-nodemon'),
     karma = require('karma').server,
     exec = require('child_process').exec,
-    mkdirs = require('mkdirs');
+    mkdirs = require('mkdirs'),
+    angularFilesort = require('gulp-angular-filesort'),
+    naturalSort = require('gulp-natural-sort');
 
 var paths = {
     js: [
@@ -33,8 +36,8 @@ var runCommand = function(command) {
         if (err !== null) {
             console.log(chalk.red(err));
         }
-        console.log(stdout);
-        console.log(stderr);
+        process.stdout.write(stdout);
+        process.stdout.write(stderr);
     });
 };
 
@@ -132,7 +135,8 @@ gulp.task('inject', function() {
     "use strict";
 
     gulp.src('./src/index.html')
-        .pipe(inject(gulp.src(paths.js, {read: false}), {relative: true}))
+        .pipe(
+            inject(gulp.src(paths.js).pipe(naturalSort()).pipe(angularFilesort()), {relative: true}))
         .pipe(gulp.dest('./src'));
 });
 
@@ -196,3 +200,6 @@ gulp.task('generate:data', ['clean:db-dev'], function() {
     var command = "node generateData.js";
     runCommand(command);
 });
+
+// A shorter call for generating colon data
+gulp.task('poop', ['generate:data']);

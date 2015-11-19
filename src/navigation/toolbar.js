@@ -1,7 +1,7 @@
 /* global angular */
 
 
-// Dialog Controller used for controlling the behavior of the dialog 
+// Dialog Controller used for controlling the behavior of the dialog
 //   used for login.
 function DialogController($scope, $mdDialog) {
     "use strict";
@@ -21,7 +21,7 @@ function DialogController($scope, $mdDialog) {
     //pass the account object to the dialog window
     $scope.loginUser = function(account) {
         var status = {
-            username: account.username, 
+            username: account.username,
             password: account.password
         };
         return status;
@@ -31,24 +31,19 @@ function DialogController($scope, $mdDialog) {
 angular.module('flintAndSteel')
 .controller('ToolbarCtrl',
     [
-        '$scope', '$state', '$stateParams', '$mdSidenav', 'loginSvc', '$mdDialog', '$mdToast',
-        function($scope, $state, $stateParams, $mdSidenav, loginSvc, $mdDialog, $mdToast) {
+        '$scope', '$state', '$stateParams', '$mdSidenav', 'loginSvc', '$mdDialog', 'toastSvc',
+        function($scope, $state, $stateParams, $mdSidenav, loginSvc, $mdDialog, toastSvc) {
             "use strict";
-            
+
             $scope.displayOverflow = false;
 
             $scope.accountClick = function accountClick() {
-                var returnState;
 
                 if (loginSvc.isUserLoggedIn()) {
                     $state.go('account');
                 }
                 else {
-                    returnState = $state.current.name +
-                        $state.go('login', { 
-                            'retState': $state.current.name, 
-                            'retParams': $stateParams.ideaId
-                        });
+                    $state.go('home');
                 }
             };
 
@@ -64,7 +59,7 @@ angular.module('flintAndSteel')
 
             $scope.getUsername = function getUsername() {
                 if ($scope.isUserLoggedIn()) {
-                    $scope.username = loginSvc.getProperty('username');                    
+                    $scope.username = loginSvc.getProperty('username');
                 }
             };
 
@@ -82,52 +77,41 @@ angular.module('flintAndSteel')
                 }, function() {
                     $scope.status = 'You canceled the dialog.';
                 });
-            };         
+            };
 
             // Function used to display feedback on login - OK, Error, or User Not Found
             $scope.loginUser = function(account) {
                 loginSvc.checkLogin(account, function LoginSuccess(data) {
+                    var content;
                     if (data.status === 'AUTH_OK') {
                         $scope.currentUser = data.name;
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content(data.name + ' has successfully signed in!')
-                                .action('OK')
-                                .position('top right')
-                                .hideDelay(3000)
-                        );
-                        var retState = $stateParams.retState;
-                        if (typeof(retState) !== 'undefined' && retState !== '' && retState !== 'login') {
-                            $state.go(retState, {'ideaId': $stateParams.retParams});
-                        }
-                        else {
-                            $state.go('home');
-                        }
+                        content = data.name + ' has successfully signed in!';
                     }
                     else if (data.status === 'AUTH_ERROR') {
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content('Your credentials don\'t match the stored ones :(')
-                                .action('OK')
-                                .position('top right')
-                                .hideDelay(3000)
-                        );
+                        content = 'Your credentials don\'t match the stored ones :(';
                     }
                     else if (data.status === 'USER_NOT_FOUND') {
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content('The user was not found in the server!')
-                                .action('OK')
-                                .position('top right')
-                                .hideDelay(3000)
-                        );
+                        content = 'The user was not found in the server!';
                     }
+                    toastSvc.show(content);
                 },
                 function loginError(data, status) {
                     console.log(status);
                 });
             };
+
+            // Logout from menu
+            $scope.logout = function logout() {
+                var accountName = loginSvc.getProperty('name');
+                loginSvc.logout();
+                toastSvc.show(accountName + ' has been logged out!');
+                $state.go('home');
+            };
+
+            // Re-route to account page from menu
+            $scope.settings = function settings() {
+                $state.go('account');
+            };
         }
     ]
 );
-

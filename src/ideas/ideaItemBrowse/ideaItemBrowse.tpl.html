@@ -5,11 +5,11 @@
     <md-card-content>
     <div flex="85">
         <div><strong>{{idea.title}}</strong></div>
-        <div class="accent-text">{{idea.author}}</div>
+        <div class="accent-text">{{idea.author.name}}</div>
     </div>
     <div flex layout="row">
         <div layout="row">
-            <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs.length}} Backs and 0 People</span>
+            <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs}} Backs and {{idea.team}} People</span>
         </div>
     </div>
     </md-card-content>
