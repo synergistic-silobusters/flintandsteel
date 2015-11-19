@@ -296,12 +296,13 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserMemberOfTeam = function() {
-                ctrl.isInTeam = false;
                 for (var i = 0; i < $scope.idea.team.length; i++) {
                     if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.team[i].memberId) {
-                        ctrl.isInTeam = true;
+                        return true;
+                        break;
                     }
                 }
+                return false;
             };
 
             ctrl.isUserAuthorOfComment = function(commentIndex) {

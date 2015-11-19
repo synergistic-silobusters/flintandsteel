@@ -65,41 +65,41 @@ body {
     white-space:nowrap;
 }
 
-.custom-chip.Knowledge{
+.custom-chip.knowledge{
     background-color: #F44336;
     color: #FFFFFF;
 }
 
-.custom-chip.Time{
+.custom-chip.time{
     background-color: #3F51B5;
     color: #FFFFFF;
 }
 
-.custom-chip.Funding{
+.custom-chip.funding{
     background-color: #009688;
     color: #FFFFFF;
 }
 
-.custom-chip.Experience{
+.custom-chip.experience{
     background-color: #8BC34A;
     color: #FFFFFF;
 }
 
-.custom-chip.Social{
+.custom-chip.social-network{
     background-color: #FF9800;
     color: #FFFFFF;
 }
 
-.custom-chip.Materials{
+.custom-chip.materials{
     background-color: #795548;
     color: #FFFFFF;
   }
-.custom-chip.How{
+.custom-chip.how-can-i-help{
     background-color: #E91E63;
     color: #FFFFFF;
 }
 
-.custom-chip.Owner{
+.custom-chip.owner{
     background-color: #03A9F4;
     color: #FFFFFF;
 }
