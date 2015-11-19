@@ -14,7 +14,8 @@ var gulp = require('gulp'),
     karma = require('karma').server,
     exec = require('child_process').exec,
     mkdirs = require('mkdirs'),
-    angularFilesort = require('gulp-angular-filesort');
+    angularFilesort = require('gulp-angular-filesort'),
+    naturalSort = require('gulp-natural-sort');
 
 var paths = {
     js: [
@@ -135,7 +136,7 @@ gulp.task('inject', function() {
 
     gulp.src('./src/index.html')
         .pipe(
-            inject(gulp.src(paths.js).pipe(angularFilesort()), {relative: true}))
+            inject(gulp.src(paths.js).pipe(naturalSort()).pipe(angularFilesort()), {relative: true}))
         .pipe(gulp.dest('./src'));
 });
 
