@@ -179,6 +179,33 @@ gulp.task('test:client', function(done) {
     }, done);
 });
 
+gulp.task('test:load', function(cb) {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+    var benchrest = require('bench-rest');
+
+    var flow = {
+        main: [
+            {get: 'http://innovate.ra.rockwell.com/ideaHeaders'}
+        ]
+    };
+
+    var runOptions = {
+       limit: 100,     // concurrent connections
+       iterations: 1000  // number of iterations to perform
+     };
+
+    benchrest(flow, runOptions)
+        .on('error', function error(err, ctxName) {
+            console.error(chalk.red('Failed in ' + ctxName + ' with error: '), err);
+        })
+        .on('end', function end(stats, errorCount) {
+            console.log(chalk.red('error count: '), errorCount);
+            console.log(chalk.green('stats: '), stats);
+            cb(null);
+        });
+});
+
 gulp.task('clean:modules', function() {
     "use strict";
 
