@@ -296,9 +296,11 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserMemberOfTeam = function() {
-                for (var i = 0; i < $scope.idea.team.length; i++) {
-                    if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.team[i].memberId) {
-                        return true;
+                if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
+                    for (var i = 0; i < $scope.idea.team.length; i++) {
+                        if (loginSvc.getProperty('_id') === $scope.idea.team[i].memberId) {
+                            return true;
+                        }
                     }
                 }
                 return false;
