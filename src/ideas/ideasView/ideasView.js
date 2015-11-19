@@ -299,7 +299,6 @@ angular.module('flintAndSteel')
                 for (var i = 0; i < $scope.idea.team.length; i++) {
                     if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.team[i].memberId) {
                         return true;
-                        break;
                     }
                 }
                 return false;
