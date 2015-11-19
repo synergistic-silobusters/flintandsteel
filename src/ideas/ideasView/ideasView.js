@@ -6,8 +6,8 @@
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
-        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', '$mdToast',
-        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, $mdToast) {
+        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc',
+        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc) {
             "use strict";
 
             /*
@@ -56,72 +56,10 @@ angular.module('flintAndSteel')
             ctrl.refreshIdea = function() {
                 ideaSvc.getIdea($stateParams.ideaId, function getIdeaSuccess(data) {
                     if (data === 'IDEA_NOT_FOUND') {
-                        $mdToast.show($mdToast.simple()
-                  .content('Sorry, that idea does not exist')
-                  .action('OK')
-                  .highlightAction(false)
-                  .position('top right'));
+                        toastSvc.show('Sorry, that idea does not exist');
                         $state.go('home');
                     }
                     else {
-                        data.likes.forEach(function(like) {
-                            loginSvc.getUserById(like.userId, function getUserByIdSuccess(userObj) {
-                                like.user = userObj;
-                            }, function getUserByIdError(data, status) {
-                                like.user = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-                        });
-                        data.comments.forEach(function(comment) {
-                            loginSvc.getUserById(comment.authorId, function getUserByIdSuccess(userObj) {
-                                comment.author = userObj;
-                            }, function getUserByIdError(data, status) {
-                                comment.author = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-                        });
-                        data.backs.forEach(function(back) {
-                            loginSvc.getUserById(back.authorId, function getUserByIdSuccess(userObj) {
-                                back.author = userObj;
-                            }, function getUserByIdError(data, status) {
-                                back.author = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-                        });
-                        data.team.forEach(function(member) {
-                            loginSvc.getUserById(member.memberId, function getUserByIdSuccess(userObj) {
-                                member.member = userObj;
-                            }, function getUserByIdError(data, status) {
-                                member.member = {
-                                    name: "Unknown User",
-                                    mail: "unknown@unknown.com",
-                                    username: "unknown"
-                                };
-                                console.log(status);
-                            });
-                        });
-                        loginSvc.getUserById(data.authorId, function getUserByIdSuccess(userObj) {
-                            data.author = userObj;
-                        }, function getUserByIdError(data, status) {
-                            data.author = {
-                                name: "Unknown User",
-                                mail: "unknown@unknown.com",
-                                username: "unknown"
-                            };
-                            console.log(status);
-                        });
                         $scope.idea = data;
                         if (typeof $scope.idea.team === "undefined")	{
                             $scope.idea.team = [];
@@ -142,6 +80,7 @@ angular.module('flintAndSteel')
                 if (typeof idea !== 'undefined' && idea !== null) {
                     $scope.$apply(function() {
                         $scope.idea = idea;
+                        ctrl.refreshTeam();
                     });
                 }
                 else {
@@ -152,11 +91,7 @@ angular.module('flintAndSteel')
                     else {
                         content = 'Oh no! The author just deleted that idea.';
                     }
-                    $mdToast.show($mdToast.simple()
-                        .content(content)
-                        .action('OK')
-                        .highlightAction(false)
-                        .position('top right'));
+                    toastSvc.show(content);
                     $state.go('home');
                 }
             });
@@ -173,11 +108,12 @@ angular.module('flintAndSteel')
                 var now = new Date().toISOString();
                 if (type === 'comments' || type === 'backs') {
                     if (type === 'comments') {
-                        $scope.idea[type].push({
-                            text: ctrl.newComment,
-                            authorId: loginSvc.getProperty('_id'),
-                            time: now
-                        });
+                        ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
+                            function success() {},
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
                     }
                     else if (type === 'backs') {
                         $scope.idea[type].push({
@@ -186,12 +122,14 @@ angular.module('flintAndSteel')
                             time: now,
                             types: $scope.selectedTypes
                         });
+
+                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
+                            function success() { },
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
                     }
-                    ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
-                    function success() { },
-                    function error(data, status) {
-                        console.log(status);
-                    });
 
                     $scope.selectedTypes = [];
                     $scope.selectedType = undefined;
@@ -284,18 +222,8 @@ angular.module('flintAndSteel')
 
             ctrl.editIdea = function(title, description) {
                 if (ctrl.isUserAuthor()) {
-                    ideaSvc.updateIdea($scope.idea._id, "title", title, function() {
-                        ideaSvc.updateIdea($scope.idea._id, "description", description, function() {
-                            ideaSvc.updateIdea($scope.idea._id, "editedOn", (new Date()).toISOString(), function() {
-                                ctrl.refreshIdea();
-                            },
-                            function() {
-                                console.log("ERR: Could not update idea.");
-                            });
-                        },
-                        function() {
-                            console.log("ERR: Could not update idea.");
-                        });
+                    ideaSvc.editIdea($scope.idea._id, title, description, [], function() {
+                        ctrl.refreshIdea();
                     },
                     function() {
                         console.log("ERR: Could not update idea.");
@@ -317,7 +245,8 @@ angular.module('flintAndSteel')
             ctrl.confirmDeleteIdea = function(ev) {
                 $mdDialog.show($mdDialog.confirm()
                     .title('Deleting Your Idea...')
-                    .content('Hey, ' + $scope.idea.author + '! Are you sure you want to delete \"' + $scope.idea.title + '\"? This action is irreversible :( ')
+                    .content('Hey, ' + $scope.idea.author.name + '! Are you sure you want to delete \"' + $scope.idea.title + '\"? ' +
+                        'This action is irreversible :( ')
                     .ariaLabel('Delete idea confirmation')
                     .targetEvent(ev)
                     .ok('Yes. Delete it.')
@@ -365,13 +294,7 @@ angular.module('flintAndSteel')
 
             ctrl.deleteComment = function(commentIndex) {
                 if (ctrl.isUserAuthorOfComment(commentIndex)) {
-                    $scope.idea.comments.splice(commentIndex, 1, {
-                        text: "This comment was deleted",
-                        from: loginSvc.getProperty('name'),
-                        deleted: true,
-                        time: new Date().toISOString()
-                    });
-                    ideaSvc.updateIdea($scope.idea._id, "comments", $scope.idea.comments, function() {
+                    ideaSvc.deleteComment($scope.idea.comments[commentIndex].commentId, function() {
                         return;
                     },
                     function() {

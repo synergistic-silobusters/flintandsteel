@@ -9,6 +9,7 @@ angular.module('flintAndSteel')
 
             var mockIdea = {
                 id: 'mock_idea',
+                _id: 'mock_idea',
                 title: 'The bestest Idea ever!',
                 description: 'Apophenia order-flow systema futurity garage sentient car advert. ' +
                     'Footage 3D-printed Legba free-market lights courier camera Kowloon youtube ' +
@@ -41,19 +42,28 @@ angular.module('flintAndSteel')
                 managerLikes: 6,
                 comments: [
                     {
+                        commentId: 1,
+                        parentId: 'mock_idea',
                         text: 'This sounds cool',
                         authorId: 1,
-                        time: moment().subtract(1, 'days').calendar()
+                        timeCreated: moment().subtract(1, 'days').calendar(),
+                        timeModified: moment().subtract(1, 'days').calendar()
                     },
                     {
+                        commentId: 2,
+                        parentId: 'mock_idea',
                         text: 'Hey, I was thinking the same thing!',
                         authorId: 2,
-                        time: moment().subtract(4, 'hours').calendar()
+                        timeCreated: moment().subtract(4, 'hours').calendar(),
+                        timeModified: moment().subtract(4, 'hours').calendar()
                     },
                     {
+                        commentId: 3,
+                        parentId: 'mock_idea',
                         text: 'This is gold, gold I tell you!',
                         authorId: 3,
-                        time: moment().subtract(30, 'minutes').calendar()
+                        timeCreated: moment().subtract(30, 'minutes').calendar(),
+                        timeModified: moment().subtract(30, 'minutes').calendar()
                     }
                 ],
                 backs: [
@@ -107,12 +117,41 @@ angular.module('flintAndSteel')
                         }
                     ];
                 },
+                postComment: function postComment(parentId, text, authorId, successCb) {
+                    mockIdea.comments.push(
+                        {
+                            commentId: 4,
+                            parentId: parentId,
+                            text: text,
+                            authorId: authorId,
+                            timeCreated: new Date().toISOString(),
+                            timeModified: new Date().toISOString()
+                        }
+                    );
+                    successCb('Posted');
+                },
+                deleteComment: function deleteComment(commentId, successCb) {
+                    for (var i = 0; i < mockIdea.comments.length; i++) {
+                        if (mockIdea.comments[i].commentId === commentId) {
+                            mockIdea.comments.splice(i, 1);
+                            break;
+                        }
+                    }
+                    successCb('Deleted');
+                },
                 getUniqueId: function getUniqueId() {
                     throw new NotImplementedException('getUniqueId');
                 },
                 updateIdea: function updateIdea(ideaId, property, data, successCb) {
                     mockIdea[property] = data;
                     successCb('OK');
+                },
+                editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
+                    mockIdea.title = title;
+                    mockIdea.description = description;
+                    mockIdea.rolesreq = rolesreq;
+                    mockIdea.timeModified = new Date().toISOString();
+                    successCb('Edited');
                 },
                 deleteIdea: function deleteIdea(ideaId, successCb) {
                     successCb('Deleted!');
