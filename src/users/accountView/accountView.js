@@ -19,15 +19,15 @@ angular.module('flintAndSteel')
                     name: loginSvc.getProperty('name'),
                     email: loginSvc.getProperty('email')
                 };
-                // /Replace
-
-                $scope.logout = function logout() {
-                    var accountName = loginSvc.getProperty('name');
-                    loginSvc.logout();
-                    toastSvc.show(accountName + ' has been logged out!', { duration: 5000 });
-                    $state.go('home');
-                };
             }
+
+            // /Replace
+            $scope.logout = function logout() {
+                var accountName = loginSvc.getProperty('name');
+                loginSvc.logout();
+                toastSvc.show(accountName + ' has been logged out!', { duration: 5000 });
+                $state.go('home');
+            };
         }
     ]
 );
