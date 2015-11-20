@@ -11,16 +11,17 @@ angular.module('flintAndSteel')
             if (!loginSvc.isUserLoggedIn()) {
                 $state.go('home');
             }
+            else {
+                // Replace this with a DB read from logged in user
+                $scope.user = {
+                    username: loginSvc.getProperty('username'),
+                    password: loginSvc.getProperty('password'),
+                    name: loginSvc.getProperty('name'),
+                    email: loginSvc.getProperty('email')
+                };
+            }
 
-            // Replace this with a DB read from logged in user
-            $scope.user = {
-                username: loginSvc.getProperty('username'),
-                password: loginSvc.getProperty('password'),
-                name: loginSvc.getProperty('name'),
-                email: loginSvc.getProperty('email')
-            };
             // /Replace
-
             $scope.logout = function logout() {
                 var accountName = loginSvc.getProperty('name');
                 loginSvc.logout();
