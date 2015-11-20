@@ -27,6 +27,9 @@ angular.module('flintAndSteel')
             $scope.selectedType = undefined;
             $scope.searchText = undefined;
             ctrl.enableTeamEdit = false;
+            $scope.showEditBackInput = false;
+            $scope.userBackIndex = '';
+            ctrl.editBackText = '';
             ctrl.newComment = '';
             ctrl.newBack = '';
             ctrl.enableEdit = false;
@@ -106,6 +109,10 @@ angular.module('flintAndSteel')
 
             $scope.momentizeTime = function momentizeTime(time) {
                 return moment(time).calendar();
+            };
+
+            $scope.momentizeModifiedTime = function momentizeModifiedTime(time) {
+                return "Modified " + moment(time).calendar();
             };
 
             $scope.addNewInteraction = function addNewInteraction(type) {
@@ -224,18 +231,6 @@ angular.module('flintAndSteel')
                 return typeof $scope.idea.image !== 'undefined';
             };
 
-            $scope.hasUserBacked = function() {
-                var hasUserBacked = false;
-                if (loginSvc.isUserLoggedIn() && typeof $scope.idea.backs !== 'undefined') {
-                    $scope.idea.backs.forEach(function(back) {
-                        if (loginSvc.getProperty('_id') === back.authorId) {
-                            hasUserBacked = true;
-                        }                        
-                    });
-                }
-                return hasUserBacked;
-            };            
-
             ctrl.editIdea = function(title, description) {
                 if (ctrl.isUserAuthor()) {
                     ideaSvc.editIdea($scope.idea._id, title, description, [], function() {
@@ -325,6 +320,13 @@ angular.module('flintAndSteel')
                 return false;
             };
 
+            ctrl.isUserAuthorOfBack = function(backIndex) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.backs[backIndex].authorId) {
+                    return true;
+                }
+                return false;
+            };
+
             ctrl.deleteComment = function(commentIndex) {
                 if (ctrl.isUserAuthorOfComment(commentIndex)) {
                     ideaSvc.deleteComment($scope.idea.comments[commentIndex].commentId, function() {
@@ -335,6 +337,54 @@ angular.module('flintAndSteel')
                     });
                 }
             };
+
+            ctrl.editBack = function editBack(backIndex) {
+                if (ctrl.isUserAuthorOfBack(backIndex)) {
+                    var now = new Date().toISOString();
+                    $scope.idea.backs[backIndex].text = ctrl.editBackText;
+                    $scope.idea.backs[backIndex].types = $scope.selectedTypes;
+                    $scope.idea.backs[backIndex].timeModified = now;
+                    ideaSvc.updateIdea($scope.idea._id, 'backs', $scope.idea.backs,
+                    function success() {
+                        $scope.showEditBackInput = false;
+                        ctrl.editBackText = '';                   
+                    },
+                    function error(data, status) {
+                        console.log(status);
+                    });
+                    ctrl.refreshIdea();
+                }
+            };            
+
+            $scope.hasUserBacked = function() {
+                var hasUserBacked = false;
+                if (loginSvc.isUserLoggedIn() && typeof $scope.idea.backs !== 'undefined') {
+                    $scope.idea.backs.forEach(function(back) {
+                        if (loginSvc.getProperty('_id') === back.authorId) {
+                            hasUserBacked = true;
+                        }                        
+                    });
+                }
+                return hasUserBacked;
+            };
+
+            $scope.hasBackBeenEdited = function(back) {
+                if (typeof back.timeModified !== 'undefined' && back.timeModified !== '') {
+                    return true;
+                }
+                return false;
+            };
+
+            $scope.loadEditBack = function loadEditBack() {
+                $scope.idea.backs.forEach(function(back, index) {
+                    if (loginSvc.getProperty('_id') === back.authorId) {
+                        $scope.userBackIndex = index;
+                        ctrl.editBackText = back.text;
+                        $scope.selectedTypes = back.types;
+                        $scope.showEditBackInput = true;                        
+                    }
+                });
+            };            
         }
     ]
 );
