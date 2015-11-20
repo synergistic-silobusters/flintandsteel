@@ -96,11 +96,18 @@
             <md-tab label="Backers">
                 <md-content class="md-padding">
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="back in idea.backs">
+                        <md-list-item class="md-2-line" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                            <div ng-show="hovered === true && ideasView.isUserAuthorOfBack($index)">
+                                <md-button class="md-icon-button" aria-label="Edit Back" ng-click="loadEditBack()">
+                                    <md-icon md-svg-icon="editor:mode_edit"></md-icon>
+                                </md-button>
+                            </div>                            
                             <div class="md-list-item-text">
                                 <h3>{{back.text}}</h3>
                                 <p>
-                                    {{back.author.name}} <small class="extra-space-left" ng-bind="momentizeTime(back.time)"></small>
+                                    {{back.author.name}} 
+                                    <small class="extra-space-left" ng-show="!hasBackBeenEdited(back)" ng-bind="momentizeTime(back.time)"></small>
+                                    <small class="extra-space-left" ng-show="hasBackBeenEdited(back)" ng-bind="momentizeModifiedTime(back.timeModified)"></small>
                                     <span class="extra-space-left">
                                         <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
                                     </span>
@@ -109,13 +116,20 @@
                             </div>
                         </md-list-item>
                     </md-list>
-                    <div layout="row" ng-if="isUserLoggedIn() && !hasUserBacked()">
+                    <div layout="row" ng-if="isUserLoggedIn()">
                         <div layout="column" flex>
-                            <md-input-container id="back-box-container" class="no-padding-bottom">
+                            <md-input-container ng-show="!hasUserBacked()" id="back-box-container" class="no-padding-bottom">
                                 <label>Back this idea...</label>
                                 <input id="back-box" ng-model="ideasView.newBack" type="text" />
                             </md-input-container>
-                            <md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match="true" ng-show="ideasView.newBack">
+                            <div layout-align="start">
+                                <md-button ng-show="hasUserBacked() && !showEditBackInput" ng-click="loadEditBack()">Edit your back...</md-button>
+                            </div>
+                            <md-input-container ng-show="showEditBackInput" class="no-padding-bottom">
+                                <label>Edit your back...</label>
+                                <input ng-model="ideasView.editBackText" type="text"/>
+                            </md-input-container>                             
+                            <md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match="true" ng-show="ideasView.newBack || ideasView.editBackText">
                                 <md-autocomplete
                                     md-selected-item="selectedType"
                                     md-selected-item-change=""
@@ -132,13 +146,18 @@
                                         <strong>{{$chip.name}}</strong>
                                     </span>
                                 </md-chip-template>
-                            </md-chips>
+                            </md-chips>                           
                         </div>
-                        <div layout="column" layout-align="center end">
+                        <div layout="column" layout-align="center end" ng-show="!hasUserBacked()">
                             <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newBack === ''" ng-click="addNewInteraction('backs')">
                                 <md-icon md-svg-icon="action:done"></md-icon>
                             </md-button>
                         </div>
+                        <div layout="column" layout-align="center end" ng-show="showEditBackInput">
+                            <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.editBackText === ''" ng-click="ideasView.editBack(userBackIndex)">
+                                <md-icon md-svg-icon="action:done"></md-icon>
+                            </md-button>
+                        </div>                        
                     </div>
                 </md-content>
             </md-tab>
