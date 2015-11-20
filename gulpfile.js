@@ -14,7 +14,8 @@ var gulp = require('gulp'),
     karma = require('karma').server,
     exec = require('child_process').exec,
     mkdirs = require('mkdirs'),
-    angularFilesort = require('gulp-angular-filesort');
+    angularFilesort = require('gulp-angular-filesort'),
+    naturalSort = require('gulp-natural-sort');
 
 var paths = {
     js: [
@@ -72,11 +73,12 @@ gulp.task('usage', function() {
         chalk.green('jscs'),
         '\trun jscs on all .spec.js and .js files under src and server.',
         '',
-        /*
+        chalk.green('code-check'),
+        '\tshortcut to run both jshint and jscs on the code.',
+        '',
         chalk.green('generate:data'),
         '\tgenerate sample data in the database.',
         '',
-        */
         chalk.green('clean:modules'),
         '\tdeletes the npm_modules and the src/lib directories.',
         '\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
@@ -135,7 +137,7 @@ gulp.task('inject', function() {
 
     gulp.src('./src/index.html')
         .pipe(
-            inject(gulp.src(paths.js).pipe(angularFilesort()), {relative: true}))
+            inject(gulp.src(paths.js).pipe(naturalSort()).pipe(angularFilesort()), {relative: true}))
         .pipe(gulp.dest('./src'));
 });
 
@@ -168,6 +170,8 @@ gulp.task('jscs', function() {
     .pipe(jscs.reporter())
     .pipe(jscs.reporter('fail'));
 });
+
+gulp.task('code-check', ['jshint', 'jscs']);
 
 gulp.task('test:client', function(done) {
     "use strict";

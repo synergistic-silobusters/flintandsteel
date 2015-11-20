@@ -59,8 +59,9 @@ angular.module('flintAndSteel')
 
             $scope.getUsername = function getUsername() {
                 if ($scope.isUserLoggedIn()) {
-                    $scope.username = loginSvc.getProperty('username');
+                    return loginSvc.getProperty('username');
                 }
+                return null;
             };
 
             //Login controller showing current login and logging in a new user
