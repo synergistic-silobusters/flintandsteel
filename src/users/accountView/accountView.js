@@ -25,7 +25,9 @@ angular.module('flintAndSteel')
             $scope.logout = function logout() {
                 var accountName = loginSvc.getProperty('name');
                 loginSvc.logout();
+
                 toastSvc.show(accountName + ' has been logged out!', { duration: 5000 });
+
                 $state.go('home');
             };
         }

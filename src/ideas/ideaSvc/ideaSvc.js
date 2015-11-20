@@ -97,7 +97,8 @@ angular.module('flintAndSteel')
                     { name: 'How can I help?' }
                 ];
                 return types.map(function(type) {
-                    type._lowername = type.name.toLowerCase();
+                    //Lowercase '-' separated backing types for css classes
+                    type._lowername = type.name.toLowerCase().replace(/[ ]/g, '-').replace('?', '');
                     return type;
                 });
             };

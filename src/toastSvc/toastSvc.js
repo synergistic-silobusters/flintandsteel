@@ -24,6 +24,7 @@ angular.module('flintAndSteel')
              *                          3 seconds.
              * @return {promise}         returns the promise from $mdToast.show().
              */
+             
             svc.show = function(message, options) {
                 var position, duration;
 
