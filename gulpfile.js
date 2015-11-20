@@ -186,7 +186,7 @@ gulp.task('test:load', function(cb) {
 
     var flow = {
         main: [
-            {get: 'http://innovate.ra.rockwell.com/ideaHeaders'}
+            {get: 'http://127.0.0.1/ideaHeaders'}
         ]
     };
 
