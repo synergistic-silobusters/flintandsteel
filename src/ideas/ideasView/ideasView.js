@@ -348,7 +348,7 @@ angular.module('flintAndSteel')
                         return;
                     },
                     function() {
-                        console.log("ERR: Status" + commentIndex + " not deleted");
+                        console.log("ERR: Status" + statusIndex + " not deleted");
                     });
                 }
             };
