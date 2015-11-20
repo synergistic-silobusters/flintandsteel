@@ -103,9 +103,7 @@
                                         <small ng-bind="momentizeTime(back.time)"></small>
                                     </span>
                                 </h3>
-                                <p>
-                                    {{back.author.name}}
-                                </p>
+                                {{back.author.name}}
                                 <span class="custom-chip-wrapper" ng-repeat="type in back.types">
                                     <small  class="custom-chip {{type._lowername}}" >{{type.name}}</small>
                                 </span>
@@ -165,11 +163,9 @@
                                 </md-list-item>
                                 <md-list-item class="md-1-line" ng-repeat="back in idea.backs">
                                     <div class="md-list-item-text">
-                                        <p>
-                                            <md-switch ng-model="back.isInTeam" class="md-warn"> <!-- Be careful when editing backs because of this -->
-                                                {{back.author.name}}
-                                            </md-switch>
-                                        </p>
+                                        <md-switch ng-model="back.isInTeam" class="md-warn"> <!-- Be careful when editing backs because of this -->
+                                            {{back.author.name}}
+                                        </md-switch>
                                         <span class="custom-chip-wrapper" ng-repeat="type in back.types">
                                             <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
                                         </span>
@@ -196,13 +192,16 @@
                                     <p>You are currently not part of the team.  If you would like to become part of the team, please back the idea so the author can be notified about your interest in being involved.</p>
                                 </md-list-item>
                                 <md-list-item class="md-1-line" ng-show="!ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && isUserLoggedIn()">
-                                    <p>You are part of the team!</p>
+                                    <p>You are part of the team!</p>                                    
                                 </md-list-item>
-                                <md-list-item class="md-3-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam">
-                                    <div class="md-list-item-text">
-                                        <p>
-                                            {{back.author.name}}
-                                        </p>
+                                <md-list-item class="md-1-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                                    <div ng-show="hovered === true && !ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && ideasView.isUserExactMemberOfTeam($index)">
+                                        <md-button class="md-icon-button" aria-label="Remove From Team" ng-click="ideasView.removeUserFromTeam(back)">
+                                            <i class="material-icons icon-button-adjust">&#xE14C;</i>
+                                        </md-button>
+                                    </div>
+                                    <div class="md-list-item-text" >
+                                        {{back.author.name}}
                                         <span class="custom-chip-wrapper" ng-repeat="type in back.types">
                                             <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
                                         </span>

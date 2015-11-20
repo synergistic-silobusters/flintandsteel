@@ -305,7 +305,22 @@ angular.module('flintAndSteel')
                 }
                 return false;
             };
-
+            
+            ctrl.isUserExactMemberOfTeam = function(teamIndex) {
+                if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
+                    if (loginSvc.getProperty('_id') === $scope.idea.team[teamIndex].memberId) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            
+            ctrl.removeUserFromTeam = function(backOfTeamMember) {
+                backOfTeamMember.isInTeam = false;
+                
+                ctrl.updateTeam();
+            };
+            
             ctrl.isUserAuthorOfComment = function(commentIndex) {
                 if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.comments[commentIndex].authorId) {
                     return true;
