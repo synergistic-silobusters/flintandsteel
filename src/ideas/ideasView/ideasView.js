@@ -26,9 +26,9 @@ angular.module('flintAndSteel')
             $scope.selectedTypes = [];
             $scope.selectedType = undefined;
             $scope.searchText = undefined;
-            ctrl.enableTeamEdit = false;
             $scope.showEditBackInput = false;
-            $scope.userBackIndex = '';
+            $scope.userBackIndex = '';            
+            ctrl.enableTeamEdit = false;
             ctrl.editBackText = '';
             ctrl.newComment = '';
             ctrl.newBack = '';
