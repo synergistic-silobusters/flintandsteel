@@ -14,25 +14,37 @@ describe('SearchFilter', function() {
         {
             id: 0,
             title: "Idea One",
-            author: "Test User 1",
+            author: {
+                name: "Test User 1"
+            },
+            abstract: "This is an abstract",
             likes: 8
         },
         {
             id: 1,
             title: "Idea Dos",
-            author: "Karl",
+            author: {
+                name: "Karl"
+            },
+            abstract: "OMG abstract",
             likes: 200
         },
         {
             id: 3,
             title: "cAsE iNsEnSiTiVe",
-            author: "Aaron Rodgers",
+            author: {
+                name: "Aaron Rodgers"
+            },
+            abstract: "Relax",
             likes: 13
         },
         {
             id: 4,
             title: "Broken-Spacebar<Uses:Punctuation?Instead",
-            author: "Please*Fix&My%Keyboard$#@!()\'\"{}[]|\\/`~",
+            author: {
+                name: "Please*Fix&My%Keyboard$#@!()\'\"{}[]|\\/`~"
+            },
+            abstract: "K()000*l",
             likes: 1
         }
     ];
@@ -79,6 +91,17 @@ describe('SearchFilter', function() {
 
     it('should be case-insensitive', function() {
         var query = "CaSe InSeNsItIvE";
+        expect(search(testList, query).length).toEqual(1);
+    });
+
+    it('should search the abstracts', function() {
+        var query = "abstract";
+        expect(search(testList, query).length).toEqual(2);
+
+        query = "Relax";
+        expect(search(testList, query).length).toEqual(1);
+
+        query = "K000l";
         expect(search(testList, query).length).toEqual(1);
     });
 });

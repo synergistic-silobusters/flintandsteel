@@ -8,15 +8,15 @@
 
 describe('AddIdeaViewCtrl', function() {
     "use strict";
-    
-    var scope, ctrl, $mdToast, $state, ideaSvcMock, loginSvcMock;
+
+    var scope, ctrl, toastSvc, $state, ideaSvcMock, loginSvcMock;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
 
-    beforeEach(inject(function($rootScope, $controller, _$mdToast_, _$state_, _ideaSvcMock_, _loginSvcMock_) {
+    beforeEach(inject(function($rootScope, $controller, _toastSvc_, _$state_, _ideaSvcMock_, _loginSvcMock_) {
         scope = $rootScope.$new();
-        $mdToast = _$mdToast_;
+        toastSvc = _toastSvc_;
         $state = _$state_;
         ideaSvcMock = _ideaSvcMock_;
         loginSvcMock = _loginSvcMock_;
@@ -27,7 +27,7 @@ describe('AddIdeaViewCtrl', function() {
         ctrl = $controller('AddIdeaViewCtrl', {
             $scope: scope,
             $state: $state,
-            $mdToast: $mdToast,
+            toastSvc: toastSvc,
             ideaSvc: ideaSvcMock,
             loginSvc: loginSvcMock
         });
@@ -45,20 +45,20 @@ describe('AddIdeaViewCtrl', function() {
         scope.addNewIdea(idea);
 
         expect(ideaSvcMock.postIdea).toHaveBeenCalled();
-        expect(idea.likes.length).toBe(0);
-        expect(idea.comments.length).toBe(0);
-        expect(idea.backs.length).toBe(0);
+        expect(idea.eventId).toBe("");
+        expect(idea.tags.length).toBe(0);
+        expect(idea.rolesreq.length).toBe(0);
     });
 
-    it('should use the user\'s name as the author', function() {
+    it('should use the user\'s _id as the authorId', function() {
         var idea = {
             title: 'Test Title',
-            author: 'Test',
+            authorId: 3,
             description: 'This is a test idea.'
         };
         scope.addNewIdea(idea);
 
-        expect(idea.author).not.toBe("Test");
-        expect(idea.author).toBe("Darth Vader");
+        expect(idea.authorId).not.toBe(3);
+        expect(idea.authorId).toBe(1);
     });
 });

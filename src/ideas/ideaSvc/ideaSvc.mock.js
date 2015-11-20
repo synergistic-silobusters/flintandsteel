@@ -9,17 +9,18 @@ angular.module('flintAndSteel')
 
             var mockIdea = {
                 id: 'mock_idea',
+                _id: 'mock_idea',
                 title: 'The bestest Idea ever!',
-                description: 'Apophenia order-flow systema futurity garage sentient car advert. ' + 
-                    'Footage 3D-printed Legba free-market lights courier camera Kowloon youtube ' + 
-                    'fluidity euro-pop garage bicycle augmented reality. Dome military-grade ' + 
-                    'faded meta--space vehicle warehouse. Computer concrete corrupted vehicle ' + 
-                    'tower dead knife cyber-camera augmented reality table shrine apophenia ' + 
-                    'tiger-team-ware soul-delay. Hacker pistol into plastic realism sub-orbital ' + 
-                    'futurity girl geodesic disposable boat sentient tanto urban. Plastic alcohol ' + 
-                    'bicycle carbon courier spook gang wristwatch katana sensory sign long-chain ' + 
+                description: 'Apophenia order-flow systema futurity garage sentient car advert. ' +
+                    'Footage 3D-printed Legba free-market lights courier camera Kowloon youtube ' +
+                    'fluidity euro-pop garage bicycle augmented reality. Dome military-grade ' +
+                    'faded meta--space vehicle warehouse. Computer concrete corrupted vehicle ' +
+                    'tower dead knife cyber-camera augmented reality table shrine apophenia ' +
+                    'tiger-team-ware soul-delay. Hacker pistol into plastic realism sub-orbital ' +
+                    'futurity girl geodesic disposable boat sentient tanto urban. Plastic alcohol ' +
+                    'bicycle carbon courier spook gang wristwatch katana sensory sign long-chain ' +
                     'hydrocarbons assault nano. ',
-                author: 'Darth Vader',
+                authorId: 1,
                 image: '../assets/defaultideahero.jpg',
                 likes: [
                     'cottageclaw',
@@ -41,25 +42,34 @@ angular.module('flintAndSteel')
                 managerLikes: 6,
                 comments: [
                     {
+                        commentId: 1,
+                        parentId: 'mock_idea',
                         text: 'This sounds cool',
-                        from: 'Nobody',
-                        time: moment().subtract(1, 'days').calendar()
+                        authorId: 1,
+                        timeCreated: moment().subtract(1, 'days').calendar(),
+                        timeModified: moment().subtract(1, 'days').calendar()
                     },
                     {
+                        commentId: 2,
+                        parentId: 'mock_idea',
                         text: 'Hey, I was thinking the same thing!',
-                        from: 'Another Nobody',
-                        time: moment().subtract(4, 'hours').calendar()
+                        authorId: 2,
+                        timeCreated: moment().subtract(4, 'hours').calendar(),
+                        timeModified: moment().subtract(4, 'hours').calendar()
                     },
                     {
+                        commentId: 3,
+                        parentId: 'mock_idea',
                         text: 'This is gold, gold I tell you!',
-                        from: 'The Man',
-                        time: moment().subtract(30, 'minutes').calendar()
+                        authorId: 3,
+                        timeCreated: moment().subtract(30, 'minutes').calendar(),
+                        timeModified: moment().subtract(30, 'minutes').calendar()
                     }
                 ],
                 backs: [
                     {
                         text: 'management experience',
-                        from: 'Some Manager',
+                        authorId: 4,
                         time: moment().subtract(7, 'days').calendar(),
                         types: [
                             { name: 'Experience' },
@@ -68,12 +78,17 @@ angular.module('flintAndSteel')
                     },
                     {
                         text: 'TEN MILLION DOLLARS',
-                        from: 'Just Kidding',
+                        authorId: 5,
                         time: moment().subtract(84, 'hours').calendar(),
                         types: [
                             { name: 'Funding' }
                         ]
                     }
+                ],
+                team: [
+                  {
+                      memberId: 1
+                  }
                 ]
             };
 
@@ -102,12 +117,41 @@ angular.module('flintAndSteel')
                         }
                     ];
                 },
+                postComment: function postComment(parentId, text, authorId, successCb) {
+                    mockIdea.comments.push(
+                        {
+                            commentId: 4,
+                            parentId: parentId,
+                            text: text,
+                            authorId: authorId,
+                            timeCreated: new Date().toISOString(),
+                            timeModified: new Date().toISOString()
+                        }
+                    );
+                    successCb('Posted');
+                },
+                deleteComment: function deleteComment(commentId, successCb) {
+                    for (var i = 0; i < mockIdea.comments.length; i++) {
+                        if (mockIdea.comments[i].commentId === commentId) {
+                            mockIdea.comments.splice(i, 1);
+                            break;
+                        }
+                    }
+                    successCb('Deleted');
+                },
                 getUniqueId: function getUniqueId() {
                     throw new NotImplementedException('getUniqueId');
                 },
                 updateIdea: function updateIdea(ideaId, property, data, successCb) {
                     mockIdea[property] = data;
                     successCb('OK');
+                },
+                editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
+                    mockIdea.title = title;
+                    mockIdea.description = description;
+                    mockIdea.rolesreq = rolesreq;
+                    mockIdea.timeModified = new Date().toISOString();
+                    successCb('Edited');
                 },
                 deleteIdea: function deleteIdea(ideaId, successCb) {
                     successCb('Deleted!');

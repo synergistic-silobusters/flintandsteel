@@ -9,23 +9,27 @@
 describe('IdeasViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock;
+    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc;
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_) {
+    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_, _$state_, _toastSvc_) {
         scope = $rootScope.$new();
         $stateParams = _$stateParams_;
         $mdDialog = _$mdDialog_;
         ideaSvcMock = _ideaSvcMock_;
         loginSvcMock = _loginSvcMock_;
+        $state = _$state_;
+        toastSvc = _toastSvc_;
 
         ctrl = $controller('IdeasViewCtrl', {
             $scope: scope,
             $stateParams: $stateParams,
             $mdDialog: $mdDialog,
             ideaSvc: ideaSvcMock,
-            loginSvc: loginSvcMock
+            loginSvc: loginSvcMock,
+            $state: $state,
+            toastSvc: toastSvc
         });
     }));
 
@@ -89,7 +93,7 @@ describe('IdeasViewCtrl', function() {
             scope.likeIdea();
 
             expect(scope.idea.likes.length).toBe(ideaLikes + 1);
-            expect(loginSvcMock.likeIdea).toHaveBeenCalledWith(scope.idea.id);
+            expect(loginSvcMock.likeIdea).toHaveBeenCalledWith(scope.idea._id);
         });
     });
 
@@ -110,14 +114,14 @@ describe('IdeasViewCtrl', function() {
             scope.unlikeIdea();
 
             expect(scope.idea.likes.length).toBe(ideaLikes - 1);
-            expect(loginSvcMock.unlikeIdea).toHaveBeenCalledWith(scope.idea.id);
+            expect(loginSvcMock.unlikeIdea).toHaveBeenCalledWith(scope.idea._id);
         });
     });
 
     describe('$scope.isUserLiked()', function() {
 
         beforeEach(function() {
-            scope.idea.id = 'mock_idea';
+            scope.idea._id = 'mock_idea';
         });
 
         it('should return true for a liked idea', function() {
@@ -125,7 +129,7 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should return false for other ideas', function() {
-            scope.idea.id = 'not_mock_idea';
+            scope.idea._id = 'not_mock_idea';
             expect(scope.isUserLiked()).not.toBeTruthy();
         });
     });
@@ -204,20 +208,21 @@ describe('IdeasViewCtrl', function() {
                 mockIdea = idea;
             });
             spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            spyOn(ideaSvcMock, 'editIdea').and.callThrough();
         });
 
         it('should allow the author to edit the idea', function() {
             loginSvcMock.checkLogin(authorAccount);
             expect(ctrl.isUserAuthor()).toBe(true);
             ctrl.editIdea(mockIdea.title, mockIdea.description);
-            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+            expect(ideaSvcMock.editIdea).toHaveBeenCalled();
         });
 
         it('should not allow someone other than the author to edit the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
             expect(ctrl.isUserAuthor()).toBe(false);
             ctrl.editIdea(mockIdea.title, mockIdea.description);
-            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+            expect(ideaSvcMock.editIdea).not.toHaveBeenCalled();
         });
 
         it('should allow the author to add text to the idea description', function() {
@@ -254,7 +259,7 @@ describe('IdeasViewCtrl', function() {
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
-            expect(mockIdea.editedOn.substr(-7,6)).toBeCloseTo(now.substr(-7,6), 1);
+            expect(mockIdea.timeModified.substr(-7,6)).toBeCloseTo(now.substr(-7,6), 1);
         });
 
         it('should refresh $scope.idea with the new idea data', function() {
@@ -326,6 +331,7 @@ describe('IdeasViewCtrl', function() {
             ctrl.newComment = 'This is a test comment!';
             scope.addNewInteraction('comments');
             spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            spyOn(ideaSvcMock, 'deleteComment').and.callThrough();
             commentIndex = scope.idea.comments.length - 1;
             originalLength = scope.idea.comments.length;
         });
@@ -334,10 +340,8 @@ describe('IdeasViewCtrl', function() {
             loginSvcMock.checkLogin(authorAccount);
             expect(loginSvcMock.isUserLoggedIn()).toBe(true);
             ctrl.deleteComment(commentIndex);
-            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
-            expect(scope.idea.comments.length).toBe(originalLength);
-            expect(scope.idea.comments[commentIndex].text).toBe("This comment was deleted");
-            expect(scope.idea.comments[commentIndex].deleted).toBe(true);
+            expect(ideaSvcMock.deleteComment).toHaveBeenCalled();
+            expect(scope.idea.comments.length).toBe(originalLength - 1);
         });
 
         it('should not allow someone other than the author to delete the idea', function() {
@@ -346,6 +350,76 @@ describe('IdeasViewCtrl', function() {
             expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
             expect(scope.idea.comments.length).toBe(originalLength);
             expect(scope.idea.comments[commentIndex].deleted).not.toBe(true);
+        });
+    });
+
+    describe('forming a team', function() {
+        var authorAccount = {
+            id: 1,
+            username: 'SciGuy',
+            name: 'Rick',
+            likedIdeas: [ 'mock_idea' ]
+        };
+
+        var teamLength = 0;
+        var mockIdea;
+
+        beforeEach(function() {
+            loginSvcMock.checkLogin(authorAccount);
+            ideaSvcMock.getIdea(null, function(idea) {
+                mockIdea = idea;
+            });
+            // Zero out the array
+            scope.idea.team = [];
+            teamLength = scope.idea.team.length;
+        });
+
+        it('Should not display a team when no team exists', function() {
+            expect(scope.idea.team.length).toBe(0);
+        });
+
+        it('Should allow additions and deletions of team members', function() {
+            // Add backer, check team length is 0
+            ctrl.newBack = 'Rick backs this idea!'; //how to add author to back?
+            scope.addNewInteraction('backs');
+            scope.idea.backs[teamLength].authorId = 1;
+
+            expect(scope.idea.team.length).toBe(teamLength);
+            // Add backer to team, check team length is 1
+            // & Check backer's name matches the team member name
+            scope.idea.backs[teamLength].isInTeam = true;
+            ctrl.updateTeam();
+
+            expect(scope.idea.team.length).toBe(teamLength + 1);
+            expect(scope.idea.team[teamLength].memberId).toBe(1);
+            // Remove backer from team, check team length is 0
+            scope.idea.backs[teamLength].isInTeam = false;
+            ctrl.updateTeam();
+
+            expect(scope.idea.team.length).toBe(0);
+        });
+
+        it('Should correctly update the switches', function() {
+            //add backer, check switch isInTeam is false
+            ctrl.newBack = 'Rick backs this idea!';
+            scope.addNewInteraction('backs');
+            ctrl.refreshIdea();
+            ctrl.updateTeam();
+            ctrl.refreshTeam();
+
+            expect(scope.idea.backs[teamLength].isInTeam).not.toBe(true);
+            //add backer to team, check isInTeam is true
+            scope.idea.backs[teamLength].isInTeam = true;
+            ctrl.updateTeam();
+            ctrl.refreshTeam();
+
+            expect(scope.idea.backs[teamLength].isInTeam).toBe(true);
+            //remove backer from team, check isInTeam is false
+            scope.idea.backs[teamLength].isInTeam = false;
+            ctrl.updateTeam();
+            ctrl.refreshTeam();
+
+            expect(scope.idea.backs[teamLength].isInTeam).toBe(false);
         });
     });
 });

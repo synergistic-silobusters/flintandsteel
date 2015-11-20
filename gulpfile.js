@@ -1,4 +1,5 @@
 /* global __dirname */
+/* global process */
 
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
@@ -11,8 +12,10 @@ var gulp = require('gulp'),
     stylish = require('jshint-stylish-ex'),
     nodemon = require('gulp-nodemon'),
     karma = require('karma').server,
-    fs = require('fs'),
-    ideas = require('./ideas').ideas;
+    exec = require('child_process').exec,
+    mkdirs = require('mkdirs'),
+    angularFilesort = require('gulp-angular-filesort'),
+    naturalSort = require('gulp-natural-sort');
 
 var paths = {
     js: [
@@ -26,6 +29,18 @@ var paths = {
     ]
 };
 
+var runCommand = function(command) {
+    "use strict";
+
+    return exec(command, function(err, stdout, stderr) {
+        if (err !== null) {
+            console.log(chalk.red(err));
+        }
+        process.stdout.write(stdout);
+        process.stdout.write(stderr);
+    });
+};
+
 gulp.task('default', ['usage']);
 
 gulp.task('usage', function() {
@@ -35,41 +50,84 @@ gulp.task('usage', function() {
         '',
         '',
         chalk.green('usage'),
-        '\tDisplay this help page.',
+        '\tdisplay this help page.',
         '',
-        chalk.green('start'),
-        '\t runs the app server using express.',
+        chalk.green('mongo:start'),
+        '\truns the mongodb server - this is required for the app to work.',
+        '',
+        chalk.green('mongo:stop'),
+        '\tstops the mongodb server.',
+        '',
+        chalk.green('start:dev'),
+        '\t runs the app server in development mode (doesn\'t use LDAP).',
+        '',
+        chalk.green('start:prod'),
+        '\t runs the app server in production mode (uses LDAP).',
         '',
         chalk.green('test:client'),
-        '\t runs the client side tests using karma.',
+        '\truns the client side tests using karma.',
         '',
         chalk.green('jshint'),
-        '\tRun jshint on all .spec.js and .js files under src and server.',
+        '\trun jshint on all .spec.js and .js files under src and server.',
         '',
         chalk.green('jscs'),
-        '\tRun jscs on all .spec.js and .js files under src and server.',
+        '\trun jscs on all .spec.js and .js files under src and server.',
         '',
+        /*
         chalk.green('generate:data'),
-        '\tGenerate sample data in the database.',
+        '\tgenerate sample data in the database.',
         '',
+        */
         chalk.green('clean:modules'),
-        '\tDeletes the npm_modules and the src/lib directories.',
+        '\tdeletes the npm_modules and the src/lib directories.',
         '\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
         ' will be required before running the app.',
-        '',
-        chalk.green('clean:db'),
-        '\tResets the persistent app storage by clearing out the datastore folder.',
         ''
     ];
     gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('start', ['_cleanUp', 'test:client', 'inject'], function() {
+gulp.task('mongo:start', function() {
+    "use strict";
+
+    var command = 'mongod --config ./server/mongod.conf';
+    var mongodProc;
+    mkdirs('server/datastore/db');
+    mkdirs('server/datastore/log');
+    mongodProc = runCommand(command);
+    gutil.log('Mongodb server is now ' + chalk.green('running') + '.');
+
+    mongodProc.on('exit', function(code) {
+        gutil.log('Mongodb server exited with exit code ' + code + '.');
+    });
+});
+
+gulp.task('mongo:stop', function() {
+    "use strict";
+
+    var command = 'mongo admin --eval "db.shutdownServer();"';
+    runCommand(command);
+
+    del('server/datastore/mongod-pids');
+});
+
+gulp.task('start:dev', ['test:client', 'inject', 'generate:data'], function() {
     "use strict";
 
     nodemon({
         script: 'server/server.js',
-        'ignore': ['spec/*']
+        env: { 'NODE_ENV': 'development' },
+        'ignore': ['server/datastore/*']
+    });
+});
+
+gulp.task('start:prod', ['test:client', 'inject'], function() {
+    "use strict";
+
+    nodemon({
+        script: 'server/server.js',
+        env: { 'NODE_ENV': 'production' },
+        'ignore': ['server/datastore/*']
     });
 });
 
@@ -77,7 +135,8 @@ gulp.task('inject', function() {
     "use strict";
 
     gulp.src('./src/index.html')
-        .pipe(inject(gulp.src(paths.js, {read: false}), {relative: true}))
+        .pipe(
+            inject(gulp.src(paths.js).pipe(naturalSort()).pipe(angularFilesort()), {relative: true}))
         .pipe(gulp.dest('./src'));
 });
 
@@ -88,7 +147,8 @@ gulp.task('jshint', function() {
         'src/**/*.js',
         'server/**/*.js',
         'gulpfile.js',
-        '!src/lib/**/*.*'
+        '!src/lib/**/*.*',
+        '!server/secrets/*.*'
     ])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish))
@@ -102,7 +162,8 @@ gulp.task('jscs', function() {
         'src/**/*.js',
         'server/**/*.js',
         'gulpfile.js',
-        '!src/lib/**/*.*'
+        '!src/lib/**/*.*',
+        '!server/secrets/*.*'
     ])
     .pipe(jscs({ configPath: './.jscsrc' }))
     .pipe(jscs.reporter())
@@ -127,59 +188,18 @@ gulp.task('clean:modules', function() {
     ]);
 });
 
-gulp.task('clean:db', function() {
+gulp.task('clean:db-dev', function() {
     "use strict";
-
-    return del([
-        'server/datastore/users/*',
-        'server/datastore/ideas/*'
-    ]);
+    var command = "mongo flintandsteel-dev --eval \"db.dropDatabase()\"";
+    runCommand(command);
 });
 
-gulp.task('_createDataDirs', function() {
-    "use strict";
 
-    return gulp.src('README.md')
-    .pipe(gulp.dest('server/datastore/ideas'))
-    .pipe(gulp.dest('server/datastore/users'));
+gulp.task('generate:data', ['clean:db-dev'], function() {
+    "use strict";
+    var command = "node generateData.js";
+    runCommand(command);
 });
 
-gulp.task('_cleanUp', ['_createDataDirs'], function() {
-    "use strict";
-
-    return del([
-        'server/datastore/users/README.md',
-        'server/datastore/ideas/README.md'
-    ]);
-});
-
-gulp.task('generate:data', ['_createDataDirs', '_cleanUp'], function() {
-    "use strict";
-
-    var filePattern = "server/datastore/ideas/idea_X.json";
-    var fileName = filePattern.replace("X", "0");
-
-    fs.stat(fileName, function(err /*, stat */) {
-
-        if (err === null) {
-            // File exists
-            gutil.log(chalk.red("ERROR: Please delete the ideas in 'server/datastore/ideas' to continue"));
-        } 
-        else if (err.code === 'ENOENT') {
-            // File does not exist, generate ideas
-            ideas.forEach(function(idea, index /*, arr */) {
-                fs.writeFile(filePattern.replace("X", index), JSON.stringify(idea), function(err) {
-                    if (err) {
-                        // Should no longer happen due to the gulp pre-requisite tasks.
-                        gutil.log(chalk.red("ERROR: Try to create the 'server/datastore/ideas' directory path to continue."));
-                    }
-                });
-            });
-        }
-        else {
-            // Something went very wrong.
-            console.error("ERROR: ", err.code);
-            throw err;
-        }
-    });
-});
+// A shorter call for generating colon data
+gulp.task('poop', ['generate:data']);

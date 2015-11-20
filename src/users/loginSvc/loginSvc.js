@@ -87,6 +87,17 @@ angular.module('flintAndSteel')
                 }
             };
 
+            this.getUserById = function getUserById(userId, successCb, errorCb) {
+                if (userId) {
+                    $http.get('/user?id=' + userId)
+                        .success(successCb)
+                        .error(errorCb);
+                }
+                else {
+                    return false;
+                }
+            };
+
             return {
                 checkLogin: this.checkLogin,
                 addUser: this.addUser,
@@ -96,7 +107,8 @@ angular.module('flintAndSteel')
                 likeIdea: this.likeIdea,
                 unlikeIdea: this.unlikeIdea,
                 updateAccount: this.updateAccount,
-                checkValidUsername: this.checkValidUsername
+                checkValidUsername: this.checkValidUsername,
+                getUserById: this.getUserById
             };
         }
     ]
