@@ -99,11 +99,7 @@
                         <md-list-item class="md-3-line" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                             <div ng-show="hovered === true && ideasView.isUserAuthorOfBack($index)">
                                 <md-button class="md-icon-button" aria-label="Edit Back" ng-click="loadEditBack()">
-<<<<<<< HEAD
                                     <i class="material-icons icon-button-adjust">&#xE3C9;</i>
-=======
-                                    <md-icon md-svg-icon="editor:mode_edit"></md-icon>
->>>>>>> Added edit back functionality.
                                 </md-button>
                             </div>                            
                             <div class="md-list-item-text">
@@ -161,11 +157,7 @@
                         </div>
                         <div layout="column" layout-align="center end" ng-show="showEditBackInput">
                             <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.editBackText === ''" ng-click="ideasView.editBack(userBackIndex)">
-<<<<<<< HEAD
                                 <i class="material-icons icon-button-adjust">&#xE876;</i>
-=======
-                                <md-icon md-svg-icon="action:done"></md-icon>
->>>>>>> Added edit back functionality.
                             </md-button>
                         </div>                        
                     </div>
