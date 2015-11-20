@@ -59,6 +59,28 @@ module.exports = function(db) {
         });
     };
 
+    module.addStatus = function(id, objectId, cb) {
+        var obj = {
+            statusId: objectId
+        };
+
+        db.updateOnePushArray(COLLECTION, id, "statuses", obj, function(err, results) {
+            cb(err, results);
+        });
+    };
+
+    module.removeStatus = function(statusId, cb) {
+        var objId = new ObjectId(statusId);
+
+        var obj = {
+            statusId: objId
+        };
+
+        db.findAndPullArray(COLLECTION, "statuses", obj, function(err, results) {
+            cb(err, results);
+        });
+    };
+
     module.edit = function(id, title, description, rolesreq, cb) {
         var now = new Date().toISOString();
 

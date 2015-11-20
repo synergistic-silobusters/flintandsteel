@@ -30,6 +30,8 @@ angular.module('flintAndSteel')
             ctrl.newComment = '';
             ctrl.newBack = '';
             ctrl.enableEdit = false;
+            ctrl.newStatus = '';
+            ctrl.enableStatusEdit = false;
 
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
@@ -110,7 +112,7 @@ angular.module('flintAndSteel')
 
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
-                if (type === 'comments' || type === 'backs') {
+                if (type === 'comments' || type === 'backs' || type === 'statuses') {
                     if (type === 'comments') {
                         ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
                             function success() {},
@@ -134,11 +136,20 @@ angular.module('flintAndSteel')
                             }
                         );
                     }
+                    else if (type === 'statuses') {
+                        ideaSvc.postStatus($scope.idea._id, ctrl.newStatus, loginSvc.getProperty('_id'),
+                            function success() {},
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
+                    }
 
                     $scope.selectedTypes = [];
                     $scope.selectedType = undefined;
                     ctrl.newComment = '';
                     ctrl.newBack = '';
+                    ctrl.newStatus = '';
                     ctrl.refreshIdea();
                 }
             };
@@ -320,6 +331,24 @@ angular.module('flintAndSteel')
                     },
                     function() {
                         console.log("ERR: Comment " + commentIndex + " not deleted");
+                    });
+                }
+            };
+
+            ctrl.isUserAuthorOfStatus = function(statusIndex) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.statuses[statusIndex].authorId) {
+                    return true;
+                }
+                return false;
+            };
+
+            ctrl.deleteStatus = function(statusIndex) {
+                if (ctrl.isUserAuthorOfStatus(statusIndex) || ctrl.isUserAuthor(statusIndex)) {
+                    ideaSvc.deleteStatus($scope.idea.statuses[statusIndex].statusId, function() {
+                        return;
+                    },
+                    function() {
+                        console.log("ERR: Status" + commentIndex + " not deleted");
                     });
                 }
             };

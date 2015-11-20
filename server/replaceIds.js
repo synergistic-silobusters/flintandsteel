@@ -7,6 +7,7 @@ module.exports = function(db) {
 
     var users = require('./users/users')(db),
         comments = require('./comments/comments')(db),
+        statuses = require('./statuses/statuses')(db),
         events = require('./events/events')(db),
         Promise = require('bluebird');
 
@@ -175,13 +176,72 @@ module.exports = function(db) {
             });
         }
 
+        var ideaStatuses = [];
+        if (data.statuses.length === 0) {
+            ideaStatuses.push(new Promise(function(resolve) {
+                resolve(null);
+            }));
+        }
+        else {
+            ideaStatuses = data.statuses.map(function(status) {
+                return new Promise(function(resolve, reject) {
+                    statuses.get(status.statusId, function(err, statusObj) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        }
+                        else {
+                            for (var attrName in statusObj) {
+                                if (statusObj.hasOwnProperty(attrName)) {
+                                    status[attrName] = statusObj[attrName];
+                                }
+                            }
+                            resolve(status);
+                        }
+                    });
+                });
+            });
+        }
+
+        var ideaStatusAuthors = [];
+        if (data.statuses.length === 0) {
+            ideaStatusAuthors.push(new Promise(function(resolve) {
+                resolve(null);
+            }));
+        }
+        else {
+            ideaStatusAuthors = Promise.all(ideaStatuses).then(function() {
+                ideaStatusAuthors = data.statuses.map(function(status) {
+                    return new Promise(function(resolve, reject) {
+                        users.get(status.authorId, function(err, statusObj) {
+                            if (err) {
+                                console.log(err);
+                                reject(err);
+                            }
+                            else {
+                                status.author = statusObj;
+                                resolve(status);
+                            }
+                        });
+                    });
+                });
+                return ideaStatusAuthors;
+            }, function() {
+                ideaStatusAuthors.push(new Promise(function(resolve, reject) {
+                    reject(null);
+                }));
+                return ideaStatusAuthors;
+            });
+        }
+
         Promise.all([
             ideaAuthor,
             ideaEvent,
             Promise.all(ideaLikes),
             Promise.all(ideaCommentAuthors),
             Promise.all(ideaBacks),
-            Promise.all(ideaTeam)
+            Promise.all(ideaTeam),
+            Promise.all(ideaStatusAuthors)
         ]).then(function() {
             cb(null, data);
         }, function() {

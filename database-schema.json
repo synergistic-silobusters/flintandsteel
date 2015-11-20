@@ -50,6 +50,10 @@
         "team": [
             {"memberId": "idea.authorId"},
             "set of objects with user._id"
+        ],
+        "statuses": [
+            {"statusId": "status._id"},
+            "set of objects with status._id"
         ]
     },
     "comment": {
@@ -68,5 +72,13 @@
             "startDate": "",
             "endDate": ""
         }
-    ]
+    ],
+    "status": {
+        "_id": "mongo_generated",
+        "parentId": "one idea._id || one status._id",
+        "text": "",
+        "authorId": "one user._id",
+        "timeCreated": "",
+        "timeModified": ""
+    },
 }
