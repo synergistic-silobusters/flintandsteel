@@ -3,7 +3,7 @@
     <md-card-content>
         <div ng-hide="ideasView.enableEdit">
             <h1>{{idea.title}}</h1>
-            <h3>by <a href="mailto:{{idea.author.mail}}?Subject=Innovation%20Challenge" target="_top" class="mailto-format">{{idea.author.name}}</a></h3>
+            <email-link author-obj="idea.author"></email-link>
             <p>{{idea.description}}</p>
         </div>
         <form ng-show="ideasView.enableEdit" name="newIdeaForm">
@@ -78,7 +78,7 @@
                             </div>
                             <div class="md-list-item-text" ng-class="{'deleted': comment.deleted === true}">
                                 <h3>{{comment.text}}</h3>
-                                <p><a href="mailto:{{comment.author.mail}}?Subject=Innovation%20Challenge" target="_top" class="mailto-format">{{comment.author.name}}</a> <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
+                                <p><email-link author-obj="comment.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
                             </div>
                         </md-list-item>
                     </md-list>
@@ -100,7 +100,7 @@
                             <div class="md-list-item-text">
                                 <h3>{{back.text}}</h3>
                                 <p>
-                                    <a href="mailto:{{back.author.name}}?Subject=Innovation%20Challenge" target="_top" class="mailto-format">{{back.author.name}}</a> <small class="extra-space-left" ng-bind="momentizeTime(back.time)"> </small>
+                                    <a href="mailto:{{back.author.mail}}?Subject=Innovation%20Challenge" target="_top" class="mailto-format">{{back.author.name}}</a> <small class="extra-space-left" ng-bind="momentizeTime(back.time)"> </small>
                                     <span class="extra-space-left">
                                         <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
                                     </span>
@@ -151,7 +151,7 @@
                                     <div class="md-list-item-text">
                                         <p>
                                             <md-switch ng-model="back.isInTeam" class="md-warn"> <!-- Be careful when editing backs because of this -->
-                                                {{back.author.name}}
+                                                <email-link author-obj = "back.author"></email-link>
                                                 <span class="extra-space-left">
                                                     <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
                                                 </span>
@@ -165,7 +165,7 @@
                             <md-list>
                                 <md-list-item class="md-2-line" ng-repeat="member in idea.team">
                                     <div class="md-list-item-text">
-                                        <h3>{{member.member.name}}</h3> <!-- now displays, but doesn't seem to save-->
+                                        <h3><email-link author-obj = "member.member"></email-link></h3> <!-- now displays, but doesn't seem to save-->
                                         <p>
                                             <span class="extra-space-left">
                                                 <small class="custom-chip" ng-repeat="type in member.types">{{type.name}}</small>
