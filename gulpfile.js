@@ -61,6 +61,8 @@ gulp.task('usage', function() {
         chalk.green('start:dev'),
         '\t runs the app server in development mode (doesn\'t use LDAP, generates data).',
         '',
+        chalk.green('start:test'),
+        '\t runs the app server in test mode for load testing (doesn\'t generate data).',
         '',
         chalk.green('start:prod'),
         '\t runs the app server in production mode (uses LDAP, HTTPS).',
