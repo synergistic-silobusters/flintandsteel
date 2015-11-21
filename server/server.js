@@ -27,6 +27,10 @@ GLOBAL.db = require('./db')(dbName);
 // configuration ======================================================
 var port = process.env.PORT_HTTP || process.argv[2] || 8080;
 
+if (process.env.NODE_ENV === 'test') {
+    port = 80;
+}
+
 var app = express();
 
 app.use(express.static(path.join(__dirname + '/../src')));
@@ -108,7 +112,7 @@ external(function(err, ipExternal) {
 });
 
 // start app ==========================================================
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' && process.env.NODE_ENV === 'test') {
     console.log('Server running in ' + chalk.cyan('development') + ' mode.');
     app.listen(port);
 }
