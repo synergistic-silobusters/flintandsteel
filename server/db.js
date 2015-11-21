@@ -1,6 +1,6 @@
 /* global module */
 
-module.exports = function(dbName) {
+module.exports = function(dbName, cb) {
     "use strict";
 
     var module = {};
@@ -42,6 +42,9 @@ module.exports = function(dbName) {
                                         }
                                         else {
                                             console.log(chalk.green("Database collections created!"));
+                                            if (typeof cb !== 'undefined') {
+                                                cb(null);
+                                            }
                                         }
                                     });
                                 }
