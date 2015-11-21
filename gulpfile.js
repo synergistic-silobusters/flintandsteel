@@ -122,6 +122,16 @@ gulp.task('start:dev', ['test:client', 'inject', 'generate:data'], function() {
     });
 });
 
+gulp.task('start:test', ['test:client', 'inject'], function() {
+    "use strict";
+
+    nodemon({
+        script: 'server/server.js',
+        env: { 'NODE_ENV': 'test' },
+        'ignore': ['server/datastore/*']
+    });
+});
+
 gulp.task('start:prod', ['test:client', 'inject'], function() {
     "use strict";
 
