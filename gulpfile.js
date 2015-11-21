@@ -180,6 +180,7 @@ gulp.task('test:client', function(done) {
 });
 
 gulp.task('test:load', function(cb) {
+    "use strict";
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
     var benchrest = require('bench-rest');
