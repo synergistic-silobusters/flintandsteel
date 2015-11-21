@@ -198,7 +198,7 @@ gulp.task('test:client', function(done) {
     }, done);
 });
 
-gulp.task('test:load', function(cb) {
+gulp.task('test:load', ['clean:db-dev'], function(cb) {
     "use strict";
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
