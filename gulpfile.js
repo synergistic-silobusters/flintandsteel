@@ -59,10 +59,11 @@ gulp.task('usage', function() {
         '\tstops the mongodb server.',
         '',
         chalk.green('start:dev'),
-        '\t runs the app server in development mode (doesn\'t use LDAP).',
+        '\t runs the app server in development mode (doesn\'t use LDAP, generates data).',
+        '',
         '',
         chalk.green('start:prod'),
-        '\t runs the app server in production mode (uses LDAP).',
+        '\t runs the app server in production mode (uses LDAP, HTTPS).',
         '',
         chalk.green('test:client'),
         '\truns the client side tests using karma.',
@@ -83,6 +84,9 @@ gulp.task('usage', function() {
         '\tdeletes the npm_modules and the src/lib directories.',
         '\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
         ' will be required before running the app.',
+        '',
+        chalk.green('clean:db-dev'),
+        '\tclears the development database.',
         ''
     ];
     gutil.log(usageLines.join(os.EOL));
