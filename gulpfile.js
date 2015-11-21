@@ -73,11 +73,12 @@ gulp.task('usage', function() {
         chalk.green('jscs'),
         '\trun jscs on all .spec.js and .js files under src and server.',
         '',
-        /*
+        chalk.green('code-check'),
+        '\tshortcut to run both jshint and jscs on the code.',
+        '',
         chalk.green('generate:data'),
         '\tgenerate sample data in the database.',
         '',
-        */
         chalk.green('clean:modules'),
         '\tdeletes the npm_modules and the src/lib directories.',
         '\t' + chalk.magenta('NOTE:') + ' ' + chalk.green('npm install') +
@@ -169,6 +170,8 @@ gulp.task('jscs', function() {
     .pipe(jscs.reporter())
     .pipe(jscs.reporter('fail'));
 });
+
+gulp.task('code-check', ['jshint', 'jscs']);
 
 gulp.task('test:client', function(done) {
     "use strict";
