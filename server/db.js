@@ -14,7 +14,7 @@ module.exports = function(dbName) {
 
     if (typeof dbName !== "undefined") {
         MongoClient.connect("mongodb://localhost:27017/" + dbName, function(err, database) {
-            console.log("Setting up db " + dbName);
+            console.log(chalk.yellow("Setting up db " + dbName));
             db = database;
             if (db === null) {
                 console.error(chalk.red("Please ensure you've started the mongodb server using gulp mongo:start."));
@@ -41,7 +41,7 @@ module.exports = function(dbName) {
                                             console.log(errIdea);
                                         }
                                         else {
-                                            console.log("Database collections created!");
+                                            console.log(chalk.green("Database collections created!"));
                                         }
                                     });
                                 }
