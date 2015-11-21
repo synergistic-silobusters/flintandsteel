@@ -200,7 +200,7 @@ gulp.task('test:load', function(cb) {
 
     var flow = {
         main: [
-            {get: 'http://127.0.0.1/ideaHeaders'}
+            {get: 'http://127.0.0.1:7357/ideaHeaders'}
         ]
     };
 

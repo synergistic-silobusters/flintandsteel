@@ -28,7 +28,7 @@ GLOBAL.db = require('./db')(dbName);
 var port = process.env.PORT_HTTP || process.argv[2] || 8080;
 
 if (process.env.NODE_ENV === 'test') {
-    port = 80;
+    port = 7357;
 }
 
 var app = express();
