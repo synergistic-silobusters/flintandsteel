@@ -112,11 +112,11 @@ external(function(err, ipExternal) {
 });
 
 // start app ==========================================================
-if (process.env.NODE_ENV === 'development' && process.env.NODE_ENV === 'test') {
-    console.log('Server running in ' + chalk.cyan('development') + ' mode.');
+if (process.env.NODE_ENV !== 'production') {
+    console.log('Server running in ' + chalk.cyan(process.env.NODE_ENV) + ' mode.');
     app.listen(port);
 }
-else if (process.env.NODE_ENV === 'production') {
+else {
     console.log('Server running in ' + chalk.cyan('production') + ' mode.');
     var https = require('https');
     var http = require('http');
