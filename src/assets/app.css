@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 .icon-button-adjust {
     vertical-align: middle;
@@ -51,13 +51,57 @@ body {
     margin-left: 20px;
 }
 
-.custom-chip {
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 3px 6px;
+.custom-chip-wrapper{
+    margin:2px 2px 2px 0px;
+    display:inline-block;
+}
+
+.custom-chip{
+    margin-bottom: 3px;
+    padding: 3px 10px;
     background-color: #e0e0e0;
     color: #424242;
     border-radius: 10px;
+    white-space:nowrap;
+}
+
+.custom-chip.knowledge{
+    background-color: #F44336;
+    color: #FFFFFF;
+}
+
+.custom-chip.time{
+    background-color: #3F51B5;
+    color: #FFFFFF;
+}
+
+.custom-chip.funding{
+    background-color: #009688;
+    color: #FFFFFF;
+}
+
+.custom-chip.experience{
+    background-color: #8BC34A;
+    color: #FFFFFF;
+}
+
+.custom-chip.social-network{
+    background-color: #FF9800;
+    color: #FFFFFF;
+}
+
+.custom-chip.materials{
+    background-color: #795548;
+    color: #FFFFFF;
+  }
+.custom-chip.how-can-i-help{
+    background-color: #E91E63;
+    color: #FFFFFF;
+}
+
+.custom-chip.owner{
+    background-color: #03A9F4;
+    color: #FFFFFF;
 }
 
 .idea-pointer {
@@ -82,6 +126,7 @@ body {
 
 .idea-likes-click {
     cursor: pointer;
+    padding-left: 5px;
 }
 
 .deleted  h3, .deleted p{
@@ -115,14 +160,17 @@ body {
 .about-technologies{
     padding: 15px;
 }
+
 .about-padding-bottom{
     padding-bottom: 15px;
 }
+
 .about-padding-top{
     padding-top: 15px;
 }
+
 .mailto-format{
-    text-decoration:none !important; 
+    text-decoration:none !important;
     text-decoration:none;
     color: #666;
 }
@@ -131,3 +179,7 @@ body {
     vertical-align: middle;
 }
 
+.md-tab.md-active {
+    background-color: #e0e0e0;
+    border-radius: 5px 5px 0px 0px;
+}

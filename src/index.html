@@ -29,20 +29,20 @@
 
     <!-- inject:js -->
   <script src="app.js"></script>
-  <script src="about/about.js"></script>
-  <script src="homeView/homeView.js"></script>
-  <script src="navigation/sidenav.js"></script>
-  <script src="navigation/toolbar.js"></script>
+  <script src="users/loginSvc/loginSvc.js"></script>
+  <script src="users/accountView/accountView.js"></script>
   <script src="toastSvc/toastSvc.js"></script>
-  <script src="ideas/addIdeaView/addIdeaView.js"></script>
+  <script src="navigation/toolbar.js"></script>
+  <script src="navigation/sidenav.js"></script>
+  <script src="ideas/searchFilter/searchFilter.js"></script>
+  <script src="ideas/ideasView/ideasView.js"></script>
+  <script src="ideas/ideaSvc/ideaSvc.js"></script>
+  <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
   <script src="ideas/ideaItem/ideaItem.js"></script>
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
-  <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
-  <script src="ideas/ideaSvc/ideaSvc.js"></script>
-  <script src="ideas/ideasView/ideasView.js"></script>
-  <script src="ideas/searchFilter/searchFilter.js"></script>
-  <script src="users/accountView/accountView.js"></script>
-  <script src="users/loginSvc/loginSvc.js"></script>
+  <script src="ideas/addIdeaView/addIdeaView.js"></script>
+  <script src="homeView/homeView.js"></script>
+  <script src="about/about.js"></script>
   <!-- endinject -->
 
 </head>
@@ -58,19 +58,31 @@
             <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">All Ideas</span>
             <span flex></span>
 
-
-            <div class="md-padding" id="popupContainer" ng-cloak="">
+            <div class="md-padding">
                 <!-- Login Button -->
                 <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
                     <i class="material-icons icon-button-adjust">&#xE8A6;</i>
                 </md-button>
+
                 <!-- Profile button -->
-                <a href="#/account" ng-show="isUserLoggedIn()" style="font-size:14px">
+                <div ng-show="isUserLoggedIn()" style="font-size:14px">
                     {{currentUser}}
-                    <md-button class="md-icon-button" aria-label="Account" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="isUserLoggedIn()">
-                        <identicon username='username' size='24' ng-init="getUsername()" class="identicon"></identicon>   
-                    </md-button>
-                </a>
+                    <md-menu md-offset="0 50">
+                        <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                            <identicon md-menu-origin="" username='getUsername()' size='30' class="identicon"></identicon>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button ng-click="settings()">Profile</md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="logout()">
+                                    <p flex="">Logout</p>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
             </div>
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
                 <i class="material-icons icon-button-adjust">&#xE5D4;</i>

@@ -59,8 +59,9 @@ angular.module('flintAndSteel')
 
             $scope.getUsername = function getUsername() {
                 if ($scope.isUserLoggedIn()) {
-                    $scope.username = loginSvc.getProperty('username');
+                    return loginSvc.getProperty('username');
                 }
+                return null;
             };
 
             //Login controller showing current login and logging in a new user
@@ -98,6 +99,19 @@ angular.module('flintAndSteel')
                 function loginError(data, status) {
                     console.log(status);
                 });
+            };
+
+            // Logout from menu
+            $scope.logout = function logout() {
+                var accountName = loginSvc.getProperty('name');
+                loginSvc.logout();
+                toastSvc.show(accountName + ' has been logged out!');
+                $state.go('home');
+            };
+
+            // Re-route to account page from menu
+            $scope.settings = function settings() {
+                $state.go('account');
             };
         }
     ]

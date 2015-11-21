@@ -15,16 +15,15 @@ angular.module('flintAndSteel')
             $scope.idea = {};
 
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
-                ideaToAdd.author = loginSvc.getProperty('_id');
-                ideaToAdd.likes = [];
-                ideaToAdd.comments = [];
-                ideaToAdd.backs = [];
+                ideaToAdd.authorId = loginSvc.getProperty('_id');
+                ideaToAdd.eventId = "";
+                ideaToAdd.tags = [];
+                ideaToAdd.rolesreq = [];
                 ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
-                    console.log(data);
-                    if (data === 'Created') {
+                    if (angular.isDefined(data.status) && data.status === 'Created') {
                         toastSvc.show('New idea created successfully!');
                         $scope.$emit('newIdeaAdded');
-                        $state.go('home');
+                        $state.go('idea', { ideaId: data._id });
                     }
                 }, function(data, status) {
                     console.log(status);
