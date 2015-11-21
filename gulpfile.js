@@ -211,6 +211,11 @@ gulp.task('test:load', function(cb) {
 
     benchrest(flow, runOptions)
         .on('error', function error(err, ctxName) {
+            if (err.code === 'ECONNREFUSED') {
+                console.error(chalk.red('Please ensure the server is started on port 7357 by running gulp start:test'));
+                process.exit(1);
+                return;
+            }
             console.error(chalk.red('Failed in ' + ctxName + ' with error: '), err);
         })
         .on('end', function end(stats, errorCount) {

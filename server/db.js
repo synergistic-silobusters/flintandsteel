@@ -16,6 +16,11 @@ module.exports = function(dbName) {
         MongoClient.connect("mongodb://localhost:27017/" + dbName, function(err, database) {
             console.log("Setting up db " + dbName);
             db = database;
+            if (db === null) {
+                console.error(chalk.red("Please ensure you've started the mongodb server using gulp mongo:start."));
+                process.exit(1);
+                return;
+            }
             db.createCollection('users', function(errUsers) {
                 if (errUsers) {
                     console.log(errUsers);
