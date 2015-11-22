@@ -9,7 +9,12 @@
     </div>
     <div flex layout="row">
         <div layout="row">
-            <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs}} Backs and {{idea.team}} People</span>
+            <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs}} Backs and  
+            <ng-pluralize count={{idea.team}} 
+                 when="{'0': '{} People',
+                        'one': '{} Person',
+                        'other': '{} People'}">
+            </ng-pluralize></span>
         </div>
     </div>
     </md-card-content>
