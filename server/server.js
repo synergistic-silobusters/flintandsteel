@@ -119,34 +119,34 @@ if (process.env.NODE_ENV !== 'production') {
     // if (cluster.isMaster) {
     console.log('Server running in ' + chalk.cyan(process.env.NODE_ENV) + ' mode.');
 
-        // console.log('Master cluster setting up ' + numCpus + ' workers to listen on port ' + port + '...');
-        // var workers = [];
-        // for (var i = 0; i < numCpus; i++) {
-        //     workers.push(cluster.fork());
-        // }
+    // console.log('Master cluster setting up ' + numCpus + ' workers to listen on port ' + port + '...');
+    // var workers = [];
+    // for (var i = 0; i < numCpus; i++) {
+    //     workers.push(cluster.fork());
+    // }
 
-        // cluster.on('online', function(worker) {
-        //     console.log('Worker ' + worker.process.pid + ' is online!');
-        // });
-        //
-        // cluster.on('exit', function(worker, code, signal) {
-        //     console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
-        //     console.log('Starting a new worker');
-        //     for (var i = workers.length - 1; i >= 0; i--) {
-        //       if (worker === workers[i]) {
-        //         workers.splice(i, 1);
-        //         break;
-        //       }
-        //     }
-        //     workers.push(cluster.fork());
-        // });
+    // cluster.on('online', function(worker) {
+    //     console.log('Worker ' + worker.process.pid + ' is online!');
+    // });
+    //
+    // cluster.on('exit', function(worker, code, signal) {
+    //     console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+    //     console.log('Starting a new worker');
+    //     for (var i = workers.length - 1; i >= 0; i--) {
+    //       if (worker === workers[i]) {
+    //         workers.splice(i, 1);
+    //         break;
+    //       }
+    //     }
+    //     workers.push(cluster.fork());
+    // });
     // } else {
     app.listen(port);
-        // process.on('message', function(message) {
-        //     if(message.type === 'shutdown') {
-        //         process.exit(0);
-        //     }
-        // });
+    // process.on('message', function(message) {
+    //     if(message.type === 'shutdown') {
+    //         process.exit(0);
+    //     }
+    // });
     // }
 }
 else {
