@@ -26,24 +26,17 @@ module.exports = function(dbName) {
                             console.log(errEvents);
                         }
                         else {
-                            db.createCollection('statuses', function(errStatuses) {
-                                if (errStatuses) {
-                                    console.log(errStatuses);
+                            db.createCollection('comments', function(errComments) {
+                                if (errComments) {
+                                    console.log(errComments);
                                 }
                                 else {
-                                    db.createCollection('comments', function(errComments) {
-                                        if (errComments) {
-                                            console.log(errComments);
+                                    db.createCollection('ideas', function(errIdea) {
+                                        if (errIdea) {
+                                            console.log(errIdea);
                                         }
                                         else {
-                                            db.createCollection('ideas', function(errIdea) {
-                                                if (errIdea) {
-                                                    console.log(errIdea);
-                                                }
-                                                else {
-                                                    console.log("Database collections created!");
-                                                }
-                                            });
+                                            console.log("Database collections created!");
                                         }
                                     });
                                 }

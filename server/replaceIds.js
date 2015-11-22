@@ -7,7 +7,6 @@ module.exports = function(db) {
 
     var users = require('./users/users')(db),
         comments = require('./comments/comments')(db),
-        statuses = require('./statuses/statuses')(db),
         events = require('./events/events')(db),
         Promise = require('bluebird');
 
@@ -176,61 +175,26 @@ module.exports = function(db) {
             });
         }
 
-        var ideaStatuses = [];
-        if (data.statuses.length === 0) {
-            ideaStatuses.push(new Promise(function(resolve) {
+        var ideaUpdates = [];
+        if (data.updates.length === 0) {
+            ideaUpdates.push(new Promise(function(resolve) {
                 resolve(null);
             }));
         }
         else {
-            ideaStatuses = data.statuses.map(function(status) {
+            ideaUpdates = data.updates.map(function(update) {
                 return new Promise(function(resolve, reject) {
-                    statuses.get(status.statusId, function(err, statusObj) {
+                    users.get(update.authorId, function(err, updateObj) {
                         if (err) {
                             console.log(err);
                             reject(err);
                         }
                         else {
-                            for (var attrName in statusObj) {
-                                if (statusObj.hasOwnProperty(attrName)) {
-                                    status[attrName] = statusObj[attrName];
-                                }
-                            }
-                            resolve(status);
+                            update.author = updateObj;
+                            resolve(update);
                         }
                     });
                 });
-            });
-        }
-
-        var ideaStatusAuthors = [];
-        if (data.statuses.length === 0) {
-            ideaStatusAuthors.push(new Promise(function(resolve) {
-                resolve(null);
-            }));
-        }
-        else {
-            ideaStatusAuthors = Promise.all(ideaStatuses).then(function() {
-                ideaStatusAuthors = data.statuses.map(function(status) {
-                    return new Promise(function(resolve, reject) {
-                        users.get(status.authorId, function(err, statusObj) {
-                            if (err) {
-                                console.log(err);
-                                reject(err);
-                            }
-                            else {
-                                status.author = statusObj;
-                                resolve(status);
-                            }
-                        });
-                    });
-                });
-                return ideaStatusAuthors;
-            }, function() {
-                ideaStatusAuthors.push(new Promise(function(resolve, reject) {
-                    reject(null);
-                }));
-                return ideaStatusAuthors;
             });
         }
 
@@ -241,7 +205,7 @@ module.exports = function(db) {
             Promise.all(ideaCommentAuthors),
             Promise.all(ideaBacks),
             Promise.all(ideaTeam),
-            Promise.all(ideaStatusAuthors)
+            Promise.all(ideaUpdates)
         ]).then(function() {
             cb(null, data);
         }, function() {

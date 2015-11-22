@@ -67,6 +67,43 @@
 <md-card>
     <md-card-content>
         <md-tabs md-dynamic-height md-border-bottom="">
+            <md-tab label="Updates">
+                <md-content class="md-padding">
+                    <md-card>
+                        <md-card-content ng-if="ideasView.isUserAuthor() || ideasView.isUserMemberOfTeam()">
+                            <form layout="row">
+                                <md-input-container id="comment-box-container" class="some-padding-bottom" flex>
+                                    <label>Add a status update</label>
+                                    <input id="comment-box" ng-model="ideasView.newUpdate" type="text" />
+                                </md-input-container>
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newUpdate === ''" ng-click="addNewInteraction('updates')">
+                                    <i class="material-icons icon-button-adjust">&#xE876;</i>
+                                </md-button>
+                            </form>
+                        </md-card-content>
+                        <md-card-content ng-if="!isUserLoggedIn() && idea.updates">
+                            <p>Please log in to view status updates on this idea. </p>
+                        </md-card-content>
+                        <md-card-content ng-if="!idea.updates">
+                            <p>There are no status updates on this idea.  Come back later to see if progress has been made on this idea.</p>
+                        </md-card-content>
+                    </md-card>
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-time'" ng-show="idea.updates && isUserLoggedIn()" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
+                            <div ng-show="(ideasView.isUserAuthorOfUpdate($index) || ideasView.isUserAuthor()) && update.deleted !== true && hoverUpdate === true">
+                                <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "deleteUpdate($index)">
+                                    <i class="material-icons icon-button-adjust">&#xE14C;</i>
+                                </md-button>
+                            </div>
+                            <div class="md-list-item-text" ng-class="{'deleted': update.deleted === true}">
+                                <h3>{{update.text}}</h3>
+                                <p>{{update.author.name}} <small class="extra-space-left" ng-bind="momentizeTime(update.time)"></small></p>
+                            </div>
+
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </md-tab>
             <md-tab label="Comments">
                 <md-content class="md-padding">
                     <md-card>
@@ -80,6 +117,9 @@
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
+                        </md-card-content>
+                        <md-card-content ng-if="!isUserLoggedIn()">
+                            <p>Please log in to enter a comment.</p>
                         </md-card-content>
                     </md-card>
                     <md-list>
@@ -142,7 +182,7 @@
                             </md-chips>
                         </div>
                         <div layout="column" layout-align="center end">
-                            <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newBack === ''" ng-click="addNewInteraction('backs')">
+                            <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newBack === ''" ng-click="addNewInteraction('backs')">
                                 <i class="material-icons icon-button-adjust">&#xE876;</i>
                             </md-button>
                         </div>
@@ -230,42 +270,6 @@
                         </md-button>
                     </div>
                 </md-content>
-            </md-tab>
-            <md-tab label="Status">
-                <md-content class="md-padding">
-                    <md-card ng-if="ideasView.isUserAuthor() || ideasView.isUserMemberOfTeam()">
-                        <md-card-content>
-                            <form layout="row">
-                                <md-input-container id="comment-box-container" class="some-padding-bottom" flex>
-                                    <label>Add a status</label>
-                                    <input id="comment-box" ng-model="ideasView.newStatus" type="text" />
-                                </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newStatus === ''" ng-click="addNewInteraction('statuses')">
-                                    <i class="material-icons icon-button-adjust">&#xE876;</i>
-                                </md-button>
-                            </form>
-                        </md-card-content>
-                    </md-card>
-        
-                    <!-- NOT IN STATUS EDIT MODE -->
-                    <md-list>
-                        <md-list-item class="md-1-line" ng-show="!idea.statuses && !ideasView.isUserAuthor()">
-                            <p>There are no status updates on this idea.  Come back later to see if progress has been made on this idea.</p>
-                        </md-list-item>
-                        <md-list-item class="md-2-line" ng-repeat="status in idea.statuses | orderBy: '-timeCreated'" ng-show="idea.statuses" ng-mouseover="hoverStatus = true" ng-mouseout="hoverStatus = false">
-                            <div ng-show="(ideasView.isUserAuthorOfStatus($index) || ideasView.isUserAuthor()) && status.deleted !== true && hoverStatus === true">
-                                <md-button class="md-icon-button" aria-label="Delete Status" ng-click="ideasView.deleteStatus($index)">
-                                    <i class="material-icons icon-button-adjust">&#xE14C;</i>
-                                </md-button>
-                            </div>
-                            <div class="md-list-item-text" ng-class="{'deleted': status.deleted === true}">
-                                <h3>{{status.text}}</h3>
-                                <p>{{status.author.name}} <small class="extra-space-left" ng-bind="momentizeTime(status.timeCreated)"></small></p>
-                            </div>
-
-                        </md-list-item>
-                    </md-list>
-                </div>
             </md-tab>
         </md-tabs>
     </md-card-content>

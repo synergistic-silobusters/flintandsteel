@@ -30,8 +30,7 @@ angular.module('flintAndSteel')
             ctrl.newComment = '';
             ctrl.newBack = '';
             ctrl.enableEdit = false;
-            ctrl.newStatus = '';
-            ctrl.enableStatusEdit = false;
+            ctrl.newUpdate = '';
 
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
@@ -112,7 +111,7 @@ angular.module('flintAndSteel')
 
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
-                if (type === 'comments' || type === 'backs' || type === 'statuses') {
+                if (type === 'comments' || type === 'backs' || type === 'updates') {
                     if (type === 'comments') {
                         ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
                             function success() {},
@@ -136,9 +135,15 @@ angular.module('flintAndSteel')
                             }
                         );
                     }
-                    else if (type === 'statuses') {
-                        ideaSvc.postStatus($scope.idea._id, ctrl.newStatus, loginSvc.getProperty('_id'),
-                            function success() {},
+                    else if (type === 'updates') {
+                        $scope.idea[type].push({
+                            text: ctrl.newUpdate,
+                            authorId: loginSvc.getProperty('_id'),
+                            time: now,
+                        });
+
+                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
+                            function success() { },
                             function error(data, status) {
                                 console.log(status);
                             }
@@ -149,9 +154,30 @@ angular.module('flintAndSteel')
                     $scope.selectedType = undefined;
                     ctrl.newComment = '';
                     ctrl.newBack = '';
-                    ctrl.newStatus = '';
+                    ctrl.newUpdate = '';
                     ctrl.refreshIdea();
                 }
+            };
+
+            $scope.deleteUpdate = function deleteUpdate(index) {
+                var numToPop = index;
+                var temp = [];
+                for (var i = 0; i < numToPop; i++) {
+                    temp.push($scope.idea.updates.pop());
+                };
+
+                $scope.idea.updates.pop();
+
+                for (var i = 0; i < numToPop; i++) {
+                    $scope.idea.updates.push(temp[i]);
+                };
+
+                ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
+                    function success() { },
+                    function error(data, status) {
+                        console.log(status);
+                    }
+                );
             };
 
             $scope.likeIdea = function likeIdea() {

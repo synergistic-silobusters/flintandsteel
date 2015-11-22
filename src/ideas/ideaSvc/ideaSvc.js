@@ -135,8 +135,6 @@ angular.module('flintAndSteel')
                 updateIdea: this.updateIdea,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
-                postStatus: this.postStatus,
-                deleteStatus: this.deleteStatus,
                 getBackTypeChips: this.getBackTypeChips
             };
         }

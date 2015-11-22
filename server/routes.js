@@ -11,7 +11,6 @@ module.exports = function(app) {
     var users = require('./users/users')(GLOBAL.db),
         ideas = require('./ideas/ideas')(GLOBAL.db),
         comments = require('./comments/comments')(GLOBAL.db),
-        statuses = require('./statuses/statuses')(GLOBAL.db),
         replaceIds = require('./replaceIds')(GLOBAL.db),
         chalk = require('chalk'),
         passport = require('passport');
@@ -130,33 +129,6 @@ module.exports = function(app) {
             }
         );
     });
-    app.post('/status', function(req, res) {
-        statuses.create(
-            req.body.parentId,
-            req.body.text,
-            req.body.authorId,
-            function(err, doc) {
-                if (err) {
-                    console.log(chalk.bgRed(err));
-                    res.sendStatus(500);
-                }
-                else {
-                    ideas.addStatus(req.body.parentId, doc.insertedId, function(err) {
-                        if (err) {
-                            console.log(chalk.bgRed(err));
-                            res.sendStatus(500);
-                        }
-                        else {
-                            ideas.get(req.body.parentId, function(err, idea) {
-                                IdeasInstance.updateIdea(idea);
-                            });
-                            res.status(201).json({_id: doc.insertedId, status: "Created"});
-                        }
-                    });
-                }
-            }
-        );
-    });
     app.post('/updateidea', function(req, res) {
         ideas.update(req.body.id, req.body.property, req.body.value, function(err) {
             if (err) {
@@ -211,28 +183,6 @@ module.exports = function(app) {
             }
             else {
                 ideas.removeComment(req.body.commentId, function(err, docId) {
-                    if (err) {
-                        console.error(chalk.bgRed(err));
-                        res.sendStatus(500);
-                    }
-                    else {
-                        ideas.get(docId, function(err, idea) {
-                            IdeasInstance.updateIdea(idea);
-                        });
-                        res.status(201).json({_id: docId, status: "Deleted"});
-                    }
-                });
-            }
-        });
-    });
-    app.post('/deleteStatus', function(req, res) {
-        statuses.delete(req.body.statusId, function(err) {
-            if (err) {
-                console.error(chalk.bgRed(err));
-                res.sendStatus(500);
-            }
-            else {
-                ideas.removeStatus(req.body.statusId, function(err, docId) {
                     if (err) {
                         console.error(chalk.bgRed(err));
                         res.sendStatus(500);
