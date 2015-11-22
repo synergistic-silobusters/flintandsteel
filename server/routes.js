@@ -36,7 +36,7 @@ module.exports = function(app) {
     }
 
     app.post('/login', function handleAuthentication(req, res, next) {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV !== 'production') {
             if (new Buffer(req.body.password, "base64").toString() === 'test') {
                 users.findForLogin(req.body.username, function(err, responseObj) {
                     if (err) {
@@ -49,7 +49,7 @@ module.exports = function(app) {
                 res.status(200).json(users.errResObj);
             }
         }
-        else if (process.env.NODE_ENV === 'production') {
+        else {
             req.body.password = new Buffer(req.body.password, "base64").toString("ascii");
             passport.authenticate('WindowsAuthentication', function(err, user) {
                 if (err) {
