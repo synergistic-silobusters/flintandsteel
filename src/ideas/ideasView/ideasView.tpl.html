@@ -3,7 +3,7 @@
     <md-card-content>
         <div ng-hide="ideasView.enableEdit">
             <h1>{{idea.title}}</h1>
-            <email-link author-obj="idea.author"></email-link>
+            <h3>by <email-link author-obj="idea.author"></email-link></h3>
             <p>{{idea.description}}</p>
         </div>
         <form ng-show="ideasView.enableEdit" name="newIdeaForm">
