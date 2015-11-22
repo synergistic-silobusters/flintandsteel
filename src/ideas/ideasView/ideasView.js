@@ -139,7 +139,7 @@ angular.module('flintAndSteel')
                         $scope.idea[type].push({
                             text: ctrl.newUpdate,
                             authorId: loginSvc.getProperty('_id'),
-                            time: now,
+                            time: now
                         });
 
                         ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
@@ -164,14 +164,15 @@ angular.module('flintAndSteel')
                 var temp = [];
                 for (var i = 0; i < numToPop; i++) {
                     temp.push($scope.idea.updates.pop());
-                };
+                }
 
                 $scope.idea.updates.pop();
 
-                for (var i = 0; i < numToPop; i++) {
+                for (i = 0; i < numToPop; i++) {
                     $scope.idea.updates.push(temp[i]);
-                };
+                }
 
+                var type = 'updates';
                 ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
                     function success() { },
                     function error(data, status) {
