@@ -30,6 +30,8 @@ var paths = {
 };
 
 var commandBuilder = function(command) {
+    "use strict";
+
     var cmd = {};
     var cmdArr = command.split(' ');
     cmd.exec = cmdArr.shift();
