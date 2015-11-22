@@ -262,7 +262,12 @@ gulp.task('clean:db-dev', function(cb) {
 
 gulp.task('initialize:db-dev', ['clean:db-dev'], function(cb) {
     "use strict";
-    var db = require('./server/db.js')('flintandsteel-dev', cb);
+
+    // Create the needed collections
+    var db = require('./server/db.js')('flintandsteel-dev', function(err) {
+        db.getDb().close();
+        cb(err);
+    });
 });
 
 gulp.task('generate:data', ['initialize:db-dev'], function(cb) {
