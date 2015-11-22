@@ -217,32 +217,52 @@ gulp.task('test:load', ['initialize:db-dev'], function(cb) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
     var benchrest = require('bench-rest');
+    var data = require('./generateData');
 
-    var flow = {
-        main: [
-            {get: 'http://127.0.0.1:7357/ideaHeaders'}
-        ]
-    };
+    data.generateUsers(function(err, userIds) {
+        if (err) {
+            console.error(chalk.red(err));
+        }
+        else {
+            var u = 0;
+            var flow = {
+                main: [
+                    // Creating a large amount of ideas here
+                    {
+                        post: 'http://127.0.0.1:7357/idea',
+                        json: {
+                            title: "Idea #{INDEX}",
+                            description: "Description #{INDEX}",
+                            authorId: userIds[u++ % userIds.length],
+                            eventId: "",
+                            tags: [],
+                            rolesreq: []
+                        }
+                    }
+                ]
+            };
 
-    var runOptions = {
-       limit: 100,     // concurrent connections
-       iterations: 1000  // number of iterations to perform
-     };
+            var runOptions = {
+                limit: 50,     // concurrent connections
+                iterations: 300  // number of iterations to perform
+            };
 
-    benchrest(flow, runOptions)
-        .on('error', function error(err, ctxName) {
-            if (err.code === 'ECONNREFUSED') {
-                console.error(chalk.red('Please ensure the server is started on port 7357 by running gulp start:test'));
-                process.exit(1);
-                return;
-            }
-            console.error(chalk.red('Failed in ' + ctxName + ' with error: '), err);
-        })
-        .on('end', function end(stats, errorCount) {
-            console.log(chalk.red('error count: '), errorCount);
-            console.log(chalk.green('stats: '), stats);
-            cb();
-        });
+            benchrest(flow, runOptions)
+                .on('error', function error(err, ctxName) {
+                    if (err.code === 'ECONNREFUSED') {
+                        console.error(chalk.red('Please ensure the server is started on port 7357 by running gulp start:test'));
+                        process.exit(1);
+                        return;
+                    }
+                    console.error(chalk.red('Failed in ' + ctxName + ' with error: '), err);
+                })
+                .on('end', function end(stats, errorCount) {
+                    console.log(chalk.red('error count: '), errorCount);
+                    console.log(chalk.green('stats: '), stats);
+                    cb();
+                });
+        }
+    });
 });
 
 gulp.task('clean:modules', function() {
