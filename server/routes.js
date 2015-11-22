@@ -40,7 +40,7 @@ module.exports = function(app) {
             if (new Buffer(req.body.password, "base64").toString() === 'test') {
                 users.findForLogin(req.body.username, function(err, responseObj) {
                     if (err) {
-                        console.log(chalk.bgRed(err));
+                        console.error(chalk.bgRed(err));
                     }
                     res.status(200).json(responseObj);
                 });
@@ -89,11 +89,10 @@ module.exports = function(app) {
             req.body.rolesreq,
             function(err, doc) {
                 if (err) {
-                    console.log(chalk.bgRed(err));
+                    console.error(chalk.bgRed(err));
                     res.sendStatus(500);
                 }
                 else {
-                    console.log(chalk.bgGreen('Document with id %s stored in ideas.'), doc.insertedId);
                     ideas.fetch(function(err, headers) {
                         IdeasInstance.newHeaders(headers);
                     });
@@ -109,13 +108,13 @@ module.exports = function(app) {
             req.body.authorId,
             function(err, doc) {
                 if (err) {
-                    console.log(chalk.bgRed(err));
+                    console.error(chalk.bgRed(err));
                     res.sendStatus(500);
                 }
                 else {
                     ideas.addComment(req.body.parentId, doc.insertedId, function(err) {
                         if (err) {
-                            console.log(chalk.bgRed(err));
+                            console.error(chalk.bgRed(err));
                             res.sendStatus(500);
                         }
                         else {
@@ -200,7 +199,7 @@ module.exports = function(app) {
     app.post('/updateaccount', function(req, res) {
         users.update(req.body._id, "likedIdeas", req.body.likedIdeas, function(err, results) {
             if (err || results.value === null) {
-                console.log(chalk.bgRed(err));
+                console.error(chalk.bgRed(err));
             }
             else {
                 res.sendStatus(200);
