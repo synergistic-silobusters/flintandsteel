@@ -53,6 +53,8 @@ Any changes to the code while the server is running will result in a server rest
 
 To run the client side tests, execute `gulp test:client` from a terminal window. This automatically runs when a `gulp start:dev` or `gulp start:prod` command is executed.
 
+To run the server load tests, execute `gulp start:test` from a terminal window then open an additional terminal window and enter `gulp test:load`. This will submit a number of ideas to the server and provide timing statistics in milliseconds to the terminal window.
+
 ### Linting and style check
 
 Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib` and `server` as well as `gulpfile.js`.

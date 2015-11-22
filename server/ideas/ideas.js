@@ -140,8 +140,7 @@ module.exports = function(db) {
             setTimeout(function() {
                 ideaProto.emit("newHeaders", newestHeaders);
                 isEmittingHeaders = false;
-            }
-            , 500);
+            }, 500);
         }
     };
 
@@ -168,8 +167,7 @@ module.exports = function(db) {
             setTimeout(function() {
                 ideaProto.emit("updateIdea_" + key, idea);
                 isEmittingUpdates = false;
-            }
-            , 500);
+            }, 500);
         }
     };
 
