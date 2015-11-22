@@ -128,8 +128,17 @@ module.exports = function(db) {
 
     require("util").inherits(Ideas, require("events").EventEmitter);
 
+    module.isRefreshingHeaders = false;
     Ideas.prototype.newHeaders = function(headers) {
-        this.emit("newHeaders", headers);
+        var ideaProto = this;
+        if (!module.isRefreshingHeaders) {
+            module.isRefreshingHeaders = true;
+            setTimeout(function() {
+                ideaProto.emit("newHeaders", headers);
+                module.isRefreshingHeaders = false;
+            }
+            , 1000);
+        }
     };
 
     Ideas.prototype.updateIdea = function(idea, oldKey) {
