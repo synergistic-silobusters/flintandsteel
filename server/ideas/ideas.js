@@ -128,20 +128,30 @@ module.exports = function(db) {
 
     require("util").inherits(Ideas, require("events").EventEmitter);
 
-    module.isRefreshingHeaders = false;
+    var isEmittingHeaders = false;
+    var newestHeaders = null;
     Ideas.prototype.newHeaders = function(headers) {
         var ideaProto = this;
-        if (!module.isRefreshingHeaders) {
-            module.isRefreshingHeaders = true;
+
+        newestHeaders = headers;
+
+        if (!isEmittingHeaders) {
+            isEmittingHeaders = true;
             setTimeout(function() {
-                ideaProto.emit("newHeaders", headers);
-                module.isRefreshingHeaders = false;
+                ideaProto.emit("newHeaders", newestHeaders);
+                isEmittingHeaders = false;
             }
-            , 1000);
+            , 500);
         }
     };
 
+    var isEmittingUpdates = false;
+    var newestIdea = null;
     Ideas.prototype.updateIdea = function(idea, oldKey) {
+        var ideaProto = this;
+
+        newestIdea = idea;
+
         var key;
         if (idea === null && oldKey === "undefined") {
             console.error(chalk.bgRed("No idea (arg1) with an _id or manual id (arg2)"));
@@ -153,7 +163,14 @@ module.exports = function(db) {
             key = oldKey;
         }
 
-        this.emit("updateIdea_" + key, idea);
+        if (!isEmittingUpdates) {
+            isEmittingUpdates = true;
+            setTimeout(function() {
+                ideaProto.emit("updateIdea_" + key, idea);
+                isEmittingUpdates = false;
+            }
+            , 500);
+        }
     };
 
     return module;
