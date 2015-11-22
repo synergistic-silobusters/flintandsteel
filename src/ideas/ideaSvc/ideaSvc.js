@@ -86,28 +86,6 @@ angular.module('flintAndSteel')
                 }
             };
 
-            this.postStatus = function postStatus(parentId, text, authorId, successCb, errorCb) {
-                $http.post('/status',
-                        {
-                            parentId: parentId,
-                            text: text,
-                            authorId: authorId
-                        }
-                    )
-                    .success(successCb)
-                    .error(errorCb);
-            };
-
-            this.deleteStatus = function deleteStatus(statusId, successCb, errorCb) {
-                $http.post('/deleteStatus',
-                      {
-                          statusId: statusId
-                      }
-                  )
-                  .success(successCb)
-                  .error(errorCb);
-            };
-
             this.getBackTypeChips = function getBackTypeChips() {
                 var types = [
                     { name: 'Experience' },

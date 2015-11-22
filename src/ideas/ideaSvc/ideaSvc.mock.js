@@ -86,9 +86,16 @@ angular.module('flintAndSteel')
                     }
                 ],
                 team: [
-                  {
-                      memberId: 1
-                  }
+                    {
+                        memberId: 1
+                    }
+                ],
+                updates: [
+                    {
+                        text: 'The project started',
+                        authorId: 6,
+                        time: moment().calendar()
+                    }
                 ]
             };
 
