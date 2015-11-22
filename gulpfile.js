@@ -37,14 +37,12 @@ var commandBuilder = function(command) {
     return cmd;
 };
 
-var runCommand = function(command) {
+var runCommand = function(command, description, cb) {
     "use strict";
 
     if (typeof command.exec === 'undefined') {
         command = commandBuilder(command);
     }
-
-    console.log(command);
 
     var child = spawn(command.exec, command.args);
     child.stdout.on('data', function(data) {
@@ -52,6 +50,10 @@ var runCommand = function(command) {
     });
     child.stderr.on('data', function(data) {
         process.stdout.write(chalk.red(data));
+    });
+    child.on('exit', function(exitCode) {
+        console.log(chalk.yellow(description + " exited with " + exitCode));
+        cb(exitCode);
     });
 
     return child;
@@ -110,31 +112,22 @@ gulp.task('usage', function() {
     gutil.log(usageLines.join(os.EOL));
 });
 
-gulp.task('mongo:start', function() {
+gulp.task('mongo:start', function(cb) {
     "use strict";
 
     var command = 'mongod --config ./server/mongod.conf';
-    var mongodProc;
     mkdirs('server/datastore/db');
     mkdirs('server/datastore/log');
-    mongodProc = runCommand(command);
+    runCommand(command, "Mongodb server", cb);
     gutil.log('Mongodb server is now ' + chalk.green('running') + '.');
-
-    mongodProc.on('exit', function(code) {
-        gutil.log(chalk.yellow('Mongodb server exited with exit code ' + code + '.'));
-    });
 });
 
 gulp.task('mongo:stop', function(cb) {
     "use strict";
 
     var command = 'mongo admin --eval db.shutdownServer();';
-    var cmdExec = runCommand(command);
-    cmdExec.on('exit', function(exitCode) {
-        console.log(chalk.yellow("Drop database exited with " + exitCode));
-        del('server/datastore/mongod-pids');
-        cb(exitCode);
-    });
+    runCommand(command, "Shutdown server", cb);
+    del('server/datastore/mongod-pids');
 });
 
 gulp.task('start:dev', ['test:client', 'inject', 'generate:data'], function() {
@@ -259,15 +252,10 @@ gulp.task('clean:modules', function() {
     ]);
 });
 
-gulp.task('clean:db-dev', function() {
 gulp.task('clean:db-dev', function(cb) {
     "use strict";
     var command = "mongo flintandsteel-dev --eval db.dropDatabase()";
-    var cmdExec = runCommand(command);
-    cmdExec.on('exit', function(exitCode) {
-        console.log(chalk.yellow("Drop database exited with " + exitCode));
-        cb(exitCode);
-    });
+    runCommand(command, "Drop database", cb);
 });
 
 gulp.task('initialize:db-dev', ['clean:db-dev'], function(cb) {
@@ -278,11 +266,7 @@ gulp.task('initialize:db-dev', ['clean:db-dev'], function(cb) {
 gulp.task('generate:data', ['initialize:db-dev'], function(cb) {
     "use strict";
     var command = "node generateData.js";
-    var cmdExec = runCommand(command);
-    cmdExec.on('exit', function(exitCode) {
-        console.log(chalk.yellow("Generate data exited with " + exitCode));
-        cb(exitCode);
-    });
+    runCommand(command, "Generate data", cb);
 });
 
 // A shorter call for generating colon data
