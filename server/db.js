@@ -192,7 +192,7 @@ module.exports = function(dbName, cb) {
                   cb(err);
               }
               else {
-                //   console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), results.value._id);
+                  //   console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), results.value._id);
                   cb(null, results.value._id);
               }
           }
