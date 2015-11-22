@@ -272,8 +272,8 @@ gulp.task('initialize:db-dev', ['clean:db-dev'], function(cb) {
 
 gulp.task('generate:data', ['initialize:db-dev'], function(cb) {
     "use strict";
-    var command = "node generateData.js";
-    runCommand(command, "Generate data", cb);
+    var genData = require('./generateData');
+    genData.generateAll(cb);
 });
 
 // A shorter call for generating colon data
