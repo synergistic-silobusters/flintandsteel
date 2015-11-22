@@ -1,4 +1,5 @@
 /* global module */
+/* global process */
 
 module.exports = function(dbName, cb) {
     "use strict";
@@ -23,22 +24,22 @@ module.exports = function(dbName, cb) {
             }
             db.createCollection('users', function(errUsers) {
                 if (errUsers) {
-                    console.log(errUsers);
+                    console.error(errUsers);
                 }
                 else {
                     db.createCollection('events', function(errEvents) {
                         if (errEvents) {
-                            console.log(errEvents);
+                            console.error(errEvents);
                         }
                         else {
                             db.createCollection('comments', function(errComments) {
                                 if (errComments) {
-                                    console.log(errComments);
+                                    console.error(errComments);
                                 }
                                 else {
                                     db.createCollection('ideas', function(errIdea) {
                                         if (errIdea) {
-                                            console.log(errIdea);
+                                            console.error(errIdea);
                                         }
                                         else {
                                             console.log(chalk.green("Database collections created!"));
@@ -56,14 +57,18 @@ module.exports = function(dbName, cb) {
         });
     }
 
+    module.getDb = function getDb() {
+        return db;
+    };
+
     module.insertOne = function insertOne(collection, obj, cb) {
         db.collection(collection).insertOne(obj, function(err, doc) {
             if (err) {
-                console.log(chalk.bgRed(err));
+                console.error(chalk.bgRed(err));
                 cb(err);
             }
             else {
-                console.log(chalk.bgGreen('Document with id %s stored in the ' + collection + ' collection.'), doc.insertedId);
+                // console.log(chalk.bgGreen('Document with id %s stored in the ' + collection + ' collection.'), doc.insertedId);
                 cb(null, doc);
             }
         });
@@ -74,11 +79,11 @@ module.exports = function(dbName, cb) {
         // we want to sort by, eg. {title: 1}.
         db.collection(collection).find({}, projection).toArray(function(err, docs) {
             if (err) {
-                console.log(chalk.bgRed(err));
+                console.error(chalk.bgRed(err));
                 cb(err);
             }
             else {
-                console.log(chalk.bgGreen('All documents in the ' + collection + ' collection found.'));
+                // console.log(chalk.bgGreen('All documents in the ' + collection + ' collection found.'));
                 cb(null, docs);
             }
         });
@@ -89,16 +94,16 @@ module.exports = function(dbName, cb) {
 
         db.collection(collection).findOne({_id: objId}, function(err, doc) {
             if (err) {
-                console.log(chalk.bgRed(err));
+                console.error(chalk.bgRed(err));
                 cb(err);
             }
             else if (doc) {
-                console.log(chalk.bgGreen('Document with id %s found in the ' + collection + ' collection.'), id);
+                // console.log(chalk.bgGreen('Document with id %s found in the ' + collection + ' collection.'), id);
                 cb(null, doc);
             }
             else {
                 var errNotFound = "Document " + id + " was not found in " + collection + " collection!";
-                console.log(chalk.bgRed(errNotFound));
+                console.error(chalk.bgRed(errNotFound));
                 cb(errNotFound);
             }
         });
@@ -109,7 +114,7 @@ module.exports = function(dbName, cb) {
         query[property] = value;
         db.collection(collection).findOne(query, function(err, doc) {
             if (err) {
-                console.log(chalk.bgRed(err));
+                console.error(chalk.bgRed(err));
                 cb(err);
             }
             else if (doc) {
@@ -117,7 +122,7 @@ module.exports = function(dbName, cb) {
             }
             else {
                 var errNotFound = "Document matching " + property + ": " + value + " was not found in " + collection + " collection!";
-                console.log(chalk.bgRed(errNotFound));
+                console.error(chalk.bgRed(errNotFound));
                 cb(errNotFound);
             }
         });
@@ -132,11 +137,11 @@ module.exports = function(dbName, cb) {
             { $set: obj },
             function(err, results) {
                 if (err) {
-                    console.log(chalk.bgRed(err));
+                    console.error(chalk.bgRed(err));
                     cb(err);
                 }
                 else {
-                    console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' colletion.'), id);
+                    // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' colletion.'), id);
                     cb(null, results);
                 }
             }
@@ -159,11 +164,11 @@ module.exports = function(dbName, cb) {
             { upsert: true },
             function(err, results) {
                 if (err) {
-                    console.log(chalk.bgRed(err));
+                    console.error(chalk.bgRed(err));
                     cb(err);
                 }
                 else {
-                    console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
+                    // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
                     cb(null, results);
                 }
             }
@@ -183,11 +188,11 @@ module.exports = function(dbName, cb) {
           pull,
           function(err, results) {
               if (err) {
-                  console.log(chalk.bgRed(err));
+                  console.error(chalk.bgRed(err));
                   cb(err);
               }
               else {
-                  console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), results.value._id);
+                //   console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), results.value._id);
                   cb(null, results.value._id);
               }
           }
@@ -208,11 +213,11 @@ module.exports = function(dbName, cb) {
             { upsert: true },
             function(err, results) {
                 if (err) {
-                    console.log(chalk.bgRed(err));
+                    console.error(chalk.bgRed(err));
                     cb(err);
                 }
                 else {
-                    console.log(chalk.bgGreen('Document with ' + property + ' %s updated in the database.'), obj.email);
+                    // console.log(chalk.bgGreen('Document with ' + property + ' %s updated in the database.'), obj.email);
                     cb(null, results);
                 }
             }
@@ -224,11 +229,11 @@ module.exports = function(dbName, cb) {
 
         db.collection(collection).deleteOne({ _id: objId },function(err, results) {
             if (err) {
-                console.log(chalk.bgRed(err));
+                console.error(chalk.bgRed(err));
                 cb(err);
             }
             else {
-                console.log(chalk.bgGreen('Document with id %s removed from the ' + collection + ' collection.'), id);
+                // console.log(chalk.bgGreen('Document with id %s removed from the ' + collection + ' collection.'), id);
                 cb(null, results);
             }
         });
