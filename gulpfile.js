@@ -12,7 +12,7 @@ var gulp = require('gulp'),
     stylish = require('jshint-stylish-ex'),
     nodemon = require('gulp-nodemon'),
     karma = require('karma').server,
-    exec = require('child_process').exec,
+    spawn = require('child_process').spawn,
     mkdirs = require('mkdirs'),
     angularFilesort = require('gulp-angular-filesort'),
     naturalSort = require('gulp-natural-sort');
@@ -29,16 +29,32 @@ var paths = {
     ]
 };
 
+var commandBuilder = function(command) {
+    var cmd = {};
+    var cmdArr = command.split(' ');
+    cmd.exec = cmdArr.shift();
+    cmd.args = cmdArr;
+    return cmd;
+};
+
 var runCommand = function(command) {
     "use strict";
 
-    return exec(command, function(err, stdout, stderr) {
-        if (err !== null) {
-            console.log(chalk.red(err));
-        }
-        process.stdout.write(stdout);
-        process.stdout.write(stderr);
+    if (typeof command.exec === 'undefined') {
+        command = commandBuilder(command);
+    }
+
+    console.log(command);
+
+    var child = spawn(command.exec, command.args);
+    child.stdout.on('data', function(data) {
+        process.stdout.write(data);
     });
+    child.stderr.on('data', function(data) {
+        process.stdout.write(chalk.red(data));
+    });
+
+    return child;
 };
 
 gulp.task('default', ['usage']);
@@ -105,17 +121,20 @@ gulp.task('mongo:start', function() {
     gutil.log('Mongodb server is now ' + chalk.green('running') + '.');
 
     mongodProc.on('exit', function(code) {
-        gutil.log('Mongodb server exited with exit code ' + code + '.');
+        gutil.log(chalk.yellow('Mongodb server exited with exit code ' + code + '.'));
     });
 });
 
-gulp.task('mongo:stop', function() {
+gulp.task('mongo:stop', function(cb) {
     "use strict";
 
-    var command = 'mongo admin --eval "db.shutdownServer();"';
-    runCommand(command);
-
-    del('server/datastore/mongod-pids');
+    var command = 'mongo admin --eval db.shutdownServer();';
+    var cmdExec = runCommand(command);
+    cmdExec.on('exit', function(exitCode) {
+        console.log(chalk.yellow("Drop database exited with " + exitCode));
+        del('server/datastore/mongod-pids');
+        cb(exitCode);
+    });
 });
 
 gulp.task('start:dev', ['test:client', 'inject', 'generate:data'], function() {
@@ -198,7 +217,7 @@ gulp.task('test:client', function(done) {
     }, done);
 });
 
-gulp.task('test:load', ['clean:db-dev'], function(cb) {
+gulp.task('test:load', ['initialize:db-dev'], function(cb) {
     "use strict";
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -227,7 +246,7 @@ gulp.task('test:load', ['clean:db-dev'], function(cb) {
         .on('end', function end(stats, errorCount) {
             console.log(chalk.red('error count: '), errorCount);
             console.log(chalk.green('stats: '), stats);
-            cb(null);
+            cb();
         });
 });
 
@@ -241,16 +260,29 @@ gulp.task('clean:modules', function() {
 });
 
 gulp.task('clean:db-dev', function() {
+gulp.task('clean:db-dev', function(cb) {
     "use strict";
-    var command = "mongo flintandsteel-dev --eval \"db.dropDatabase()\"";
-    runCommand(command);
+    var command = "mongo flintandsteel-dev --eval db.dropDatabase()";
+    var cmdExec = runCommand(command);
+    cmdExec.on('exit', function(exitCode) {
+        console.log(chalk.yellow("Drop database exited with " + exitCode));
+        cb(exitCode);
+    });
 });
 
+gulp.task('initialize:db-dev', ['clean:db-dev'], function(cb) {
+    "use strict";
+    var db = require('./server/db.js')('flintandsteel-dev', cb);
+});
 
-gulp.task('generate:data', ['clean:db-dev'], function() {
+gulp.task('generate:data', ['initialize:db-dev'], function(cb) {
     "use strict";
     var command = "node generateData.js";
-    runCommand(command);
+    var cmdExec = runCommand(command);
+    cmdExec.on('exit', function(exitCode) {
+        console.log(chalk.yellow("Generate data exited with " + exitCode));
+        cb(exitCode);
+    });
 });
 
 // A shorter call for generating colon data
