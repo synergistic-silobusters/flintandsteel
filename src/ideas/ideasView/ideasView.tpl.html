@@ -192,7 +192,7 @@
                                     <p>You are currently not part of the team.  If you would like to become part of the team, please back the idea so the author can be notified about your interest in being involved.</p>
                                 </md-list-item>
                                 <md-list-item class="md-1-line" ng-show="!ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && isUserLoggedIn()">
-                                    <p>You are part of the team!</p>                                    
+                                    <p>You are part of the team!</p>
                                 </md-list-item>
                                 <md-list-item class="md-1-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                                     <div ng-show="hovered === true && !ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && ideasView.isUserExactMemberOfTeam($index)">

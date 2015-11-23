@@ -272,7 +272,7 @@ angular.module('flintAndSteel')
 
                 // Write to DB
                 $scope.idea.backs.forEach(function(back) {
-                    if (back.isInTeam) {
+                    if (back.isInTeam === true) {
                         $scope.idea.team.push({memberId: back.authorId});
                     }
                 });
