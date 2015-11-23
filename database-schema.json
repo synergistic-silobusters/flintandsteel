@@ -50,10 +50,6 @@
         "team": [
             {"memberId": "idea.authorId"},
             "set of objects with user._id"
-        ],
-        "statuses": [
-            {"statusId": "status._id"},
-            "set of objects with status._id"
         ]
     },
     "comment": {
