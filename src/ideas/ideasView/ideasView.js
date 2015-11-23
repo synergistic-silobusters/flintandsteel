@@ -161,13 +161,13 @@ angular.module('flintAndSteel')
 
             $scope.deleteUpdate = function deleteUpdate(index) {
                 if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate()) {
-                    $scope.idea.updates.splice(index-1,1);
+                    $scope.idea.updates.splice(index - 1,1);
                     ideaSvc.updateIdea($scope.idea._id, 'updates', $scope.idea.updates,
                         function success() { },
                         function error(data, status) {
                             console.log(status);
                         });
-                };
+                }
             };
 
             $scope.likeIdea = function likeIdea() {
@@ -352,7 +352,7 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserAuthorOfUpdate = function(index) {
-                var updateIndex = $scope.idea.updates.length-index-1;
+                var updateIndex = $scope.idea.updates.length - index - 1;
                 if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[updateIndex].authorId) {
                     return true;
                 }
