@@ -3,7 +3,7 @@
     <md-card-content>
         <div ng-hide="ideasView.enableEdit">
             <h1>{{idea.title}}</h1>
-            <h3>by {{idea.author.name}}</h3>
+            <h3>by <email-link author-obj="idea.author"></email-link></h3>
             <p>{{idea.description}}</p>
         </div>
         <form ng-show="ideasView.enableEdit" name="newIdeaForm">
@@ -211,7 +211,7 @@
                                                 <email-link author-obj = "back.author"></email-link>
                                                 <span class="extra-space-left">
                                                     <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
-+                                                </span>
+                                                </span>
                                             </md-switch>
                                         </p>
                                         <span class="custom-chip-wrapper" ng-repeat="type in back.types">
