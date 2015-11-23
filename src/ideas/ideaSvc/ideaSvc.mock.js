@@ -95,6 +95,11 @@ angular.module('flintAndSteel')
                         text: 'The project started',
                         authorId: 6,
                         time: moment().calendar()
+                    },
+                    {
+                        text: 'The project made some progress',
+                        authorId: 7,
+                        time: moment().subtract(2, 'hours').calendar()
                     }
                 ]
             };
