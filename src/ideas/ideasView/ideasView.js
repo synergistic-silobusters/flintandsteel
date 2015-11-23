@@ -345,13 +345,13 @@ angular.module('flintAndSteel')
                     $scope.idea.backs[backIndex].types = $scope.selectedTypes;
                     $scope.idea.backs[backIndex].timeModified = now;
                     ideaSvc.updateIdea($scope.idea._id, 'backs', $scope.idea.backs,
-                    function success() {
-                        $scope.showEditBackInput = false;
-                        ctrl.editBackText = '';                   
-                    },
+                    function success() {},
                     function error(data, status) {
                         console.log(status);
-                    });
+                    });               
+                    $scope.showEditBackInput = false;
+                    ctrl.editBackText = '';                    
+                    $scope.selectedTypes = [];
                     ctrl.refreshIdea();
                 }
             };            
@@ -380,11 +380,11 @@ angular.module('flintAndSteel')
                     if (loginSvc.getProperty('_id') === back.authorId) {
                         $scope.userBackIndex = index;
                         ctrl.editBackText = back.text;
-                        $scope.selectedTypes = back.types;
-                        $scope.showEditBackInput = true;                        
+                        $scope.selectedTypes = back.types.slice();
+                        $scope.showEditBackInput = true;
                     }
                 });
-            };            
+            };
         }
     ]
 );
