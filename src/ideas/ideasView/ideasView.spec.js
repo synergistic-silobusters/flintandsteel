@@ -366,7 +366,7 @@ describe('IdeasViewCtrl', function() {
 
     describe('deleting an update', function() {
         var authorAccount = {
-            id: 1,
+            id: 7,
             username: 'MainManDarth',
             name: 'Darth Vader',
             likedIdeas: [ 'mock_idea' ]
@@ -381,27 +381,31 @@ describe('IdeasViewCtrl', function() {
 
         var updateIndex = 0;
         var originalLength = 0;
+        var mockIdea;
 
         beforeEach(function() {
             ctrl.newUpdate = 'This is a test update!';
             scope.addNewInteraction('updates');
             spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            ideaSvcMock.getIdea(null, function(idea) {
+                mockIdea = idea;
+            });
             updateIndex = scope.idea.updates.length - 1;
             originalLength = scope.idea.updates.length;
         });
 
         it('should allow the author to delete it', function() {
             loginSvcMock.checkLogin(authorAccount);
-            expect(loginSvcMock.isUserLoggedIn()).toBe(true);
             scope.deleteUpdate(updateIndex);
             expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
-            expect(scope.idea.updates.length).toBe(originalLength - 1);
+            expect(scope.idea.updates.length).toBe(updateIndex);
         });
 
-        it('should not allow someone other than the author to delete the idea (verifies that delete will not show)', function() {
+        it('should not allow someone other than the author to delete the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
-            expect(ctrl.isUserAuthor()).toBe(false);
-            expect(ctrl.isUserAuthorOfStatus()).toBe(false);
+            scope.deleteUpdate(updateIndex);
+            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+            expect(scope.idea.updates.length).toBe(originalLength);
         });
     });
 

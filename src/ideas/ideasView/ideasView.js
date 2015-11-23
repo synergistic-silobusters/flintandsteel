@@ -160,25 +160,14 @@ angular.module('flintAndSteel')
             };
 
             $scope.deleteUpdate = function deleteUpdate(index) {
-                var numToPop = index;
-                var temp = [];
-                for (var i = 0; i < numToPop; i++) {
-                    temp.push($scope.idea.updates.pop());
-                }
-
-                $scope.idea.updates.pop();
-
-                for (i = 0; i < numToPop; i++) {
-                    $scope.idea.updates.push(temp[i]);
-                }
-
-                var type = 'updates';
-                ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
-                    function success() { },
-                    function error(data, status) {
-                        console.log(status);
-                    }
-                );
+                if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate()) {
+                    $scope.idea.updates.splice(index-1,1);
+                    ideaSvc.updateIdea($scope.idea._id, 'updates', $scope.idea.updates,
+                        function success() { },
+                        function error(data, status) {
+                            console.log(status);
+                        });
+                };
             };
 
             $scope.likeIdea = function likeIdea() {
@@ -362,22 +351,12 @@ angular.module('flintAndSteel')
                 }
             };
 
-            ctrl.isUserAuthorOfStatus = function(statusIndex) {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.statuses[statusIndex].authorId) {
+            ctrl.isUserAuthorOfUpdate = function(index) {
+                var updateIndex = $scope.idea.updates.length-index-1;
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[updateIndex].authorId) {
                     return true;
                 }
                 return false;
-            };
-
-            ctrl.deleteStatus = function(statusIndex) {
-                if (ctrl.isUserAuthorOfStatus(statusIndex) || ctrl.isUserAuthor(statusIndex)) {
-                    ideaSvc.deleteStatus($scope.idea.statuses[statusIndex].statusId, function() {
-                        return;
-                    },
-                    function() {
-                        console.log("ERR: Status" + statusIndex + " not deleted");
-                    });
-                }
             };
         }
     ]
