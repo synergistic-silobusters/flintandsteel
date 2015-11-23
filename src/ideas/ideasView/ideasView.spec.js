@@ -353,6 +353,46 @@ describe('IdeasViewCtrl', function() {
         });
     });
 
+    describe('editing a back', function() {
+        var authorAccount = {
+            id: 1,
+            username: 'MainManDarth',
+            name: 'Darth Vader',
+            likedIdeas: [ 'mock_idea' ]
+        };
+
+        var nonAuthorAccount = {
+            id: 2,
+            username: 'SonOfDarth',
+            name: 'Luke Skywalker',
+            likedIdeas: [ 'mock_idea' ]
+        };
+
+        var backIndex = 0;
+
+        beforeEach(function() {
+            ctrl.newBack = 'This is a test back!';
+            scope.addNewInteraction('backs');
+            spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            backIndex = scope.idea.backs.length - 1;
+        });
+
+        it('should allow the author to edit it', function() {
+            loginSvcMock.checkLogin(authorAccount);
+            expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+            ctrl.editBackText = "This back was edited!";
+            ctrl.editBack(backIndex);
+            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+            expect(scope.idea.backs[backIndex].text).toBe("This back was edited!");
+        });
+
+        it('should not allow someone other than the author to edit the back', function() {
+            loginSvcMock.checkLogin(nonAuthorAccount);
+            ctrl.editBack(backIndex);
+            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+        });
+    });
+
     describe('forming a team', function() {
         var authorAccount = {
             id: 1,
