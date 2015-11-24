@@ -33,6 +33,7 @@ angular.module('flintAndSteel')
             ctrl.newComment = '';
             ctrl.newBack = '';
             ctrl.enableEdit = false;
+            ctrl.newUpdate = '';
 
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
@@ -117,7 +118,7 @@ angular.module('flintAndSteel')
 
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
-                if (type === 'comments' || type === 'backs') {
+                if (type === 'comments' || type === 'backs' || type === 'updates') {
                     if (type === 'comments') {
                         ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
                             function success() {},
@@ -141,12 +142,38 @@ angular.module('flintAndSteel')
                             }
                         );
                     }
+                    else if (type === 'updates') {
+                        $scope.idea[type].push({
+                            text: ctrl.newUpdate,
+                            authorId: loginSvc.getProperty('_id'),
+                            time: now
+                        });
+
+                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
+                            function success() { },
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
+                    }
 
                     $scope.selectedTypes = [];
                     $scope.selectedType = undefined;
                     ctrl.newComment = '';
                     ctrl.newBack = '';
+                    ctrl.newUpdate = '';
                     ctrl.refreshIdea();
+                }
+            };
+
+            $scope.deleteUpdate = function deleteUpdate(index) {
+                if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate()) {
+                    $scope.idea.updates.splice(index - 1,1);
+                    ideaSvc.updateIdea($scope.idea._id, 'updates', $scope.idea.updates,
+                        function success() { },
+                        function error(data, status) {
+                            console.log(status);
+                        });
                 }
             };
 
@@ -336,6 +363,14 @@ angular.module('flintAndSteel')
                         console.log("ERR: Comment " + commentIndex + " not deleted");
                     });
                 }
+            };
+
+            ctrl.isUserAuthorOfUpdate = function(index) {
+                var updateIndex = $scope.idea.updates.length - index - 1;
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[updateIndex].authorId) {
+                    return true;
+                }
+                return false;
             };
 
             ctrl.editBack = function editBack(backIndex) {

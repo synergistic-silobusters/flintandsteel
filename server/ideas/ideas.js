@@ -86,7 +86,8 @@ module.exports = function(db) {
             authorId: 1,
             likes: 1,
             backs: 1,
-            team: 1
+            team: 1,
+            updates: 1
         };
 
         db.find(COLLECTION, projection, function(err, docs) {
@@ -103,6 +104,7 @@ module.exports = function(db) {
                     doc.likes = doc.likes.length;
                     doc.backs = doc.backs.length;
                     doc.team = doc.team.length;
+                    doc.updates = doc.updates.length;
                     headers.push(doc);
                 });
                 cb(null, headers);

@@ -175,13 +175,37 @@ module.exports = function(db) {
             });
         }
 
+        var ideaUpdates = [];
+        if (data.updates.length === 0) {
+            ideaUpdates.push(new Promise(function(resolve) {
+                resolve(null);
+            }));
+        }
+        else {
+            ideaUpdates = data.updates.map(function(update) {
+                return new Promise(function(resolve, reject) {
+                    users.get(update.authorId, function(err, updateObj) {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        }
+                        else {
+                            update.author = updateObj;
+                            resolve(update);
+                        }
+                    });
+                });
+            });
+        }
+
         Promise.all([
             ideaAuthor,
             ideaEvent,
             Promise.all(ideaLikes),
             Promise.all(ideaCommentAuthors),
             Promise.all(ideaBacks),
-            Promise.all(ideaTeam)
+            Promise.all(ideaTeam),
+            Promise.all(ideaUpdates)
         ]).then(function() {
             cb(null, data);
         }, function() {

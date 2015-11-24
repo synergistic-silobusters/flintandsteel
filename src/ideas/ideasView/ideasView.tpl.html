@@ -67,8 +67,61 @@
 <md-card>
     <md-card-content>
         <md-tabs md-dynamic-height md-border-bottom="">
+            <md-tab label="Updates">
+                <md-content class="md-padding">
+                    <md-card>
+                        <md-card-content ng-if="!idea.updates[0] && ideasView.isUserMemberOfTeam()">
+                            <p>There are no status updates on this idea.  Please update this idea. </p>
+                        </md-card-content>
+                        <md-card-content ng-if="ideasView.isUserAuthor() || ideasView.isUserMemberOfTeam()">
+                            <form layout="row">
+                                <md-input-container id="comment-box-container" class="some-padding-bottom" flex>
+                                    <label>Add a status update</label>
+                                    <input id="comment-box" ng-model="ideasView.newUpdate" type="text" />
+                                </md-input-container>
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newUpdate === ''" ng-click="addNewInteraction('updates')">
+                                    <i class="material-icons icon-button-adjust">&#xE876;</i>
+                                </md-button>
+                            </form>
+                        </md-card-content>
+                        <md-card-content ng-if="!idea.updates[0] && !ideasView.isUserMemberOfTeam() && !ideasView.isUserAuthor()">
+                            <p>There are no status updates on this idea.  Come back later to see if progress has been made on this idea.</p>
+                        </md-card-content>
+                    </md-card>
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
+                            <div ng-show="(ideasView.isUserAuthorOfUpdate($index) || ideasView.isUserAuthor()) && update.deleted !== true && hoverUpdate === true">
+                                <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "deleteUpdate(idea.updates.length-$index)">
+                                    <i class="material-icons icon-button-adjust">&#xE14C;</i>
+                                </md-button>
+                            </div>
+                            <div class="md-list-item-text" ng-class="{'deleted': update.deleted === true}">
+                                <h3>{{update.text}}</h3>
+                                <p><email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.time)"></small></p>
+                            </div>
+
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </md-tab>
             <md-tab label="Comments">
                 <md-content class="md-padding">
+                    <md-card>
+                        <md-card-content ng-if="isUserLoggedIn()">
+                            <form layout="row" ng-if="isUserLoggedIn()">
+                                <md-input-container id="comment-box-container" class="no-padding-bottom" flex>
+                                    <label>Add a comment</label>
+                                    <input id="comment-box" ng-model="ideasView.newComment" type="text" />
+                                </md-input-container>
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
+                                    <i class="material-icons icon-button-adjust">&#xE876;</i>
+                                </md-button>
+                            </form>
+                        </md-card-content>
+                        <md-card-content ng-if="!isUserLoggedIn()">
+                            <p>Please log in to enter a comment.</p>
+                        </md-card-content>
+                    </md-card>
                     <md-list>
                         <md-list-item class="md-2-line" ng-repeat="comment in idea.comments" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                             <div ng-show="hovered === true && ideasView.isUserAuthorOfComment($index) && comment.deleted !== true">
@@ -82,15 +135,6 @@
                             </div>
                         </md-list-item>
                     </md-list>
-                    <div layout="row" ng-if="isUserLoggedIn()">
-                        <md-input-container id="comment-box-container" class="no-padding-bottom" flex>
-                            <label>Add a comment</label>
-                            <input id="comment-box" ng-model="ideasView.newComment" type="text" />
-                        </md-input-container>
-                        <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
-                            <i class="material-icons icon-button-adjust">&#xE876;</i>
-                        </md-button>
-                    </div>
                 </md-content>
             </md-tab>
             <md-tab label="Backers">
