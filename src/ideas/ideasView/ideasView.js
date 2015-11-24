@@ -167,8 +167,8 @@ angular.module('flintAndSteel')
             };
 
             $scope.deleteUpdate = function deleteUpdate(index) {
-                if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate()) {
-                    $scope.idea.updates.splice(index - 1,1);
+                if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate(index)) {
+                    $scope.idea.updates.splice(index, 1);
                     ideaSvc.updateIdea($scope.idea._id, 'updates', $scope.idea.updates,
                         function success() { },
                         function error(data, status) {
@@ -381,8 +381,7 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserAuthorOfUpdate = function(index) {
-                var updateIndex = $scope.idea.updates.length - index - 1;
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[updateIndex].authorId) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[index].authorId) {
                     return true;
                 }
                 return false;
