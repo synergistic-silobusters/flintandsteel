@@ -230,11 +230,6 @@
                                         <md-switch ng-model="back.isInTeam" class="md-warn"> <!-- Be careful when editing backs because of this -->
                                             {{back.author.name}}
                                         </md-switch>
-                                        <p>
-                                            <md-switch ng-model="back.isInTeam" class="md-warn"> <!-- Be careful when editing backs because of this -->
-                                                <email-link author-obj = "back.author"></email-link>
-                                            </md-switch>
-                                        </p>
                                         <span class="custom-chip-wrapper" ng-repeat="type in back.types">
                                             <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
                                         </span>
@@ -270,9 +265,7 @@
                                         </md-button>
                                     </div>
                                     <div class="md-list-item-text" >
-                                        <p>
-                                            <email-link author-obj = "back.author"></email-link>
-                                        </p>
+                                        <email-link author-obj = "back.author"></email-link>
                                         <span class="custom-chip-wrapper" ng-repeat="type in back.types">
                                             <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
                                         </span>

@@ -455,13 +455,6 @@ describe('IdeasViewCtrl', function() {
             name: 'Darth Vader',
             likedIdeas: [ 'mock_idea' ]
         };
-
-        var nonAuthorAccount = {
-            id: 2,
-            username: 'SonOfDarth',
-            name: 'Luke Skywalker',
-            likedIdeas: [ 'mock_idea' ]
-        };
         
         var teamLength = 0;
         var mockIdea;
