@@ -29,6 +29,7 @@
 
     <!-- inject:js -->
   <script src="app.js"></script>
+  <script src="utilities/emailLink.js"></script>
   <script src="users/loginSvc/loginSvc.js"></script>
   <script src="users/accountView/accountView.js"></script>
   <script src="toastSvc/toastSvc.js"></script>
@@ -69,7 +70,7 @@
                     {{currentUser}}
                     <md-menu md-offset="0 50">
                         <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <identicon md-menu-origin="" username='username' size='24' ng-init="getUsername()" class="identicon"></identicon>
+                            <identicon md-menu-origin="" username='getUsername()' size='30' class="identicon"></identicon>
                         </md-button>
                         <md-menu-content width="4">
                             <md-menu-item>

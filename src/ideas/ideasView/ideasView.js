@@ -26,10 +26,14 @@ angular.module('flintAndSteel')
             $scope.selectedTypes = [];
             $scope.selectedType = undefined;
             $scope.searchText = undefined;
+            $scope.showEditBackInput = false;
+            $scope.userBackIndex = '';
             ctrl.enableTeamEdit = false;
+            ctrl.editBackText = '';
             ctrl.newComment = '';
             ctrl.newBack = '';
             ctrl.enableEdit = false;
+            ctrl.newUpdate = '';
 
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
@@ -108,9 +112,13 @@ angular.module('flintAndSteel')
                 return moment(time).calendar();
             };
 
+            $scope.momentizeModifiedTime = function momentizeModifiedTime(time) {
+                return "Modified " + moment(time).calendar();
+            };
+
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
-                if (type === 'comments' || type === 'backs') {
+                if (type === 'comments' || type === 'backs' || type === 'updates') {
                     if (type === 'comments') {
                         ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
                             function success() {},
@@ -134,12 +142,38 @@ angular.module('flintAndSteel')
                             }
                         );
                     }
+                    else if (type === 'updates') {
+                        $scope.idea[type].push({
+                            text: ctrl.newUpdate,
+                            authorId: loginSvc.getProperty('_id'),
+                            time: now
+                        });
+
+                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
+                            function success() { },
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
+                    }
 
                     $scope.selectedTypes = [];
                     $scope.selectedType = undefined;
                     ctrl.newComment = '';
                     ctrl.newBack = '';
+                    ctrl.newUpdate = '';
                     ctrl.refreshIdea();
+                }
+            };
+
+            $scope.deleteUpdate = function deleteUpdate(index) {
+                if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate()) {
+                    $scope.idea.updates.splice(index - 1,1);
+                    ideaSvc.updateIdea($scope.idea._id, 'updates', $scope.idea.updates,
+                        function success() { },
+                        function error(data, status) {
+                            console.log(status);
+                        });
                 }
             };
 
@@ -328,6 +362,13 @@ angular.module('flintAndSteel')
                 return false;
             };
 
+            ctrl.isUserAuthorOfBack = function(backIndex) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.backs[backIndex].authorId) {
+                    return true;
+                }
+                return false;
+            };
+
             ctrl.deleteComment = function(commentIndex) {
                 if (ctrl.isUserAuthorOfComment(commentIndex)) {
                     ideaSvc.deleteComment($scope.idea.comments[commentIndex].commentId, function() {
@@ -337,6 +378,62 @@ angular.module('flintAndSteel')
                         console.log("ERR: Comment " + commentIndex + " not deleted");
                     });
                 }
+            };
+
+            ctrl.isUserAuthorOfUpdate = function(index) {
+                var updateIndex = $scope.idea.updates.length - index - 1;
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[updateIndex].authorId) {
+                    return true;
+                }
+                return false;
+            };
+
+            ctrl.editBack = function editBack(backIndex) {
+                if (ctrl.isUserAuthorOfBack(backIndex)) {
+                    var now = new Date().toISOString();
+                    $scope.idea.backs[backIndex].text = ctrl.editBackText;
+                    $scope.idea.backs[backIndex].types = $scope.selectedTypes;
+                    $scope.idea.backs[backIndex].timeModified = now;
+                    ideaSvc.updateIdea($scope.idea._id, 'backs', $scope.idea.backs,
+                    function success() {},
+                    function error(data, status) {
+                        console.log(status);
+                    });               
+                    $scope.showEditBackInput = false;
+                    ctrl.editBackText = '';                    
+                    $scope.selectedTypes = [];
+                    ctrl.refreshIdea();
+                }
+            };            
+
+            $scope.hasUserBacked = function() {
+                var hasUserBacked = false;
+                if (loginSvc.isUserLoggedIn() && typeof $scope.idea.backs !== 'undefined') {
+                    $scope.idea.backs.forEach(function(back) {
+                        if (loginSvc.getProperty('_id') === back.authorId) {
+                            hasUserBacked = true;
+                        }                        
+                    });
+                }
+                return hasUserBacked;
+            };
+
+            $scope.hasBackBeenEdited = function(back) {
+                if (typeof back.timeModified !== 'undefined' && back.timeModified !== '') {
+                    return true;
+                }
+                return false;
+            };
+
+            $scope.loadEditBack = function loadEditBack() {
+                $scope.idea.backs.forEach(function(back, index) {
+                    if (loginSvc.getProperty('_id') === back.authorId) {
+                        $scope.userBackIndex = index;
+                        ctrl.editBackText = back.text;
+                        $scope.selectedTypes = back.types.slice();
+                        $scope.showEditBackInput = true;
+                    }
+                });
             };
         }
     ]
