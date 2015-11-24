@@ -167,8 +167,8 @@ angular.module('flintAndSteel')
             };
 
             $scope.deleteUpdate = function deleteUpdate(index) {
-                if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate()) {
-                    $scope.idea.updates.splice(index - 1,1);
+                if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate(index)) {
+                    $scope.idea.updates.splice(index, 1);
                     ideaSvc.updateIdea($scope.idea._id, 'updates', $scope.idea.updates,
                         function success() { },
                         function error(data, status) {
@@ -306,7 +306,7 @@ angular.module('flintAndSteel')
 
                 // Write to DB
                 $scope.idea.backs.forEach(function(back) {
-                    if (back.isInTeam) {
+                    if (back.isInTeam === true) {
                         $scope.idea.team.push({memberId: back.authorId});
                     }
                 });
@@ -339,7 +339,22 @@ angular.module('flintAndSteel')
                 }
                 return false;
             };
-
+            
+            ctrl.isUserExactMemberOfTeam = function(teamIndex) {
+                if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
+                    if (loginSvc.getProperty('_id') === $scope.idea.team[teamIndex].memberId) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            
+            ctrl.removeUserFromTeam = function(backOfTeamMember) {
+                backOfTeamMember.isInTeam = false;
+                
+                ctrl.updateTeam();
+            };
+            
             ctrl.isUserAuthorOfComment = function(commentIndex) {
                 if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.comments[commentIndex].authorId) {
                     return true;
@@ -366,8 +381,7 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserAuthorOfUpdate = function(index) {
-                var updateIndex = $scope.idea.updates.length - index - 1;
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[updateIndex].authorId) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[index].authorId) {
                     return true;
                 }
                 return false;
