@@ -23,21 +23,13 @@ angular.module('flintAndSteel')
                 authorId: 1,
                 image: '../assets/defaultideahero.jpg',
                 likes: [
-                    'cottageclaw',
-                    'vbfond',
-                    'curvechange',
-                    'bothdesigned',
-                    'gymnastfinance',
-                    'aberrantcollagen',
-                    'kuwaitiinspiring',
-                    'basteglyderau',
-                    'adoptionpanting',
-                    'tokenslagoon',
-                    'welshwood',
-                    'kumquatslant',
-                    'anaerobedigits',
-                    'chouxthames',
-                    'pizzago'
+                    {userId: 1},
+                    {userId: 2},
+                    {userId: 3},
+                    {userId: 4},
+                    {userId: 5},
+                    {userId: 6},
+                    {userId: 7}
                 ],
                 managerLikes: 6,
                 comments: [

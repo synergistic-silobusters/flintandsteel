@@ -122,7 +122,7 @@ describe('IdeasViewCtrl', function() {
     describe('$scope.isUserLiked()', function() {
 
         beforeEach(function() {
-            scope.idea._id = 'mock_idea';
+            scope.idea.likes = [{userId: 1}];
         });
 
         it('should return true for a liked idea', function() {
@@ -130,7 +130,7 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should return false for other ideas', function() {
-            scope.idea._id = 'not_mock_idea';
+            scope.idea.likes = [{userId: 2}];
             expect(scope.isUserLiked()).not.toBeTruthy();
         });
     });

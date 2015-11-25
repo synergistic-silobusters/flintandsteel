@@ -200,9 +200,8 @@ angular.module('flintAndSteel')
             };
 
             $scope.isUserLiked = function isUserLiked() {
-                var likedIdeas = loginSvc.getLikedIdeas();
-                console.log(likedIdeas);
-                return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea._id; }) !== -1);
+                var userId = loginSvc.getProperty('_id');
+                return (_.findIndex($scope.idea.likes, function(like) { return like.userId === userId;}) !== -1);
             };
 
             $scope.querySearch = function querySearch(query) {
