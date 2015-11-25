@@ -14,9 +14,11 @@
 The following applications need to be installed:
 
 * [Git](http://git-scm.com/)
-* [Node.js](https://nodejs.org/en/) - this project tests against v0.10.40
+* [Node.js](https://nodejs.org/en/) - this project tests against v4.2.2 LTS
 * [MongoDB](https://www.mongodb.org/)
 * A text editor like [Notepad++](https://notepad-plus-plus.org/) or [Sublime Text 3](http://www.sublimetext.com/3)
+
+**NOTE**: [Make sure your node version is compliant!](https://github.com/YashdalfTheGray/flintandsteel/wiki#checking-for-the-right-version-of-node-and-npm)
 
 Make sure that the directories containing `node`, `npm`, `mongod` and `mongo` are added to the path making them accessible from the terminal.
 
