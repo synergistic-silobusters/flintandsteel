@@ -117,47 +117,6 @@ describe('loginSvc', function() {
         });
     });
 
-    describe('loginSvc.likeIdea', function() {
-        var dummyLikedIdea;
-
-        beforeEach(function() {
-            dummyLikedIdea = 'dummy_liked_idea';
-            $rootScope.account = dummyUser;
-
-            spyOn(loginSvc, 'updateAccount').and.callFake(function(account, successCb) {
-                successCb('OK');
-            });
-        });
-
-        it('should add the ideaId to the array of liked ideas', function() {
-            loginSvc.likeIdea(dummyLikedIdea);
-
-            expect($rootScope.account.likedIdeas).toEqual(jasmine.arrayContaining([dummyLikedIdea]));
-        });
-    });
-
-    describe('loginSvc.unlikeIdea', function() {
-        var dummyLikedIdea;
-
-        beforeEach(function() {
-            dummyLikedIdea = 'dummy_liked_idea';
-            $rootScope.account = dummyUser;
-            $rootScope.account.likedIdeas.push(dummyLikedIdea);
-
-            spyOn(loginSvc, 'updateAccount').and.callFake(function(account, successCb) {
-                successCb('OK');
-            });
-        });
-
-        it('should add the ideaId to the array of liked ideas', function() {
-            expect($rootScope.account.likedIdeas).toEqual(jasmine.arrayContaining([dummyLikedIdea]));
-
-            loginSvc.unlikeIdea(dummyLikedIdea);
-
-            expect($rootScope.account.likedIdeas).not.toEqual(jasmine.arrayContaining([dummyLikedIdea]));
-        });
-    });
-
     describe('loginSvc.updateAccount', function() {
         var updateAccountHandler, updatedUser;
 

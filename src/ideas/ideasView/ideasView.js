@@ -178,32 +178,30 @@ angular.module('flintAndSteel')
             };
 
             $scope.likeIdea = function likeIdea() {
-                $scope.idea.likes.push({userId: loginSvc.getProperty('_id')});
-                ideaSvc.updateIdea($scope.idea._id, 'likes', $scope.idea.likes,
-                    function success() { },
+                ideaSvc.likeIdea($scope.idea._id, loginSvc.getProperty('_id'),
+                    function success() {
+                        ctrl.refreshIdea();
+                    },
                     function error(data, status) {
                         console.log(status);
-                    });
-                loginSvc.likeIdea($scope.idea._id);
-                ctrl.refreshIdea();
+                    }
+                );
             };
 
             $scope.unlikeIdea = function unlikeIdea() {
-                _.remove($scope.idea.likes, function(n) {
-                    return n.userId === loginSvc.getProperty('_id');
-                });
-                ideaSvc.updateIdea($scope.idea._id, 'likes', $scope.idea.likes,
-                    function success() { },
+                ideaSvc.unlikeIdea($scope.idea._id, loginSvc.getProperty('_id'),
+                    function success() {
+                        ctrl.refreshIdea();
+                    },
                     function error(data, status) {
                         console.log(status);
-                    });
-                loginSvc.unlikeIdea($scope.idea._id);
-                ctrl.refreshIdea();
+                    }
+                );
             };
 
             $scope.isUserLiked = function isUserLiked() {
-                var likedIdeas = loginSvc.getProperty('likedIdeas');
-                //console.log(likedIdeas);
+                var likedIdeas = loginSvc.getLikedIdeas();
+                console.log(likedIdeas);
                 return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea._id; }) !== -1);
             };
 
@@ -339,7 +337,7 @@ angular.module('flintAndSteel')
                 }
                 return false;
             };
-            
+
             ctrl.isUserExactMemberOfTeam = function(teamIndex) {
                 if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
                     if (loginSvc.getProperty('_id') === $scope.idea.team[teamIndex].memberId) {
@@ -348,13 +346,13 @@ angular.module('flintAndSteel')
                 }
                 return false;
             };
-            
+
             ctrl.removeUserFromTeam = function(backOfTeamMember) {
                 backOfTeamMember.isInTeam = false;
-                
+
                 ctrl.updateTeam();
             };
-            
+
             ctrl.isUserAuthorOfComment = function(commentIndex) {
                 if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.comments[commentIndex].authorId) {
                     return true;
@@ -397,13 +395,13 @@ angular.module('flintAndSteel')
                     function success() {},
                     function error(data, status) {
                         console.log(status);
-                    });               
+                    });
                     $scope.showEditBackInput = false;
-                    ctrl.editBackText = '';                    
+                    ctrl.editBackText = '';
                     $scope.selectedTypes = [];
                     ctrl.refreshIdea();
                 }
-            };            
+            };
 
             $scope.hasUserBacked = function() {
                 var hasUserBacked = false;
@@ -411,7 +409,7 @@ angular.module('flintAndSteel')
                     $scope.idea.backs.forEach(function(back) {
                         if (loginSvc.getProperty('_id') === back.authorId) {
                             hasUserBacked = true;
-                        }                        
+                        }
                     });
                 }
                 return hasUserBacked;

@@ -28,6 +28,25 @@ module.exports = function(db) {
         });
     };
 
+    module.like = function(id, userId, cb) {
+        var obj = {
+            userId: userId
+        };
+        db.updateOnePushArray(COLLECTION, id, "likes", obj, cb);
+    };
+
+    module.unlike = function(id, userId, cb) {
+        var objId = new ObjectId(userId);
+
+        var obj = {
+            userId: objId
+        };
+
+        db.findAndPullArray(COLLECTION, "likes", obj, function(err, results) {
+            cb(err, results);
+        });
+    };
+
     module.update = function(id, property, value, cb) {
         var updateObj = {};
         updateObj[property] = value;

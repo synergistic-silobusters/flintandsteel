@@ -35,26 +35,6 @@ angular.module('flintAndSteel')
                 return $rootScope.account[propertyName];
             };
 
-            this.likeIdea = function likeIdea(ideaId) {
-                $rootScope.account.likedIdeas.push(ideaId);
-                this.updateAccount($rootScope.account, function accountUpdateSuccess() {
-                    // nothing *really* needs to happen here
-                }, function accountUpdateError(data, status) {
-                    console.log(status);
-                });
-            };
-
-            this.unlikeIdea = function unlikeIdea(ideaId) {
-                _.remove($rootScope.account.likedIdeas, function(item) {
-                    return item === ideaId;
-                });
-                this.updateAccount($rootScope.account, function accountUpdateSuccess() {
-                    // nothing *really* needs to happen here
-                }, function accountUpdateError(data, status) {
-                    console.log(status);
-                });
-            };
-
             this.updateAccount = function updateAccount(account, successCb, errorCb) {
                 $http.post('/updateaccount', account)
                     .success(successCb)
@@ -77,8 +57,6 @@ angular.module('flintAndSteel')
                 isUserLoggedIn: this.isUserLoggedIn,
                 logout: this.logout,
                 getProperty: this.getProperty,
-                likeIdea: this.likeIdea,
-                unlikeIdea: this.unlikeIdea,
                 updateAccount: this.updateAccount,
                 getUserById: this.getUserById
             };

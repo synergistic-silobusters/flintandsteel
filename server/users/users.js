@@ -98,5 +98,13 @@ module.exports = function(db) {
         });
     };
 
+    module.likeIdea = function likeIdea(id, ideaId, cb) {
+        db.updateOnePushArray(COLLECTION, id, "likedIdeas", ideaId, cb);
+    };
+
+    module.unlikeIdea = function unlikeIdea(id, ideaId, cb) {
+        db.findAndPullArray(COLLECTION, "likedIdeas", ideaId, cb);
+    };
+
     return module;
 };

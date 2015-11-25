@@ -155,6 +155,14 @@ angular.module('flintAndSteel')
                     mockIdea[property] = data;
                     successCb('OK');
                 },
+                likeIdea: function likeIdea(ideaId, userId, successCb) {
+                    mockIdea.likes.push({userId: userId});
+                    successCb('OK');
+                },
+                unlikeIdea: function unlikeIdea(ideaId, userId, successCb) {
+                    mockIdea.likes.splice(mockIdea.likes.indexOf({userId: userId}), 1);
+                    successCb('OK');
+                },
                 editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
                     mockIdea.title = title;
                     mockIdea.description = description;

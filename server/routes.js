@@ -146,6 +146,52 @@ module.exports = function(app) {
             }
         });
     });
+    app.patch('/idea/like', function(req, res) {
+        ideas.like(req.body.id, req.body.userId, function(err) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                users.likeIdea(req.body.userId, req.body.id, function(err) {
+                    if (err) {
+                        res.sendStatus(500);
+                    }
+                    else {
+                        ideas.get(req.body.id, function(err, idea) {
+                            IdeasInstance.updateIdea(idea);
+                        });
+                        ideas.fetch(function(err, headers) {
+                            IdeasInstance.newHeaders(headers);
+                        });
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+    });
+    app.patch('/idea/unlike', function(req, res) {
+        ideas.unlike(req.body.id, req.body.userId, function(err) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                users.unlikeIdea(req.body.userId, req.body.id, function(err) {
+                    if (err) {
+                        res.sendStatus(500);
+                    }
+                    else {
+                        ideas.get(req.body.id, function(err, idea) {
+                            IdeasInstance.updateIdea(idea);
+                        });
+                        ideas.fetch(function(err, headers) {
+                            IdeasInstance.newHeaders(headers);
+                        });
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+    });
     app.post('/editidea', function(req, res) {
         ideas.edit(req.body.id, req.body.title, req.body.description, req.body.rolesreq, function(err) {
             if (err) {

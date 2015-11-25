@@ -95,16 +95,12 @@ describe('IdeasViewCtrl', function() {
 
         beforeEach(function() {
             ideaLikes = scope.idea.likes.length;
-
-            spyOn(loginSvcMock, 'likeIdea').and.callFake(function() {
-            });
         });
 
         it('should like an idea', function() {
             scope.likeIdea();
 
             expect(scope.idea.likes.length).toBe(ideaLikes + 1);
-            expect(loginSvcMock.likeIdea).toHaveBeenCalledWith(scope.idea._id);
         });
     });
 
@@ -112,11 +108,6 @@ describe('IdeasViewCtrl', function() {
         var ideaLikes;
 
         beforeEach(function() {
-            spyOn(loginSvcMock, 'likeIdea').and.callFake(function() {
-            });
-            spyOn(loginSvcMock, 'unlikeIdea').and.callFake(function() {
-            });
-
             scope.likeIdea();
             ideaLikes = scope.idea.likes.length;
         });
@@ -125,7 +116,6 @@ describe('IdeasViewCtrl', function() {
             scope.unlikeIdea();
 
             expect(scope.idea.likes.length).toBe(ideaLikes - 1);
-            expect(loginSvcMock.unlikeIdea).toHaveBeenCalledWith(scope.idea._id);
         });
     });
 
@@ -455,7 +445,7 @@ describe('IdeasViewCtrl', function() {
             name: 'Darth Vader',
             likedIdeas: [ 'mock_idea' ]
         };
-        
+
         var teamLength = 0;
         var mockIdea;
 
@@ -516,7 +506,7 @@ describe('IdeasViewCtrl', function() {
 
             expect(scope.idea.backs[teamLength].isInTeam).toBe(false);
         });
-        
+
         it('Should return the correct user highlighted', function() {
             // Track the number of backs
             var backLength = scope.idea.backs.length;
@@ -527,39 +517,39 @@ describe('IdeasViewCtrl', function() {
             scope.idea.backs[backLength].isInTeam = true;
             ctrl.updateTeam();
             expect(scope.idea.backs[backLength].isInTeam).toBe(true);
-            
+
             // Up the back length
             backLength++;
             // Variable to reference a member in the team
             var index = 0;
             //pass in index and verify it is the user we want
             expect(ctrl.isUserExactMemberOfTeam(index)).toBe(true);
-            
+
             // Increment index
             index++;
             ctrl.newBack = 'Rick backs this idea!';
             scope.addNewInteraction('backs');
             scope.idea.backs[backLength].authorId = 2;
             scope.idea.backs[backLength].isInTeam = true;
-            
+
             backLength++;
-            
+
             ctrl.updateTeam();
             //pass in a second index and verify it is not our user
             expect(ctrl.isUserExactMemberOfTeam(index)).toBe(false);
         });
-        
-        it('Should remove the backer from the team', function() {            
+
+        it('Should remove the backer from the team', function() {
             ctrl.newBack = 'Rick backs this idea!';
             scope.addNewInteraction('backs');
             scope.idea.backs[teamLength].isInTeam = true;
             ctrl.updateTeam();
-            
+
             // Should be one member on the team
             expect(scope.idea.team.length).toBe(1);
-            
+
             // Remove user from the team and verify the team is empty
-            ctrl.removeUserFromTeam(scope.idea.backs[teamLength]);            
+            ctrl.removeUserFromTeam(scope.idea.backs[teamLength]);
             expect(scope.idea.team.length).toBe(0);
         });
     });
