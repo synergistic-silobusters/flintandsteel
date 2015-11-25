@@ -175,6 +175,32 @@ module.exports = function(dbName, cb) {
         );
     };
 
+    module.updateOnePullArray = function updateOnePushArray(collection, id, property, value, cb) {
+
+        var objId = new ObjectId(id);
+
+        var update = {};
+        update[property] = value;
+
+        var pull = {};
+        pull.$pull = update;
+
+        db.collection(collection).updateOne(
+            { _id: objId },
+            pull,
+            function(err, results) {
+                if (err) {
+                    console.error(chalk.bgRed(err));
+                    cb(err);
+                }
+                else {
+                    // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
+                    cb(null, results);
+                }
+            }
+        );
+    };
+
     module.findAndPullArray = function findAndPullArray(collection, property, value, cb) {
         var find = {};
         find[property] = value;

@@ -29,8 +29,10 @@ module.exports = function(db) {
     };
 
     module.like = function(id, userId, cb) {
+        var objId = new ObjectId(userId);
+
         var obj = {
-            userId: userId
+            userId: objId
         };
         db.updateOnePushArray(COLLECTION, id, "likes", obj, cb);
     };
@@ -42,9 +44,7 @@ module.exports = function(db) {
             userId: objId
         };
 
-        db.findAndPullArray(COLLECTION, "likes", obj, function(err, results) {
-            cb(err, results);
-        });
+        db.updateOnePullArray(COLLECTION, id, "likes", obj, cb);
     };
 
     module.update = function(id, property, value, cb) {

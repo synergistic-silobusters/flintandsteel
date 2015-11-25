@@ -103,7 +103,7 @@ module.exports = function(db) {
     };
 
     module.unlikeIdea = function unlikeIdea(id, ideaId, cb) {
-        db.findAndPullArray(COLLECTION, "likedIdeas", ideaId, cb);
+        db.updateOnePullArray(COLLECTION, id, "likedIdeas", ideaId, cb);
     };
 
     return module;
