@@ -151,9 +151,6 @@ angular.module('flintAndSteel')
                     }
                     successCb('Deleted');
                 },
-                getUniqueId: function getUniqueId() {
-                    throw new NotImplementedException('getUniqueId');
-                },
                 updateIdea: function updateIdea(ideaId, property, data, successCb) {
                     mockIdea[property] = data;
                     successCb('OK');
@@ -179,7 +176,7 @@ angular.module('flintAndSteel')
                         { name: 'Test Chip'}
                     ];
                     return types.map(function(type) {
-                        type._lowername = type.name.toLowerCase();
+                        type._lowername = type.name.toLowerCase().replace(/[ ]/g, '-').replace('?', '');
                         return type;
                     });
                 }
