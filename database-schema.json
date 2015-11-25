@@ -7,7 +7,10 @@
         "username": "",
         "email": "",
         "nickname": "",
-        "title": ""
+        "title": "",
+        "likedIdeas": [
+            "set of idea._ids"
+        ]
     },
     "idea": {
         "_id": "mongo_generated",
