@@ -81,7 +81,8 @@ module.exports = function(db) {
                 var responseObj = {
                     name: doc.fullName,
                     mail: doc.email,
-                    username: doc.username
+                    username: doc.username,
+                    likedIdeas: doc.likedIdeas
                 };
                 cb(null, responseObj);
             }
