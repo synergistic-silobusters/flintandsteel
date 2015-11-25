@@ -38,12 +38,13 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('$scope.addNewInteraction()', function() {
-        var content, commentsLength, backsLength;
+        var content, commentsLength, backsLength, updatesLength;
 
         beforeEach(function() {
             content = '';
             commentsLength = scope.idea.comments.length;
             backsLength = scope.idea.backs.length;
+            updatesLength = scope.idea.updates.length;
         });
 
         it('should add a new comment when comment is selected', function() {
@@ -77,7 +78,17 @@ describe('IdeasViewCtrl', function() {
             expect(scope.idea.backs[backsLength].types[0].name).toBe('Experience');
             expect(scope.idea.backs[backsLength].types[1].name).toBe('Funding');
         });
+
+        it('should add a new update when update is selected', function() {
+            ctrl.newUpdate = 'This is a test update!';
+
+            scope.addNewInteraction('updates');
+
+            expect(scope.idea.updates.length).toBe(updatesLength + 1);
+            expect(scope.idea.updates[updatesLength].text).toBe('This is a test update!');
+        });
     });
+
 
     describe('$scope.likeIdea()', function() {
         var ideaLikes;
@@ -353,14 +364,98 @@ describe('IdeasViewCtrl', function() {
         });
     });
 
-    describe('forming a team', function() {
+    describe('deleting an update', function() {
         var authorAccount = {
-            id: 1,
-            username: 'SciGuy',
-            name: 'Rick',
+            id: 7,
+            username: 'MainManDarth',
+            name: 'Darth Vader',
             likedIdeas: [ 'mock_idea' ]
         };
 
+        var nonAuthorAccount = {
+            id: 2,
+            username: 'SonOfDarth',
+            name: 'Luke Skywalker',
+            likedIdeas: [ 'mock_idea' ]
+        };
+
+        var updateIndex = 0;
+        var originalLength = 0;
+        var mockIdea;
+
+        beforeEach(function() {
+            ctrl.newUpdate = 'This is a test update!';
+            scope.addNewInteraction('updates');
+            spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            ideaSvcMock.getIdea(null, function(idea) {
+                mockIdea = idea;
+            });
+            updateIndex = scope.idea.updates.length - 1;
+            originalLength = scope.idea.updates.length;
+        });
+
+        it('should allow the author to delete it', function() {
+            loginSvcMock.checkLogin(authorAccount);
+            scope.deleteUpdate(updateIndex);
+            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+            expect(scope.idea.updates.length).toBe(updateIndex);
+        });
+
+        it('should not allow someone other than the author to delete the idea', function() {
+            loginSvcMock.checkLogin(nonAuthorAccount);
+            scope.deleteUpdate(updateIndex);
+            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+            expect(scope.idea.updates.length).toBe(originalLength);
+        });
+    });
+
+    describe('editing a back', function() {
+        var authorAccount = {
+            id: 1,
+            username: 'MainManDarth',
+            name: 'Darth Vader',
+            likedIdeas: [ 'mock_idea' ]
+        };
+
+        var nonAuthorAccount = {
+            id: 2,
+            username: 'SonOfDarth',
+            name: 'Luke Skywalker',
+            likedIdeas: [ 'mock_idea' ]
+        };
+        var backIndex = 0;
+
+        beforeEach(function() {
+            ctrl.newBack = 'This is a test back!';
+            scope.addNewInteraction('backs');
+            spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            backIndex = scope.idea.backs.length - 1;
+        });
+
+        it('should allow the author to edit it', function() {
+            loginSvcMock.checkLogin(authorAccount);
+            expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+            ctrl.editBackText = "This back was edited!";
+            ctrl.editBack(backIndex);
+            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+            expect(scope.idea.backs[backIndex].text).toBe("This back was edited!");
+        });
+
+        it('should not allow someone other than the author to edit the back', function() {
+            loginSvcMock.checkLogin(nonAuthorAccount);
+            ctrl.editBack(backIndex);
+            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('forming a team', function() {
+        var authorAccount = {
+            id: 1,
+            username: 'MainManDarth',
+            name: 'Darth Vader',
+            likedIdeas: [ 'mock_idea' ]
+        };
+        
         var teamLength = 0;
         var mockIdea;
 
@@ -380,7 +475,7 @@ describe('IdeasViewCtrl', function() {
 
         it('Should allow additions and deletions of team members', function() {
             // Add backer, check team length is 0
-            ctrl.newBack = 'Rick backs this idea!'; //how to add author to back?
+            ctrl.newBack = 'Rick backs this idea!';
             scope.addNewInteraction('backs');
             scope.idea.backs[teamLength].authorId = 1;
 
@@ -420,6 +515,52 @@ describe('IdeasViewCtrl', function() {
             ctrl.refreshTeam();
 
             expect(scope.idea.backs[teamLength].isInTeam).toBe(false);
+        });
+        
+        it('Should return the correct user highlighted', function() {
+            // Track the number of backs
+            var backLength = scope.idea.backs.length;
+            //Set up first adding a single user to the team
+            ctrl.newBack = 'Rick backs this idea!';
+            scope.addNewInteraction('backs');
+            scope.idea.backs[backLength].authorId = 1;
+            scope.idea.backs[backLength].isInTeam = true;
+            ctrl.updateTeam();
+            expect(scope.idea.backs[backLength].isInTeam).toBe(true);
+            
+            // Up the back length
+            backLength++;
+            // Variable to reference a member in the team
+            var index = 0;
+            //pass in index and verify it is the user we want
+            expect(ctrl.isUserExactMemberOfTeam(index)).toBe(true);
+            
+            // Increment index
+            index++;
+            ctrl.newBack = 'Rick backs this idea!';
+            scope.addNewInteraction('backs');
+            scope.idea.backs[backLength].authorId = 2;
+            scope.idea.backs[backLength].isInTeam = true;
+            
+            backLength++;
+            
+            ctrl.updateTeam();
+            //pass in a second index and verify it is not our user
+            expect(ctrl.isUserExactMemberOfTeam(index)).toBe(false);
+        });
+        
+        it('Should remove the backer from the team', function() {            
+            ctrl.newBack = 'Rick backs this idea!';
+            scope.addNewInteraction('backs');
+            scope.idea.backs[teamLength].isInTeam = true;
+            ctrl.updateTeam();
+            
+            // Should be one member on the team
+            expect(scope.idea.team.length).toBe(1);
+            
+            // Remove user from the team and verify the team is empty
+            ctrl.removeUserFromTeam(scope.idea.backs[teamLength]);            
+            expect(scope.idea.team.length).toBe(0);
         });
     });
 });
