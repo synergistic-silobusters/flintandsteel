@@ -51,7 +51,7 @@ module.exports = function(db) {
         db.updateOnePushArray(COLLECTION, id, "backs", backObj, cb);
     };
 
-    module.unback = function(id, userId, cb) {
+    module.unback = function(id, backObj, cb) {
         db.updateOnePullArray(COLLECTION, id, "backs", backObj, cb);
     };
 
