@@ -32,9 +32,6 @@ angular.module('flintAndSteel')
                         loggedIn = false;
                     }
                 },
-                addUser: function addUser() {
-                    throw new NotImplementedException('addUser');
-                },
                 isUserLoggedIn: function isUserLoggedIn() {
                     return loggedIn;
                 },
@@ -52,9 +49,6 @@ angular.module('flintAndSteel')
                 },
                 updateAccount: function updateAccount() {
                     throw new NotImplementedException('updateAccount');
-                },
-                checkValidUsername: function checkValidUsername() {
-                    throw new NotImplementedException('checkValidUsername');
                 },
                 getUserById: function getUserById() {
                     return mockUserAccount;

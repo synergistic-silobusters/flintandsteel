@@ -63,28 +63,6 @@ describe('loginSvc', function() {
         });
     });
 
-    describe('loginSvc.addUser', function() {
-        var addUserHandler, uniqueIdHandler;
-
-        beforeEach(function() {
-            addUserHandler = $httpBackend.whenPOST('/signup', dummyUser)
-                                .respond(201, 'Created');
-            uniqueIdHandler = $httpBackend.whenGET('/uniqueid?for=user')
-                                .respond(200, 9001);
-        });
-
-        it('should register a new user', function() {
-            $httpBackend.expectGET('/uniqueid?for=user');
-            $httpBackend.expectPOST('/signup', dummyUser);
-
-            loginSvc.addUser(dummyUser, function(data) {
-                expect(data).toBe('Created');
-            }, function() { });
-
-            $httpBackend.flush();
-        });
-    });
-
     describe('loginSvc.isUserLoggedIn', function() {
 
         it('should return false for no logged in user', function() {
@@ -200,36 +178,6 @@ describe('loginSvc', function() {
             $httpBackend.flush();
         });
 
-    });
-
-    describe('loginSvc.checkValidUsername', function() {
-        var checkValidUsernameHandler;
-
-        beforeEach(function() {
-            checkValidUsernameHandler = $httpBackend.whenGET('/isuniqueuser?user=dummy')
-                                            .respond(200, true);
-        });
-
-        it('should return true for a unique user', function() {
-            $httpBackend.expectGET('/isuniqueuser?user=dummy');
-
-            loginSvc.checkValidUsername('dummy', function(data) {
-                expect(data).toBe(true);
-            }, function() { });
-
-            $httpBackend.flush();
-        });
-
-        it('should return false for a duplicate user', function() {
-            checkValidUsernameHandler.respond(200, false);
-            $httpBackend.expectGET('/isuniqueuser?user=dummy');
-
-            loginSvc.checkValidUsername('dummy', function(data) {
-                expect(data).toBe(false);
-            }, function() { });
-
-            $httpBackend.flush();
-        });
     });
 
 });
