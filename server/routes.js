@@ -192,6 +192,38 @@ module.exports = function(app) {
             }
         });
     });
+    app.patch('/idea/back', function(req, res) {
+        ideas.back(req.body.id, req.body.backObj, function(err) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                ideas.get(req.body.id, function(err, idea) {
+                    IdeasInstance.updateIdea(idea);
+                });
+                ideas.fetch(function(err, headers) {
+                    IdeasInstance.newHeaders(headers);
+                });
+                res.sendStatus(200);
+            }
+        });
+    });
+    app.patch('/idea/unback', function(req, res) {
+        ideas.unback(req.body.id, req.body.backObj, function(err) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                ideas.get(req.body.id, function(err, idea) {
+                    IdeasInstance.updateIdea(idea);
+                });
+                ideas.fetch(function(err, headers) {
+                    IdeasInstance.newHeaders(headers);
+                });
+                res.sendStatus(200);
+            }
+        });
+    });
     app.post('/editidea', function(req, res) {
         ideas.edit(req.body.id, req.body.title, req.body.description, req.body.rolesreq, function(err) {
             if (err) {

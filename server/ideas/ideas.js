@@ -47,6 +47,14 @@ module.exports = function(db) {
         db.updateOnePullArray(COLLECTION, id, "likes", obj, cb);
     };
 
+    module.back = function(id, backObj, cb) {
+        db.updateOnePushArray(COLLECTION, id, "backs", backObj, cb);
+    };
+
+    module.unback = function(id, userId, cb) {
+        db.updateOnePullArray(COLLECTION, id, "backs", backObj, cb);
+    };
+
     module.update = function(id, property, value, cb) {
         var updateObj = {};
         updateObj[property] = value;

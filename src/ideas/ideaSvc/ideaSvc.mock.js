@@ -147,6 +147,14 @@ angular.module('flintAndSteel')
                     mockIdea.likes.splice(mockIdea.likes.indexOf({userId: userId}), 1);
                     successCb('OK');
                 },
+                backIdea: function backIdea(ideaId, backObj, successCb) {
+                    mockIdea.backs.push(backObj);
+                    successCb('OK');
+                },
+                unbackIdea: function unbackIdea(ideaId, backObj, successCb) {
+                    mockIdea.backs.splice(mockIdea.backs.indexOf(backObj), 1);
+                    successCb('OK');
+                },
                 editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
                     mockIdea.title = title;
                     mockIdea.description = description;

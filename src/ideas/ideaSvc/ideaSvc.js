@@ -87,6 +87,32 @@ angular.module('flintAndSteel')
                 }
             };
 
+            this.backIdea = function backIdea(ideaId, backObj, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.patch('/idea/back',
+                            {
+                                id: ideaId,
+                                backObj: backObj
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
+            this.unbackIdea = function unbackIdea(ideaId, backObj, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.patch('/idea/unback',
+                            {
+                                id: ideaId,
+                                backObj: backObj
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
             this.editIdea = function editIdea(ideaId, title, description, rolesreq, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
                     $http.post('/editidea',
@@ -139,6 +165,8 @@ angular.module('flintAndSteel')
                 updateIdea: this.updateIdea,
                 likeIdea: this.likeIdea,
                 unlikeIdea: this.unlikeIdea,
+                backIdea: this.backIdea,
+                unbackIdea: this.unbackIdea,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
                 getBackTypeChips: this.getBackTypeChips

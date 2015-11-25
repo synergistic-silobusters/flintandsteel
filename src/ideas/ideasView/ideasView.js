@@ -128,19 +128,12 @@ angular.module('flintAndSteel')
                         );
                     }
                     else if (type === 'backs') {
-                        $scope.idea[type].push({
+                        $scope.backIdea({
                             text: ctrl.newBack,
                             authorId: loginSvc.getProperty('_id'),
                             time: now,
                             types: $scope.selectedTypes
                         });
-
-                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
-                            function success() { },
-                            function error(data, status) {
-                                console.log(status);
-                            }
-                        );
                     }
                     else if (type === 'updates') {
                         $scope.idea[type].push({
@@ -190,6 +183,28 @@ angular.module('flintAndSteel')
 
             $scope.unlikeIdea = function unlikeIdea() {
                 ideaSvc.unlikeIdea($scope.idea._id, loginSvc.getProperty('_id'),
+                    function success() {
+                        ctrl.refreshIdea();
+                    },
+                    function error(data, status) {
+                        console.log(status);
+                    }
+                );
+            };
+
+            $scope.backIdea = function backIdea(backObj) {
+                ideaSvc.backIdea($scope.idea._id, backObj,
+                    function success() {
+                        ctrl.refreshIdea();
+                    },
+                    function error(data, status) {
+                        console.log(status);
+                    }
+                );
+            };
+
+            $scope.unbackIdea = function unbackIdea(backObj) {
+                ideaSvc.unbackIdea($scope.idea._id, backObj,
                     function success() {
                         ctrl.refreshIdea();
                     },
