@@ -138,7 +138,10 @@ gulp.task('start:dev', ['test:client', 'inject', 'generate:data'], function() {
     nodemon({
         script: 'server/server.js',
         env: { 'NODE_ENV': 'development' },
-        'ignore': ['server/datastore/*']
+        'ignore': [
+            'server/datastore/*',
+            'src/*'
+        ]
     });
 });
 
@@ -148,7 +151,10 @@ gulp.task('start:test', ['test:client', 'inject'], function() {
     nodemon({
         script: 'server/server.js',
         env: { 'NODE_ENV': 'test' },
-        'ignore': ['server/datastore/*']
+        'ignore': [
+            'server/datastore/*',
+            'src/*'
+        ]
     });
 });
 
@@ -158,7 +164,10 @@ gulp.task('start:prod', ['test:client', 'inject'], function() {
     nodemon({
         script: 'server/server.js',
         env: { 'NODE_ENV': 'production' },
-        'ignore': ['server/datastore/*']
+        'ignore': [
+            'server/datastore/*',
+            'src/*'
+        ]
     });
 });
 
