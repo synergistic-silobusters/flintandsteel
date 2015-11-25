@@ -96,14 +96,6 @@ angular.module('flintAndSteel')
                 ]
             };
 
-            function NotImplementedException(call) {
-                this.name = 'NotImplementedException';
-                this.message = 'Method ' + call + ' has not been implemented!';
-                this.toString = function() {
-                    return this.name + ': ' + this.message;
-                };
-            }
-
             return {
                 postIdea: function postIdea(idea, successCb) {
                     successCb('Created');

@@ -72,12 +72,14 @@ if (process.env.NODE_ENV === 'production') {
 
     passport.deserializeUser(function(user, done) {
         "use strict";
+        var users = require('./users/users')(GLOBAL.db);
+
         if (user) {
             console.log('deserializeUser:' + user._json.sAMAccountName);
             users.findForLogin(user, done);
         }
         else {
-            done("No user provided!")
+            done("No user provided!");
         }
     });
 }

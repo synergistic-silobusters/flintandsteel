@@ -4,8 +4,6 @@
 /* global inject */
 /* global it */
 /* global expect */
-/* global spyOn */
-/* global jasmine */
 
 describe('loginSvc', function() {
     "use strict";

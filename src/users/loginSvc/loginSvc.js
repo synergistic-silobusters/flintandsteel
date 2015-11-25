@@ -1,5 +1,4 @@
 /* global angular */
-/* global _ */
 
 angular.module('flintAndSteel')
 .factory('loginSvc',
