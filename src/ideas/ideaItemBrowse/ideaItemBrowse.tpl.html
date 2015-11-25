@@ -9,7 +9,18 @@
     </div>
     <div flex layout="row">
         <div layout="row">
-            <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs}} Backs and  
+            <ng-pluralize count={{idea.likes}} 
+                 when="{'0': '{} Likes',
+                        'one': '{} Like',
+                        'other': '{} Likes'}">
+            </ng-pluralize>
+            &nbsp;
+            <ng-pluralize count={{idea.backs}} 
+                 when="{'0': '{} Backs',
+                        'one': '{} Back',
+                        'other': '{} Backs'}">
+            </ng-pluralize>
+            &nbsp;and&nbsp;            
             <ng-pluralize count={{idea.team}} 
                  when="{'0': '{} People',
                         'one': '{} Person',
