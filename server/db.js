@@ -175,6 +175,34 @@ module.exports = function(dbName, cb) {
         );
     };
 
+    module.updateOneArrayElement = function updateArrayElement(collection, id, property, searchProperty, searchValue, newValue, cb) {
+        var objId = new ObjectId(id);
+
+        var query = {};
+        query._id = objId;
+        query[property + "." + searchProperty] = searchValue; // Find the old value
+
+        var update = {};
+        update.$set = {};
+        // '.$' Update first match of query (should be only match)
+        update.$set[property + ".$"] = newValue;
+
+        db.collection(collection).updateOne(
+            query,
+            update,
+            function(err, results) {
+                if (err) {
+                    console.error(chalk.bgRed(err));
+                    cb(err);
+                }
+                else {
+                    // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
+                    cb(null, results);
+                }
+            }
+        );
+    };
+
     module.updateOnePullArray = function updateOnePushArray(collection, id, property, value, cb) {
 
         var objId = new ObjectId(id);
