@@ -18,6 +18,8 @@ The following applications need to be installed:
 * [MongoDB](https://www.mongodb.org/)
 * A text editor like [Notepad++](https://notepad-plus-plus.org/) or [Sublime Text 3](http://www.sublimetext.com/3)
 
+**NOTE**: [Make sure your node version is compliant!](https://github.com/YashdalfTheGray/flintandsteel/wiki#checking-for-the-right-version-of-node-and-npm)
+
 Make sure that the directories containing `node`, `npm`, `mongod` and `mongo` are added to the path making them accessible from the terminal.
 
 ### Get the code
@@ -45,11 +47,15 @@ Running the server in development mode disables LDAP login and HTTPS and falls b
 
 In order to run the server in production mode, you need to have access to the company network for LDAP purposes. You also need to create  `server\secrets\ldapAuth.js` which will hold the credentials needed to bind to the LDAP server. Lastly, you will need to have certificates to run HTTPS. Please look up self-signed certificates in order to properly set up the production environment, or obtain certificates from a trusted Certificate Authority.
 
-Any changes to the code while the server is running will result in a server restart. However, this ***DOES NOT*** automatically re-run client tests or JavaScript analysis commands, so be sure to run them yourself before submitting a PR.
+Any changes to the code while the server is running will result in a server restart. However, this **DOES NOT** automatically re-run client tests or JavaScript analysis commands, so be sure to run them yourself before submitting a PR.
+
+`gulp start:test` will run the server in the test environment. This is identical to `dev`, but it uses a hard-coded port number of `7357` and does not generate data.
 
 ### Testing
 
 To run the client side tests, execute `gulp test:client` from a terminal window. This automatically runs when a `gulp start:dev` or `gulp start:prod` command is executed.
+
+To run the server load tests, execute `gulp start:test` from a terminal window then open an additional terminal window and enter `gulp test:load`. This will submit a number of ideas to the server and provide timing statistics in milliseconds to the terminal window.
 
 ### Linting and style check
 
