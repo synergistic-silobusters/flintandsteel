@@ -63,7 +63,7 @@ angular.module('flintAndSteel')
 
             this.likeIdea = function likeIdea(ideaId, userId, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
-                    $http.patch('/idea/like',
+                    $http.post('/idea/like',
                             {
                                 id: ideaId,
                                 userId: userId
@@ -76,7 +76,7 @@ angular.module('flintAndSteel')
 
             this.unlikeIdea = function unlikeIdea(ideaId, userId, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
-                    $http.patch('/idea/unlike',
+                    $http.post('/idea/unlike',
                             {
                                 id: ideaId,
                                 userId: userId
@@ -89,7 +89,7 @@ angular.module('flintAndSteel')
 
             this.backIdea = function backIdea(ideaId, backObj, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
-                    $http.patch('/idea/back',
+                    $http.post('/idea/back',
                             {
                                 id: ideaId,
                                 backObj: backObj
@@ -102,10 +102,36 @@ angular.module('flintAndSteel')
 
             this.unbackIdea = function unbackIdea(ideaId, backObj, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
-                    $http.patch('/idea/unback',
+                    $http.post('/idea/unback',
                             {
                                 id: ideaId,
                                 backObj: backObj
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
+            this.postUpdate = function postUpdate(ideaId, updateObj, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.post('/idea/postupdate',
+                            {
+                                id: ideaId,
+                                updateObj: updateObj
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
+            this.deleteUpdate = function deleteUpdate(ideaId, updateObj, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.post('/idea/deleteupdate',
+                            {
+                                id: ideaId,
+                                updateObj: updateObj
                             }
                         )
                         .success(successCb)
@@ -161,12 +187,13 @@ angular.module('flintAndSteel')
                 getIdeaHeaders: this.getIdeaHeaders,
                 postComment: this.postComment,
                 deleteComment: this.deleteComment,
-                getUniqueId: this.getUniqueId,
                 updateIdea: this.updateIdea,
                 likeIdea: this.likeIdea,
                 unlikeIdea: this.unlikeIdea,
                 backIdea: this.backIdea,
                 unbackIdea: this.unbackIdea,
+                postUpdate: this.postUpdate,
+                deleteUpdate: this.deleteUpdate,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
                 getBackTypeChips: this.getBackTypeChips

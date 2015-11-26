@@ -55,6 +55,14 @@ module.exports = function(db) {
         db.updateOnePullArray(COLLECTION, id, "backs", backObj, cb);
     };
 
+    module.postUpdate = function(id, updateObj, cb) {
+        db.updateOnePushArray(COLLECTION, id, "updates", updateObj, cb);
+    };
+
+    module.deleteUpdate = function(id, updateObj, cb) {
+        db.updateOnePullArray(COLLECTION, id, "updates", updateObj, cb);
+    };
+
     module.update = function(id, property, value, cb) {
         var updateObj = {};
         updateObj[property] = value;

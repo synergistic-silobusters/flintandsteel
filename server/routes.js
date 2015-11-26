@@ -146,7 +146,7 @@ module.exports = function(app) {
             }
         });
     });
-    app.patch('/idea/like', function(req, res) {
+    app.post('/idea/like', function(req, res) {
         ideas.like(req.body.id, req.body.userId, function(err) {
             if (err) {
                 res.sendStatus(500);
@@ -169,7 +169,7 @@ module.exports = function(app) {
             }
         });
     });
-    app.patch('/idea/unlike', function(req, res) {
+    app.post('/idea/unlike', function(req, res) {
         ideas.unlike(req.body.id, req.body.userId, function(err) {
             if (err) {
                 res.sendStatus(500);
@@ -192,7 +192,7 @@ module.exports = function(app) {
             }
         });
     });
-    app.patch('/idea/back', function(req, res) {
+    app.post('/idea/back', function(req, res) {
         ideas.back(req.body.id, req.body.backObj, function(err) {
             if (err) {
                 res.sendStatus(500);
@@ -208,8 +208,25 @@ module.exports = function(app) {
             }
         });
     });
-    app.patch('/idea/unback', function(req, res) {
-        ideas.unback(req.body.id, req.body.backObj, function(err) {
+    app.post('/idea/postupdate', function(req, res) {
+        ideas.postUpdate(req.body.id, req.body.updateObj, function(err) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                ideas.get(req.body.id, function(err, idea) {
+                    IdeasInstance.updateIdea(idea);
+                });
+                ideas.fetch(function(err, headers) {
+                    IdeasInstance.newHeaders(headers);
+                });
+                res.sendStatus(200);
+            }
+        });
+    });
+    app.post('/idea/deleteupdate', function(req, res) {
+        console.log(req.body);
+        ideas.deleteUpdate(req.body.id, req.body.updateObj, function(err) {
             if (err) {
                 res.sendStatus(500);
             }

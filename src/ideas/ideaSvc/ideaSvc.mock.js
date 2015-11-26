@@ -155,6 +155,14 @@ angular.module('flintAndSteel')
                     mockIdea.backs.splice(mockIdea.backs.indexOf(backObj), 1);
                     successCb('OK');
                 },
+                postUpdate: function postUpdate(ideaId, updateObj, successCb) {
+                    mockIdea.updates.push(updateObj);
+                    successCb('OK');
+                },
+                deleteUpdate: function deleteUpdate(ideaId, updateObj, successCb) {
+                    mockIdea.updates.splice(mockIdea.updates.indexOf(updateObj), 1);
+                    successCb('OK');
+                },
                 editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
                     mockIdea.title = title;
                     mockIdea.description = description;

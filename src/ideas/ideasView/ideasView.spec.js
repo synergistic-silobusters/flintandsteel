@@ -208,7 +208,6 @@ describe('IdeasViewCtrl', function() {
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
-            spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
             spyOn(ideaSvcMock, 'editIdea').and.callThrough();
         });
 
@@ -331,7 +330,6 @@ describe('IdeasViewCtrl', function() {
         beforeEach(function() {
             ctrl.newComment = 'This is a test comment!';
             scope.addNewInteraction('comments');
-            spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
             spyOn(ideaSvcMock, 'deleteComment').and.callThrough();
             commentIndex = scope.idea.comments.length - 1;
             originalLength = scope.idea.comments.length;
@@ -348,7 +346,7 @@ describe('IdeasViewCtrl', function() {
         it('should not allow someone other than the author to delete the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
             ctrl.deleteComment(commentIndex);
-            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+            expect(ideaSvcMock.deleteComment).not.toHaveBeenCalled();
             expect(scope.idea.comments.length).toBe(originalLength);
             expect(scope.idea.comments[commentIndex].deleted).not.toBe(true);
         });
@@ -376,7 +374,8 @@ describe('IdeasViewCtrl', function() {
         beforeEach(function() {
             ctrl.newUpdate = 'This is a test update!';
             scope.addNewInteraction('updates');
-            spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            spyOn(ideaSvcMock, 'postUpdate').and.callThrough();
+            spyOn(ideaSvcMock, 'deleteUpdate').and.callThrough();
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -387,14 +386,14 @@ describe('IdeasViewCtrl', function() {
         it('should allow the author to delete it', function() {
             loginSvcMock.checkLogin(authorAccount);
             scope.deleteUpdate(updateIndex);
-            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+            expect(ideaSvcMock.deleteUpdate).toHaveBeenCalled();
             expect(scope.idea.updates.length).toBe(updateIndex);
         });
 
         it('should not allow someone other than the author to delete the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
             scope.deleteUpdate(updateIndex);
-            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+            expect(ideaSvcMock.deleteUpdate).not.toHaveBeenCalled();
             expect(scope.idea.updates.length).toBe(originalLength);
         });
     });

@@ -121,7 +121,9 @@ angular.module('flintAndSteel')
                 if (type === 'comments' || type === 'backs' || type === 'updates') {
                     if (type === 'comments') {
                         ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
-                            function success() {},
+                            function success() {
+                                ctrl.refreshIdea();
+                            },
                             function error(data, status) {
                                 console.log(status);
                             }
@@ -136,18 +138,11 @@ angular.module('flintAndSteel')
                         });
                     }
                     else if (type === 'updates') {
-                        $scope.idea[type].push({
+                        $scope.postUpdate({
                             text: ctrl.newUpdate,
                             authorId: loginSvc.getProperty('_id'),
                             time: now
                         });
-
-                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
-                            function success() { },
-                            function error(data, status) {
-                                console.log(status);
-                            }
-                        );
                     }
 
                     $scope.selectedTypes = [];
@@ -155,18 +150,21 @@ angular.module('flintAndSteel')
                     ctrl.newComment = '';
                     ctrl.newBack = '';
                     ctrl.newUpdate = '';
-                    ctrl.refreshIdea();
                 }
             };
 
             $scope.deleteUpdate = function deleteUpdate(index) {
                 if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate(index)) {
-                    $scope.idea.updates.splice(index, 1);
-                    ideaSvc.updateIdea($scope.idea._id, 'updates', $scope.idea.updates,
-                        function success() { },
+                    var updateObj = angular.copy($scope.idea.updates[index]);
+                    delete updateObj.author; // author object is not stored in database
+                    ideaSvc.deleteUpdate($scope.idea._id, updateObj,
+                        function success() {
+                            ctrl.refreshIdea();
+                        },
                         function error(data, status) {
                             console.log(status);
-                        });
+                        }
+                    );
                 }
             };
 
@@ -203,8 +201,23 @@ angular.module('flintAndSteel')
                 );
             };
 
-            $scope.unbackIdea = function unbackIdea(backObj) {
-                ideaSvc.unbackIdea($scope.idea._id, backObj,
+            $scope.unbackIdea = function unbackIdea(index) {
+                if (isUserAuthorOfBack(index)) {
+                    var backObj = angular.copy($scope.idea.backs[index]);
+                    delete backObj.author; // author object is not stored in database
+                    ideaSvc.unbackIdea($scope.idea._id, backObj,
+                        function success() {
+                            ctrl.refreshIdea();
+                        },
+                        function error(data, status) {
+                            console.log(status);
+                        }
+                    );
+                }
+            };
+
+            $scope.postUpdate = function postUpdate(updateObj) {
+                ideaSvc.postUpdate($scope.idea._id, updateObj,
                     function success() {
                         ctrl.refreshIdea();
                     },
