@@ -225,7 +225,6 @@ module.exports = function(app) {
         });
     });
     app.post('/idea/deleteupdate', function(req, res) {
-        console.log(req.body);
         ideas.deleteUpdate(req.body.id, req.body.updateObj, function(err) {
             if (err) {
                 res.sendStatus(500);

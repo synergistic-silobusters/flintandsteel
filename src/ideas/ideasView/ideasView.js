@@ -202,7 +202,7 @@ angular.module('flintAndSteel')
             };
 
             $scope.unbackIdea = function unbackIdea(index) {
-                if (isUserAuthorOfBack(index)) {
+                if (ctrl.isUserAuthorOfBack(index)) {
                     var backObj = angular.copy($scope.idea.backs[index]);
                     delete backObj.author; // author object is not stored in database
                     ideaSvc.unbackIdea($scope.idea._id, backObj,
