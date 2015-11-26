@@ -55,6 +55,12 @@ module.exports = function(db) {
         db.updateOnePullArray(COLLECTION, id, "backs", backObj, cb);
     };
 
+    module.editBack = function(id, authorId, newBack, cb) {
+        var objId = new ObjectId(authorId);
+        newBack.authorId = new ObjectId(newBack.authorId);
+        db.updateOneArrayElement(COLLECTION, id, "backs", "authorId", objId, newBack, cb);
+    };
+
     module.postUpdate = function(id, updateObj, cb) {
         db.updateOnePushArray(COLLECTION, id, "updates", updateObj, cb);
     };

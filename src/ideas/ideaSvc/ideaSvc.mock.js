@@ -151,6 +151,14 @@ angular.module('flintAndSteel')
                     mockIdea.backs.push(backObj);
                     successCb('OK');
                 },
+                editBack: function editBack(ideaId, backAuthorId, newBack, successCb) {
+                    for (var i = 0; i < mockIdea.backs.length; i++) {
+                        if (mockIdea.backs[i].authorId === backAuthorId) {
+                            mockIdea.backs.splice(i, 1, newBack);
+                            successCb('OK');
+                        }
+                    }
+                },
                 unbackIdea: function unbackIdea(ideaId, backObj, successCb) {
                     mockIdea.backs.splice(mockIdea.backs.indexOf(backObj), 1);
                     successCb('OK');

@@ -417,7 +417,7 @@ describe('IdeasViewCtrl', function() {
         beforeEach(function() {
             ctrl.newBack = 'This is a test back!';
             scope.addNewInteraction('backs');
-            spyOn(ideaSvcMock, 'updateIdea').and.callThrough();
+            spyOn(ideaSvcMock, 'editBack').and.callThrough();
             backIndex = scope.idea.backs.length - 1;
         });
 
@@ -426,14 +426,14 @@ describe('IdeasViewCtrl', function() {
             expect(loginSvcMock.isUserLoggedIn()).toBe(true);
             ctrl.editBackText = "This back was edited!";
             ctrl.editBack(backIndex);
-            expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
+            expect(ideaSvcMock.editBack).toHaveBeenCalled();
             expect(scope.idea.backs[backIndex].text).toBe("This back was edited!");
         });
 
         it('should not allow someone other than the author to edit the back', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
             ctrl.editBack(backIndex);
-            expect(ideaSvcMock.updateIdea).not.toHaveBeenCalled();
+            expect(ideaSvcMock.editBack).not.toHaveBeenCalled();
         });
     });
 

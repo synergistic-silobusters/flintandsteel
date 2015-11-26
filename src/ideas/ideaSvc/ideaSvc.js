@@ -100,6 +100,20 @@ angular.module('flintAndSteel')
                 }
             };
 
+            this.editBack = function editBack(ideaId, backAuthorId, newBack, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.post('/idea/editback',
+                            {
+                                id: ideaId,
+                                authorId: backAuthorId,
+                                new: newBack
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
             this.unbackIdea = function unbackIdea(ideaId, backObj, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
                     $http.post('/idea/unback',
@@ -191,6 +205,7 @@ angular.module('flintAndSteel')
                 likeIdea: this.likeIdea,
                 unlikeIdea: this.unlikeIdea,
                 backIdea: this.backIdea,
+                editBack: this.editBack,
                 unbackIdea: this.unbackIdea,
                 postUpdate: this.postUpdate,
                 deleteUpdate: this.deleteUpdate,

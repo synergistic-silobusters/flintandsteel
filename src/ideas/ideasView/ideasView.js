@@ -415,18 +415,24 @@ angular.module('flintAndSteel')
             ctrl.editBack = function editBack(backIndex) {
                 if (ctrl.isUserAuthorOfBack(backIndex)) {
                     var now = new Date().toISOString();
-                    $scope.idea.backs[backIndex].text = ctrl.editBackText;
-                    $scope.idea.backs[backIndex].types = $scope.selectedTypes;
-                    $scope.idea.backs[backIndex].timeModified = now;
-                    ideaSvc.updateIdea($scope.idea._id, 'backs', $scope.idea.backs,
-                    function success() {},
-                    function error(data, status) {
-                        console.log(status);
-                    });
+                    var newBack = {
+                        text: ctrl.editBackText,
+                        authorId: $scope.idea.backs[backIndex].authorId,
+                        time: $scope.idea.backs[backIndex].time,
+                        timeModified: now,
+                        types: $scope.selectedTypes
+                    };
+                    ideaSvc.editBack($scope.idea._id, $scope.idea.backs[backIndex].authorId, newBack,
+                        function success() {
+                            ctrl.refreshIdea();
+                        },
+                        function error(data, status) {
+                            console.log(status);
+                        }
+                    );
                     $scope.showEditBackInput = false;
                     ctrl.editBackText = '';
                     $scope.selectedTypes = [];
-                    ctrl.refreshIdea();
                 }
             };
 
