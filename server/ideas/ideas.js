@@ -40,28 +40,22 @@ module.exports = function(db) {
         db.updateOnePushArray(COLLECTION, id, interactionType, interactionObject, cb);
     };
 
-    module.unlike = function(id, userId, cb) {
-        var objId = new ObjectId(userId);
+    module.removeInteraction = function(id, interactionType, interactionObject, cb) {
+        if (typeof interactionObject.userId !== "undefined") {
+            interactionObject.userId = new ObjectId(interactionObject.userId);
+        }
 
-        var obj = {
-            userId: objId
-        };
+        if (typeof interactionObject.authorId !== "undefined") {
+            interactionObject.authorId = new ObjectId(interactionObject.authorId);
+        }
 
-        db.updateOnePullArray(COLLECTION, id, "likes", obj, cb);
-    };
-
-    module.unback = function(id, backObj, cb) {
-        db.updateOnePullArray(COLLECTION, id, "backs", backObj, cb);
+        db.updateOnePullArray(COLLECTION, id, interactionType, interactionObject, cb);
     };
 
     module.editBack = function(id, authorId, newBack, cb) {
         var objId = new ObjectId(authorId);
         newBack.authorId = new ObjectId(newBack.authorId);
         db.updateOneArrayElement(COLLECTION, id, "backs", "authorId", objId, newBack, cb);
-    };
-
-    module.deleteUpdate = function(id, updateObj, cb) {
-        db.updateOnePullArray(COLLECTION, id, "updates", updateObj, cb);
     };
 
     module.update = function(id, property, value, cb) {
@@ -203,7 +197,7 @@ module.exports = function(db) {
         if (!isEmittingUpdates) {
             isEmittingUpdates = true;
             setTimeout(function() {
-                ideaProto.emit("updateIdea_" + key, idea);
+                ideaProto.emit("updateIdea_" + key, newestIdea);
                 isEmittingUpdates = false;
             }, 500);
         }

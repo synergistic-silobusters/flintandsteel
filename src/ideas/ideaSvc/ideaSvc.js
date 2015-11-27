@@ -75,42 +75,13 @@ angular.module('flintAndSteel')
                 }
             };
 
-            this.likeIdea = function likeIdea(ideaId, userId, successCb, errorCb) {
+            this.removeInteraction = function removeInteraction(ideaId, type, object, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/addinteraction',
+                    $http.post('/idea/removeinteraction',
                             {
                                 id: ideaId,
-                                interactionType: "likes",
-                                interactionObject: {
-                                    userId: userId
-                                }
-                            }
-                        )
-                        .success(successCb)
-                        .error(errorCb);
-                }
-            };
-
-            this.unlikeIdea = function unlikeIdea(ideaId, userId, successCb, errorCb) {
-                if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/unlike',
-                            {
-                                id: ideaId,
-                                userId: userId
-                            }
-                        )
-                        .success(successCb)
-                        .error(errorCb);
-                }
-            };
-
-            this.backIdea = function backIdea(ideaId, backObj, successCb, errorCb) {
-                if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/addInteraction',
-                            {
-                                id: ideaId,
-                                interactionType: "backs",
-                                interactionObject: backObj
+                                interactionType: type,
+                                interactionObject: object
                             }
                         )
                         .success(successCb)
@@ -125,46 +96,6 @@ angular.module('flintAndSteel')
                                 id: ideaId,
                                 authorId: backAuthorId,
                                 new: newBack
-                            }
-                        )
-                        .success(successCb)
-                        .error(errorCb);
-                }
-            };
-
-            this.unbackIdea = function unbackIdea(ideaId, backObj, successCb, errorCb) {
-                if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/unback',
-                            {
-                                id: ideaId,
-                                backObj: backObj
-                            }
-                        )
-                        .success(successCb)
-                        .error(errorCb);
-                }
-            };
-
-            this.postUpdate = function postUpdate(ideaId, updateObj, successCb, errorCb) {
-                if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/addinteraction',
-                            {
-                                id: ideaId,
-                                interactionType: "updates",
-                                interactionObject: updateObj
-                            }
-                        )
-                        .success(successCb)
-                        .error(errorCb);
-                }
-            };
-
-            this.deleteUpdate = function deleteUpdate(ideaId, updateObj, successCb, errorCb) {
-                if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/deleteupdate',
-                            {
-                                id: ideaId,
-                                updateObj: updateObj
                             }
                         )
                         .success(successCb)
@@ -222,10 +153,8 @@ angular.module('flintAndSteel')
                 deleteComment: this.deleteComment,
                 updateIdea: this.updateIdea,
                 addInteraction: this.addInteraction,
-                unlikeIdea: this.unlikeIdea,
+                removeInteraction: this.removeInteraction,
                 editBack: this.editBack,
-                unbackIdea: this.unbackIdea,
-                deleteUpdate: this.deleteUpdate,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
                 getBackTypeChips: this.getBackTypeChips

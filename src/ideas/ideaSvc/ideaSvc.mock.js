@@ -139,16 +139,12 @@ angular.module('flintAndSteel')
                     mockIdea[property] = data;
                     successCb('OK');
                 },
-                likeIdea: function likeIdea(ideaId, userId, successCb) {
-                    mockIdea.likes.push({userId: userId});
+                addInteraction: function addInteraction(ideaId, type, object, successCb) {
+                    mockIdea[type].push(object);
                     successCb('OK');
                 },
-                unlikeIdea: function unlikeIdea(ideaId, userId, successCb) {
-                    mockIdea.likes.splice(mockIdea.likes.indexOf({userId: userId}), 1);
-                    successCb('OK');
-                },
-                backIdea: function backIdea(ideaId, backObj, successCb) {
-                    mockIdea.backs.push(backObj);
+                removeInteraction: function removeInteraction(ideaId, type, object, successCb) {
+                    mockIdea[type].splice(mockIdea[type].indexOf(object), 1);
                     successCb('OK');
                 },
                 editBack: function editBack(ideaId, backAuthorId, newBack, successCb) {
@@ -158,18 +154,6 @@ angular.module('flintAndSteel')
                             successCb('OK');
                         }
                     }
-                },
-                unbackIdea: function unbackIdea(ideaId, backObj, successCb) {
-                    mockIdea.backs.splice(mockIdea.backs.indexOf(backObj), 1);
-                    successCb('OK');
-                },
-                postUpdate: function postUpdate(ideaId, updateObj, successCb) {
-                    mockIdea.updates.push(updateObj);
-                    successCb('OK');
-                },
-                deleteUpdate: function deleteUpdate(ideaId, updateObj, successCb) {
-                    mockIdea.updates.splice(mockIdea.updates.indexOf(updateObj), 1);
-                    successCb('OK');
                 },
                 editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
                     mockIdea.title = title;

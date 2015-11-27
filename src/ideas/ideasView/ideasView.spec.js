@@ -38,13 +38,20 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('$scope.addNewInteraction()', function() {
-        var content, commentsLength, backsLength, updatesLength;
+        var content, ideaLikes, commentsLength, backsLength, updatesLength;
 
         beforeEach(function() {
             content = '';
+            ideaLikes = scope.idea.likes.length;
             commentsLength = scope.idea.comments.length;
             backsLength = scope.idea.backs.length;
             updatesLength = scope.idea.updates.length;
+        });
+
+        it('should add a new like when the heart outline is clicked', function() {
+            scope.addNewInteraction('likes');
+
+            expect(scope.idea.likes.length).toBe(ideaLikes + 1);
         });
 
         it('should add a new comment when comment is selected', function() {
@@ -89,33 +96,57 @@ describe('IdeasViewCtrl', function() {
         });
     });
 
+    describe('$scope.removeInteraction()', function() {
+        var authorAccount = {
+            id: 1,
+            username: 'MainManDarth',
+            name: 'Darth Vader',
+            likedIdeas: [ 'mock_idea' ]
+        };
 
-    describe('$scope.likeIdea()', function() {
-        var ideaLikes;
-
-        beforeEach(function() {
-            ideaLikes = scope.idea.likes.length;
-        });
-
-        it('should like an idea', function() {
-            scope.likeIdea();
-
-            expect(scope.idea.likes.length).toBe(ideaLikes + 1);
-        });
-    });
-
-    describe('$scope.unlikeIdea()', function() {
-        var ideaLikes;
+        var ideaLikes, commentsLength, backsLength, updatesLength;
 
         beforeEach(function() {
-            scope.likeIdea();
+            loginSvcMock.checkLogin(authorAccount);
+
+            scope.addNewInteraction('likes');
             ideaLikes = scope.idea.likes.length;
+
+            ctrl.newComment = 'This is a test comment!';
+            scope.addNewInteraction('comments');
+            commentsLength = scope.idea.comments.length;
+
+            ctrl.newBack = 'This is a test back!';
+            scope.selectedTypes = [{ name: 'Experience' }, { name: 'Funding' }];
+            scope.addNewInteraction('backs');
+            backsLength = scope.idea.backs.length;
+
+            ctrl.newUpdate = 'This is a test update!';
+            scope.addNewInteraction('updates');
+            updatesLength = scope.idea.updates.length;
         });
 
-        it('should unlike an idea', function() {
-            scope.unlikeIdea();
-
+        it('should remove a new like when the solid heart is clicked', function() {
+            scope.removeInteraction('likes');
             expect(scope.idea.likes.length).toBe(ideaLikes - 1);
+        });
+
+        it('should remove a specific comment the author posted', function() {
+            scope.removeInteraction('comments', scope.idea.comments[commentsLength - 1]);
+
+            expect(scope.idea.comments.length).toBe(commentsLength - 1);
+        });
+
+        it('should remove a specific back the author posted', function() {
+            scope.removeInteraction('backs', scope.idea.backs[backsLength - 1]);
+
+            expect(scope.idea.backs.length).toBe(backsLength - 1);
+        });
+
+        it('should remove a specific update the author posted', function() {
+            scope.removeInteraction('updates', scope.idea.updates[updatesLength - 1]);
+
+            expect(scope.idea.updates.length).toBe(updatesLength - 1);
         });
     });
 
@@ -338,14 +369,14 @@ describe('IdeasViewCtrl', function() {
         it('should allow the author to delete it', function() {
             loginSvcMock.checkLogin(authorAccount);
             expect(loginSvcMock.isUserLoggedIn()).toBe(true);
-            ctrl.deleteComment(commentIndex);
+            scope.removeInteraction("comments", scope.idea.comments[commentIndex]);
             expect(ideaSvcMock.deleteComment).toHaveBeenCalled();
             expect(scope.idea.comments.length).toBe(originalLength - 1);
         });
 
         it('should not allow someone other than the author to delete the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
-            ctrl.deleteComment(commentIndex);
+            scope.removeInteraction("comments", scope.idea.comments[commentIndex]);
             expect(ideaSvcMock.deleteComment).not.toHaveBeenCalled();
             expect(scope.idea.comments.length).toBe(originalLength);
             expect(scope.idea.comments[commentIndex].deleted).not.toBe(true);
@@ -374,8 +405,7 @@ describe('IdeasViewCtrl', function() {
         beforeEach(function() {
             ctrl.newUpdate = 'This is a test update!';
             scope.addNewInteraction('updates');
-            spyOn(ideaSvcMock, 'postUpdate').and.callThrough();
-            spyOn(ideaSvcMock, 'deleteUpdate').and.callThrough();
+            spyOn(ideaSvcMock, 'removeInteraction').and.callThrough();
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -385,15 +415,15 @@ describe('IdeasViewCtrl', function() {
 
         it('should allow the author to delete it', function() {
             loginSvcMock.checkLogin(authorAccount);
-            scope.deleteUpdate(updateIndex);
-            expect(ideaSvcMock.deleteUpdate).toHaveBeenCalled();
+            scope.removeInteraction('updates', scope.idea.updates[updateIndex]);
+            expect(ideaSvcMock.removeInteraction).toHaveBeenCalled();
             expect(scope.idea.updates.length).toBe(updateIndex);
         });
 
         it('should not allow someone other than the author to delete the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
-            scope.deleteUpdate(updateIndex);
-            expect(ideaSvcMock.deleteUpdate).not.toHaveBeenCalled();
+            scope.removeInteraction('updates', scope.idea.updates[updateIndex]);
+            expect(ideaSvcMock.removeInteraction).not.toHaveBeenCalled();
             expect(scope.idea.updates.length).toBe(originalLength);
         });
     });
@@ -425,14 +455,14 @@ describe('IdeasViewCtrl', function() {
             loginSvcMock.checkLogin(authorAccount);
             expect(loginSvcMock.isUserLoggedIn()).toBe(true);
             ctrl.editBackText = "This back was edited!";
-            ctrl.editBack(backIndex);
+            ctrl.editBack(scope.idea.backs[backIndex]);
             expect(ideaSvcMock.editBack).toHaveBeenCalled();
             expect(scope.idea.backs[backIndex].text).toBe("This back was edited!");
         });
 
         it('should not allow someone other than the author to edit the back', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
-            ctrl.editBack(backIndex);
+            ctrl.editBack(scope.idea.backs[backIndex]);
             expect(ideaSvcMock.editBack).not.toHaveBeenCalled();
         });
     });

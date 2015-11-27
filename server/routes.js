@@ -162,31 +162,8 @@ module.exports = function(app) {
             }
         });
     });
-    app.post('/idea/unlike', function(req, res) {
-        ideas.unlike(req.body.id, req.body.userId, function(err) {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else {
-                users.unlikeIdea(req.body.userId, req.body.id, function(err) {
-                    if (err) {
-                        res.sendStatus(500);
-                    }
-                    else {
-                        ideas.get(req.body.id, function(err, idea) {
-                            IdeasInstance.updateIdea(idea);
-                        });
-                        ideas.fetch(function(err, headers) {
-                            IdeasInstance.newHeaders(headers);
-                        });
-                        res.sendStatus(200);
-                    }
-                });
-            }
-        });
-    });
-    app.post('/idea/editback', function(req, res) {
-        ideas.editBack(req.body.id, req.body.authorId, req.body.new, function(err) {
+    app.post('/idea/removeinteraction', function(req, res) {
+        ideas.removeInteraction(req.body.id, req.body.interactionType, req.body.interactionObject, function(err) {
             if (err) {
                 res.sendStatus(500);
             }
@@ -201,8 +178,8 @@ module.exports = function(app) {
             }
         });
     });
-    app.post('/idea/deleteupdate', function(req, res) {
-        ideas.deleteUpdate(req.body.id, req.body.updateObj, function(err) {
+    app.post('/idea/editback', function(req, res) {
+        ideas.editBack(req.body.id, req.body.authorId, req.body.new, function(err) {
             if (err) {
                 res.sendStatus(500);
             }
