@@ -41,9 +41,6 @@ angular.module('flintAndSteel')
                 getProperty: function getProperty(propertyName) {
                     return mockUserAccount[propertyName];
                 },
-                updateAccount: function updateAccount() {
-                    throw new NotImplementedException('updateAccount');
-                },
                 getUserById: function getUserById() {
                     return mockUserAccount;
                 }

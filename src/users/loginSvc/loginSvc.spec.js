@@ -115,26 +115,4 @@ describe('loginSvc', function() {
         });
     });
 
-    describe('loginSvc.updateAccount', function() {
-        var updateAccountHandler, updatedUser;
-
-        beforeEach(function() {
-            updatedUser = dummyUser;
-            updatedUser.username = 'theBestDummyV2';
-            updateAccountHandler = $httpBackend.whenPOST('/updateaccount', updatedUser)
-                                        .respond(200, 'OK');
-        });
-
-        it('should update the user account', function() {
-            $httpBackend.expectPOST('/updateaccount', updatedUser);
-
-            loginSvc.updateAccount(updatedUser, function(data) {
-                expect(data).toBe('OK');
-            }, function() { });
-
-            $httpBackend.flush();
-        });
-
-    });
-
 });

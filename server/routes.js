@@ -246,16 +246,6 @@ module.exports = function(app) {
             }
         });
     });
-    app.post('/updateaccount', function(req, res) {
-        users.update(req.body._id, "likedIdeas", req.body.likedIdeas, function(err, results) {
-            if (err || results.value === null) {
-                console.error(chalk.bgRed(err));
-            }
-            else {
-                res.sendStatus(200);
-            }
-        });
-    });
     app.get('/user', function(req, res) {
         users.get(req.query.id, function(err, responseObj) {
             if (err) {

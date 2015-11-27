@@ -34,12 +34,6 @@ angular.module('flintAndSteel')
                 return $rootScope.account[propertyName];
             };
 
-            this.updateAccount = function updateAccount(account, successCb, errorCb) {
-                $http.post('/updateaccount', account)
-                    .success(successCb)
-                    .error(errorCb);
-            };
-
             this.getUserById = function getUserById(userId, successCb, errorCb) {
                 if (userId) {
                     $http.get('/user?id=' + userId)
@@ -56,7 +50,6 @@ angular.module('flintAndSteel')
                 isUserLoggedIn: this.isUserLoggedIn,
                 logout: this.logout,
                 getProperty: this.getProperty,
-                updateAccount: this.updateAccount,
                 getUserById: this.getUserById
             };
         }

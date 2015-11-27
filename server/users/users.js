@@ -35,8 +35,7 @@ module.exports = function(db) {
                     _id: user._id,
                     username: user.username,
                     email: user.email,
-                    name: user.fullName,
-                    likedIdeas: []
+                    name: user.fullName
                 };
                 cb(null, responseObj);
             }
@@ -54,8 +53,7 @@ module.exports = function(db) {
                     _id: doc._id,
                     name: doc.fullName,
                     username: doc.username,
-                    email: doc.email,
-                    likedIdeas: doc.likedIdeas
+                    email: doc.email
                 });
             }
         });
@@ -81,8 +79,7 @@ module.exports = function(db) {
                 var responseObj = {
                     name: doc.fullName,
                     mail: doc.email,
-                    username: doc.username,
-                    likedIdeas: doc.likedIdeas
+                    username: doc.username
                 };
                 cb(null, responseObj);
             }
@@ -96,14 +93,6 @@ module.exports = function(db) {
         db.updateOne(COLLECTION, id, updateObj, function(err, results) {
             cb(err, results);
         });
-    };
-
-    module.likeIdea = function likeIdea(id, ideaId, cb) {
-        db.updateOnePushArray(COLLECTION, id, "likedIdeas", ideaId, cb);
-    };
-
-    module.unlikeIdea = function unlikeIdea(id, ideaId, cb) {
-        db.updateOnePullArray(COLLECTION, id, "likedIdeas", ideaId, cb);
     };
 
     return module;

@@ -11,6 +11,18 @@ describe('IdeasViewCtrl', function() {
 
     var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc;
 
+    var authorAccount = {
+        id: 1,
+        username: 'MainManDarth',
+        name: 'Darth Vader'
+    };
+
+    var nonAuthorAccount = {
+        id: 2,
+        username: 'SonOfDarth',
+        name: 'Luke Skywalker'
+    };
+
     beforeEach(module('flintAndSteel'));
 
     beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_, _$state_, _toastSvc_) {
@@ -97,13 +109,6 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('$scope.removeInteraction()', function() {
-        var authorAccount = {
-            id: 1,
-            username: 'MainManDarth',
-            name: 'Darth Vader',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
         var ideaLikes, commentsLength, backsLength, updatesLength;
 
         beforeEach(function() {
@@ -219,19 +224,6 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('editing the idea', function() {
-        var authorAccount = {
-            id: 1,
-            username: 'MainManDarth',
-            name: 'Darth Vader',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
-        var nonAuthorAccount = {
-            id: 2,
-            username: 'SonOfDarth',
-            name: 'Luke Skywalker',
-            likedIdeas: [ 'mock_idea' ]
-        };
         var mockIdea;
 
         beforeEach(function() {
@@ -303,19 +295,6 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('deleting the idea', function() {
-        var authorAccount = {
-            id: 1,
-            username: 'MainManDarth',
-            name: 'Darth Vader',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
-        var nonAuthorAccount = {
-            id: 2,
-            username: 'SonOfDarth',
-            name: 'Luke Skywalker',
-            likedIdeas: [ 'mock_idea' ]
-        };
         var mockIdea;
 
         beforeEach(function() {
@@ -341,20 +320,6 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('deleting a comment', function() {
-        var authorAccount = {
-            id: 1,
-            username: 'MainManDarth',
-            name: 'Darth Vader',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
-        var nonAuthorAccount = {
-            id: 2,
-            username: 'SonOfDarth',
-            name: 'Luke Skywalker',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
         var commentIndex = 0;
         var originalLength = 0;
 
@@ -384,20 +349,6 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('deleting an update', function() {
-        var authorAccount = {
-            id: 7,
-            username: 'MainManDarth',
-            name: 'Darth Vader',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
-        var nonAuthorAccount = {
-            id: 2,
-            username: 'SonOfDarth',
-            name: 'Luke Skywalker',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
         var updateIndex = 0;
         var originalLength = 0;
         var mockIdea;
@@ -429,19 +380,6 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('editing a back', function() {
-        var authorAccount = {
-            id: 1,
-            username: 'MainManDarth',
-            name: 'Darth Vader',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
-        var nonAuthorAccount = {
-            id: 2,
-            username: 'SonOfDarth',
-            name: 'Luke Skywalker',
-            likedIdeas: [ 'mock_idea' ]
-        };
         var backIndex = 0;
 
         beforeEach(function() {
@@ -468,13 +406,6 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('forming a team', function() {
-        var authorAccount = {
-            id: 1,
-            username: 'MainManDarth',
-            name: 'Darth Vader',
-            likedIdeas: [ 'mock_idea' ]
-        };
-
         var teamLength = 0;
         var mockIdea;
 
