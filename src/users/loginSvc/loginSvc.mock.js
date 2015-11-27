@@ -13,14 +13,6 @@ angular.module('flintAndSteel')
                 likedIdeas: [ 'mock_idea' ]
             };
 
-            function NotImplementedException(call) {
-                this.name = 'NotImplementedException';
-                this.message = 'Method ' + call + ' has not been implemented!';
-                this.toString = function() {
-                    return this.name + ': ' + this.message;
-                };
-            }
-
             var loggedIn = false;
 
             return {
