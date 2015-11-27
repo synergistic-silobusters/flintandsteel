@@ -3,7 +3,12 @@
     <md-card-content>
         <div ng-hide="ideasView.enableEdit">
             <h1>{{idea.title}}</h1>
-            <h3>by <email-link author-obj="idea.author"></email-link></h3>
+            <div layout="row">
+                <div layout="row" layout-align="center center">
+                    <identicon username='idea.author.username' size='30'></identicon>
+                </div>
+                <h3>&nbsp;<email-link author-obj="idea.author"></email-link></h3>
+            </div>
             <p>{{idea.description}}</p>
         </div>
         <form ng-show="ideasView.enableEdit" name="newIdeaForm">
@@ -97,7 +102,12 @@
                             </div>
                             <div class="md-list-item-text" ng-class="{'deleted': update.deleted === true}">
                                 <h3>{{update.text}}</h3>
-                                <p><email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.time)"></small></p>
+                                <div layout="row">
+                                    <div layout="row" layout-align="center center">
+                                        <identicon username='update.author.username' size='18'></identicon>
+                                    </div>                            
+                                    <p>&nbsp;<email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.time)"></small></p>
+                                </div>
                             </div>
 
                         </md-list-item>
@@ -131,7 +141,12 @@
                             </div>
                             <div class="md-list-item-text" ng-class="{'deleted': comment.deleted === true}">
                                 <h3>{{comment.text}}</h3>
-                                <p><email-link author-obj="comment.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
+                                <div layout="row">
+                                    <div layout="row" layout-align="center center">
+                                        <identicon username='comment.author.username' size='18'></identicon>
+                                    </div>
+                                    <p>&nbsp;<email-link author-obj="comment.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
+                                </div>
                             </div>
                         </md-list-item>
                     </md-list>
@@ -153,9 +168,12 @@
                                         <small ng-show="hasBackBeenEdited(back)" ng-bind="momentizeModifiedTime(back.timeModified)"></small>
                                     </span>                                    
                                 </h3>
-                                <p>
-                                    <email-link author-obj="back.author"></email-link>
-                                </p>
+                                <div layout="row">
+                                    <div layout="row" layout-align="center center">
+                                        <identicon username='back.author.username' size='18'></identicon>
+                                    </div>
+                                    <p>&nbsp;<email-link author-obj="back.author"></email-link></p>
+                                </div>
                                 <span class="custom-chip-wrapper" ng-repeat="type in back.types">
                                     <small  class="custom-chip {{type._lowername}}" >{{type.name}}</small>
                                 </span>
@@ -265,7 +283,13 @@
                                         </md-button>
                                     </div>
                                     <div class="md-list-item-text" >
-                                        <email-link author-obj = "back.author"></email-link>
+                                        <div layout="row">
+                                            <div layout="row" layout-align="center center">
+                                                <identicon username='back.author.username' size='18'></identicon>
+                                            </div>
+                                            <span>&nbsp;</span>
+                                            <email-link author-obj = "back.author"></email-link>
+                                        </div>
                                         <span class="custom-chip-wrapper" ng-repeat="type in back.types">
                                             <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
                                         </span>

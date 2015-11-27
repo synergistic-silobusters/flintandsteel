@@ -36,6 +36,8 @@ module.exports = function(app) {
     }
 
     app.post('/login', function handleAuthentication(req, res, next) {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
         if (process.env.NODE_ENV !== 'production') {
             if (new Buffer(req.body.password, "base64").toString() === 'test') {
                 users.findForLogin(req.body.username, function(err, responseObj) {
