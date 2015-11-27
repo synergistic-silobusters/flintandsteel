@@ -28,7 +28,13 @@ angular.module('flintAndSteel')
 
                 toastSvc.show(accountName + ' has been logged out!', { duration: 5000 });
 
-                $state.go('home');
+                // Reload if editing data to clear partial content
+                if ($state.includes('idea')) {
+                    $state.reload('idea');
+                }
+                else if ($state.includes('addidea')) {
+                    $state.go('home');
+                }
             };
         }
     ]
