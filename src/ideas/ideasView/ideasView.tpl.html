@@ -52,7 +52,7 @@
 <md-card>
     <md-card-content>
         <span flex ng-if="isUserLoggedIn() && !isUserLiked()">
-            <md-button class="md-icon-button" aria-label="Like" ng-click="likeIdea()">
+            <md-button class="md-icon-button" aria-label="Like" ng-click="addNewInteraction('likes')">
                 <i class="material-icons icon-button-adjust">&#xE87E;</i>
             </md-button>
         </span>
@@ -145,13 +145,13 @@
                                 <md-button class="md-icon-button" aria-label="Edit Back" ng-click="loadEditBack()">
                                     <i class="material-icons icon-button-adjust">&#xE3C9;</i>
                                 </md-button>
-                            </div>                            
+                            </div>
                             <div class="md-list-item-text">
                                 <h3>{{back.text}}
                                     <span class="extra-padding-left-sm">
                                         <small ng-show="!hasBackBeenEdited(back)" ng-bind="momentizeTime(back.time)"></small>
                                         <small ng-show="hasBackBeenEdited(back)" ng-bind="momentizeModifiedTime(back.timeModified)"></small>
-                                    </span>                                    
+                                    </span>
                                 </h3>
                                 <p>
                                     <email-link author-obj="back.author"></email-link>
@@ -174,7 +174,7 @@
                             <md-input-container ng-show="showEditBackInput" class="no-padding-bottom">
                                 <label>Edit your back...</label>
                                 <input ng-model="ideasView.editBackText" type="text"/>
-                            </md-input-container>                             
+                            </md-input-container>
                             <md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match="true" ng-show="ideasView.newBack || ideasView.editBackText">
                                 <md-autocomplete
                                     md-selected-item="selectedType"
@@ -203,7 +203,7 @@
                             <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.editBackText === ''" ng-click="ideasView.editBack(userBackIndex)">
                                 <i class="material-icons icon-button-adjust">&#xE876;</i>
                             </md-button>
-                        </div>                        
+                        </div>
                     </div>
                 </md-content>
             </md-tab>

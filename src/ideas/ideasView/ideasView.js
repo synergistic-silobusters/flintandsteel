@@ -118,8 +118,21 @@ angular.module('flintAndSteel')
 
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
-                if (type === 'comments' || type === 'backs' || type === 'updates') {
-                    if (type === 'comments') {
+                if (type === 'likes' || type === 'comments' || type === 'backs' || type === 'updates') {
+                    if (type === 'likes') {
+                        var likeObj = {
+                            userId: loginSvc.getProperty('_id')
+                        };
+                        ideaSvc.addInteraction($scope.idea._id, type, likeObj,
+                            function success() {
+                                ctrl.refreshIdea();
+                            },
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
+                    }
+                    else if (type === 'comments') {
                         ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
                             function success() {
                                 ctrl.refreshIdea();
@@ -130,19 +143,37 @@ angular.module('flintAndSteel')
                         );
                     }
                     else if (type === 'backs') {
-                        $scope.backIdea({
+                        var backObj = {
                             text: ctrl.newBack,
                             authorId: loginSvc.getProperty('_id'),
                             time: now,
                             types: $scope.selectedTypes
-                        });
+                        };
+
+                        ideaSvc.addInteraction($scope.idea._id, type, backObj,
+                            function success() {
+                                ctrl.refreshIdea();
+                            },
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
                     }
                     else if (type === 'updates') {
-                        $scope.postUpdate({
+                        var updateObj = {
                             text: ctrl.newUpdate,
                             authorId: loginSvc.getProperty('_id'),
                             time: now
-                        });
+                        };
+
+                        ideaSvc.addInteraction($scope.idea._id, type, updateObj,
+                            function success() {
+                                ctrl.refreshIdea();
+                            },
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
                     }
 
                     $scope.selectedTypes = [];
@@ -168,30 +199,8 @@ angular.module('flintAndSteel')
                 }
             };
 
-            $scope.likeIdea = function likeIdea() {
-                ideaSvc.likeIdea($scope.idea._id, loginSvc.getProperty('_id'),
-                    function success() {
-                        ctrl.refreshIdea();
-                    },
-                    function error(data, status) {
-                        console.log(status);
-                    }
-                );
-            };
-
             $scope.unlikeIdea = function unlikeIdea() {
                 ideaSvc.unlikeIdea($scope.idea._id, loginSvc.getProperty('_id'),
-                    function success() {
-                        ctrl.refreshIdea();
-                    },
-                    function error(data, status) {
-                        console.log(status);
-                    }
-                );
-            };
-
-            $scope.backIdea = function backIdea(backObj) {
-                ideaSvc.backIdea($scope.idea._id, backObj,
                     function success() {
                         ctrl.refreshIdea();
                     },
@@ -214,17 +223,6 @@ angular.module('flintAndSteel')
                         }
                     );
                 }
-            };
-
-            $scope.postUpdate = function postUpdate(updateObj) {
-                ideaSvc.postUpdate($scope.idea._id, updateObj,
-                    function success() {
-                        ctrl.refreshIdea();
-                    },
-                    function error(data, status) {
-                        console.log(status);
-                    }
-                );
             };
 
             $scope.isUserLiked = function isUserLiked() {

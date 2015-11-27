@@ -28,13 +28,16 @@ module.exports = function(db) {
         });
     };
 
-    module.like = function(id, userId, cb) {
-        var objId = new ObjectId(userId);
+    module.addInteraction = function(id, interactionType, interactionObject, cb) {
+        if (typeof interactionObject.userId !== "undefined") {
+            interactionObject.userId = new ObjectId(interactionObject.userId);
+        }
 
-        var obj = {
-            userId: objId
-        };
-        db.updateOnePushArray(COLLECTION, id, "likes", obj, cb);
+        if (typeof interactionObject.authorId !== "undefined") {
+            interactionObject.authorId = new ObjectId(interactionObject.authorId);
+        }
+
+        db.updateOnePushArray(COLLECTION, id, interactionType, interactionObject, cb);
     };
 
     module.unlike = function(id, userId, cb) {
@@ -47,10 +50,6 @@ module.exports = function(db) {
         db.updateOnePullArray(COLLECTION, id, "likes", obj, cb);
     };
 
-    module.back = function(id, backObj, cb) {
-        db.updateOnePushArray(COLLECTION, id, "backs", backObj, cb);
-    };
-
     module.unback = function(id, backObj, cb) {
         db.updateOnePullArray(COLLECTION, id, "backs", backObj, cb);
     };
@@ -59,10 +58,6 @@ module.exports = function(db) {
         var objId = new ObjectId(authorId);
         newBack.authorId = new ObjectId(newBack.authorId);
         db.updateOneArrayElement(COLLECTION, id, "backs", "authorId", objId, newBack, cb);
-    };
-
-    module.postUpdate = function(id, updateObj, cb) {
-        db.updateOnePushArray(COLLECTION, id, "updates", updateObj, cb);
     };
 
     module.deleteUpdate = function(id, updateObj, cb) {

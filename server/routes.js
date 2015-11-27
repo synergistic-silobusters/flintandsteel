@@ -146,26 +146,19 @@ module.exports = function(app) {
             }
         });
     });
-    app.post('/idea/like', function(req, res) {
-        ideas.like(req.body.id, req.body.userId, function(err) {
+    app.post('/idea/addinteraction', function(req, res) {
+        ideas.addInteraction(req.body.id, req.body.interactionType, req.body.interactionObject, function(err) {
             if (err) {
                 res.sendStatus(500);
             }
             else {
-                users.likeIdea(req.body.userId, req.body.id, function(err) {
-                    if (err) {
-                        res.sendStatus(500);
-                    }
-                    else {
-                        ideas.get(req.body.id, function(err, idea) {
-                            IdeasInstance.updateIdea(idea);
-                        });
-                        ideas.fetch(function(err, headers) {
-                            IdeasInstance.newHeaders(headers);
-                        });
-                        res.sendStatus(200);
-                    }
+                ideas.get(req.body.id, function(err, idea) {
+                    IdeasInstance.updateIdea(idea);
                 });
+                ideas.fetch(function(err, headers) {
+                    IdeasInstance.newHeaders(headers);
+                });
+                res.sendStatus(200);
             }
         });
     });
@@ -192,40 +185,8 @@ module.exports = function(app) {
             }
         });
     });
-    app.post('/idea/back', function(req, res) {
-        ideas.back(req.body.id, req.body.backObj, function(err) {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else {
-                ideas.get(req.body.id, function(err, idea) {
-                    IdeasInstance.updateIdea(idea);
-                });
-                ideas.fetch(function(err, headers) {
-                    IdeasInstance.newHeaders(headers);
-                });
-                res.sendStatus(200);
-            }
-        });
-    });
     app.post('/idea/editback', function(req, res) {
         ideas.editBack(req.body.id, req.body.authorId, req.body.new, function(err) {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else {
-                ideas.get(req.body.id, function(err, idea) {
-                    IdeasInstance.updateIdea(idea);
-                });
-                ideas.fetch(function(err, headers) {
-                    IdeasInstance.newHeaders(headers);
-                });
-                res.sendStatus(200);
-            }
-        });
-    });
-    app.post('/idea/postupdate', function(req, res) {
-        ideas.postUpdate(req.body.id, req.body.updateObj, function(err) {
             if (err) {
                 res.sendStatus(500);
             }

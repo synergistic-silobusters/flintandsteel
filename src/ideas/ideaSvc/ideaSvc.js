@@ -61,12 +61,29 @@ angular.module('flintAndSteel')
                 }
             };
 
-            this.likeIdea = function likeIdea(ideaId, userId, successCb, errorCb) {
+            this.addInteraction = function addInteraction(ideaId, type, object, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/like',
+                    $http.post('/idea/addinteraction',
                             {
                                 id: ideaId,
-                                userId: userId
+                                interactionType: type,
+                                interactionObject: object
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
+            this.likeIdea = function likeIdea(ideaId, userId, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.post('/idea/addinteraction',
+                            {
+                                id: ideaId,
+                                interactionType: "likes",
+                                interactionObject: {
+                                    userId: userId
+                                }
                             }
                         )
                         .success(successCb)
@@ -89,10 +106,11 @@ angular.module('flintAndSteel')
 
             this.backIdea = function backIdea(ideaId, backObj, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/back',
+                    $http.post('/idea/addInteraction',
                             {
                                 id: ideaId,
-                                backObj: backObj
+                                interactionType: "backs",
+                                interactionObject: backObj
                             }
                         )
                         .success(successCb)
@@ -129,10 +147,11 @@ angular.module('flintAndSteel')
 
             this.postUpdate = function postUpdate(ideaId, updateObj, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
-                    $http.post('/idea/postupdate',
+                    $http.post('/idea/addinteraction',
                             {
                                 id: ideaId,
-                                updateObj: updateObj
+                                interactionType: "updates",
+                                interactionObject: updateObj
                             }
                         )
                         .success(successCb)
@@ -202,12 +221,10 @@ angular.module('flintAndSteel')
                 postComment: this.postComment,
                 deleteComment: this.deleteComment,
                 updateIdea: this.updateIdea,
-                likeIdea: this.likeIdea,
+                addInteraction: this.addInteraction,
                 unlikeIdea: this.unlikeIdea,
-                backIdea: this.backIdea,
                 editBack: this.editBack,
                 unbackIdea: this.unbackIdea,
-                postUpdate: this.postUpdate,
                 deleteUpdate: this.deleteUpdate,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
