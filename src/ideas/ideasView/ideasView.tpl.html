@@ -94,7 +94,7 @@
                         </md-card-content>
                     </md-card>
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: 'time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
+                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
                             <div ng-show="(ideasView.isUserAuthorOfUpdate($index) || ideasView.isUserAuthor()) && update.deleted !== true && hoverUpdate === true">
                                 <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "deleteUpdate($index)">
                                     <i class="material-icons icon-button-adjust">&#xE14C;</i>
