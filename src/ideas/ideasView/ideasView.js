@@ -409,7 +409,15 @@ angular.module('flintAndSteel')
                     $scope.selectedTypes = [];
                     ctrl.refreshIdea();
                 }
-            };            
+            };
+
+            ctrl.parseTeamEmail = function parseTeamEmail() {
+                emailString = "mailto:";
+                $scope.idea.team.memberId.forEach(function(memberId) {
+                    emailString + memberId.getProperty('email') + ';';
+                });
+                return emailString;
+            };
 
             $scope.hasUserBacked = function() {
                 var hasUserBacked = false;
