@@ -47,7 +47,9 @@ Running the server in development mode disables LDAP login and HTTPS and falls b
 
 In order to run the server in production mode, you need to have access to the company network for LDAP purposes. You also need to create  `server\secrets\ldapAuth.js` which will hold the credentials needed to bind to the LDAP server. Lastly, you will need to have certificates to run HTTPS. Please look up self-signed certificates in order to properly set up the production environment, or obtain certificates from a trusted Certificate Authority.
 
-Any changes to the code while the server is running will result in a server restart. However, this **DOES NOT** automatically re-run client tests or JavaScript analysis commands, so be sure to run them yourself before submitting a PR.
+Any changes to the back-end server code while the server is running will result in a server restart. However, this **DOES NOT** automatically re-run client tests or JavaScript analysis commands, so be sure to run them yourself before submitting a PR.
+
+Any changes to the front-end client code will not result in a server restart. You will, however, need to perform a hard-refresh in your browser window to pick up the changes.
 
 `gulp start:test` will run the server in the test environment. This is identical to `dev`, but it uses a hard-coded port number of `7357` and does not generate data.
 
