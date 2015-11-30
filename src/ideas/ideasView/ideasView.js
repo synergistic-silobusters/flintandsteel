@@ -232,7 +232,13 @@ angular.module('flintAndSteel')
                         '   <md-dialog-content>' +
                         '       <md-list>' +
                         '           <md-list-item ng-if="users.length > 0" ng-repeat="user in users">' +
-                        '               <div>{{user.user.name}}</div>' +
+                        '               <div layout="row">' +
+                        '                   <div layout="row" layout-align="center center">' +
+                        '                       <identicon username="user.user.username" size="24"></identicon>' +
+                        '                   </div>' +
+                        '                   <span>&nbsp;</span>' +
+                        '                   {{user.user.name}}' +
+                        '               </div>' +
                         '           </md-list-item>' +
                         '           <md-list-item ng-if="users.length === 0">' +
                         '               <div>No likes yet!</div>' +
