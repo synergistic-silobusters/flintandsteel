@@ -59,9 +59,9 @@ To run the server load tests, execute `gulp start:test` from a terminal window t
 
 ### Linting and style check
 
-Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib` and `server` as well as `gulpfile.js`.
+Running `gulp jshint` will lint any JavaScript file under the `src` folder excluding `src/lib` and `server` as well as `gulpfile.js` and running `gulp jscs` will check the code style for the aforementioned files.
 
-Running `gulp jscs` will check the code style for the aforementioned files.
+Running `gulp code-check` will run both of these commands. 
 
 Unlike `gulp test:client`, these commands do not automatically run when executing a `gulp start:dev` or `gulp start:prod`
 
