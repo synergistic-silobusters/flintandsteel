@@ -187,3 +187,9 @@ body {
     background-color: #e0e0e0;
     border-radius: 5px 5px 0px 0px;
 }
+
+.no-ideas-div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+}
