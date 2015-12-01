@@ -106,7 +106,14 @@ angular.module('flintAndSteel')
                 var accountName = loginSvc.getProperty('name');
                 loginSvc.logout();
                 toastSvc.show(accountName + ' has been logged out!');
-                $state.go('home');
+
+                // Reload if editing data to clear partial content
+                if ($state.includes('idea')) {
+                    $state.reload('idea');
+                }
+                else if ($state.includes('addidea')) {
+                    $state.go('home');
+                }
             };
 
             // Re-route to account page from menu

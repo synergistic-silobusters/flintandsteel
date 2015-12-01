@@ -61,6 +61,48 @@ angular.module('flintAndSteel')
                 }
             };
 
+            this.addInteraction = function addInteraction(ideaId, type, object, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.post('/idea/addinteraction',
+                            {
+                                id: ideaId,
+                                interactionType: type,
+                                interactionObject: object
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
+            this.removeInteraction = function removeInteraction(ideaId, type, object, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.post('/idea/removeinteraction',
+                            {
+                                id: ideaId,
+                                interactionType: type,
+                                interactionObject: object
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
+            this.editBack = function editBack(ideaId, backAuthorId, newBack, successCb, errorCb) {
+                if (ideaId !== 'mock_idea') {
+                    $http.post('/idea/editback',
+                            {
+                                id: ideaId,
+                                authorId: backAuthorId,
+                                new: newBack
+                            }
+                        )
+                        .success(successCb)
+                        .error(errorCb);
+                }
+            };
+
             this.editIdea = function editIdea(ideaId, title, description, rolesreq, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
                     $http.post('/editidea',
@@ -109,8 +151,10 @@ angular.module('flintAndSteel')
                 getIdeaHeaders: this.getIdeaHeaders,
                 postComment: this.postComment,
                 deleteComment: this.deleteComment,
-                getUniqueId: this.getUniqueId,
                 updateIdea: this.updateIdea,
+                addInteraction: this.addInteraction,
+                removeInteraction: this.removeInteraction,
+                editBack: this.editBack,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
                 getBackTypeChips: this.getBackTypeChips

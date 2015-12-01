@@ -23,21 +23,13 @@ angular.module('flintAndSteel')
                 authorId: 1,
                 image: '../assets/defaultideahero.jpg',
                 likes: [
-                    'cottageclaw',
-                    'vbfond',
-                    'curvechange',
-                    'bothdesigned',
-                    'gymnastfinance',
-                    'aberrantcollagen',
-                    'kuwaitiinspiring',
-                    'basteglyderau',
-                    'adoptionpanting',
-                    'tokenslagoon',
-                    'welshwood',
-                    'kumquatslant',
-                    'anaerobedigits',
-                    'chouxthames',
-                    'pizzago'
+                    {userId: 1},
+                    {userId: 2},
+                    {userId: 3},
+                    {userId: 4},
+                    {userId: 5},
+                    {userId: 6},
+                    {userId: 7}
                 ],
                 managerLikes: 6,
                 comments: [
@@ -104,14 +96,6 @@ angular.module('flintAndSteel')
                 ]
             };
 
-            function NotImplementedException(call) {
-                this.name = 'NotImplementedException';
-                this.message = 'Method ' + call + ' has not been implemented!';
-                this.toString = function() {
-                    return this.name + ': ' + this.message;
-                };
-            }
-
             return {
                 postIdea: function postIdea(idea, successCb) {
                     successCb('Created');
@@ -151,12 +135,25 @@ angular.module('flintAndSteel')
                     }
                     successCb('Deleted');
                 },
-                getUniqueId: function getUniqueId() {
-                    throw new NotImplementedException('getUniqueId');
-                },
                 updateIdea: function updateIdea(ideaId, property, data, successCb) {
                     mockIdea[property] = data;
                     successCb('OK');
+                },
+                addInteraction: function addInteraction(ideaId, type, object, successCb) {
+                    mockIdea[type].push(object);
+                    successCb('OK');
+                },
+                removeInteraction: function removeInteraction(ideaId, type, object, successCb) {
+                    mockIdea[type].splice(mockIdea[type].indexOf(object), 1);
+                    successCb('OK');
+                },
+                editBack: function editBack(ideaId, backAuthorId, newBack, successCb) {
+                    for (var i = 0; i < mockIdea.backs.length; i++) {
+                        if (mockIdea.backs[i].authorId === backAuthorId) {
+                            mockIdea.backs.splice(i, 1, newBack);
+                            successCb('OK');
+                        }
+                    }
                 },
                 editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
                     mockIdea.title = title;
@@ -179,7 +176,7 @@ angular.module('flintAndSteel')
                         { name: 'Test Chip'}
                     ];
                     return types.map(function(type) {
-                        type._lowername = type.name.toLowerCase();
+                        type._lowername = type.name.toLowerCase().replace(/[ ]/g, '-').replace('?', '');
                         return type;
                     });
                 }
