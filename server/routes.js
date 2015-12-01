@@ -146,6 +146,54 @@ module.exports = function(app) {
             }
         });
     });
+    app.post('/idea/addinteraction', function(req, res) {
+        ideas.addInteraction(req.body.id, req.body.interactionType, req.body.interactionObject, function(err) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                ideas.get(req.body.id, function(err, idea) {
+                    IdeasInstance.updateIdea(idea);
+                });
+                ideas.fetch(function(err, headers) {
+                    IdeasInstance.newHeaders(headers);
+                });
+                res.sendStatus(200);
+            }
+        });
+    });
+    app.post('/idea/removeinteraction', function(req, res) {
+        ideas.removeInteraction(req.body.id, req.body.interactionType, req.body.interactionObject, function(err) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                ideas.get(req.body.id, function(err, idea) {
+                    IdeasInstance.updateIdea(idea);
+                });
+                ideas.fetch(function(err, headers) {
+                    IdeasInstance.newHeaders(headers);
+                });
+                res.sendStatus(200);
+            }
+        });
+    });
+    app.post('/idea/editback', function(req, res) {
+        ideas.editBack(req.body.id, req.body.authorId, req.body.new, function(err) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                ideas.get(req.body.id, function(err, idea) {
+                    IdeasInstance.updateIdea(idea);
+                });
+                ideas.fetch(function(err, headers) {
+                    IdeasInstance.newHeaders(headers);
+                });
+                res.sendStatus(200);
+            }
+        });
+    });
     app.post('/editidea', function(req, res) {
         ideas.edit(req.body.id, req.body.title, req.body.description, req.body.rolesreq, function(err) {
             if (err) {
@@ -195,16 +243,6 @@ module.exports = function(app) {
                         res.status(201).json({_id: docId, status: "Deleted"});
                     }
                 });
-            }
-        });
-    });
-    app.post('/updateaccount', function(req, res) {
-        users.update(req.body._id, "likedIdeas", req.body.likedIdeas, function(err, results) {
-            if (err || results.value === null) {
-                console.error(chalk.bgRed(err));
-            }
-            else {
-                res.sendStatus(200);
             }
         });
     });
