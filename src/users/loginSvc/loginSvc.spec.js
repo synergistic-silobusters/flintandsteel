@@ -4,8 +4,6 @@
 /* global inject */
 /* global it */
 /* global expect */
-/* global spyOn */
-/* global jasmine */
 
 describe('loginSvc', function() {
     "use strict";
@@ -63,28 +61,6 @@ describe('loginSvc', function() {
         });
     });
 
-    describe('loginSvc.addUser', function() {
-        var addUserHandler, uniqueIdHandler;
-
-        beforeEach(function() {
-            addUserHandler = $httpBackend.whenPOST('/signup', dummyUser)
-                                .respond(201, 'Created');
-            uniqueIdHandler = $httpBackend.whenGET('/uniqueid?for=user')
-                                .respond(200, 9001);
-        });
-
-        it('should register a new user', function() {
-            $httpBackend.expectGET('/uniqueid?for=user');
-            $httpBackend.expectPOST('/signup', dummyUser);
-
-            loginSvc.addUser(dummyUser, function(data) {
-                expect(data).toBe('Created');
-            }, function() { });
-
-            $httpBackend.flush();
-        });
-    });
-
     describe('loginSvc.isUserLoggedIn', function() {
 
         it('should return false for no logged in user', function() {
@@ -136,99 +112,6 @@ describe('loginSvc', function() {
 
         it('should return nothing for an undefined property', function() {
             expect(loginSvc.getProperty('password')).not.toBeDefined();
-        });
-    });
-
-    describe('loginSvc.likeIdea', function() {
-        var dummyLikedIdea;
-
-        beforeEach(function() {
-            dummyLikedIdea = 'dummy_liked_idea';
-            $rootScope.account = dummyUser;
-
-            spyOn(loginSvc, 'updateAccount').and.callFake(function(account, successCb) {
-                successCb('OK');
-            });
-        });
-
-        it('should add the ideaId to the array of liked ideas', function() {
-            loginSvc.likeIdea(dummyLikedIdea);
-
-            expect($rootScope.account.likedIdeas).toEqual(jasmine.arrayContaining([dummyLikedIdea]));
-        });
-    });
-
-    describe('loginSvc.unlikeIdea', function() {
-        var dummyLikedIdea;
-
-        beforeEach(function() {
-            dummyLikedIdea = 'dummy_liked_idea';
-            $rootScope.account = dummyUser;
-            $rootScope.account.likedIdeas.push(dummyLikedIdea);
-
-            spyOn(loginSvc, 'updateAccount').and.callFake(function(account, successCb) {
-                successCb('OK');
-            });
-        });
-
-        it('should add the ideaId to the array of liked ideas', function() {
-            expect($rootScope.account.likedIdeas).toEqual(jasmine.arrayContaining([dummyLikedIdea]));
-
-            loginSvc.unlikeIdea(dummyLikedIdea);
-
-            expect($rootScope.account.likedIdeas).not.toEqual(jasmine.arrayContaining([dummyLikedIdea]));
-        });
-    });
-
-    describe('loginSvc.updateAccount', function() {
-        var updateAccountHandler, updatedUser;
-
-        beforeEach(function() {
-            updatedUser = dummyUser;
-            updatedUser.username = 'theBestDummyV2';
-            updateAccountHandler = $httpBackend.whenPOST('/updateaccount', updatedUser)
-                                        .respond(200, 'OK');
-        });
-
-        it('should update the user account', function() {
-            $httpBackend.expectPOST('/updateaccount', updatedUser);
-
-            loginSvc.updateAccount(updatedUser, function(data) {
-                expect(data).toBe('OK');
-            }, function() { });
-
-            $httpBackend.flush();
-        });
-
-    });
-
-    describe('loginSvc.checkValidUsername', function() {
-        var checkValidUsernameHandler;
-
-        beforeEach(function() {
-            checkValidUsernameHandler = $httpBackend.whenGET('/isuniqueuser?user=dummy')
-                                            .respond(200, true);
-        });
-
-        it('should return true for a unique user', function() {
-            $httpBackend.expectGET('/isuniqueuser?user=dummy');
-
-            loginSvc.checkValidUsername('dummy', function(data) {
-                expect(data).toBe(true);
-            }, function() { });
-
-            $httpBackend.flush();
-        });
-
-        it('should return false for a duplicate user', function() {
-            checkValidUsernameHandler.respond(200, false);
-            $httpBackend.expectGET('/isuniqueuser?user=dummy');
-
-            loginSvc.checkValidUsername('dummy', function(data) {
-                expect(data).toBe(false);
-            }, function() { });
-
-            $httpBackend.flush();
         });
     });
 

@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === 'production') {
-
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     app.use(morgan(':remote-addr - ' +
         chalk.cyan('[:date] ') +
         chalk.green('":method :url ') +
@@ -66,25 +66,21 @@ if (process.env.NODE_ENV === 'production') {
 
     passport.serializeUser(function(user, done) {
         "use strict";
-        console.log('serializeUser: ' + user.id);
-        done(null, user.id);
+        console.log('serializeUser: ' + user._json.sAMAccountName);
+        done(null, user);
     });
 
-    passport.deserializeUser(function(id, done) {
+    passport.deserializeUser(function(user, done) {
         "use strict";
-        if (id) {
-            done(null);
+        var users = require('./users/users')(GLOBAL.db);
+
+        if (user) {
+            console.log('deserializeUser:' + user._json.sAMAccountName);
+            users.findForLogin(user, done);
         }
-        //TODO: Not sure what this is or why we need it, but we'll do it later.
-        // db.users.findById(id, function(err, user){
-        //     console.log(user);
-        //     if (!err) {
-        //         done(null, user);
-        //     }
-        //     else {
-        //         done(err, null);
-        //     }
-        // });
+        else {
+            done("No user provided!");
+        }
     });
 }
 

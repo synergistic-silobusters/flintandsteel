@@ -35,8 +35,7 @@ module.exports = function(db) {
                     _id: user._id,
                     username: user.username,
                     email: user.email,
-                    name: user.fullName,
-                    likedIdeas: []
+                    name: user.fullName
                 };
                 cb(null, responseObj);
             }
@@ -54,8 +53,7 @@ module.exports = function(db) {
                     _id: doc._id,
                     name: doc.fullName,
                     username: doc.username,
-                    email: doc.email,
-                    likedIdeas: doc.likedIdeas
+                    email: doc.email
                 });
             }
         });
