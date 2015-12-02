@@ -3,6 +3,8 @@
 /* global moment */
 /* global EventSource */
 
+
+
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
@@ -374,6 +376,56 @@ angular.module('flintAndSteel')
                 return false;
             };
 
+            ///////////////////////
+            // BACKING FUNCTIONS //
+            ///////////////////////
+
+            // Function used to trigger dialog for adding or editting a back
+            $scope.showAddBack = function(ev) {
+                var template = '';
+                var backObj = '';
+                if (!$scope.hasUserBacked()) {
+                    template = 'ideas/ideaBack/ideaAddBack.tpl.html';
+                    backObj = {
+                        text: ctrl.backText,
+                        types: $scope.selectedTypes
+                    };
+                }
+                else {
+                    template = 'ideas/ideaBack/ideaEditBack.tpl.html';
+                    $scope.loadEditBack();
+                    backObj = $scope.userBack;
+                }
+
+                $mdDialog.show({
+                    controller: DialogControllerBack,
+                    templateUrl: template,
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    locals: {
+                        backObj: backObj
+                    }
+                })
+                .then(function(answer) {
+
+                    if (!$scope.hasUserBacked()) {
+                        ctrl.newBack = answer.text;
+                        $scope.selectedTypes = answer.selectedTypes;
+                        $scope.addNewInteraction('backs');
+                    }
+                    else {
+                        ctrl.editBackText = answer.text;
+                        $scope.selectedTypes = answer.selectedTypes;
+                        ctrl.editBack(backObj);
+                    }
+                }, function() {
+
+                    $scope.status = 'You canceled the dialog.';
+                });
+            }
+
+            // Object used to update an editted back
             ctrl.editBack = function editBack(back) {
                 if (ctrl.isUserAuthorOfInteraction(back)) {
                     var now = new Date().toISOString();
@@ -398,6 +450,7 @@ angular.module('flintAndSteel')
                 }
             };
 
+            // Checks if the current user has backed the current idea
             $scope.hasUserBacked = function() {
                 var hasUserBacked = false;
                 if (loginSvc.isUserLoggedIn() && typeof $scope.idea.backs !== 'undefined') {
@@ -410,6 +463,7 @@ angular.module('flintAndSteel')
                 return hasUserBacked;
             };
 
+            // Check if a back as been edited
             $scope.hasBackBeenEdited = function(back) {
                 if (typeof back.timeModified !== 'undefined' && back.timeModified !== '') {
                     return true;
@@ -417,6 +471,7 @@ angular.module('flintAndSteel')
                 return false;
             };
 
+            // Loads information from a previously made back by the current user
             $scope.loadEditBack = function loadEditBack(backObj) {
                 if (typeof backObj === "undefined") {
                     var backs = $scope.idea.backs;
@@ -435,3 +490,73 @@ angular.module('flintAndSteel')
         }
     ]
 );
+
+// Dialog Controller used for controlling the behavior of the dialog
+//   used for login.
+function DialogControllerBack($scope, $mdDialog, ideaSvc, backObj) {
+    "use strict";
+    // Populate values based off current back info
+    $scope.typeChips = ideaSvc.getBackTypeChips();
+    $scope.backText = backObj.text;
+    $scope.selectedTypes = backObj.types;
+    
+    for (var i = 0; i < $scope.selectedTypes.length; i++) {
+        $scope.selectedTypes[i].checked = true;
+    }
+
+    // Precheck previous boxes for editting backs
+    for (var i = 0; i < $scope.typeChips.length; i++) {
+        for (var j = 0; j < $scope.selectedTypes.length; j++) {
+            if ($scope.typeChips[i].name === $scope.selectedTypes[j].name) {
+                $scope.typeChips[i].checked = true;
+                break;
+            }
+            else {
+                $scope.typeChips[i].checked = false;
+            }
+        }
+    }
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+    // what happens when you hit the cancel button
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+    // what happens when you hit the back idea button
+    $scope.backIdea = function() {
+        $mdDialog.hide($scope.backObj());
+    };
+
+    //pass the account object to the dialog window
+    $scope.backObj = function(account) {
+        var obj = {
+            text: $scope.backText,
+            selectedTypes: $scope.selectedTypes
+        };
+        return obj;
+    };
+    
+    //add checked types to list
+    $scope.toggle = function (item,i) {
+        var idx = -1;
+
+        for (var j = 0; j < $scope.selectedTypes.length; j++) {
+            if ($scope.selectedTypes[j].name === item.name) {
+                idx = j;
+                break;
+            }
+        }
+
+        if (idx > -1) {
+            $scope.selectedTypes.splice(idx, 1);
+            $scope.typeChips[i].checked = false;
+        }
+        else {
+            $scope.selectedTypes.push(item);
+            $scope.typeChips[i].checked = true;
+        }
+        
+    };
+}

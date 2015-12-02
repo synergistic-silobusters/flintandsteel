@@ -1,0 +1,40 @@
+<md-dialog class="backBox" aria-label="BackIdea" ng-cloak>
+    <form name="backForm">
+        <!-- Dialog Header -->
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Back Idea</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close" type="button">
+                    <i class="material-icons icon-button-adjust">&#xE5CD;</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <!-- Personal Contribution -->
+            <md-input-container flex>
+                <label>How can you participate?</label>
+                <input id="back-box" ng-model="backText" type="text" />
+            </md-input-container>
+            <!-- Tag Types -->
+            <md-input-container flex>
+                <p>Tag the type of your contribution</p>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="type in typeChips" flex="50" ng-click="toggle(type, $index)">
+                        <md-checkbox>
+                            {{type.name}}
+                        </md-checkbox>
+                    </div>
+                </div>
+            </md-input-container>
+            <br></br>
+            <!-- Submitting -->
+            <md-dialog-actions flex layout="column">
+                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="ideasView.editBackText === ''">
+                    Back Idea
+                </md-button>
+            </md-dialog-actions>
+            <p></p>
+        </md-dialog-content>
+    </form>
+</md-dialog>
