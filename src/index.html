@@ -55,7 +55,10 @@
             <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
                 <i class="material-icons icon-button-adjust">&#xE5D2;</i>
             </md-button>
-            <h2><span><img ui-sref="home" class="center-img nav-bar-pointer" src="assets/Innovation_Challenge_Bulb.png" width="25"/></span></h2>
+            <h2><span>
+                <img ui-sref="home" class="center-img nav-bar-pointer" src="assets/Innovation_Challenge_Bulb.png" width="25"/>
+                <md-tooltip md-direction="bottom">Home</md-tooltip>
+            </span></h2>
             <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">All Ideas</span>
             <span flex></span>
 
@@ -63,14 +66,16 @@
                 <!-- Login Button -->
                 <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
                     <i class="material-icons icon-button-adjust">&#xE8A6;</i>
+                    <md-tooltip md-direction="left">Login</md-tooltip>
                 </md-button>
 
                 <!-- Profile button -->
                 <div ng-show="isUserLoggedIn()" style="font-size:14px">
+                    <identicon md-menu-origin="" username='getUsername()' size='30' class="identicon identicon-home"></identicon>
                     {{currentUser}}
-                    <md-menu md-offset="0 50">
+                    <md-menu md-offset="0 60">
                         <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <identicon md-menu-origin="" username='getUsername()' size='30' class="identicon"></identicon>
+                            <i class="material-icons icon-button-adjust">&#xE5CF;</i>
                         </md-button>
                         <md-menu-content width="4">
                             <md-menu-item>
@@ -83,6 +88,7 @@
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
+                    <md-tooltip md-direction="left">User Menu</md-tooltip>
                 </div>
             </div>
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
@@ -106,14 +112,13 @@
                             </md-item>
                         </md-list>
                         <md-divider></md-divider>
-                        <!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('home')" flex>Home</md-button></div> -->
-                        <!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('idea')" flex>Idea (Test only)</md-button></div> -->
                     </div>
                 </div>
             </md-content>
             <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
-                <md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-show="isUserLoggedIn()">
+                <md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-if="isUserLoggedIn()">
                     <i class="material-icons icon-button-adjust">&#xE145;</i>
+                    <md-tooltip md-direction="left">Add Idea</md-tooltip>
                 </md-button>
             </div>
         </md-sidenav>
