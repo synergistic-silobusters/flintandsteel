@@ -20,7 +20,7 @@
             <md-input-container flex>
                 <p>Edit your contribution type</p>
                 <div layout="row" layout-wrap>
-                    <div ng-repeat="type in typeChips" flex="50" ng-model="test" ng-click="toggle(type, $index)">
+                    <div ng-repeat="type in types" flex="50" ng-model="test" ng-click="toggle(type, $index)">
                         <md-checkbox ng-checked="type.checked">
                             {{type.name}}
                         </md-checkbox>

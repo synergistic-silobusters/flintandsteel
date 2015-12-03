@@ -384,6 +384,8 @@ angular.module('flintAndSteel')
             $scope.showAddBack = function(ev) {
                 var template = '';
                 var backObj = '';
+
+                // Change data passed and template depending on if adding or editting
                 if (!$scope.hasUserBacked()) {
                     template = 'ideas/ideaBack/ideaAddBack.tpl.html';
                     backObj = {
@@ -397,6 +399,7 @@ angular.module('flintAndSteel')
                     backObj = $scope.userBack;
                 }
 
+                // Show Dialog
                 $mdDialog.show({
                     controller: DialogControllerBack,
                     templateUrl: template,
@@ -404,23 +407,22 @@ angular.module('flintAndSteel')
                     targetEvent: ev,
                     clickOutsideToClose: true,
                     locals: {
-                        backObj: backObj
+                        backingObj: backObj
                     }
                 })
                 .then(function(answer) {
-
                     if (!$scope.hasUserBacked()) {
                         ctrl.newBack = answer.text;
-                        $scope.selectedTypes = answer.selectedTypes;
+                        $scope.selectedTypes = answer.selectTypes;
                         $scope.addNewInteraction('backs');
                     }
                     else {
                         ctrl.editBackText = answer.text;
-                        $scope.selectedTypes = answer.selectedTypes;
+                        $scope.selectedTypes = answer.selectTypes;
                         ctrl.editBack(backObj);
                     }
+                    $scope.edittingBack = false;
                 }, function() {
-
                     $scope.status = 'You canceled the dialog.';
                 });
             }
@@ -429,13 +431,23 @@ angular.module('flintAndSteel')
             ctrl.editBack = function editBack(back) {
                 if (ctrl.isUserAuthorOfInteraction(back)) {
                     var now = new Date().toISOString();
-                    var newBack = {
-                        text: ctrl.editBackText,
-                        authorId: back.authorId,
-                        time: back.time,
-                        timeModified: now,
-                        types: $scope.selectedTypes
-                    };
+                    if ($scope.status === 'You canceled the dialog.') {
+                        var newBack = {
+                            text: ctrl.editBackText,
+                            authorId: back.authorId,
+                            time: back.time,
+                            timeModified: now,
+                            types: $scope.selectedTypes
+                        };
+                    }
+                    else {
+                        var newBack = {
+                            text: ctrl.editBackText,
+                            authorId: back.authorId,
+                            time: back.time,
+                            types: $scope.selectedTypes
+                        };
+                    }
                     ideaSvc.editBack($scope.idea._id, back.authorId, newBack,
                         function success() {
                             ctrl.refreshIdea();
@@ -493,69 +505,70 @@ angular.module('flintAndSteel')
 
 // Dialog Controller used for controlling the behavior of the dialog
 //   used for login.
-function DialogControllerBack($scope, $mdDialog, ideaSvc, backObj) {
+function DialogControllerBack($scope, $mdDialog, ideaSvc, backingObj) {
     "use strict";
     // Populate values based off current back info
-    $scope.typeChips = ideaSvc.getBackTypeChips();
-    $scope.backText = backObj.text;
-    $scope.selectedTypes = backObj.types;
+    $scope.types = ideaSvc.getBackTypeChips();
+    $scope.backText = backingObj.text;
+    $scope.tempTypes = backingObj.types;
+    $scope.selectTypes = []; // Variable used for scope issues
     
-    for (var i = 0; i < $scope.selectedTypes.length; i++) {
-        $scope.selectedTypes[i].checked = true;
+    for (var i = 0; i < $scope.tempTypes.length; i++) {
+        $scope.tempTypes[i].checked = true;
     }
 
     // Precheck previous boxes for editting backs
-    for (var i = 0; i < $scope.typeChips.length; i++) {
-        for (var j = 0; j < $scope.selectedTypes.length; j++) {
-            if ($scope.typeChips[i].name === $scope.selectedTypes[j].name) {
-                $scope.typeChips[i].checked = true;
+    for (var i = 0; i < $scope.types.length; i++) {
+        for (var j = 0; j < $scope.tempTypes.length; j++) {
+            if ($scope.types[i].name === $scope.tempTypes[j].name) {
+                $scope.types[i].checked = true;
+                $scope.selectTypes.push($scope.tempTypes[j]); //avoids parent scope issues
                 break;
             }
             else {
-                $scope.typeChips[i].checked = false;
+                $scope.types[i].checked = false;
             }
         }
     }
 
-    $scope.hide = function() {
-        $mdDialog.hide();
-    };
     // what happens when you hit the cancel button
     $scope.cancel = function() {
         $mdDialog.cancel();
     };
     // what happens when you hit the back idea button
     $scope.backIdea = function() {
-        $mdDialog.hide($scope.backObj());
+        $mdDialog.hide($scope.backObject());
     };
 
-    //pass the account object to the dialog window
-    $scope.backObj = function(account) {
+    // pass the account object to the dialog window
+    $scope.backObject = function(account) {
         var obj = {
             text: $scope.backText,
-            selectedTypes: $scope.selectedTypes
+            selectTypes: $scope.selectTypes
         };
+
         return obj;
     };
     
-    //add checked types to list
+    // add checked types to list
     $scope.toggle = function (item,i) {
         var idx = -1;
 
-        for (var j = 0; j < $scope.selectedTypes.length; j++) {
-            if ($scope.selectedTypes[j].name === item.name) {
+        for (var j = 0; j < $scope.selectTypes.length; j++) {
+            if ($scope.selectTypes[j].name === item.name) {
                 idx = j;
                 break;
             }
         }
 
+        // if already selected, remove from list, otherwise add to selected list
         if (idx > -1) {
-            $scope.selectedTypes.splice(idx, 1);
-            $scope.typeChips[i].checked = false;
+            $scope.selectTypes.splice(idx, 1);
+            $scope.types[i].checked = false;
         }
         else {
-            $scope.selectedTypes.push(item);
-            $scope.typeChips[i].checked = true;
+            $scope.selectTypes.push(item);
+            $scope.types[i].checked = true;
         }
         
     };
