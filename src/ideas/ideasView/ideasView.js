@@ -412,9 +412,10 @@ angular.module('flintAndSteel')
             };
 
             ctrl.parseTeamEmail = function parseTeamEmail() {
-                emailString = "mailto:";
-                $scope.idea.team.memberId.forEach(function(memberId) {
-                    emailString + memberId.getProperty('email') + ';';
+                var emailString = "mailto:";
+                $scope.idea.team.forEach(function(memberId) {
+                    // emailString + memberId.getProperty('email') + ';';
+                    emailString + memberId.member.email + ';';
                 });
                 return emailString;
             };
