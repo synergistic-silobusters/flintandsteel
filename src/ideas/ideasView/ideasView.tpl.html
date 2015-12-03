@@ -57,12 +57,12 @@
 <md-card>
     <md-card-content>
         <span flex ng-if="isUserLoggedIn() && !isUserLiked()">
-            <md-button class="md-icon-button" aria-label="Like" ng-click="likeIdea()">
+            <md-button class="md-icon-button" aria-label="Like" ng-click="addNewInteraction('likes')">
                 <i class="material-icons icon-button-adjust">&#xE87E;</i>
             </md-button>
         </span>
         <span flex ng-if="isUserLoggedIn() && isUserLiked()">
-            <md-button class="md-icon-button" aria-label="Unlike" ng-click="unlikeIdea()">
+            <md-button class="md-icon-button" aria-label="Unlike" ng-click="removeInteraction('likes')">
                 <i class="material-icons icon-button-adjust">&#xE87D;</i>
             </md-button>
         </span>
@@ -94,18 +94,18 @@
                         </md-card-content>
                     </md-card>
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: 'time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
+                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
                             <div ng-show="(ideasView.isUserAuthorOfUpdate($index) || ideasView.isUserAuthor()) && update.deleted !== true && hoverUpdate === true">
                                 <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "deleteUpdate($index)">
                                     <i class="material-icons icon-button-adjust">&#xE14C;</i>
                                 </md-button>
                             </div>
-                            <div class="md-list-item-text" ng-class="{'deleted': update.deleted === true}">
+                            <div class="md-list-item-text">
                                 <h3>{{update.text}}</h3>
                                 <div layout="row">
                                     <div layout="row" layout-align="center center">
                                         <identicon username='update.author.username' size='18'></identicon>
-                                    </div>                            
+                                    </div>
                                     <p>&nbsp;<email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.time)"></small></p>
                                 </div>
                             </div>
@@ -134,12 +134,12 @@
                     </md-card>
                     <md-list>
                         <md-list-item class="md-2-line" ng-repeat="comment in idea.comments" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
-                            <div ng-show="hovered === true && ideasView.isUserAuthorOfComment($index) && comment.deleted !== true">
-                                <md-button class="md-icon-button" aria-label="Delete Comment" ng-click="ideasView.deleteComment($index)">
+                            <div ng-show="hovered === true && ideasView.isUserAuthorOfInteraction(comment)">
+                                <md-button class="md-icon-button" aria-label="Delete Comment" ng-click="removeInteraction('comments', comment)">
                                     <i class="material-icons icon-button-adjust">&#xE14C;</i>
                                 </md-button>
                             </div>
-                            <div class="md-list-item-text" ng-class="{'deleted': comment.deleted === true}">
+                            <div class="md-list-item-text">
                                 <h3>{{comment.text}}</h3>
                                 <div layout="row">
                                     <div layout="row" layout-align="center center">
@@ -156,17 +156,17 @@
                 <md-content class="md-padding">
                     <md-list>
                         <md-list-item class="md-3-line" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
-                            <div ng-show="hovered === true && ideasView.isUserAuthorOfBack($index)">
-                                <md-button class="md-icon-button" aria-label="Edit Back" ng-click="loadEditBack()">
+                            <div ng-show="hovered === true && ideasView.isUserAuthorOfInteraction(back)">
+                                <md-button class="md-icon-button" aria-label="Edit Back" ng-click="loadEditBack(back)">
                                     <i class="material-icons icon-button-adjust">&#xE3C9;</i>
                                 </md-button>
-                            </div>                            
+                            </div>
                             <div class="md-list-item-text">
                                 <h3>{{back.text}}
                                     <span class="extra-padding-left-sm">
                                         <small ng-show="!hasBackBeenEdited(back)" ng-bind="momentizeTime(back.time)"></small>
                                         <small ng-show="hasBackBeenEdited(back)" ng-bind="momentizeModifiedTime(back.timeModified)"></small>
-                                    </span>                                    
+                                    </span>
                                 </h3>
                                 <div layout="row">
                                     <div layout="row" layout-align="center center">
@@ -192,7 +192,7 @@
                             <md-input-container ng-show="showEditBackInput" class="no-padding-bottom">
                                 <label>Edit your back...</label>
                                 <input ng-model="ideasView.editBackText" type="text"/>
-                            </md-input-container>                             
+                            </md-input-container>
                             <md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match="true" ng-show="ideasView.newBack || ideasView.editBackText">
                                 <md-autocomplete
                                     md-selected-item="selectedType"
@@ -218,10 +218,10 @@
                             </md-button>
                         </div>
                         <div layout="column" layout-align="center end" ng-show="showEditBackInput">
-                            <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.editBackText === ''" ng-click="ideasView.editBack(userBackIndex)">
+                            <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.editBackText === ''" ng-click="ideasView.editBack(userBack)">
                                 <i class="material-icons icon-button-adjust">&#xE876;</i>
                             </md-button>
-                        </div>                        
+                        </div>
                     </div>
                 </md-content>
             </md-tab>

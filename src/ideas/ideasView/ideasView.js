@@ -118,93 +118,99 @@ angular.module('flintAndSteel')
 
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
-                if (type === 'comments' || type === 'backs' || type === 'updates') {
-                    if (type === 'comments') {
-                        ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
-                            function success() {},
-                            function error(data, status) {
-                                console.log(status);
-                            }
-                        );
-                    }
-                    else if (type === 'backs') {
-                        $scope.idea[type].push({
-                            text: ctrl.newBack,
-                            authorId: loginSvc.getProperty('_id'),
-                            time: now,
-                            types: $scope.selectedTypes
-                        });
-
-                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
-                            function success() { },
-                            function error(data, status) {
-                                console.log(status);
-                            }
-                        );
-                    }
-                    else if (type === 'updates') {
-                        $scope.idea[type].push({
-                            text: ctrl.newUpdate,
-                            authorId: loginSvc.getProperty('_id'),
-                            time: now
-                        });
-
-                        ideaSvc.updateIdea($scope.idea._id, type, $scope.idea[type],
-                            function success() { },
-                            function error(data, status) {
-                                console.log(status);
-                            }
-                        );
-                    }
+                if (type === 'comments') {
+                    ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
+                        function success() {
+                            ctrl.refreshIdea();
+                        },
+                        function error(data, status) {
+                            console.log(status);
+                        }
+                    );
+                    ctrl.newComment = '';
+                    return;
+                }
+                var obj;
+                if (type === 'likes') {
+                    obj = {
+                        userId: loginSvc.getProperty('_id')
+                    };
+                }
+                else if (type === 'backs') {
+                    obj = {
+                        text: ctrl.newBack,
+                        authorId: loginSvc.getProperty('_id'),
+                        time: now,
+                        types: $scope.selectedTypes
+                    };
 
                     $scope.selectedTypes = [];
                     $scope.selectedType = undefined;
-                    ctrl.newComment = '';
                     ctrl.newBack = '';
-                    ctrl.newUpdate = '';
-                    ctrl.refreshIdea();
                 }
+                else if (type === 'updates') {
+                    obj = {
+                        text: ctrl.newUpdate,
+                        authorId: loginSvc.getProperty('_id'),
+                        time: now
+                    };
+
+                    ctrl.newUpdate = '';
+                }
+
+                ideaSvc.addInteraction($scope.idea._id, type, obj,
+                    function success() {
+                        ctrl.refreshIdea();
+                    },
+                    function error(data, status) {
+                        console.log(status);
+                    }
+                );
             };
 
-            $scope.deleteUpdate = function deleteUpdate(index) {
-                if (ctrl.isUserAuthor() || ctrl.isUserAuthorOfUpdate(index)) {
-                    $scope.idea.updates.splice(index, 1);
-                    ideaSvc.updateIdea($scope.idea._id, 'updates', $scope.idea.updates,
-                        function success() { },
+            $scope.removeInteraction = function removeInteraction(type, obj) {
+                if (type === 'likes') {
+                    var likeObj = {
+                        userId: loginSvc.getProperty('_id')
+                    };
+                    ideaSvc.removeInteraction($scope.idea._id, type, likeObj,
+                        function success() {
+                            ctrl.refreshIdea();
+                        },
                         function error(data, status) {
                             console.log(status);
-                        });
+                        }
+                    );
+                    return;
                 }
-            };
-
-            $scope.likeIdea = function likeIdea() {
-                $scope.idea.likes.push({userId: loginSvc.getProperty('_id')});
-                ideaSvc.updateIdea($scope.idea._id, 'likes', $scope.idea.likes,
-                    function success() { },
-                    function error(data, status) {
-                        console.log(status);
-                    });
-                loginSvc.likeIdea($scope.idea._id);
-                ctrl.refreshIdea();
-            };
-
-            $scope.unlikeIdea = function unlikeIdea() {
-                _.remove($scope.idea.likes, function(n) {
-                    return n.userId === loginSvc.getProperty('_id');
-                });
-                ideaSvc.updateIdea($scope.idea._id, 'likes', $scope.idea.likes,
-                    function success() { },
-                    function error(data, status) {
-                        console.log(status);
-                    });
-                loginSvc.unlikeIdea($scope.idea._id);
-                ctrl.refreshIdea();
+                var isAuthorofInteraction = ctrl.isUserAuthorOfInteraction(obj);
+                if (isAuthorofInteraction || (ctrl.isUserAuthor() && type === 'updates')) {
+                    if (type === 'comments') {
+                        ideaSvc.deleteComment(obj.commentId, function() {
+                            ctrl.refreshIdea();
+                        },
+                        function() {
+                            console.log("ERR: Comment " + obj.commentId + " not deleted");
+                        });
+                    }
+                    else {
+                        var copyObj = angular.copy(obj);
+                        delete copyObj.author; // author object is not stored in database
+                        ideaSvc.removeInteraction($scope.idea._id, type, copyObj,
+                            function success() {
+                                ctrl.refreshIdea();
+                            },
+                            function error(data, status) {
+                                console.log(status);
+                            }
+                        );
+                    }
+                }
             };
 
             $scope.isUserLiked = function isUserLiked() {
-                var likedIdeas = loginSvc.getProperty('likedIdeas');
-                //console.log(likedIdeas);
-                return (_.findIndex(likedIdeas, function(item) { return item === $scope.idea._id; }) !== -1);
+                var userId = loginSvc.getProperty('_id');
+                return (_.findIndex($scope.idea.likes, function(like) { return like.userId === userId;}) !== -1);
             };
 
             $scope.querySearch = function querySearch(query) {
@@ -345,7 +351,7 @@ angular.module('flintAndSteel')
                 }
                 return false;
             };
-            
+
             ctrl.isUserExactMemberOfTeam = function(teamIndex) {
                 if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
                     if (loginSvc.getProperty('_id') === $scope.idea.team[teamIndex].memberId) {
@@ -354,62 +360,44 @@ angular.module('flintAndSteel')
                 }
                 return false;
             };
-            
+
             ctrl.removeUserFromTeam = function(backOfTeamMember) {
                 backOfTeamMember.isInTeam = false;
-                
+
                 ctrl.updateTeam();
             };
-            
-            ctrl.isUserAuthorOfComment = function(commentIndex) {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.comments[commentIndex].authorId) {
+
+            ctrl.isUserAuthorOfInteraction = function(interactionObj) {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === interactionObj.authorId) {
                     return true;
                 }
                 return false;
             };
 
-            ctrl.isUserAuthorOfBack = function(backIndex) {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.backs[backIndex].authorId) {
-                    return true;
-                }
-                return false;
-            };
-
-            ctrl.deleteComment = function(commentIndex) {
-                if (ctrl.isUserAuthorOfComment(commentIndex)) {
-                    ideaSvc.deleteComment($scope.idea.comments[commentIndex].commentId, function() {
-                        return;
-                    },
-                    function() {
-                        console.log("ERR: Comment " + commentIndex + " not deleted");
-                    });
-                }
-            };
-
-            ctrl.isUserAuthorOfUpdate = function(index) {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.updates[index].authorId) {
-                    return true;
-                }
-                return false;
-            };
-
-            ctrl.editBack = function editBack(backIndex) {
-                if (ctrl.isUserAuthorOfBack(backIndex)) {
+            ctrl.editBack = function editBack(back) {
+                if (ctrl.isUserAuthorOfInteraction(back)) {
                     var now = new Date().toISOString();
-                    $scope.idea.backs[backIndex].text = ctrl.editBackText;
-                    $scope.idea.backs[backIndex].types = $scope.selectedTypes;
-                    $scope.idea.backs[backIndex].timeModified = now;
-                    ideaSvc.updateIdea($scope.idea._id, 'backs', $scope.idea.backs,
-                    function success() {},
-                    function error(data, status) {
-                        console.log(status);
-                    });               
+                    var newBack = {
+                        text: ctrl.editBackText,
+                        authorId: back.authorId,
+                        time: back.time,
+                        timeModified: now,
+                        types: $scope.selectedTypes
+                    };
+                    ideaSvc.editBack($scope.idea._id, back.authorId, newBack,
+                        function success() {
+                            ctrl.refreshIdea();
+                        },
+                        function error(data, status) {
+                            console.log(status);
+                        }
+                    );
                     $scope.showEditBackInput = false;
-                    ctrl.editBackText = '';                    
+                    ctrl.editBackText = '';
                     $scope.selectedTypes = [];
-                    ctrl.refreshIdea();
                 }
             };
+<<<<<<< HEAD
 
             ctrl.parseTeamEmail = function parseTeamEmail() {
                 var emailString = "mailto:";
@@ -419,6 +407,8 @@ angular.module('flintAndSteel')
                 });
                 return emailString;
             };
+=======
+>>>>>>> refs/remotes/YashdalfTheGray/master
 
             $scope.hasUserBacked = function() {
                 var hasUserBacked = false;
@@ -426,7 +416,7 @@ angular.module('flintAndSteel')
                     $scope.idea.backs.forEach(function(back) {
                         if (loginSvc.getProperty('_id') === back.authorId) {
                             hasUserBacked = true;
-                        }                        
+                        }
                     });
                 }
                 return hasUserBacked;
@@ -439,15 +429,20 @@ angular.module('flintAndSteel')
                 return false;
             };
 
-            $scope.loadEditBack = function loadEditBack() {
-                $scope.idea.backs.forEach(function(back, index) {
-                    if (loginSvc.getProperty('_id') === back.authorId) {
-                        $scope.userBackIndex = index;
-                        ctrl.editBackText = back.text;
-                        $scope.selectedTypes = back.types.slice();
-                        $scope.showEditBackInput = true;
+            $scope.loadEditBack = function loadEditBack(backObj) {
+                if (typeof backObj === "undefined") {
+                    var backs = $scope.idea.backs;
+                    for (var i = 0; i < backs.length; i++) {
+                        if (loginSvc.getProperty('_id') === backs[i].authorId) {
+                            backObj = backs[i];
+                            break;
+                        }
                     }
-                });
+                }
+                $scope.userBack = backObj;
+                ctrl.editBackText = backObj.text;
+                $scope.selectedTypes = backObj.types.slice();
+                $scope.showEditBackInput = true;
             };
         }
     ]

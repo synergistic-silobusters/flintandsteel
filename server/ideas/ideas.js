@@ -28,6 +28,36 @@ module.exports = function(db) {
         });
     };
 
+    module.addInteraction = function(id, interactionType, interactionObject, cb) {
+        if (typeof interactionObject.userId !== "undefined") {
+            interactionObject.userId = new ObjectId(interactionObject.userId);
+        }
+
+        if (typeof interactionObject.authorId !== "undefined") {
+            interactionObject.authorId = new ObjectId(interactionObject.authorId);
+        }
+
+        db.updateOnePushArray(COLLECTION, id, interactionType, interactionObject, cb);
+    };
+
+    module.removeInteraction = function(id, interactionType, interactionObject, cb) {
+        if (typeof interactionObject.userId !== "undefined") {
+            interactionObject.userId = new ObjectId(interactionObject.userId);
+        }
+
+        if (typeof interactionObject.authorId !== "undefined") {
+            interactionObject.authorId = new ObjectId(interactionObject.authorId);
+        }
+
+        db.updateOnePullArray(COLLECTION, id, interactionType, interactionObject, cb);
+    };
+
+    module.editBack = function(id, authorId, newBack, cb) {
+        var objId = new ObjectId(authorId);
+        newBack.authorId = new ObjectId(newBack.authorId);
+        db.updateOneArrayElement(COLLECTION, id, "backs", "authorId", objId, newBack, cb);
+    };
+
     module.update = function(id, property, value, cb) {
         var updateObj = {};
         updateObj[property] = value;
@@ -167,7 +197,7 @@ module.exports = function(db) {
         if (!isEmittingUpdates) {
             isEmittingUpdates = true;
             setTimeout(function() {
-                ideaProto.emit("updateIdea_" + key, idea);
+                ideaProto.emit("updateIdea_" + key, newestIdea);
                 isEmittingUpdates = false;
             }, 500);
         }
