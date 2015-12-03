@@ -4,7 +4,6 @@
 /* global EventSource */
 
 
-
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
@@ -425,14 +424,15 @@ angular.module('flintAndSteel')
                 }, function() {
                     $scope.status = 'You canceled the dialog.';
                 });
-            }
+            };
 
             // Object used to update an editted back
             ctrl.editBack = function editBack(back) {
                 if (ctrl.isUserAuthorOfInteraction(back)) {
                     var now = new Date().toISOString();
+                    var newBack = {};
                     if ($scope.status === 'You canceled the dialog.') {
-                        var newBack = {
+                        newBack = {
                             text: ctrl.editBackText,
                             authorId: back.authorId,
                             time: back.time,
@@ -441,7 +441,7 @@ angular.module('flintAndSteel')
                         };
                     }
                     else {
-                        var newBack = {
+                        newBack = {
                             text: ctrl.editBackText,
                             authorId: back.authorId,
                             time: back.time,
@@ -513,8 +513,8 @@ function DialogControllerBack($scope, $mdDialog, ideaSvc, backingObj) {
     $scope.tempTypes = backingObj.types;
     $scope.selectTypes = []; // Variable used for scope issues
     
-    for (var i = 0; i < $scope.tempTypes.length; i++) {
-        $scope.tempTypes[i].checked = true;
+    for (var k = 0; k < $scope.tempTypes.length; k++) {
+        $scope.tempTypes[k].checked = true;
     }
 
     // Precheck previous boxes for editting backs
@@ -541,7 +541,7 @@ function DialogControllerBack($scope, $mdDialog, ideaSvc, backingObj) {
     };
 
     // pass the account object to the dialog window
-    $scope.backObject = function(account) {
+    $scope.backObject = function() {
         var obj = {
             text: $scope.backText,
             selectTypes: $scope.selectTypes
@@ -551,7 +551,7 @@ function DialogControllerBack($scope, $mdDialog, ideaSvc, backingObj) {
     };
     
     // add checked types to list
-    $scope.toggle = function (item,i) {
+    $scope.toggle = function(item, i) {
         var idx = -1;
 
         for (var j = 0; j < $scope.selectTypes.length; j++) {

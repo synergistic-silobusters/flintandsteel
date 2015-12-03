@@ -6,9 +6,11 @@
             <div layout="row">
                 <div layout="row" layout-align="center center">
                     <identicon username='idea.author.username' size='30'></identicon>
-                    <md-tooltip md-direction="top">Email User</md-tooltip>
                 </div>
-                <h3>&nbsp;<email-link author-obj="idea.author"></email-link></h3>
+                <h3>&nbsp;
+                    <md-tooltip md-direction="right">Email User</md-tooltip>
+                    <email-link author-obj="idea.author"></email-link>
+                </h3>
             </div>
             <p>{{idea.description}}</p>
         </div>
@@ -181,8 +183,8 @@
             </md-tab>
             <md-tab label="Backers">
                 <md-content class="md-padding">
-                    <md-button class="md-button md-raised md-primary" ng-if="!hasUserBacked() && isUserLoggedIn()" ng-click="showAddBack($event)">
-                        Back idea
+                    <md-button class="md-button md-raised md-primary padding-sides-20" ng-if="!hasUserBacked() && isUserLoggedIn()" ng-click="showAddBack($event)">
+                        Contribute to idea
                     </md-button>
                     <md-list>
                         <md-list-item class="md-3-line" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">

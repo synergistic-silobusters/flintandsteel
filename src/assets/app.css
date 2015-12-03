@@ -164,6 +164,10 @@ body {
 .padding-left-20{
     padding-left: 20px;
 }
+.padding-sides-20 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
 
 .margin-top {
     margin-top: 30px;
