@@ -1,10 +1,10 @@
-# How to get data from the server
+# Getting Data From The Server
 
 ## API endpoints
 
 * `/ideas`
 * `/ideas/{id}`
-* `ideas/search`
+* `/ideas/search`
 * `/users/login`
 * `/users/{id}`
 * `/events`
