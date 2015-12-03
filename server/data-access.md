@@ -70,9 +70,9 @@ $http.delete('/events/' + eventIdToDelete).then(function(response) {
 
 // to update an idea
 var patchCommands = [
-    { "operation": "create", "path": "comments/", "value": JSON.stringify(newCommentObj) },
-    { "operation": "modify", "path": "likes", "value", "50" },
-    { "operation": "delete", "path": "team/userId" }
+    { "operation": "create", "path": "/comments/", "value": JSON.stringify(newCommentObj) },
+    { "operation": "modify", "path": "/likes", "value", "50" },
+    { "operation": "delete", "path": "/team/userId" }
 ];
 $http.patch('/ideas/' + ideaId, patchCommands).then(function(response) {
     console.log('Idea updated!');
