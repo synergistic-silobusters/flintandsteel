@@ -124,6 +124,10 @@ body {
     padding-left: 10px;
 }
 
+.extra-padding-lg {
+    padding: 30px;
+}
+
 .accent-text {
     color: #650100;
 }
