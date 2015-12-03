@@ -1,4 +1,4 @@
-<md-dialog class="backBox">
+<md-dialog class="back-box" aria-label="edit idea">
     <form name="editBack">
         <!-- Dialog Header -->
         <md-toolbar>
@@ -14,11 +14,14 @@
             <!-- Edit your contribution -->
             <md-input-container flex>
                 <label>Edit your back...</label>
-                <input ng-model="backText" type="text" />
+                <input ng-model="backText" type="text" >
+                <div ng-messages="editBack.backText.$error">
+                    <div ng-message="required">Required</div>
+                </div>
             </md-input-container>
             <!-- Edit your contribution type -->
             <md-input-container flex>
-                <p>Edit your contribution type</p>
+                <p>Edit your contribution type (at least one)</p>
                 <div layout="row" layout-wrap>
                     <div ng-repeat="type in types" flex="50" ng-model="test" ng-click="toggle(type, $index)">
                         <md-checkbox ng-checked="type.checked">
@@ -29,7 +32,7 @@
             </md-input-container>
             <br></br>
             <md-dialog-actions flex layout="column">
-                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="ideasView.editBackText === ''">
+                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="backText === '' || selectTypes.length < 1">
                     Confirm Edit
                 </md-button>
             </md-dialog-actions>

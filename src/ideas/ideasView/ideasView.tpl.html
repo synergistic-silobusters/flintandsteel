@@ -78,21 +78,12 @@
                     </md-tooltip>
                 </md-button>
             </span>
-            <span flex ng-if="!hasUserBacked()">
+            <span flex>
                 <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
                     <i class="material-icons icon-button-adjust">&#xE7FE;</i>
-                    <md-tooltip md-direction="bottom">
-                        Contribute
-                    </md-tooltip>
                 </md-button>
-            </span>
-            <span flex ng-if="hasUserBacked()">
-                <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
-                    <i class="material-icons icon-button-adjust">&#xE7FE;</i>
-                    <md-tooltip md-direction="bottom">
-                        Edit Contribution
-                    </md-tooltip>
-                </md-button>
+                <md-tooltip ng-if="!hasUserBacked()" md-direction="bottom">Contribute</md-tooltip>
+                <md-tooltip ng-if="hasUserBacked()" md-direction="bottom">Edit Contribute</md-tooltip>
             </span>
         </div>
     </md-card-content>

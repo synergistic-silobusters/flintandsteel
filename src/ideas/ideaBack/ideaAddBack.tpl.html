@@ -1,4 +1,4 @@
-<md-dialog class="backBox" aria-label="BackIdea" ng-cloak>
+<md-dialog class="back-box" aria-label="back idea" ng-cloak>
     <form name="backForm">
         <!-- Dialog Header -->
         <md-toolbar>
@@ -14,7 +14,10 @@
             <!-- Personal Contribution -->
             <md-input-container flex>
                 <label>How can you participate?</label>
-                <input id="back-box" ng-model="backText" type="text" />
+                <input id="back-box" ng-model="backText" type="text" >
+                <div ng-messages="editBack.backText.$error">
+                    <div ng-message="required">Required</div>
+                </div>
             </md-input-container>
             <!-- Tag Types -->
             <md-input-container flex>
@@ -30,7 +33,7 @@
             <br></br>
             <!-- Submitting -->
             <md-dialog-actions flex layout="column">
-                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="ideasView.editBackText === ''">
+                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="backText === '' || selectTypes.length < 1">
                     Back Idea
                 </md-button>
             </md-dialog-actions>
