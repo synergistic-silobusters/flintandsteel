@@ -397,18 +397,15 @@ angular.module('flintAndSteel')
                     $scope.selectedTypes = [];
                 }
             };
-<<<<<<< HEAD
 
             ctrl.parseTeamEmail = function parseTeamEmail() {
                 var emailString = "mailto:";
-                $scope.idea.team.forEach(function(memberId) {
+                $scope.idea.team.forEach(function(teamElement) {
                     // emailString + memberId.getProperty('email') + ';';
-                    emailString + memberId.member.email + ';';
+                    emailString += teamElement.member.mail + ';';
                 });
                 return emailString;
             };
-=======
->>>>>>> refs/remotes/YashdalfTheGray/master
 
             $scope.hasUserBacked = function() {
                 var hasUserBacked = false;

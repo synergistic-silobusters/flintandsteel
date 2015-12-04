@@ -2,7 +2,16 @@
     <img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
     <md-card-content>
         <div ng-hide="ideasView.enableEdit">
-            <h1>{{idea.title}}</h1>
+            <div>
+            <h1>{{idea.title}}
+                <span>
+                    <md-icon aria-label="email group" class="md-icon-button small-padding-bottom" ng-href="{{ideasView.parseTeamEmail()}}">
+                        <md-tooltip md-direction="top">Email Team</md-tooltip>
+                        <i class="material-icons icon-button-adjust">&#xE0BE;</i>
+                    </md-icon>
+                </span>
+            </h1>
+            </div>
             <div layout="row">
                 <div layout="row" layout-align="center center">
                     <identicon username='idea.author.username' size='30'></identicon>
@@ -296,11 +305,6 @@
                                     </div>
                                 </md-list-item>
                             </md-list>
-                            TEST
-                            <md-button aria-label="email group" class="md-icon-button" ng-href="{{ideasView.parseTeamEmail()}}">
-                                <md-tooltip md-direction="top">Email Team</md-tooltip>
-                                <i class="material-icons icon-button-adjust">&#xE0BE;</i>
-                            </md-button>
                         </div>
                     </div>
                     <div ng-show="ideasView.isUserAuthor()">
