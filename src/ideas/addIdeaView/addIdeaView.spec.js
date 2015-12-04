@@ -116,4 +116,17 @@ describe('AddIdeaViewCtrl', function() {
         expect(scope.idea.tags.length).not.toBe(6);
         expect(scope.idea.tags.length).toBe(5);
     });
+
+    it('should not add a blank tag', function() {
+        scope.idea = {
+            title: 'Test Title',
+            authorId: 3,
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2']
+        };
+        scope.addTag('');
+
+        expect(scope.idea.tags.length).not.toBe(3);
+        expect(scope.idea.tags.length).toBe(2);
+    });
 });
