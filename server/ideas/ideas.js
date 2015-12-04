@@ -89,12 +89,13 @@ module.exports = function(db) {
         });
     };
 
-    module.edit = function(id, title, description, rolesreq, cb) {
+    module.edit = function(id, title, description, tags, rolesreq, cb) {
         var now = new Date().toISOString();
 
         var editObj = {};
         editObj.title = title;
         editObj.description = description;
+        editObj.tags = tags;
         editObj.rolesreq = rolesreq;
         editObj.timeModified = now;
 

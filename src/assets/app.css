@@ -108,6 +108,10 @@ body {
     color: #FFFFFF;
 }
 
+.custom-chip.tag {
+    padding-right: 6px;
+}
+
 .idea-pointer {
     cursor: pointer;
 }
@@ -220,4 +224,14 @@ body {
 
 .back-box {
     width: 600px;
+}
+
+.idea-tag-delete-icon {
+    width: 18px;
+    height: 18px;
+    outline: none;
+}
+
+.idea-tags-input-container {
+    padding-bottom: 8px;
 }
