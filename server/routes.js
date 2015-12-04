@@ -35,7 +35,18 @@ module.exports = function(app) {
         };
     }
 
-    app.post('/login', function handleAuthentication(req, res, next) {
+    app.get('/ideas', function(req, res) {
+        ideas.fetch(function(err, headers) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                res.status(200).json(headers);
+            }
+        });
+    });
+
+    /*app.post('/login', function handleAuthentication(req, res, next) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
         if (process.env.NODE_ENV !== 'production') {
@@ -344,7 +355,7 @@ module.exports = function(app) {
         req.on("close", function() {
             IdeasInstance.removeListener("newHeaders", updateHeaders);
         });
-    });
+    });*/
 
     return module;
 };

@@ -1,5 +1,7 @@
 /* global module */
 
+var Promise = require('bluebird');
+
 module.exports = function(db) {
     "use strict";
 
@@ -116,8 +118,6 @@ module.exports = function(db) {
             authorId: 1,
             likes: 1,
             backs: 1,
-            team: 1,
-            updates: 1
         };
 
         db.find(COLLECTION, projection, function(err, docs) {
@@ -130,12 +130,14 @@ module.exports = function(db) {
             else {
                 var headers = [];
                 docs.forEach(function(doc) {
-                    doc.abstract = _.take(_.words(doc.description), 20).join(' ');
-                    doc.likes = doc.likes.length;
-                    doc.backs = doc.backs.length;
-                    doc.team = doc.team.length;
-                    doc.updates = doc.updates.length;
-                    headers.push(doc);
+                    headers.push({
+                        _id: doc._id,
+                        title: doc.title,
+                        authorId: doc.authorId,
+                        abstract: _.take(_.words(doc.description), 20).join(' '),
+                        likes: doc.likes.length,
+                        backs: doc.backs.length
+                    });
                 });
                 cb(null, headers);
             }
