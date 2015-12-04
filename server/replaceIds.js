@@ -238,7 +238,7 @@ module.exports = function(db) {
             });
         }
 
-         return Promise.all(ideaHeaders);
+        return Promise.all(ideaHeaders);
     };
 
     return module;

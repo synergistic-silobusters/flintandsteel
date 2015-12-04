@@ -1,14 +1,29 @@
 /* global module */
-/* global process */
-/* global Buffer */
 /* global GLOBAL */
+/* not-used-global process */
+/* not-used-global Buffer */
+
 
 module.exports = function(app) {
     "use strict";
 
     var module = {};
 
-    var users = require('./users/users')(GLOBAL.db),
+    var ideas = require('./ideas/ideas')(GLOBAL.db),
+        replaceIds = require('./replaceIds')(GLOBAL.db);
+
+    app.get('/ideas', function(req, res) {
+        ideas.fetch().then(function(headers) {
+            return replaceIds.headers(headers);
+        }).then(function(replacedHeaders) {
+            res.status(200).json(replacedHeaders);
+        })
+        .catch(function(error) {
+            res.status(500).json(error);
+        });
+    });
+
+    /*var users = require('./users/users')(GLOBAL.db),
         ideas = require('./ideas/ideas')(GLOBAL.db),
         comments = require('./comments/comments')(GLOBAL.db),
         replaceIds = require('./replaceIds')(GLOBAL.db),
@@ -35,18 +50,7 @@ module.exports = function(app) {
         };
     }
 
-    app.get('/ideas', function(req, res) {
-        ideas.fetch().then(function(headers) {
-            return replaceIds.headers(headers);
-        }).then(function(replacedHeaders) {
-            res.status(200).json(replacedHeaders);
-        })
-        .catch(function(error) {
-            res.status(500);
-        });
-    });
-
-    /*app.post('/login', function handleAuthentication(req, res, next) {
+    app.post('/login', function handleAuthentication(req, res, next) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
         if (process.env.NODE_ENV !== 'production') {

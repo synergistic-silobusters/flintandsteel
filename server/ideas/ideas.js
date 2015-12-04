@@ -117,7 +117,7 @@ module.exports = function(db) {
             description: 1,
             authorId: 1,
             likes: 1,
-            backs: 1,
+            backs: 1
         };
 
         return new Promise(function(resolve, reject) {
