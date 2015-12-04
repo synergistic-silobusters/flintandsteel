@@ -53,9 +53,9 @@ angular.module('flintAndSteel', [
                 templateUrl: 'about/about.tpl.html',
                 controller: ''
             })
-            .state('InnovationDisclosure', {
-                url: '/InnovationDisclosure',
-                templateUrl: 'InnovationDisclosure/InnovationDisclosure.tpl.html',
+            .state('innovationdisclosure', {
+                url: '/innovationdisclosure',
+                templateUrl: 'innovationDisclosureView/innovationDisclosureView.tpl.html',
                 controller: ''
             });
 
