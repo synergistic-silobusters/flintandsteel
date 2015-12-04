@@ -11,14 +11,6 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <!-- Edit your contribution -->
-            <md-input-container flex>
-                <label>Edit your back...</label>
-                <input ng-model="backText" type="text" >
-                <div ng-messages="editBack.backText.$error">
-                    <div ng-message="required">Required</div>
-                </div>
-            </md-input-container>
             <!-- Edit your contribution type -->
             <md-input-container flex>
                 <p>Edit your contribution type (at least one)</p>
@@ -30,9 +22,14 @@
                     </div>
                 </div>
             </md-input-container>
+            <!-- Edit your contribution -->
+            <md-input-container flex>
+                <label>Edit details...</label>
+                <input ng-model="backText" type="text" >
+            </md-input-container>
             <br></br>
             <md-dialog-actions flex layout="column">
-                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="backText === '' || selectTypes.length < 1">
+                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="selectTypes.length < 1">
                     Confirm Edit
                 </md-button>
             </md-dialog-actions>

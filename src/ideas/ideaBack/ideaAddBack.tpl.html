@@ -11,14 +11,6 @@
             </div>
         </md-toolbar>
         <md-dialog-content>
-            <!-- Personal Contribution -->
-            <md-input-container flex>
-                <label>How can you participate?</label>
-                <input id="back-box" ng-model="backText" type="text" >
-                <div ng-messages="editBack.backText.$error">
-                    <div ng-message="required">Required</div>
-                </div>
-            </md-input-container>
             <!-- Tag Types -->
             <md-input-container flex>
                 <p>Tag the type of your contribution</p>
@@ -30,10 +22,15 @@
                     </div>
                 </div>
             </md-input-container>
+            <!-- Personal Contribution -->
+            <md-input-container flex>
+                <label>More details</label>
+                <input id="back-box" ng-model="backText" type="text" >
+            </md-input-container>
             <br></br>
             <!-- Submitting -->
             <md-dialog-actions flex layout="column">
-                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="backText === '' || selectTypes.length < 1">
+                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="selectTypes.length < 1">
                     Back Idea
                 </md-button>
             </md-dialog-actions>
