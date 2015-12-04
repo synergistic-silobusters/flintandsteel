@@ -10,8 +10,13 @@
                 <h3>&nbsp;<email-link author-obj="idea.author"></email-link></h3>
             </div>
             <p>{{idea.description}}</p>
+            <div layout="row">
+                <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
+                    <small class="custom-chip">#{{tag}}</small>
+                </span>
+            </div>
         </div>
-        <form ng-show="ideasView.enableEdit" name="newIdeaForm">
+        <div ng-show="ideasView.enableEdit">
             <div layout="column">
                 <md-input-container>
                     <label>Title</label>
@@ -21,13 +26,25 @@
                     <label>Description</label>
                     <textarea ng-model="idea.description" columns="1" md-maxlength="1000" required></textarea>
                 </md-input-container>
+                <md-input-container class="idea-tags-input-container">
+                    <label>Tags</label>
+                    <input ng-model="tagInput" ng-keypress="ideasView.tagKeyEvent($event)" type="text"></input>
+                </md-input-container>
+                <div layout="row">
+                    <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
+                        <small class="custom-chip tag">
+                            #{{tag}}
+                            <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="ideasView.removeTag(tag)" aria-hidden="true"></md-icon>
+                        </small>
+                    </span>
+                </div>                
                 <p></p>
                 <div layout="row" layout-align="end center">
-                    <md-button class="md-raised md-primary" ng-click="ideasView.editIdea(idea.title, idea.description)">Submit</md-button>
+                    <md-button class="md-raised md-primary" ng-click="ideasView.editIdea(idea.title, idea.description, idea.tags)">Submit</md-button>
                     <md-button class="md-raised md-primary" ng-click="ideasView.refreshIdea()">Cancel</md-button>
                 </div>
             </div>
-        </form>
+        </div>
     </md-card-content>
     <md-card-footer>
         <md-fab-speed-dial md-direction="right" class="md-fling" md-open="isOpen" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
