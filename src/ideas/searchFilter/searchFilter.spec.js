@@ -18,7 +18,8 @@ describe('SearchFilter', function() {
                 name: "Test User 1"
             },
             abstract: "This is an abstract",
-            likes: 8
+            likes: 8,
+            tags: ["testTag1", "testTag4"]
         },
         {
             id: 1,
@@ -27,7 +28,8 @@ describe('SearchFilter', function() {
                 name: "Karl"
             },
             abstract: "OMG abstract",
-            likes: 200
+            likes: 200,
+            tags: ["testTag1"]
         },
         {
             id: 3,
@@ -36,7 +38,8 @@ describe('SearchFilter', function() {
                 name: "Aaron Rodgers"
             },
             abstract: "Relax",
-            likes: 13
+            likes: 13,
+            tags: ["testTag2", "testTag4"]
         },
         {
             id: 4,
@@ -45,7 +48,8 @@ describe('SearchFilter', function() {
                 name: "Please*Fix&My%Keyboard$#@!()\'\"{}[]|\\/`~"
             },
             abstract: "K()000*l",
-            likes: 1
+            likes: 1,
+            tags: ["testTag3"]
         }
     ];
 
@@ -103,5 +107,19 @@ describe('SearchFilter', function() {
 
         query = "K000l";
         expect(search(testList, query).length).toEqual(1);
+    });
+
+    it('should search the item tags', function() {
+        var query = "testTag1";
+        expect(search(testList, query).length).toEqual(2);
+
+        query = "testTag2";
+        expect(search(testList, query).length).toEqual(1);
+
+        query = "testTag3";
+        expect(search(testList, query).length).toEqual(1);
+
+        query = "testTag4";
+        expect(search(testList, query).length).toEqual(2);
     });
 });
