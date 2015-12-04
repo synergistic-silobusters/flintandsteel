@@ -60,10 +60,19 @@
 <!-- Card used to display Likes/Backs and to Like/Back an idea -->
 <md-card>
     <md-card-content>
-        <span flex>{{idea.likes.length}} <a class="idea-likes-click" ng-click="openLikes($event, idea.likes)">likes</a> and {{idea.backs.length}} backs</span>
-        <div ng-if="isUserLoggedIn()">
+        <span flex ng-if="!isUserLoggedIn()">
+            <md-button class="md-icon-button" aria-label="Like">
+                {{idea.likes.length}}
+                <i class="material-icons icon-button-adjust">&#xE87E;</i>
+                <md-tooltip md-direction="bottom">
+                    Login to Like
+                </md-tooltip>
+            </md-button>
+        </span>
+        <span flex ng-if="isUserLoggedIn()">
             <span flex ng-if="!isUserLiked()">
                 <md-button class="md-icon-button" aria-label="Like" ng-click="addNewInteraction('likes')">
+                    {{idea.likes.length}}
                     <i class="material-icons icon-button-adjust">&#xE87E;</i>
                     <md-tooltip md-direction="bottom">
                         Like Idea
@@ -72,20 +81,39 @@
             </span>
             <span flex ng-if="isUserLiked()">
                 <md-button class="md-icon-button" aria-label="Unlike" ng-click="removeInteraction('likes')">
+                {{idea.likes.length}}
                     <i class="material-icons icon-button-adjust">&#xE87D;</i>
                     <md-tooltip md-direction="bottom">
                         Idea Liked
                     </md-tooltip>
                 </md-button>
             </span>
-            <span flex>
+        </span>
+        <!--<span flex> <a class="idea-likes-click" ng-click="openLikes($event, idea.likes)">likes</a></span>-->
+        <span flex ng-if="!isUserLoggedIn()">
+            <md-button class="md-icon-button" aria-label="Back">
+                {{idea.backs.length}}
+                <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+            </md-button>
+            <md-tooltip ng-if="!hasUserBacked()" md-direction="bottom">Login to Back</md-tooltip>
+        </span>
+        <span flex ng-if="isUserLoggedIn()">
+            <span flex ng-if="!hasUserBacked()">
                 <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
-                    <i class="material-icons icon-button-adjust">&#xE7FE;</i>
+                    {{idea.backs.length}}
+                    <i class="material-icons icon-button-adjust">&#xE7FC;</i>
                 </md-button>
-                <md-tooltip ng-if="!hasUserBacked()" md-direction="bottom">Contribute</md-tooltip>
-                <md-tooltip ng-if="hasUserBacked()" md-direction="bottom">Edit Contribute</md-tooltip>
+                <md-tooltip md-direction="bottom">Contribute</md-tooltip>
             </span>
-        </div>
+            <span flex ng-if="hasUserBacked()">
+                <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
+                    {{idea.backs.length}}
+                    <i class="material-icons icon-button-adjust">&#xE7FB;</i>
+                </md-button>
+                <md-tooltip md-direction="bottom">Edit Contribute</md-tooltip>
+            </span>
+        </span>
+        <!--backs-->
     </md-card-content>
 
 </md-card>
