@@ -24,7 +24,7 @@ angular.module('flintAndSteel')
             };
 
             $scope.addTag = function addTag(tag) {
-                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag)) {
+                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {
                     $scope.idea.tags.push(tag);
                 }
             };
