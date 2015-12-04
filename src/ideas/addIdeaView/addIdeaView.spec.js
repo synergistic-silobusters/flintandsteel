@@ -40,13 +40,13 @@ describe('AddIdeaViewCtrl', function() {
     it('should add a new idea', function() {
         var idea = {
             title: 'Test Title',
-            description: 'This is a test idea.'
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2']
         };
         scope.addNewIdea(idea);
 
         expect(ideaSvcMock.postIdea).toHaveBeenCalled();
         expect(idea.eventId).toBe("");
-        expect(idea.tags.length).toBe(0);
         expect(idea.rolesreq.length).toBe(0);
     });
 
@@ -54,11 +54,66 @@ describe('AddIdeaViewCtrl', function() {
         var idea = {
             title: 'Test Title',
             authorId: 3,
-            description: 'This is a test idea.'
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2']
         };
         scope.addNewIdea(idea);
 
         expect(idea.authorId).not.toBe(3);
         expect(idea.authorId).toBe(1);
+    });
+
+    it('should add tag', function() {
+        scope.idea = {
+            title: 'Test Title',
+            authorId: 3,
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2']
+        };
+        scope.addTag('testTag3');
+
+        expect(scope.idea.tags.length).not.toBe(2);
+        expect(scope.idea.tags.length).toBe(3);
+        scope.idea = {};
+    });
+
+    it('should delete tag', function() {
+        scope.idea = {
+            title: 'Test Title',
+            authorId: 3,
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2']
+        };
+        scope.removeTag('testTag2');
+
+        expect(scope.idea.tags.length).not.toBe(2);
+        expect(scope.idea.tags.length).toBe(1);
+        scope.idea = {};
+    });
+
+    it('should not add duplicate tags', function() {
+        scope.idea = {
+            title: 'Test Title',
+            authorId: 3,
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2']
+        };
+        scope.addTag('testTag2');
+
+        expect(scope.idea.tags.length).not.toBe(3);
+        expect(scope.idea.tags.length).toBe(2);
+    });
+
+    it('should not add more than 5 tags', function() {
+        scope.idea = {
+            title: 'Test Title',
+            authorId: 3,
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2', 'testTag3', 'testTag4', 'testTag5']
+        };
+        scope.addTag('testTag6');
+
+        expect(scope.idea.tags.length).not.toBe(6);
+        expect(scope.idea.tags.length).toBe(5);
     });
 });

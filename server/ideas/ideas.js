@@ -118,7 +118,8 @@ module.exports = function(db) {
             likes: 1,
             backs: 1,
             team: 1,
-            updates: 1
+            updates: 1,
+            tags: 1
         };
 
         db.find(COLLECTION, projection, function(err, docs) {

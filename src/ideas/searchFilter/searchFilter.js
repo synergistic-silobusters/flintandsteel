@@ -17,6 +17,7 @@ angular.module('flintAndSteel')
                     var normalizedTitle = item.title.replace(re,"").toLowerCase();
                     var normalizedAuthor = item.author.name.replace(re,"").toLowerCase();
                     var normalizedAbstract = item.abstract.replace(re,"").toLowerCase();
+                    var normalizedTags = item.tags;
                     if (normalizedTitle.indexOf(normalizedSearch) >= 0) {
                         retArray.push(item);
                     }
@@ -26,6 +27,14 @@ angular.module('flintAndSteel')
                     else if (normalizedAbstract.indexOf(normalizedSearch) >= 0) {
                         retArray.push(item);
                     }
+                    else if (typeof normalizedTags !== 'undefined') {
+                        normalizedTags.forEach(function(tag) {
+                            tag = tag.replace(re,"").toLowerCase();
+                            if (tag.indexOf(normalizedSearch) >= 0) {
+                                retArray.push(item);
+                            }
+                        });
+                    }                    
                 });
                 return retArray;
             };
