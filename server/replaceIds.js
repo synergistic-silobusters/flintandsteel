@@ -213,7 +213,7 @@ module.exports = function(db) {
         });
     };
 
-    module.headers = function headers(data, cb) {
+    module.headers = function headers(data) {
         var ideaHeaders = [];
 
         if (data.length === 0) {
@@ -238,13 +238,7 @@ module.exports = function(db) {
             });
         }
 
-        Promise.all(ideaHeaders).then(function() {
-            cb(null, data);
-        }, function() {
-            var err = "Error replacing IDs";
-            console.log(err);
-            cb(err);
-        });
+         return Promise.all(ideaHeaders);
     };
 
     return module;

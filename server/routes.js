@@ -36,13 +36,13 @@ module.exports = function(app) {
     }
 
     app.get('/ideas', function(req, res) {
-        ideas.fetch(function(err, headers) {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else {
-                res.status(200).json(headers);
-            }
+        ideas.fetch().then(function(headers) {
+            return replaceIds.headers(headers);
+        }).then(function(replacedHeaders) {
+            res.status(200).json(replacedHeaders);
+        })
+        .catch(function(error) {
+            res.status(500);
         });
     });
 

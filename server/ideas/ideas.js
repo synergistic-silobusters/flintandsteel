@@ -111,7 +111,7 @@ module.exports = function(db) {
         });
     };
 
-    function getHeaders(cb) {
+    function getHeaders() {
         var projection = {
             title: 1,
             description: 1,
@@ -120,27 +120,29 @@ module.exports = function(db) {
             backs: 1,
         };
 
-        db.find(COLLECTION, projection, function(err, docs) {
-            if (err) {
-                cb(err);
-            }
-            else if (docs.length === 0) {
-                cb(null, docs);
-            }
-            else {
-                var headers = [];
-                docs.forEach(function(doc) {
-                    headers.push({
-                        _id: doc._id,
-                        title: doc.title,
-                        authorId: doc.authorId,
-                        abstract: _.take(_.words(doc.description), 20).join(' '),
-                        likes: doc.likes.length,
-                        backs: doc.backs.length
+        return new Promise(function(resolve, reject) {
+            db.find(COLLECTION, projection, function(err, docs) {
+                if (err) {
+                    reject(err);
+                }
+                else if (docs.length === 0) {
+                    resolve();
+                }
+                else {
+                    var headers = [];
+                    docs.forEach(function(doc) {
+                        headers.push({
+                            _id: doc._id,
+                            title: doc.title,
+                            authorId: doc.authorId,
+                            abstract: _.take(_.words(doc.description), 20).join(' '),
+                            likes: doc.likes.length,
+                            backs: doc.backs.length
+                        });
                     });
-                });
-                cb(null, headers);
-            }
+                    resolve(headers);
+                }
+            });
         });
     }
 
