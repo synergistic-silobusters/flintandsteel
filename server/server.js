@@ -1,6 +1,5 @@
 /* global __dirname */
 /* global process */
-/* global GLOBAL */
 
 // set name of db =====================================================
 var dbName = 'flintandsteel';
@@ -24,7 +23,7 @@ var express = require('express'),
 // var numCpus          = require('os').cpus().length;
 
 // initialize db ======================================================
-GLOBAL.db = require('./db')(dbName);
+var db = require('./db')(dbName);
 
 // configuration ======================================================
 var port = process.env.PORT_HTTP || process.argv[2] || 8080;
@@ -72,7 +71,7 @@ if (process.env.NODE_ENV === 'production') {
 
     passport.deserializeUser(function(user, done) {
         "use strict";
-        var users = require('./users/users')(GLOBAL.db);
+        var users = require('./users/users')(db);
 
         if (user) {
             console.log('deserializeUser:' + user._json.sAMAccountName);
@@ -85,7 +84,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // routes =============================================================
-require('./routes')(app); //configure our routes
+require('./routes')(app, db); //configure our routes
 
 // show IP settings ===================================================
 external(function(err, ipExternal) {

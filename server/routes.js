@@ -1,16 +1,15 @@
 /* global module */
-/* global GLOBAL */
 /* not-used-global process */
 /* not-used-global Buffer */
 
 
-module.exports = function(app) {
+module.exports = function(app, db) {
     "use strict";
 
     var module = {};
 
-    var ideas = require('./ideas/ideas')(GLOBAL.db),
-        replaceIds = require('./replaceIds')(GLOBAL.db);
+    var ideas = require('./ideas/ideas')(db),
+        replaceIds = require('./replaceIds')(db);
 
     app.get('/ideas', function(req, res) {
         ideas.fetch().then(function(headers) {

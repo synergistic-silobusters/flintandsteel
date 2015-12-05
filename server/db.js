@@ -36,7 +36,7 @@ module.exports = function(dbName, cb) {
         return Promise.all(collectionPromises);
     };
 
-    if (typeof dbName !== "undefined") {
+    if (_.isString(dbName)) {
         MongoClient.connect("mongodb://localhost:27017/" + dbName, function(err, database) {
             console.log(chalk.yellow("Setting up db " + dbName));
             db = database;
