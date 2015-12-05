@@ -9,9 +9,32 @@ module.exports = function(dbName, cb) {
     var mongodb = require('mongodb'),
         ObjectId = mongodb.ObjectID,
         MongoClient = mongodb.MongoClient,
-        chalk = require('chalk');
+        chalk = require('chalk'),
+        _ = require('lodash');
 
     var db;
+
+    module.createCollections = function createCollection(names, db) {
+        var collectionPromises = [];
+        if (!_.isArray(names)) {
+            names = [names];
+        }
+        _.forEach(names, function(name) {
+            if (_.isString(name) && !_.isUndefined(db)) {
+                collectionPromises.push(new Promise(function(resolve, reject) {
+                    db.createCollection(name, function(error, collection) {
+                        if (error) {
+                            reject(error);
+                        }
+                        else {
+                            resolve(collection);
+                        }
+                    });
+                }));
+            }
+        });
+        return Promise.all(collectionPromises);
+    };
 
     if (typeof dbName !== "undefined") {
         MongoClient.connect("mongodb://localhost:27017/" + dbName, function(err, database) {
@@ -22,37 +45,13 @@ module.exports = function(dbName, cb) {
                 process.exit(1);
                 return;
             }
-            db.createCollection('users', function(errUsers) {
-                if (errUsers) {
-                    console.error(errUsers);
+            module.createCollections(['users', 'ideas', 'comments', 'events'], database).then(function() {
+                console.log(chalk.green("Database collections created!"));
+                if (typeof cb !== 'undefined') {
+                    cb(null);
                 }
-                else {
-                    db.createCollection('events', function(errEvents) {
-                        if (errEvents) {
-                            console.error(errEvents);
-                        }
-                        else {
-                            db.createCollection('comments', function(errComments) {
-                                if (errComments) {
-                                    console.error(errComments);
-                                }
-                                else {
-                                    db.createCollection('ideas', function(errIdea) {
-                                        if (errIdea) {
-                                            console.error(errIdea);
-                                        }
-                                        else {
-                                            console.log(chalk.green("Database collections created!"));
-                                            if (typeof cb !== 'undefined') {
-                                                cb(null);
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
+            }).catch(function(error) {
+                console.log(chalk.red(error));
             });
         });
     }
