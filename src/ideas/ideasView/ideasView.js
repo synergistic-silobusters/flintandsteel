@@ -470,7 +470,7 @@ angular.module('flintAndSteel')
 
                 // Show Dialog
                 $mdDialog.show({
-                    controller: DialogCtrlBack,
+                    controller: DialogBackCtrl,
                     templateUrl: template,
                     parent: angular.element(document.body),
                     targetEvent: ev,
