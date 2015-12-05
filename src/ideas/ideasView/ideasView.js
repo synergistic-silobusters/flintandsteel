@@ -5,7 +5,7 @@
 
 // Dialog Controller used for controlling the behavior of the dialog
 //   used for login.
-function DialogCtrlBack($scope, $mdDialog, ideaSvc, backingObj) {
+function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
     "use strict";
     // Populate values based off current back info
     $scope.types = ideaSvc.getBackTypeChips();
