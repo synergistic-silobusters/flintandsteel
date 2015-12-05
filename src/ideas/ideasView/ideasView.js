@@ -532,6 +532,11 @@ angular.module('flintAndSteel')
                 }
             };
 
+            $scope.removeBack = function() {
+                $scope.loadEditBack();
+                $scope.removeInteraction('back', $scope.userBack);
+            };
+
             // Checks if the current user has backed the current idea
             $scope.hasUserBacked = function() {
                 var hasUserBacked = false;
