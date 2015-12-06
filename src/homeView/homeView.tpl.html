@@ -1,6 +1,71 @@
-<div>
-    <img class="center-img img-padding" src="assets/InnovationChallengeLogo.png" width="40%" height="28%" >
-    <h3 class="center-text">A strategy that enables collaboration and development by providing visibility to innovative ideas.</h3>
+
+<md-content  class="homeview-Image" >
+<div layout="row" layout-align="center center" >
+    <div>
+        <h1>Innovation Challenge</h1>
+    </div>
+</div>
+<div flex  layout-align="center center" >
+    <div layout="column" style="width:100%" layout-align="center center">
+        <div class="homeview-login-button">
+            <md-button class="md-raised" >Log In</md-button>
+        </div>
+            <md-input-container class="homeview-search md-accent md-hue-1" flex>
+                <label>Search Ideas</label>
+                <input name="search" ng-model="searchText">
+            </md-input-container>
+    </div>
+    <div layout="column" layout-gt-sm="row" layout-align="center start" layout-margin ng-hide="searchText">
+        <md-card ng-mouseover="hoverInLeft()" ng-mouseleave="hoverOutLeft()" flex>
+            <md-card-content>
+                <div flex-gt-sm>
+                    <img class="center-img" src="assets/ic_wb_incandescent_black_24px.svg" width="13%" height="13%"/>
+                    <h2 class="center-text">Innovate</h2>
+                    <p class="center-text" ng-show="hoverLeft">Create an innovative idea and post it to Rok-Starter.  This idea will be visible to other innovators around the world.</p>
+                </div>
+            </md-card-content>
+        </md-card>
+        <md-card ng-mouseover="hoverInCenter()" ng-mouseleave="hoverOutCenter()" flex>
+            <md-card-content>
+                <div flex-gt-sm >
+                    <img class="center-img" src="assets/ic_group_black_24px.svg" width="13%" height="13%" />
+                    <h2 class="center-text">Collaborate</h2>
+                    <p class="center-text" ng-show="hoverCenter">Browse through posted innovations and give support to ones that are viable.  Share ideas with others who may be interested in supporting it.  Post comments to an innovator to help mold their vision.</p>
+                </div>
+            </md-card-content>
+        </md-card>
+            <md-card ng-mouseover="hoverInRight()" ng-mouseleave="hoverOutRight()" flex>
+                <md-card-content>
+                <div flex-gt-sm>
+                    <img class="center-img" src="assets/ic_grade_black_24px.svg" width="13%" height="13%"/>
+                    <h2 class="center-text">Achieve</h2>
+                    <p class="center-text" ng-show="hoverRight">Sharing innovations allows all departments to reap the benefits of a single idea.  Together we can grow our ideas to make a better company.</p>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
+<div layout="row" layout-align="center center" ng-show="searchText">
+        <div flex="10"></div>
+        <div flex="80">
+            <div layout="row" flex layout-wrap>
+                    <md-item ng-repeat="idea in topIdeas | search:searchText">
+                        <idea-item-browse idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item-browse>
+                    </md-item>
+                <md-divider></md-divider>
+            </div>
+        </div>
+    </div>
+</md-content>
+
+
+    <!--<div >
+        <div ng-style="{'background-image':'url(assets/Collaboration.JPG)'}" class="hero">
+
+            <img class="center-img img-padding" src="assets/InnovationChallengeLogo.png" width="40%" height="28%" >
+
+            <h3 class="center-text">A strategy that enables collaboration and development by providing visibility to innovative ideas.</h3>
+        </div>
     <div layout="column" layout-gt-sm="row" layout-align="center start" layout-margin>
         <div flex-gt-sm>
             <img class="center-img" src="assets/ic_wb_incandescent_black_24px.svg" width="13%" height="13%"/>
@@ -20,6 +85,6 @@
     </div>
 
 </div>
-<div><h6><center><a ui-sref="about">About Us</a></center></h6></div>
+<div><h6><center><a ui-sref="about">About Us</a></center></h6></div>-->
 
 

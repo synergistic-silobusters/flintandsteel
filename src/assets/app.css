@@ -130,3 +130,29 @@ body {
 .identicon {
     vertical-align: middle;
 }
+.homeview-Image {
+ height:100%;
+   width:100%;
+   background-image:url(Collaboration.jpg);/*your background image*/  
+   background-repeat:no-repeat;/*we want to have one single image not a repeated one*/  
+   background-size:cover;/*this sets the image to fullscreen covering the whole screen*/  
+   /*css hack for ie*/     
+   filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.Collaboration.jpg',sizingMethod='scale');
+   -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='image.jpg',sizingMethod='scale')";
+
+}
+.homeview-search{
+    background:rgba(154,10,10,0.5);
+    width:50%;
+}
+.homeview-padding{
+    padding-top:50px;
+    padding-bottom:50px;
+}
+.homeview-text-ic{
+    color:white;
+}
+.homeview-login-button{
+    padding-top:50px;
+    padding-bottom:50px;
+}
