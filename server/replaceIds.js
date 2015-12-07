@@ -10,7 +10,7 @@ module.exports = function(db) {
         events = require('./events/events')(db),
         Promise = require('bluebird');
 
-    module.idea = function idea(data, cb) {
+    module.idea = function idea(data) {
         if (data === null) {
             return new Promise(function(resolve) {
                 resolve();

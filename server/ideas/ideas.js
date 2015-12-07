@@ -34,7 +34,7 @@ module.exports = function(db) {
                     resolve(doc);
                 }
             });
-        })
+        });
     };
 
     module.addInteraction = function(id, interactionType, interactionObject, cb) {

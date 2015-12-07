@@ -9,7 +9,8 @@ module.exports = function(app, db) {
     var module = {};
 
     var ideas = require('./ideas/ideas')(db),
-        replaceIds = require('./replaceIds')(db);
+        replaceIds = require('./replaceIds')(db),
+        chalk = require('chalk');
 
     app.get('/ideas', function(req, res) {
         ideas.fetch().then(function(headers) {
@@ -29,7 +30,7 @@ module.exports = function(app, db) {
             res.status(200).json(result[0]);
         })
         .catch(function(error) {
-            onsole.error(chalk.bgRed(err));
+            console.error(chalk.bgRed(error));
             res.status(200).send('IDEA_NOT_FOUND');
         });
     });

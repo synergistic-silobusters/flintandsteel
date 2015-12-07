@@ -10,7 +10,8 @@ module.exports = function(dbName, cb) {
         ObjectId = mongodb.ObjectID,
         MongoClient = mongodb.MongoClient,
         chalk = require('chalk'),
-        _ = require('lodash');
+        _ = require('lodash'),
+        Promise = require('bluebird');
 
     var db;
 
