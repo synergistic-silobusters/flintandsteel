@@ -13,7 +13,7 @@ module.exports = function(db) {
     module.idea = function idea(data, cb) {
         if (data === null) {
             return new Promise(function(resolve) {
-                resolve(null);
+                resolve();
             });
         }
 
@@ -32,7 +32,7 @@ module.exports = function(db) {
 
         var ideaEvent = new Promise(function(resolve, reject) {
             if (data.eventId === "") {
-                resolve(null);
+                resolve();
                 return;
             }
             events.get(data.eventId, function(err, ideaEventObj) {
@@ -50,7 +50,7 @@ module.exports = function(db) {
         var ideaLikes = [];
         if (data.likes.length === 0) {
             ideaLikes.push(new Promise(function(resolve) {
-                resolve(null);
+                resolve();
             }));
         }
         else {
@@ -73,7 +73,7 @@ module.exports = function(db) {
         var ideaComments = [];
         if (data.comments.length === 0) {
             ideaComments.push(new Promise(function(resolve) {
-                resolve(null);
+                resolve();
             }));
         }
         else {
@@ -101,7 +101,7 @@ module.exports = function(db) {
 
         if (data.comments.length === 0) {
             ideaCommentAuthors.push(new Promise(function(resolve) {
-                resolve(null);
+                resolve();
             }));
         }
         else {
@@ -123,7 +123,7 @@ module.exports = function(db) {
                 return ideaCommentAuthors;
             }, function() {
                 ideaCommentAuthors.push(new Promise(function(resolve, reject) {
-                    reject(null);
+                    reject();
                 }));
                 return ideaCommentAuthors;
             });
@@ -132,7 +132,7 @@ module.exports = function(db) {
         var ideaBacks = [];
         if (data.backs.length === 0) {
             ideaBacks.push(new Promise(function(resolve) {
-                resolve(null);
+                resolve();
             }));
         }
         else {
@@ -155,7 +155,7 @@ module.exports = function(db) {
         var ideaTeam = [];
         if (data.team.length === 0) {
             ideaTeam.push(new Promise(function(resolve) {
-                resolve(null);
+                resolve();
             }));
         }
         else {
@@ -178,7 +178,7 @@ module.exports = function(db) {
         var ideaUpdates = [];
         if (data.updates.length === 0) {
             ideaUpdates.push(new Promise(function(resolve) {
-                resolve(null);
+                resolve();
             }));
         }
         else {
@@ -198,7 +198,7 @@ module.exports = function(db) {
             });
         }
 
-        Promise.all([
+        return Promise.all([
             ideaAuthor,
             ideaEvent,
             Promise.all(ideaLikes),
@@ -206,11 +206,7 @@ module.exports = function(db) {
             Promise.all(ideaBacks),
             Promise.all(ideaTeam),
             Promise.all(ideaUpdates)
-        ]).then(function() {
-            cb(null, data);
-        }, function() {
-            cb("Error replacing IDs");
-        });
+        ]);
     };
 
     module.headers = function headers(data) {
