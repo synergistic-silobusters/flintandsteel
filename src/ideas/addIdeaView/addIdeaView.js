@@ -1,4 +1,5 @@
 /* global angular */
+/* global _ */
 
 angular.module('flintAndSteel')
 .controller('AddIdeaViewCtrl',
@@ -24,7 +25,10 @@ angular.module('flintAndSteel')
             };
 
             $scope.addTag = function addTag(tag) {
-                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {
+                var reNonAlpha = /[.,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
+                tag = tag.replace(reNonAlpha, " ");
+                tag = _.camelCase(tag);
+                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {                    
                     $scope.idea.tags.push(tag);
                 }
             };

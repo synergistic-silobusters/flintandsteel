@@ -12,7 +12,10 @@
             </md-input-container>
             <md-input-container class="idea-tags-input-container">
                 <label>Tags</label>
-                <input ng-model="tagInput" ng-keypress="tagKeyEvent($event)" type="text"></input>
+                <input name="tags" ng-model="tagInput" ng-keypress="tagKeyEvent($event)" maxLength="100" type="text"></input>
+                <div ng-messages="tags.$error">
+                    <div ng-message="" class="tag-message">Press Enter to Add Tag - Limit 5</div>
+                </div>
             </md-input-container>
             <div layout="row">
                 <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
