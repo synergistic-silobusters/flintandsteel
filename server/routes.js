@@ -22,6 +22,18 @@ module.exports = function(app, db) {
         });
     });
 
+    app.get('/ideas/:id', function(req, res) {
+        ideas.get(req.params.id).then(function(doc) {
+            return replaceIds.idea(doc);
+        }).then(function(result) {
+            res.status(200).json(result[0]);
+        })
+        .catch(function(error) {
+            onsole.error(chalk.bgRed(err));
+            res.status(200).send('IDEA_NOT_FOUND');
+        });
+    });
+
     /*var users = require('./users/users')(GLOBAL.db),
         ideas = require('./ideas/ideas')(GLOBAL.db),
         comments = require('./comments/comments')(GLOBAL.db),
