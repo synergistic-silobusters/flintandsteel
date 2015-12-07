@@ -129,4 +129,32 @@ describe('AddIdeaViewCtrl', function() {
         expect(scope.idea.tags.length).not.toBe(3);
         expect(scope.idea.tags.length).toBe(2);
     });
+
+    it('should remove special characters from tags', function() {
+        scope.idea = {
+            title: 'Test Title',
+            authorId: 3,
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2']
+        };
+        scope.addTag('hello!@world&*@');
+
+        expect(scope.idea.tags.length).toBe(3);
+        expect(scope.doesTagExist('hello!@world&*@')).toBe(false);
+        expect(scope.doesTagExist('helloWorld')).toBe(true);
+    });
+
+    it('should use CamelCase for tags', function() {
+        scope.idea = {
+            title: 'Test Title',
+            authorId: 3,
+            description: 'This is a test idea.',
+            tags: ['testTag1', 'testTag2']
+        };
+        scope.addTag('This is a tag');
+
+        expect(scope.idea.tags.length).toBe(3);
+        expect(scope.doesTagExist('This is a tag')).toBe(false);
+        expect(scope.doesTagExist('thisIsATag')).toBe(true);
+    });
 });

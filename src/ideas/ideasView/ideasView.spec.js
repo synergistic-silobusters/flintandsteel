@@ -345,6 +345,34 @@ describe('IdeasViewCtrl', function() {
             expect(scope.idea.tags.length).toBe(2);
         });
 
+        it('should remove special characters from tags', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['testTag1', 'testTag2']
+            };
+            ctrl.addTag('hello!@world&*@');
+
+            expect(scope.idea.tags.length).toBe(3);
+            expect(ctrl.doesTagExist('hello!@world&*@')).toBe(false);
+            expect(ctrl.doesTagExist('helloWorld')).toBe(true);
+        });
+
+        it('should use CamelCase for tags', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['testTag1', 'testTag2']
+            };
+            ctrl.addTag('This is a tag');
+
+            expect(scope.idea.tags.length).toBe(3);
+            expect(ctrl.doesTagExist('This is a tag')).toBe(false);
+            expect(ctrl.doesTagExist('thisIsATag')).toBe(true);
+        });
+
         it('should save the last edited date/time', function() {
             var now = (new Date()).toISOString();
             ctrl.editIdea(mockIdea.title, mockIdea.description, mockIdea.tags);

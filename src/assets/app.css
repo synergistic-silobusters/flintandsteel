@@ -207,3 +207,7 @@ body {
 .idea-tags-input-container {
     padding-bottom: 8px;
 }
+
+.tag-message {
+    color: black !important;
+}
