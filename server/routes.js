@@ -55,6 +55,15 @@ module.exports = function(app, db) {
         });
     });
 
+    app.delete('/ideas/:id', function(req, res) {
+        ideas.delete(req.params.id).then(function(result) {
+            res.sendStatus(204);
+        }).catch(function(error) {
+            console.error(chalk.bgRed(error));
+            res.sendStatus(500);
+        });
+    });
+
     /*var users = require('./users/users')(GLOBAL.db),
         ideas = require('./ideas/ideas')(GLOBAL.db),
         comments = require('./comments/comments')(GLOBAL.db),

@@ -119,9 +119,16 @@ module.exports = function(db) {
         });
     };
 
-    module.delete = function(id, cb) {
-        db.deleteOne(COLLECTION, id, function(err, results) {
-            cb(err, results);
+    module.delete = function(id) {
+        return new Promise(function(resolve, reject) {
+            db.deleteOne(COLLECTION, id, function(err, results) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(results);
+                }
+            });
         });
     };
 
