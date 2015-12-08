@@ -56,7 +56,7 @@ module.exports = function(app, db) {
     });
 
     app.delete('/ideas/:id', function(req, res) {
-        ideas.delete(req.params.id).then(function(result) {
+        ideas.delete(req.params.id).then(function() {
             res.sendStatus(204);
         }).catch(function(error) {
             console.error(chalk.bgRed(error));
