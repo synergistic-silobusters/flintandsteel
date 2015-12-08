@@ -19,8 +19,15 @@ module.exports = function(db) {
 
     module.create = function(title, description, authorId, eventId, tags, rolesreq, cb) {
         var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq);
-        db.insertOne(COLLECTION, idea, function(err, doc) {
-            cb(err, doc);
+        return new Promise(function(resolve, reject) {
+            db.insertOne(COLLECTION, idea, function(err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(doc);
+                }
+            });
         });
     };
 

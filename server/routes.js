@@ -12,6 +12,8 @@ module.exports = function(app, db) {
         replaceIds = require('./replaceIds')(db),
         chalk = require('chalk');
 
+    var IdeasInstance = ideas.getInstance();
+
     app.get('/ideas', function(req, res) {
         ideas.fetch().then(function(headers) {
             return replaceIds.headers(headers);
@@ -20,6 +22,24 @@ module.exports = function(app, db) {
         })
         .catch(function(error) {
             res.status(500).json(error);
+        });
+    });
+    app.post('/ideas', function(req, res) {
+        ideas.create(
+            req.body.title,
+            req.body.description,
+            req.body.authorId,
+            req.body.eventId,
+            req.body.tags,
+            req.body.rolesreq
+        ).then(function(doc) {
+            res.status(201).json({_id: doc.insertedId, status: "Created"});
+            return ideas.fetch();
+        }).then(function(headers) {
+            IdeasInstance.newHeaders(headers);
+        }).catch(function(error) {
+            console.error(chalk.bgRed(error));
+            res.sendStatus(500);
         });
     });
 
