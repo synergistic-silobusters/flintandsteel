@@ -19,7 +19,7 @@ describe('SearchFilter', function() {
             },
             abstract: "This is an abstract",
             likes: 8,
-            tags: ["testTag1", "testTag4"]
+            tags: ["TestTag1", "TestTag4"]
         },
         {
             id: 1,
@@ -29,7 +29,7 @@ describe('SearchFilter', function() {
             },
             abstract: "OMG abstract",
             likes: 200,
-            tags: ["testTag1"]
+            tags: ["TestTag1"]
         },
         {
             id: 3,
@@ -39,7 +39,7 @@ describe('SearchFilter', function() {
             },
             abstract: "Relax",
             likes: 13,
-            tags: ["testTag2", "testTag4"]
+            tags: ["TestTag2", "TestTag4"]
         },
         {
             id: 4,
@@ -49,7 +49,7 @@ describe('SearchFilter', function() {
             },
             abstract: "K()000*l",
             likes: 1,
-            tags: ["testTag3"]
+            tags: ["TestTag3"]
         }
     ];
 
@@ -110,16 +110,16 @@ describe('SearchFilter', function() {
     });
 
     it('should search the item tags', function() {
-        var query = "testTag1";
+        var query = "TestTag1";
         expect(search(testList, query).length).toEqual(2);
 
-        query = "testTag2";
+        query = "TestTag2";
         expect(search(testList, query).length).toEqual(1);
 
-        query = "testTag3";
+        query = "TestTag3";
         expect(search(testList, query).length).toEqual(1);
 
-        query = "testTag4";
+        query = "TestTag4";
         expect(search(testList, query).length).toEqual(2);
     });
 });

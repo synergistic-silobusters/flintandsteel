@@ -41,7 +41,7 @@ describe('AddIdeaViewCtrl', function() {
         var idea = {
             title: 'Test Title',
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2']
+            tags: ['TestTag1', 'TestTag2']
         };
         scope.addNewIdea(idea);
 
@@ -55,7 +55,7 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             authorId: 3,
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2']
+            tags: ['TestTag1', 'TestTag2']
         };
         scope.addNewIdea(idea);
 
@@ -68,7 +68,7 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             authorId: 3,
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2']
+            tags: ['TestTag1', 'TestTag2']
         };
         scope.addTag('testTag3');
 
@@ -82,9 +82,9 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             authorId: 3,
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2']
+            tags: ['TestTag1', 'TestTag2']
         };
-        scope.removeTag('testTag2');
+        scope.removeTag('TestTag2');
 
         expect(scope.idea.tags.length).not.toBe(2);
         expect(scope.idea.tags.length).toBe(1);
@@ -96,9 +96,9 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             authorId: 3,
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2']
+            tags: ['TestTag1', 'TestTag2']
         };
-        scope.addTag('testTag2');
+        scope.addTag('TestTag2');
 
         expect(scope.idea.tags.length).not.toBe(3);
         expect(scope.idea.tags.length).toBe(2);
@@ -109,9 +109,9 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             authorId: 3,
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2', 'testTag3', 'testTag4', 'testTag5']
+            tags: ['TestTag1', 'TestTag2', 'TestTag3', 'TestTag4', 'TestTag5']
         };
-        scope.addTag('testTag6');
+        scope.addTag('TestTag6');
 
         expect(scope.idea.tags.length).not.toBe(6);
         expect(scope.idea.tags.length).toBe(5);
@@ -122,7 +122,7 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             authorId: 3,
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2']
+            tags: ['TestTag1', 'TestTag2']
         };
         scope.addTag('');
 
@@ -135,13 +135,13 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             authorId: 3,
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2']
+            tags: ['TestTag1', 'TestTag2']
         };
         scope.addTag('hello!@world&*@');
 
         expect(scope.idea.tags.length).toBe(3);
         expect(scope.doesTagExist('hello!@world&*@')).toBe(false);
-        expect(scope.doesTagExist('helloWorld')).toBe(true);
+        expect(scope.doesTagExist('HelloWorld')).toBe(true);
     });
 
     it('should use CamelCase for tags', function() {
@@ -149,12 +149,12 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             authorId: 3,
             description: 'This is a test idea.',
-            tags: ['testTag1', 'testTag2']
+            tags: ['TestTag1', 'TestTag2']
         };
         scope.addTag('This is a tag');
 
         expect(scope.idea.tags.length).toBe(3);
         expect(scope.doesTagExist('This is a tag')).toBe(false);
-        expect(scope.doesTagExist('thisIsATag')).toBe(true);
+        expect(scope.doesTagExist('ThisIsATag')).toBe(true);
     });
 });
