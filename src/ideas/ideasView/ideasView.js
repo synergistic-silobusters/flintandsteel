@@ -3,6 +3,77 @@
 /* global moment */
 /* global EventSource */
 
+// Dialog Controller used for controlling the behavior of the dialog
+//   used for login.
+function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
+    "use strict";
+    // Populate values based off current back info
+    $scope.types = ideaSvc.getBackTypeChips();
+    $scope.backText = backingObj.text;
+    $scope.tempTypes = backingObj.types;
+    $scope.selectTypes = []; // Variable used for scope issues
+    
+    for (var k = 0; k < $scope.tempTypes.length; k++) {
+        $scope.tempTypes[k].checked = true;
+    }
+
+    // Precheck previous boxes for editting backs
+    for (var i = 0; i < $scope.types.length; i++) {
+        for (var j = 0; j < $scope.tempTypes.length; j++) {
+            if ($scope.types[i].name === $scope.tempTypes[j].name) {
+                $scope.types[i].checked = true;
+                $scope.selectTypes.push($scope.tempTypes[j]); //avoids parent scope issues
+                break;
+            }
+            else {
+                $scope.types[i].checked = false;
+            }
+        }
+    }
+
+    // what happens when you hit the cancel button
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+    // what happens when you hit the back idea button
+    $scope.backIdea = function() {
+        $mdDialog.hide($scope.backObject());
+    };
+
+    // pass the account object to the dialog window
+    $scope.backObject = function() {
+        var obj = {
+            text: $scope.backText,
+            selectTypes: $scope.selectTypes
+        };
+
+        return obj;
+    };
+    
+    // add checked types to list
+    $scope.toggle = function(item, i) {
+        var idx = -1;
+
+        for (var j = 0; j < $scope.selectTypes.length; j++) {
+            if ($scope.selectTypes[j].name === item.name) {
+                idx = j;
+                break;
+            }
+        }
+
+        // if already selected, remove from list, otherwise add to selected list
+        if (idx > -1) {
+            $scope.selectTypes.splice(idx, 1);
+            $scope.types[i].checked = false;
+        }
+        else {
+            $scope.selectTypes.push(item);
+            $scope.types[i].checked = true;
+        }
+        
+    };
+}
+
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
@@ -374,16 +445,79 @@ angular.module('flintAndSteel')
                 return false;
             };
 
+            ///////////////////////
+            // BACKING FUNCTIONS //
+            ///////////////////////
+
+            // Function used to trigger dialog for adding or editting a back
+            $scope.showAddBack = function(ev) {
+                var template = '';
+                var backObj = '';
+
+                // Change data passed and template depending on if adding or editting
+                if (!$scope.hasUserBacked()) {
+                    template = 'ideas/ideaBack/ideaAddBack.tpl.html';
+                    backObj = {
+                        text: '',
+                        types: $scope.selectedTypes
+                    };
+                }
+                else {
+                    template = 'ideas/ideaBack/ideaEditBack.tpl.html';
+                    $scope.loadEditBack();
+                    backObj = $scope.userBack;
+                }
+
+                // Show Dialog
+                $mdDialog.show({
+                    controller: DialogBackCtrl,
+                    templateUrl: template,
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    locals: {
+                        backingObj: backObj
+                    }
+                })
+                .then(function(answer) {
+                    if (!$scope.hasUserBacked()) {
+                        ctrl.newBack = answer.text;
+                        $scope.selectedTypes = answer.selectTypes;
+                        $scope.addNewInteraction('backs');
+                    }
+                    else {
+                        ctrl.editBackText = answer.text;
+                        $scope.selectedTypes = answer.selectTypes;
+                        ctrl.editBack(backObj);
+                    }
+                    $scope.edittingBack = false;
+                }, function() {
+                    $scope.status = 'You canceled the dialog.';
+                });
+            };
+
+            // Object used to update an editted back
             ctrl.editBack = function editBack(back) {
                 if (ctrl.isUserAuthorOfInteraction(back)) {
                     var now = new Date().toISOString();
-                    var newBack = {
-                        text: ctrl.editBackText,
-                        authorId: back.authorId,
-                        time: back.time,
-                        timeModified: now,
-                        types: $scope.selectedTypes
-                    };
+                    var newBack = {};
+                    if ($scope.status === 'You canceled the dialog.') {
+                        newBack = {
+                            text: ctrl.editBackText,
+                            authorId: back.authorId,
+                            time: back.time,
+                            timeModified: now,
+                            types: $scope.selectedTypes
+                        };
+                    }
+                    else {
+                        newBack = {
+                            text: ctrl.editBackText,
+                            authorId: back.authorId,
+                            time: back.time,
+                            types: $scope.selectedTypes
+                        };
+                    }
                     ideaSvc.editBack($scope.idea._id, back.authorId, newBack,
                         function success() {
                             ctrl.refreshIdea();
@@ -407,6 +541,12 @@ angular.module('flintAndSteel')
                 return emailString;
             };
 
+            $scope.removeBack = function() {
+                $scope.loadEditBack();
+                $scope.removeInteraction('back', $scope.userBack);
+            };
+
+            // Checks if the current user has backed the current idea
             $scope.hasUserBacked = function() {
                 var hasUserBacked = false;
                 if (loginSvc.isUserLoggedIn() && typeof $scope.idea.backs !== 'undefined') {
@@ -419,6 +559,7 @@ angular.module('flintAndSteel')
                 return hasUserBacked;
             };
 
+            // Check if a back as been edited
             $scope.hasBackBeenEdited = function(back) {
                 if (typeof back.timeModified !== 'undefined' && back.timeModified !== '') {
                     return true;
@@ -426,6 +567,7 @@ angular.module('flintAndSteel')
                 return false;
             };
 
+            // Loads information from a previously made back by the current user
             $scope.loadEditBack = function loadEditBack(backObj) {
                 if (typeof backObj === "undefined") {
                     var backs = $scope.idea.backs;

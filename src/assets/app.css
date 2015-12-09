@@ -124,8 +124,16 @@ body {
     padding-left: 10px;
 }
 
+.extra-padding-lg {
+    padding: 30px;
+}
+
 .accent-text {
     color: #650100;
+}
+
+.author-accent {
+    font-size: 13px;
 }
 
 .idea-likes-click {
@@ -160,6 +168,18 @@ body {
 .padding-left-20{
     padding-left: 20px;
 }
+.padding-sides-20 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.margin-top {
+    margin-top: 30px;
+}
+
+*:focus {
+    outline: 0;
+}
 
 .about-technologies{
     padding: 15px;
@@ -183,6 +203,10 @@ body {
     vertical-align: middle;
 }
 
+.identicon-home {
+    margin-right: 10px;
+}
+
 .md-tab.md-active {
     background-color: #e0e0e0;
     border-radius: 5px 5px 0px 0px;
@@ -196,4 +220,8 @@ body {
 
 .small-padding-bottom{
     padding-bottom: 15px;
+}
+
+.back-box {
+    width: 600px;
 }
