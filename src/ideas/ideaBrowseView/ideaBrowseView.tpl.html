@@ -5,6 +5,9 @@
         <label>Search</label>
         <input name="search" ng-model="searchText">
     </md-input-container>
+    <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!topIdeas.length">
+        <h3><i>No ideas</i></h3>
+    </div>
     <div layout="row" layout-align="center center">
         <div flex="10"></div>
         <div flex="80">
