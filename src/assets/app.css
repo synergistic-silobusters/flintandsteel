@@ -521,7 +521,6 @@ img
                         -ms-filter: alpha(opacity=60);
                         filter: alpha(opacity=60);
                     }
-
 .identicon-home {
     margin-right: 10px;
 }
@@ -540,4 +539,3 @@ img
 .back-box {
     width: 600px;
 }
-
