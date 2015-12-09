@@ -19,12 +19,19 @@ angular.module('flintAndSteel')
                  this.hoverLeft = false;
             };
 
-            $scope.hoverInCenter = function(){
-                this.hoverCenter = true;
+            $scope.hoverInSupport = function(){
+                this.hoverSupport = true;
             };
 
-            $scope.hoverOutCenter = function(){
-                 this.hoverCenter = false;
+            $scope.hoverOutSupport = function(){
+                 this.hoverSupport = false;
+            };
+            $scope.hoverInComment = function(){
+                this.hoverComment = true;
+            };
+
+            $scope.hoverOutComment = function(){
+                 this.hoverComment = false;
             };
 
             $scope.hoverInRight = function(){
@@ -40,6 +47,12 @@ angular.module('flintAndSteel')
             }, function getIdeaHeadersError(data, status) {
                 console.log(status);
             });
+
+
+
+
+            
+
         }
     ]
 );
