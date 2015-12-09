@@ -42,6 +42,10 @@ body {
     padding-bottom: 0px;
 }
 
+.some-padding-bottom {
+    padding-bottom: 15px;
+}
+
 .fab-layout {
     margin-right: 20px;
     margin-bottom: 10px;
@@ -51,13 +55,57 @@ body {
     margin-left: 20px;
 }
 
-.custom-chip {
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 3px 6px;
+.custom-chip-wrapper{
+    margin:2px 2px 2px 0px;
+    display:inline-block;
+}
+
+.custom-chip{
+    margin-bottom: 3px;
+    padding: 3px 10px;
     background-color: #e0e0e0;
     color: #424242;
     border-radius: 10px;
+    white-space:nowrap;
+}
+
+.custom-chip.knowledge{
+    background-color: #F44336;
+    color: #FFFFFF;
+}
+
+.custom-chip.time{
+    background-color: #3F51B5;
+    color: #FFFFFF;
+}
+
+.custom-chip.funding{
+    background-color: #009688;
+    color: #FFFFFF;
+}
+
+.custom-chip.experience{
+    background-color: #8BC34A;
+    color: #FFFFFF;
+}
+
+.custom-chip.social-network{
+    background-color: #FF9800;
+    color: #FFFFFF;
+}
+
+.custom-chip.materials{
+    background-color: #795548;
+    color: #FFFFFF;
+  }
+.custom-chip.how-can-i-help{
+    background-color: #E91E63;
+    color: #FFFFFF;
+}
+
+.custom-chip.owner{
+    background-color: #03A9F4;
+    color: #FFFFFF;
 }
 
 .idea-pointer {
@@ -76,12 +124,21 @@ body {
     padding-left: 10px;
 }
 
+.extra-padding-lg {
+    padding: 30px;
+}
+
 .accent-text {
     color: #650100;
 }
 
+.author-accent {
+    font-size: 13px;
+}
+
 .idea-likes-click {
     cursor: pointer;
+    padding-left: 5px;
 }
 
 .deleted  h3, .deleted p{
@@ -111,16 +168,31 @@ body {
 .padding-left-20{
     padding-left: 20px;
 }
+.padding-sides-20 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.margin-top {
+    margin-top: 30px;
+}
+
+*:focus {
+    outline: 0;
+}
 
 .about-technologies{
     padding: 15px;
 }
+
 .about-padding-bottom{
     padding-bottom: 15px;
 }
+
 .about-padding-top{
     padding-top: 15px;
 }
+
 .mailto-format{
     text-decoration:none !important;
     text-decoration:none;
@@ -130,6 +202,7 @@ body {
 .identicon {
     vertical-align: middle;
 }
+
 .homeview-Image {
  height:100%;
    width:100%;
@@ -448,3 +521,23 @@ img
                         -ms-filter: alpha(opacity=60);
                         filter: alpha(opacity=60);
                     }
+
+.identicon-home {
+    margin-right: 10px;
+}
+
+.md-tab.md-active {
+    background-color: #e0e0e0;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.no-ideas-div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.back-box {
+    width: 600px;
+}
+

@@ -1,5 +1,4 @@
 /* global angular */
-/* global _ */
 
 angular.module('flintAndSteel')
 .factory('loginSvc',
@@ -20,21 +19,6 @@ angular.module('flintAndSteel')
                     .error(errorCb);
             };
 
-            this.addUser = function addUser(account, successCb, errorCb) {
-                //console.log(account);
-                $http.get('/uniqueid?for=user')
-                    .success(function getIdSucess(data) {
-                        account.id = data;
-                        account.likedIdeas = [];
-                        $http.post('/signup', account)
-                            .success(successCb)
-                            .error(errorCb);
-                    })
-                    .error(function getIdFailed(data, status) {
-                        console.log(status);
-                    });
-            };
-
             this.isUserLoggedIn = function isUserLoggedIn() {
                 if (typeof $rootScope.account === 'undefined') {
                     return false;
@@ -50,43 +34,6 @@ angular.module('flintAndSteel')
                 return $rootScope.account[propertyName];
             };
 
-            this.likeIdea = function likeIdea(ideaId) {
-                $rootScope.account.likedIdeas.push(ideaId);
-                this.updateAccount($rootScope.account, function accountUpdateSuccess() {
-                    // nothing *really* needs to happen here
-                }, function accountUpdateError(data, status) {
-                    console.log(status);
-                });
-            };
-
-            this.unlikeIdea = function unlikeIdea(ideaId) {
-                _.remove($rootScope.account.likedIdeas, function(item) {
-                    return item === ideaId;
-                });
-                this.updateAccount($rootScope.account, function accountUpdateSuccess() {
-                    // nothing *really* needs to happen here
-                }, function accountUpdateError(data, status) {
-                    console.log(status);
-                });
-            };
-
-            this.updateAccount = function updateAccount(account, successCb, errorCb) {
-                $http.post('/updateaccount', account)
-                    .success(successCb)
-                    .error(errorCb);
-            };
-
-            this.checkValidUsername = function checkValidUsername(username, successCb, errorCb) {
-                if (username) {
-                    $http.get('/isuniqueuser?user=' + username)
-                        .success(successCb)
-                        .error(errorCb);
-                }
-                else {
-                    return false;
-                }
-            };
-
             this.getUserById = function getUserById(userId, successCb, errorCb) {
                 if (userId) {
                     $http.get('/user?id=' + userId)
@@ -100,14 +47,9 @@ angular.module('flintAndSteel')
 
             return {
                 checkLogin: this.checkLogin,
-                addUser: this.addUser,
                 isUserLoggedIn: this.isUserLoggedIn,
                 logout: this.logout,
                 getProperty: this.getProperty,
-                likeIdea: this.likeIdea,
-                unlikeIdea: this.unlikeIdea,
-                updateAccount: this.updateAccount,
-                checkValidUsername: this.checkValidUsername,
                 getUserById: this.getUserById
             };
         }

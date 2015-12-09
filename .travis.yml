@@ -1,8 +1,9 @@
 language: node_js
 node_js:
-  - "0.10.40"
+  - "4.2.2"
   
 before_install:
+  - npm install -g npm
   - npm install -g bower
   
 before_script:

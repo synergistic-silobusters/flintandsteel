@@ -52,6 +52,11 @@ angular.module('flintAndSteel', [
                 url: '/about',
                 templateUrl: 'about/about.tpl.html',
                 controller: ''
+            })
+            .state('innovationdisclosure', {
+                url: '/innovationdisclosure',
+                templateUrl: 'innovationDisclosureView/innovationDisclosureView.tpl.html',
+                controller: ''
             });
 
         $urlRouterProvider.otherwise('/');

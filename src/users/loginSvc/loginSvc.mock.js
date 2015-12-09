@@ -13,14 +13,6 @@ angular.module('flintAndSteel')
                 likedIdeas: [ 'mock_idea' ]
             };
 
-            function NotImplementedException(call) {
-                this.name = 'NotImplementedException';
-                this.message = 'Method ' + call + ' has not been implemented!';
-                this.toString = function() {
-                    return this.name + ': ' + this.message;
-                };
-            }
-
             var loggedIn = false;
 
             return {
@@ -32,9 +24,6 @@ angular.module('flintAndSteel')
                         loggedIn = false;
                     }
                 },
-                addUser: function addUser() {
-                    throw new NotImplementedException('addUser');
-                },
                 isUserLoggedIn: function isUserLoggedIn() {
                     return loggedIn;
                 },
@@ -43,18 +32,6 @@ angular.module('flintAndSteel')
                 },
                 getProperty: function getProperty(propertyName) {
                     return mockUserAccount[propertyName];
-                },
-                likeIdea: function likeIdea() {
-                    throw new NotImplementedException('likeIdea');
-                },
-                unlikeIdea: function unlikeIdea() {
-                    throw new NotImplementedException('unlikeIdea');
-                },
-                updateAccount: function updateAccount() {
-                    throw new NotImplementedException('updateAccount');
-                },
-                checkValidUsername: function checkValidUsername() {
-                    throw new NotImplementedException('checkValidUsername');
                 },
                 getUserById: function getUserById() {
                     return mockUserAccount;

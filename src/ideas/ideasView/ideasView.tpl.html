@@ -3,7 +3,15 @@
     <md-card-content>
         <div ng-hide="ideasView.enableEdit">
             <h1>{{idea.title}}</h1>
-            <h3>by {{idea.author.name}}</h3>
+            <div layout="row">
+                <div layout="row" layout-align="center center">
+                    <identicon username='idea.author.username' size='30'></identicon>
+                </div>
+                <h3>&nbsp;
+                    <md-tooltip md-direction="right">Email User</md-tooltip>
+                    <email-link author-obj="idea.author"></email-link>
+                </h3>
+            </div>
             <p>{{idea.description}}</p>
         </div>
         <form ng-show="ideasView.enableEdit" name="newIdeaForm">
@@ -49,147 +57,285 @@
             <i ng-show="idea.timeModified !== idea.timeCreated && !ideasView.enableEdit">Edited {{momentizeTime(idea.timeModified)}}</i>
     </md-card-footer>
 </md-card>
+<!-- Card used to display Likes/Backs and to Like/Back an idea -->
 <md-card>
     <md-card-content>
-        <span flex ng-if="isUserLoggedIn() && !isUserLiked()">
-            <md-button class="md-icon-button" aria-label="Like" ng-click="likeIdea()">
+        <span flex ng-if="!isUserLoggedIn()">
+            <md-button class="md-icon-button" aria-label="Like">
+                {{idea.likes.length}}
                 <i class="material-icons icon-button-adjust">&#xE87E;</i>
+                <md-tooltip md-direction="bottom">
+                    Login to Like
+                </md-tooltip>
             </md-button>
         </span>
-        <span flex ng-if="isUserLoggedIn() && isUserLiked()">
-            <md-button class="md-icon-button" aria-label="Unlike" ng-click="unlikeIdea()">
-                <i class="material-icons icon-button-adjust">&#xE87D;</i>
-            </md-button>
+        <span flex ng-if="isUserLoggedIn()">
+            <span flex ng-if="!isUserLiked()">
+                <md-button class="md-icon-button" aria-label="Like" ng-click="addNewInteraction('likes')">
+                    {{idea.likes.length}}
+                    <i class="material-icons icon-button-adjust">&#xE87E;</i>
+                    <md-tooltip md-direction="bottom">
+                        Like Idea
+                    </md-tooltip>
+                </md-button>
+            </span>
+            <span flex ng-if="isUserLiked()">
+                <md-button class="md-icon-button" aria-label="Unlike" ng-click="removeInteraction('likes')">
+                {{idea.likes.length}}
+                    <i class="material-icons icon-button-adjust">&#xE87D;</i>
+                    <md-tooltip md-direction="bottom">
+                        Idea Liked
+                    </md-tooltip>
+                </md-button>
+            </span>
         </span>
-        <span flex>{{idea.likes.length}} <a class="idea-likes-click" ng-click="openLikes($event, idea.likes)">likes</a> and {{idea.backs.length}} backs</span>
+        <span flex ng-if="!isUserLoggedIn()">
+            <md-button class="md-icon-button" aria-label="Back">
+                {{idea.backs.length}}
+                <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+            </md-button>
+            <md-tooltip ng-if="!hasUserBacked()" md-direction="bottom">Login to Back</md-tooltip>
+        </span>
+        <span flex ng-if="isUserLoggedIn()">
+            <span flex ng-if="!hasUserBacked()">
+                <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
+                    {{idea.backs.length}}
+                    <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                </md-button>
+                <md-tooltip md-direction="bottom">Contribute</md-tooltip>
+            </span>
+            <span flex ng-if="hasUserBacked()">
+                <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
+                    {{idea.backs.length}}
+                    <i class="material-icons icon-button-adjust">&#xE7FB;</i>
+                </md-button>
+                <md-tooltip md-direction="bottom">Edit Contribution</md-tooltip>
+            </span>
+        </span>
     </md-card-content>
 </md-card>
 <md-card>
     <md-card-content>
         <md-tabs md-dynamic-height md-border-bottom="">
-            <md-tab label="Comments">
+            <!-- Tab Used to show updates for the idea -->
+            <md-tab label="Updates">
                 <md-content class="md-padding">
+                    <md-card>
+                        <md-card-content ng-if="!idea.updates[0] && ideasView.isUserMemberOfTeam()">
+                            <p>There are no status updates on this idea.  Please update this idea. </p>
+                        </md-card-content>
+                        <md-card-content ng-if="ideasView.isUserAuthor() || ideasView.isUserMemberOfTeam()">
+                            <form layout="row">
+                                <md-input-container id="comment-box-container" class="some-padding-bottom" flex>
+                                    <label>Add a status update</label>
+                                    <input id="comment-box" ng-model="ideasView.newUpdate" type="text" />
+                                </md-input-container>
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newUpdate === ''" ng-click="addNewInteraction('updates')">
+                                    <i class="material-icons icon-button-adjust">&#xE876;</i>
+                                </md-button>
+                            </form>
+                        </md-card-content>
+                        <md-card-content ng-if="!idea.updates[0] && !ideasView.isUserMemberOfTeam() && !ideasView.isUserAuthor()">
+                            <p>There are no status updates on this idea.  Come back later to see if progress has been made on this idea.</p>
+                        </md-card-content>
+                    </md-card>
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="comment in idea.comments" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
-                            <div ng-show="hovered === true && ideasView.isUserAuthorOfComment($index) && comment.deleted !== true">
-                                <md-button class="md-icon-button" aria-label="Delete Comment" ng-click="ideasView.deleteComment($index)">
+                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
+                            <div ng-show="(ideasView.isUserAuthorOfUpdate($index) || ideasView.isUserAuthor()) && update.deleted !== true && hoverUpdate === true">
+                                <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "deleteUpdate($index)">
                                     <i class="material-icons icon-button-adjust">&#xE14C;</i>
                                 </md-button>
                             </div>
-                            <div class="md-list-item-text" ng-class="{'deleted': comment.deleted === true}">
+                            <div class="md-list-item-text">
+                                <h3>{{update.text}}</h3>
+                                <div layout="row">
+                                    <div layout="row" layout-align="center center">
+                                        <identicon username='update.author.username' size='18'></identicon>
+                                    </div>
+                                    <p>&nbsp;<email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.time)"></small></p>
+                                </div>
+                            </div>
+
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </md-tab>
+            <!-- Tab used to show comments made on the idea by logged in users -->
+            <md-tab label="Comments">
+                <md-content class="md-padding">
+                    <md-card>
+                        <md-card-content ng-if="isUserLoggedIn()">
+                            <form layout="row" ng-if="isUserLoggedIn()">
+                                <md-input-container id="comment-box-container" class="no-padding-bottom" flex>
+                                    <label>Add a comment</label>
+                                    <input id="comment-box" ng-model="ideasView.newComment" type="text" />
+                                </md-input-container>
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
+                                    <i class="material-icons icon-button-adjust">&#xE876;</i>
+                                </md-button>
+                            </form>
+                        </md-card-content>
+                        <md-card-content ng-if="!isUserLoggedIn()">
+                            <p>Please log in to enter a comment.</p>
+                        </md-card-content>
+                    </md-card>
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="comment in idea.comments" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                            <div ng-show="hovered === true && ideasView.isUserAuthorOfInteraction(comment)">
+                                <md-button class="md-icon-button" aria-label="Delete Comment" ng-click="removeInteraction('comments', comment)">
+                                    <i class="material-icons icon-button-adjust">&#xE14C;</i>
+                                </md-button>
+                            </div>
+                            <div class="md-list-item-text">
                                 <h3>{{comment.text}}</h3>
-                                <p>{{comment.author.name}} <small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
+                                <div layout="row">
+                                    <div layout="row" layout-align="center center">
+                                        <identicon username='comment.author.username' size='18'></identicon>
+                                    </div>
+                                    <p>&nbsp;<email-link author-obj="comment.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(comment.time)"></small></p>
+                                </div>
                             </div>
                         </md-list-item>
                     </md-list>
-                    <div layout="row" ng-if="isUserLoggedIn()">
-                        <md-input-container id="comment-box-container" class="no-padding-bottom" flex>
-                            <label>Add a comment</label>
-                            <input id="comment-box" ng-model="ideasView.newComment" type="text" />
-                        </md-input-container>
-                        <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
-                            <i class="material-icons icon-button-adjust">&#xE876;</i>
-                        </md-button>
-                    </div>
                 </md-content>
             </md-tab>
+            <!-- Tab used to show users that are willing to contribute to an idea -->
             <md-tab label="Backers">
                 <md-content class="md-padding">
+                    <!-- Backer controls: only visible when logged in -->
+                    <!-- Add new backing -->
+                    <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="showAddBack($event)" ng-disabled="hasUserBacked()">
+                        <i class="material-icons icon-button-adjust">&#xE145;</i> <!-- CHANGE TO + SIGN -->
+                        <md-tooltip md-direction="bottom">Add contribution</md-tooltip>
+                    </md-button>
+                    <!-- Edit current backing -->
+                    <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="showAddBack($event)" ng-disabled="!hasUserBacked()">
+                        <i class="material-icons icon-button-adjust">&#xE3C9;</i>
+                        <md-tooltip md-direction="bottom">Edit Contribution</md-tooltip>
+                    </md-button>
+                    <!-- Delete current backing -->
+                    <!--<md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="removeBack()" ng-disabled="!hasUserBacked()">
+                        <i class="material-icons icon-button-adjust">&#xE5CD;</i>
+                        <md-tooltip md-direction="bottom">Delete Back</md-tooltip>
+                    </md-button>-->
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="back in idea.backs">
+                        <md-list-item class="md-3-line" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                            <div ng-show="hovered === true && ideasView.isUserAuthorOfInteraction(back)">
+                                <md-button class="md-icon-button" aria-label="Edit Back" ng-click="showAddBack($event)">
+                                    <i class="material-icons icon-button-adjust">&#xE3C9;</i>
+                                </md-button>
+                            </div>
                             <div class="md-list-item-text">
-                                <h3>{{back.text}}</h3>
-                                <p>
-                                    {{back.author.name}} <small class="extra-space-left" ng-bind="momentizeTime(back.time)"></small>
-                                    <span class="extra-space-left">
-                                        <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
+                                <h3>{{back.text}}
+                                    <span class="extra-padding-left-sm">
+                                        <small ng-show="!hasBackBeenEdited(back)" ng-bind="momentizeTime(back.time)"></small>
+                                        <small ng-show="hasBackBeenEdited(back)" ng-bind="momentizeModifiedTime(back.timeModified)"></small>
                                     </span>
-                                </p>
+                                </h3>
+                                <div layout="row">
+                                    <div layout="row" layout-align="center center">
+                                        <identicon username='back.author.username' size='18'></identicon>
+                                    </div>
+                                    <p>&nbsp;<email-link author-obj="back.author"></email-link></p>
+                                </div>
+                                <span class="custom-chip-wrapper" ng-repeat="type in back.types">
+                                    <small  class="custom-chip {{type._lowername}}" >{{type.name}}</small>
                                 </span>
                             </div>
                         </md-list-item>
                     </md-list>
-                    <div layout="row" ng-if="isUserLoggedIn()">
-                        <div layout="column" flex>
-                            <md-input-container id="back-box-container" class="no-padding-bottom">
-                                <label>Back this idea...</label>
-                                <input id="back-box" ng-model="ideasView.newBack" type="text" />
-                            </md-input-container>
-                            <md-chips ng-model="selectedTypes" md-autocomplete-snap md-require-match="true" ng-show="ideasView.newBack">
-                                <md-autocomplete
-                                    md-selected-item="selectedType"
-                                    md-selected-item-change=""
-                                    md-search-text="searchText"
-                                    md-search-text-change=""
-                                    md-min-length="0"
-                                    md-items="type in querySearch(searchText)"
-                                    md-item-text="type.name"
-                                    placeholder="Type of backing">
-                                    <span md-highlight-text="ctrl.searchText">{{type.name}}</span>
-                                </md-autocomplete>
-                                <md-chip-template>
-                                    <span>
-                                        <strong>{{$chip.name}}</strong>
-                                    </span>
-                                </md-chip-template>
-                            </md-chips>
-                        </div>
-                        <div layout="column" layout-align="center end">
-                            <md-button class="md-icon-button" aria-label="Submit" ng-disabled="ideasView.newBack === ''" ng-click="addNewInteraction('backs')">
-                                <i class="material-icons icon-button-adjust">&#xE876;</i>
-                            </md-button>
-                        </div>
-                    </div>
                 </md-content>
             </md-tab>
+            <!-- Tab used to show users who is part of a team, or allows the idea user to edit the team members -->
             <md-tab label="Team">
                 <md-content class="md-padding">
                     <div layout="row">
                         <div layout="column">
-                            <md-list ng-if="ideasView.isUserAuthor()">
+                            <!-- IN TEAM EDIT MODE - Currently limited to the Author -->
+                            <md-list ng-show="ideasView.isUserAuthor() && ideasView.enableTeamEdit === true">
+                                <md-list-item class="md-1-line" ng-show="idea.team.length === 0">
+                                    <p>There are no members selected for the team. Add backers to your team below.</p>
+                                </md-list-item>
+                                <md-list-item class="md-1-line" ng-show="idea.team.length === 1 && ideasView.isUserMemberOfTeam()">
+                                    <p>You are the only member of your team. Once people back your idea you will be able to add them to your team.</p>
+                                </md-list-item>
+                                <md-list-item class="md-1-line" ng-show="idea.team.length === 1 && !ideasView.isUserMemberOfTeam()">
+                                    <p>There is only one member on the team and it is not you!  You can add yourself back to the team by selecting edit.</p>
+                                </md-list-item>
+                                <md-list-item class="md-1-line" ng-show="idea.team.length > 1">
+                                    <p>Select the backers that you would like to be a part of your team.</p>
+                                </md-list-item>
                                 <md-list-item class="md-1-line" ng-repeat="back in idea.backs">
                                     <div class="md-list-item-text">
-                                        <p>
-                                            <md-switch ng-model="back.isInTeam" class="md-warn"> <!-- Be careful when editing backs because of this -->
-                                                {{back.author.name}}
-                                                <span class="extra-space-left">
-                                                    <small class="custom-chip" ng-repeat="type in back.types">{{type.name}}</small>
-                                                </span>
-                                            </md-switch>
-                                        </p>
+                                        <md-switch ng-model="back.isInTeam" class="md-warn"> <!-- Be careful when editing backs because of this -->
+                                            {{back.author.name}}
+                                        </md-switch>
+                                        <span class="custom-chip-wrapper" ng-repeat="type in back.types">
+                                            <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
+                                        </span>
                                     </div>
                                 </md-list-item>
                             </md-list>
                         </div>
-                        <div layout="column" layout-align="start center" flex>
-                            <md-list>
-                                <md-list-item class="md-2-line" ng-repeat="member in idea.team">
-                                    <div class="md-list-item-text">
-                                        <h3>{{member.member.name}}</h3> <!-- now displays, but doesn't seem to save-->
-                                        <p>
-                                            <span class="extra-space-left">
-                                                <small class="custom-chip" ng-repeat="type in member.types">{{type.name}}</small>
-                                            </span>
-                                        </p>
-                                    </div>
+                        <div layout="column">
+                            <!-- NOT IN TEAM EDIT MODE -->
+                            <md-list ng-show="ideasView.enableTeamEdit === false">
+                                <md-list-item class="md-2-line" ng-show="idea.team.length === 0">
+                                    <p>There are no members currently on the team.</p>
                                 </md-list-item>
-                                <md-list-item class="md-2-line" ng-show="idea.team.length === 0"> <!-- auto add author: needed logic for ||| if there is only one person on the team and it's the author-->
-                                    <div class="md-list-item-text">
-                                        No Team has been formed yet :)
+                                <md-list-item class="md-2-line" ng-show="ideasView.isUserAuthor() && idea.team.length === 1 && ideasView.isUserMemberOfTeam()">
+                                    <p>You are the only member of your team. Once people back your idea you will be able to add them to your team.</p>
+                                </md-list-item>
+                                <md-list-item class="md-2-line" ng-show="ideasView.isUserAuthor() && idea.team.length === 1 && !ideasView.isUserMemberOfTeam()">
+                                    <p>There is only one member on the team and it is not you!  You can add yourself back to the team by selecting edit.</p>
+                                </md-list-item>
+                                <md-list-item class="md-2-line" ng-show="ideasView.isUserAuthor() && idea.team.length > 1">
+                                    <p>Your current team is shown below. You can edit who makes up your team at any time.</p>
+                                </md-list-item>
+                                <md-list-item class="md-2-line" ng-show="!ideasView.isUserAuthor() && !ideasView.isUserMemberOfTeam() && isUserLoggedIn() && idea.team.length > 0">
+                                    <p>You are currently not part of the team.  If you would like to become part of the team, please back the idea so the author can be notified about your interest in being involved.</p>
+                                </md-list-item>
+                                <md-list-item class="md-2-line" ng-show="!ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && isUserLoggedIn()">
+                                    <p>You are part of the team!</p>
+                                </md-list-item>
+                                <md-list-item class="md-1-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                                    <div ng-show="hovered === true && !ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && ideasView.isUserExactMemberOfTeam($index)">
+                                        <md-button class="md-icon-button" aria-label="Remove From Team" ng-click="ideasView.removeUserFromTeam(back)">
+                                            <i class="material-icons icon-button-adjust">&#xE14C;</i>
+                                        </md-button>
+                                    </div>
+                                    <div class="md-list-item-text" >
+                                        <div layout="row">
+                                            <div layout="row" layout-align="center center">
+                                                <identicon username='back.author.username' size='18'></identicon>
+                                            </div>
+                                            <span>&nbsp;</span>
+                                            <email-link author-obj = "back.author"></email-link>
+                                        </div>
+                                        <span class="custom-chip-wrapper" ng-repeat="type in back.types">
+                                            <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
+                                        </span>
                                     </div>
                                 </md-list-item>
                             </md-list>
-						</div>
+                        </div>
                     </div>
-                    <div ng-if="ideasView.isUserAuthor()">
-                        <md-button class="md-raised md-primary" ng-click="ideasView.updateTeam()">Submit</md-button>  <!-- write to database and refresh in ng-click -->
-                        <md-button class="md-raised md-primary" ng-click="ideasView.refreshTeam()">Cancel</md-button>  <!-- refresh from the database in ng-click -->
+                    <div ng-show="ideasView.isUserAuthor()">
+                        <md-button ng-show="ideasView.enableTeamEdit === false" class="md-raised md-primary margin-top" ng-click="ideasView.enableTeamEdit = true">
+                            <md-tooltip md-direction="top">Edit Team Members</md-tooltip>
+                            Edit
+                        </md-button>
+                        <md-button ng-show="ideasView.enableTeamEdit === true" class="md-raised md-primary margin-top" ng-click="ideasView.updateTeam()">
+                            <md-tooltip md-direction="top">Submit Team Members</md-tooltip>
+                            Submit
+                        </md-button>
+                        <md-button ng-show="ideasView.enableTeamEdit === true" class="md-raised md-primary margin-top" ng-click="ideasView.refreshTeam()">
+                            <md-tooltip md-direction="top">Cancel Team Member Edit</md-tooltip>
+                            Cancel
+                        </md-button>
                     </div>
                 </md-content>
             </md-tab>
-            <!--<div layout="row" ng-if="isUserLoggedIn()==true">-->
-                Please log in
-            <!--</div>-->
         </md-tabs>
     </md-card-content>
 </md-card>
