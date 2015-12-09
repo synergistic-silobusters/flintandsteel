@@ -11,7 +11,7 @@ angular.module('flintAndSteel')
                     return items;
                 }
                 var retArray = [];
-                var re = /[.,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
+                var re = /[ .,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
                 items.map(function(item) {
                     var normalizedSearch = searchTerm.replace(re,"").toLowerCase();
                     var normalizedTitle = item.title.replace(re,"").toLowerCase();
