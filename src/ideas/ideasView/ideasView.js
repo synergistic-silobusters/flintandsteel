@@ -534,10 +534,11 @@ angular.module('flintAndSteel')
 
             ctrl.parseTeamEmail = function parseTeamEmail() {
                 var emailString = "mailto:";
-                $scope.idea.team.forEach(function(teamElement) {
-                    // emailString + memberId.getProperty('email') + ';';
-                    emailString += teamElement.member.mail + ';';
-                });
+                if (angular.isDefined($scope.idea.team)) {
+                    $scope.idea.team.forEach(function(teamElement) {
+                        emailString += teamElement.member.mail + ';';
+                    });
+                };
                 return emailString;
             };
 

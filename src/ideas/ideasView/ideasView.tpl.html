@@ -258,6 +258,10 @@
             <!-- Tab used to show users who is part of a team, or allows the idea user to edit the team members -->
             <md-tab label="Team">
                 <md-content class="md-padding">
+                    <md-button aria-label="email group" class="md-icon-button" ng-href="{{ideasView.parseTeamEmail()}}">
+                            <i class="material-icons icon-button-adjust">&#xE0BE;</i>
+                            <md-tooltip md-direction="top">Email Team</md-tooltip>
+                    </md-button>
                     <div layout="row">
                         <div layout="column">
                             <!-- IN TEAM EDIT MODE - Currently limited to the Author -->
@@ -343,10 +347,6 @@
                             Cancel
                         </md-button>
                     </div>
-                    <md-button aria-label="email group" class="md-icon-button" ng-href="{{ideasView.parseTeamEmail()}}">
-                            <i class="material-icons icon-button-adjust">&#xE0BE;</i>
-                            <md-tooltip md-direction="right">Email Team</md-tooltip>
-                    </md-button>
                 </md-content>
             </md-tab>
         </md-tabs>
