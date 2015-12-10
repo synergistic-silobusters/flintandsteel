@@ -1,24 +1,233 @@
-<div>
-    <img class="center-img img-padding" src="assets/InnovationChallengeLogo.png" width="40%" height="28%" >
-    <h3 class="center-text">A strategy that enables collaboration and development by providing visibility to innovative ideas.</h3>
-    <div layout="column" layout-gt-sm="row" layout-align="center start" layout-margin>
-        <div flex-gt-sm>
-            <img class="center-img" src="assets/ic_wb_incandescent_black_24px.svg" width="13%" height="13%"/>
-            <h2 class="center-text">Innovate</h2>
-            <p class="center-text">Create an innovative idea and post it to Rok-Starter.  This idea will be visible to other innovators around the world.</p>
-        </div>
-        <div flex-gt-sm ng-click="navToBrowse()">
-            <img class="center-img" src="assets/ic_group_black_24px.svg" width="13%" height="13%" />
-            <h2 class="center-text">Collaborate</h2>
-            <p class="center-text">Browse through posted innovations and give support to ones that are viable.  Share ideas with others who may be interested in supporting it.  Post comments to an innovator to help mold their vision.</p>
-        </div>
-        <div flex-gt-sm>
-            <img class="center-img" src="assets/ic_grade_black_24px.svg" width="13%" height="13%"/>
-            <h2 class="center-text">Achieve</h2>
-            <p class="center-text">Sharing innovations allows all departments to reap the benefits of a single idea.  Together we can grow our ideas to make a better company.</p>
+
+<div  class="homeview-Image" >
+    <div layout="row" layout-align="center center" >
+        <div>
+            <h1>Innovation Challenge</h1>
         </div>
     </div>
-
+    <div flex  layout-align="center center" >
+        <div layout="column" style="width:100%" layout-align="center center">
+            <div class="homeview-login-button">
+                <md-button class="md-raised" >Log In</md-button>
+            </div>
+            <md-input-container class="homeview-search md-accent md-hue-1" flex>
+                <label>Search Ideas</label>
+                <input name="search" ng-model="searchText">
+            </md-input-container>
+        </div>
+    </div>
+</div>
+    <div layout="column" layout-gt-sm="row" layout-align="center start" layout-margin ng-hide="searchText">
+        <md-card ng-mouseover="hoverInLeft()" ng-mouseleave="hoverOutLeft()" flex>
+            <md-card-content>
+                <div flex-gt-sm>
+                    <img class="center-img" src="assets/ic_wb_incandescent_black_24px.svg" width="13%" height="13%"/>
+                    <h2 class="center-text">Innovate</h2>
+                    <div  ng-show="hoverLeft">
+                        <p>Add an idea</p>
+                        <ol>
+                            <li>Log in</li>
+                            <li>Click the add idea button 
+                                <md-button class="md-fab fab-layout" aria-label="Add another idea"> 
+                                    <i class="material-icons icon-button-adjust">&#xE145;</i>
+                                </md-button>
+                                on the bottom of the sidebar.</li>
+                        </ol>  
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+        <md-card ng-mouseover="hoverInSupport()" ng-mouseleave="hoverOutSupport()" flex>
+            <md-card-content>
+                    <img class="center-img" src="assets/ic_grade_black_24px.svg" width="13%" height="13%" />
+                    <h2 class="center-text">Support</h2>
+                    <div ng-show="hoverSupport">
+                        <p>Support an Idea</p>
+                        <ol>
+                            <li>Select an idea that you want to contribute to</li>
+                            <li>Log in</li>
+                            <li>Select Backers tab and back the idea!</li>
+                        </ol> 
+                    </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
+<div layout="column" layout-gt-sm="row" layout-align="center start" layout-margin ng-hide="searchText">
+        <md-card ng-mouseover="hoverInComment()" ng-mouseleave="hoverOutComment()" flex>
+            <md-card-content>
+                <div flex-gt-sm >
+                    <img class="center-img" src="assets/ic_group_black_24px.svg" width="13%" height="13%" />
+                    <h2 class="center-text">Comment</h2>
+                    <div ng-show="hoverComment">
+                        <p>Comment on an Idea</p>
+                        <ol>
+                            <li>Select an idea that you want to comment on</li>
+                            <li>Log in</li>
+                            <li>Select comments tab and type</li>
+                        </ol> 
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+            <md-card ng-mouseover="hoverInRight()" ng-mouseleave="hoverOutRight()" flex>
+                <md-card-content>
+                <div flex-gt-sm>
+                    <img class="center-img" src="assets/ic_group_black_24px.svg" width="13%" height="13%"/>
+                    <h2 class="center-text">Team</h2>
+                    <div ng-show="hoverRight">
+                    <p>Join a team</p>
+                    <ol>
+                        <li>Support an idea by listing your contributions on the backers tab</li>
+                        <li>Have the idea owner add you to the team</li>
+                    </ol> 
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
+<div layout="row" layout-align="center center" ng-show="searchText">
+        <div flex="10"></div>
+        <div flex="80">
+            <div layout="row" flex layout-wrap>
+                    <md-item ng-repeat="idea in topIdeas | search:searchText">
+                        <idea-item-browse idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item-browse>
+                    </md-item>
+                <md-divider></md-divider>
+            </div>
+        </div>
+</div>
+<!-- Begin Timeline -->
+<div layout="row" layout-align="center center">
+    <h2 class="homeview-padding-bottom">Event Schedule</h2>
+</div>
+ <div class="container">
+    <div class="row">
+        <div class="timeline-centered">
+            <article class="timeline-entry">
+                <div class="timeline-entry-inner">
+                    <time class="timeline-time" datetime="2015-01-10T12:00"><span>January 10</span> <span>Cleveland</span><span>12:00 PM</span></time>
+                    <div class="timeline-icon bg-success">
+                        <i class="entypo-feather"></i>
+                    </div>
+                    <div class="timeline-label">
+                        <div>
+                            <h2>Monthly Innovation Event</h2>
+                        </div>
+                        <div>
+                            <p>This is the text about the monthly innovation event.  It should be something describing what this event will be like and what we will do.  Something interesting to catch someone's interest.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="timeline-entry left-aligned">
+                <div class="timeline-entry-inner">
+                    <time class="timeline-time" datetime="2015-02-10T12:00"><span>February 22</span><span>Global</span> <span>12:00 PM</span></time>
+                    <div class="timeline-icon bg-info">
+                        <i class="entypo-feather"></i>
+                    </div>
+                    <div class="timeline-label">
+                        <div>
+                            <h2>E-Week Kickoff</h2>
+                        </div>
+                        <div>
+                            <p>We're kicking off E-week with this fun and exciting event.  Someone type some more things here, I'm an engineer, not an english major.  Let's get a marketing person.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="timeline-entry left-aligned">
+                <div class="timeline-entry-inner">
+                    <time class="timeline-time" datetime="2015-02-10T12:00"><span>February 25</span><span>Global</span> <span>12:00 PM</span></time>
+                    <div class="timeline-icon bg-info">
+                        <i class="entypo-feather"></i>
+                    </div>
+                    <div class="timeline-label">
+                        <div>
+                            <h2>E-Week Wrap-up</h2>
+                        </div>
+                        <div>
+                            <p>Here's where we're going to close E-week.  We're going to have some bosses there to present awards and win some prizes.  You get a car!  You get a car!  And you get a car!</p2>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="timeline-entry">
+                <div class="timeline-entry-inner">
+                    <time class="timeline-time" datetime="2015-01-9T12:00"><span>March 10</span><span>Cleveland</span> <span>5:00 PM</span></time>
+                    <div class="timeline-icon bg-warning">
+                        <i class="entypo-feather"></i>
+                    </div>
+                    <div class="timeline-label">
+                        <div>
+                            <h2>Innovation Challenge Kickoff</h2>
+                        </div>
+                        <div>
+                            <p>We're going to kick off the Cleveland innovation challenge on this day.  We'll do some fun things, have food and drink, and talk about synergy.</p2>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="timeline-entry left-aligned">
+                <div class="timeline-entry-inner">
+                    <time class="timeline-time" datetime="2015-02-10T12:00"><span>April</span><span>Cleveland</span> <span></span></time>
+                    <div class="timeline-icon bg-warning">
+                        <i class="entypo-feather"></i>
+                    </div>
+                    <div class="timeline-label">
+                        <div>
+                            <h2>Innovation Challenge Mid-Point Readout</h2>
+                        </div>
+                        <div>
+                            <p>Scared of presentations?  Welp you're up a creek then.  Take your idea and present to everybody.</p2>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="timeline-entry"> 
+                <div class="timeline-entry-inner">
+                    <time class="timeline-time" datetime="2015-02-10T12:00"><span>June</span><span>Cleveland</span> <span></span></time>
+                    <div class="timeline-icon bg-warning">
+                        <i class="entypo-feather"></i>
+                    </div>
+                    <div class="timeline-label">
+                        <div>
+                            <h2>Innovation Challenge Final Readout</h2>
+                        </div>
+                        <div>
+                            <p>Mid-point readout didn't go well?  Get ready for a grilling from upper management.</p2>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="timeline-entry left-aligned">
+                <div class="timeline-entry-inner">
+                    <time class="timeline-time" datetime="2015-02-10T12:00"><span>June</span><span>Global</span> <span></span></time>
+                    <div class="timeline-icon bg-info">
+                        <i class="entypo-feather"></i>
+                    </div>
+                    <div class="timeline-label">
+                        <div>
+                            <h2>Innovation Challenge Final Readout</h2>
+                        </div>
+                        <div>
+                            <p>You made it past Fluffy and the Devil's snare.  Those were easy compared to this. </p2>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <article class="timeline-entry begin">
+                <div class="timeline-entry-inner">
+                    <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
+                        <i class="entypo-flight"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
 </div>
 <div><h6><center><a ui-sref="about">About Us</a></center></h6></div>
 <div><h6><center><a ui-sref="innovationdisclosure">Innovation Disclosure Assistant</a></center></h6></div>
+
+
