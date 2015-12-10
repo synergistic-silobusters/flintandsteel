@@ -538,7 +538,7 @@ angular.module('flintAndSteel')
                     $scope.idea.team.forEach(function(teamElement) {
                         emailString += teamElement.member.mail + ';';
                     });
-                };
+                }
                 return emailString;
             };
 
