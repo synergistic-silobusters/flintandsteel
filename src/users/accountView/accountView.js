@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('AccountViewCtrl',
     [
-        '$scope', '$state', 'toastSvc', 'loginSvc',
-        function($scope, $state, toastSvc, loginSvc) {
+        '$scope', '$state', 'toastSvc', 'loginSvc', 'ideaSvc',
+        function($scope, $state, toastSvc, loginSvc, ideaSvc) {
             "use strict";
 
             // NOTE: Nothing can go above this!
