@@ -21,6 +21,20 @@ angular.module('flintAndSteel')
                 };
             }
 
+            ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
+                $scope.userIdeas = [];
+
+                // Find all User Ideas
+                for (var i = 0; i < data.length; i++) {  // was let
+                    if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === data[i].authorId) {
+                        $scope.userIdeas.push(data[i]);
+                    }
+                }
+
+            }, function getIdeaHeadersError(data, status) {
+                console.log(status);
+            });
+
             // /Replace
             $scope.logout = function logout() {
                 var accountName = loginSvc.getProperty('name');
