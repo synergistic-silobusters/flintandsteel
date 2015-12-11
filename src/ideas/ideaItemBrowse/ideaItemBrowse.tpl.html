@@ -15,8 +15,8 @@
             <span>
                 <md-button class="md-icon-button" aria-label="Like">
                     {{idea.likes}}
-                    <i class="material-icons icon-button-adjust" ng-show="!isUserLiked()">&#xE87E;</i>
-                    <i class="material-icons icon-button-adjust" ng-show="isUserLiked()">&#xE87D;</i>
+                    <i class="material-icons icon-button-adjust">&#xE87E;</i>
+                    <!--<i class="material-icons icon-button-adjust" ng-show="isUserLiked()">&#xE87D;</i>-->
                     <md-tooltip md-direction="bottom">
                         <ng-pluralize count="idea.likes" 
                              when="{'0': 'Likes',
@@ -27,8 +27,8 @@
                 </md-button>
                 <md-button class="md-icon-button" aria-label="Back">
                     {{idea.backs}}
-                    <i class="material-icons icon-button-adjust" ng-show="!hasUserBacked()">&#xE893;</i>
-                    <i class="material-icons icon-button-adjust" ng-show="hasUserBacked()">&#xE892;</i>
+                    <i class="material-icons icon-button-adjust">&#xE893;</i>
+                    <!--<i class="material-icons icon-button-adjust" ng-show="hasUserBacked()">&#xE892;</i>-->
                     <md-tooltip md-direction="bottom">
                         <ng-pluralize count="idea.backs"
                             when="{'0': 'Backs',
@@ -39,8 +39,8 @@
                 </md-button>
                 <md-button class="md-icon-button" aria-label="Back">
                     {{idea.team}}
-                    <i class="material-icons icon-button-adjust" ng-show="!hasUserBacked()">&#xE7FC;</i>
-                    <i class="material-icons icon-button-adjust" ng-show="hasUserBacked()">&#xE7FB;</i>
+                    <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                    <!--<i class="material-icons icon-button-adjust" ng-show="hasUserBacked()">&#xE7FB;</i>-->
                     <md-tooltip md-direction="bottom">
                         <ng-pluralize count={{idea.team}} 
                              when="{'0': 'People',
