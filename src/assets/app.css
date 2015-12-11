@@ -218,6 +218,10 @@ body {
     width: 100%;
 }
 
+.small-padding-bottom{
+    padding-bottom: 15px;
+}
+
 .back-box {
     width: 600px;
 }

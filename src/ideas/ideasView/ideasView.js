@@ -532,6 +532,16 @@ angular.module('flintAndSteel')
                 }
             };
 
+            ctrl.parseTeamEmail = function parseTeamEmail() {
+                var emailString = "mailto:";
+                if (angular.isDefined($scope.idea.team)) {
+                    $scope.idea.team.forEach(function(teamElement) {
+                        emailString += teamElement.member.mail + ';';
+                    });
+                }
+                return emailString;
+            };
+
             $scope.removeBack = function() {
                 $scope.loadEditBack();
                 $scope.removeInteraction('back', $scope.userBack);
