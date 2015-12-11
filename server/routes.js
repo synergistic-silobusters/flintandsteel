@@ -44,7 +44,7 @@ module.exports = function(app, db) {
     });
 
     app.get('/ideas/:id', function(req, res, next) {
-        if(req.params.id === 'search') {
+        if (req.params.id === 'search') {
             next();
         }
         else {
