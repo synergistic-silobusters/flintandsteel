@@ -43,15 +43,37 @@ module.exports = function(app, db) {
         });
     });
 
-    app.get('/ideas/:id', function(req, res) {
-        ideas.get(req.params.id).then(function(doc) {
-            return replaceIds.idea(doc);
-        }).then(function(result) {
-            res.status(200).json(result[0]);
-        })
-        .catch(function(error) {
-            console.error(chalk.bgRed(error));
-            res.status(200).send('IDEA_NOT_FOUND');
+    app.get('/ideas/:id', function(req, res, next) {
+        if(req.params.id === 'search') {
+            next();
+        }
+        else {
+            ideas.get(req.params.id).then(function(doc) {
+                return replaceIds.idea(doc);
+            }).then(function(result) {
+                res.status(200).json(result[0]);
+            })
+            .catch(function(error) {
+                console.error(chalk.bgRed(error));
+                res.status(200).send('IDEA_NOT_FOUND');
+            });
+        }
+    }, function(req, res) {
+        var query = {},
+            projection = { title: 1, authorId: 1 },
+            theDatabase = db.getDb();
+
+        query[req.query.inpath] = req.query.forterm;
+
+        // I'm skeptical here since mongo ids are not working with this search method
+        // but will have to try with the frontend to actually see. 
+        theDatabase.collection('ideas').find(query, projection).toArray(function(err, docs) {
+            if (err) {
+                res.sendStatus(500);
+            }
+            else {
+                res.status(200).json(docs);
+            }
         });
     });
 
