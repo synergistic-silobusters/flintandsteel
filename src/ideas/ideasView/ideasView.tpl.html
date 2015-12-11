@@ -2,7 +2,16 @@
     <img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
     <md-card-content>
         <div ng-hide="ideasView.enableEdit">
-            <h1>{{idea.title}}</h1>
+            <div>
+                <h1 layout="row">{{idea.title}}
+                    <span>
+                        <md-button aria-label="email group" class="md-icon-button" ng-href="{{ideasView.parseTeamEmail()}}">
+                            <i class="material-icons icon-button-adjust">&#xE0BE;</i>
+                            <md-tooltip md-direction="top">Email Team</md-tooltip>
+                        </md-button>
+                    </span>
+                </h1>
+            </div>
             <div layout="row">
                 <div layout="row" layout-align="center center">
                     <identicon username='idea.author.username' size='30'></identicon>
@@ -141,8 +150,8 @@
                     </md-card>
                     <md-list>
                         <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
-                            <div ng-show="(ideasView.isUserAuthorOfUpdate($index) || ideasView.isUserAuthor()) && update.deleted !== true && hoverUpdate === true">
-                                <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "deleteUpdate($index)">
+                            <div ng-show="(ideasView.isUserAuthorOfInteraction(update) || ideasView.isUserAuthor()) && hoverUpdate === true">
+                                <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "removeInteraction('updates', update)">
                                     <i class="material-icons icon-button-adjust">&#xE14C;</i>
                                 </md-button>
                             </div>
@@ -249,6 +258,10 @@
             <!-- Tab used to show users who is part of a team, or allows the idea user to edit the team members -->
             <md-tab label="Team">
                 <md-content class="md-padding">
+                    <md-button aria-label="email group" class="md-icon-button" ng-href="{{ideasView.parseTeamEmail()}}">
+                            <i class="material-icons icon-button-adjust">&#xE0BE;</i>
+                            <md-tooltip md-direction="top">Email Team</md-tooltip>
+                    </md-button>
                     <div layout="row">
                         <div layout="column">
                             <!-- IN TEAM EDIT MODE - Currently limited to the Author -->
