@@ -225,3 +225,8 @@ body {
 .back-box {
     width: 600px;
 }
+
+.ellipsis-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
