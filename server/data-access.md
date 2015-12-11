@@ -21,6 +21,13 @@
 
 ## Searching
 
+The API endpoint `/ideas/search` can be used to search through the list of ideas for some data in particular. This API endpoint needs 2 query parameters to work, `forterm` and `inpath`. The `forterm` parameter is used to specify the value that you want the server to search for while the `inpath` parameter indicates where to search. 
+
+For example, 
+* to search for a particular `authorId` across all the ideas, use `/ideas/search?forterm=<author_id_to_search_for>&inpath=authorId` as the request.
+* to search for all ideas backed by a certain user, use `/ideas/search?forterm=<author_id_to_search_for>&inpath=backs.authorId` as the request.
+* to search for all the ideas in a particular event, use `/ideas/search?forterm=<event_id_to_search_for>&inpath=eventId` as the request. 
+
 ## Using a PATCH to update
 
 ## Examples
