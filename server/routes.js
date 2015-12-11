@@ -195,7 +195,7 @@ module.exports = function(app) {
         });
     });
     app.post('/editidea', function(req, res) {
-        ideas.edit(req.body.id, req.body.title, req.body.description, req.body.rolesreq, function(err) {
+        ideas.edit(req.body.id, req.body.title, req.body.description, req.body.tags, req.body.rolesreq, function(err) {
             if (err) {
                 res.sendStatus(500);
             }

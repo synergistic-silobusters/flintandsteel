@@ -155,9 +155,10 @@ angular.module('flintAndSteel')
                         }
                     }
                 },
-                editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
+                editIdea: function editIdea(ideaId, title, description, tags, rolesreq, successCb) {
                     mockIdea.title = title;
                     mockIdea.description = description;
+                    mockIdea.tags = tags;
                     mockIdea.rolesreq = rolesreq;
                     mockIdea.timeModified = new Date().toISOString();
                     successCb('Edited');
