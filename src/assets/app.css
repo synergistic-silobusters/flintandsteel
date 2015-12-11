@@ -26,6 +26,13 @@ body {
     margin-right: 10px;
 }
 
+.sign-in-tip {
+    font-size: 12px;
+    padding-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .signup-button {
     margin-left: 10px;
 }
@@ -122,6 +129,14 @@ body {
 
 .extra-padding-left-md {
     padding-left: 10px;
+}
+
+.extra-padding-top-md {
+    padding-top: 10px;
+}
+
+.extra-padding-15 {
+    padding: 15px;
 }
 
 .extra-padding-lg {
