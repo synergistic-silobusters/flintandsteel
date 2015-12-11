@@ -99,6 +99,7 @@ angular.module('flintAndSteel')
             $scope.searchText = undefined;
             $scope.showEditBackInput = false;
             $scope.userBackIndex = '';
+            $scope.tagInput = "";
             ctrl.enableTeamEdit = false;
             ctrl.editBackText = '';
             ctrl.newComment = '';
@@ -341,9 +342,9 @@ angular.module('flintAndSteel')
                 return typeof $scope.idea.image !== 'undefined';
             };
 
-            ctrl.editIdea = function(title, description) {
+            ctrl.editIdea = function(title, description, tags) {
                 if (ctrl.isUserAuthor()) {
-                    ideaSvc.editIdea($scope.idea._id, title, description, [], function() {
+                    ideaSvc.editIdea($scope.idea._id, title, description, tags, [], function() {
                         ctrl.refreshIdea();
                     },
                     function() {
@@ -583,6 +584,35 @@ angular.module('flintAndSteel')
                 ctrl.editBackText = backObj.text;
                 $scope.selectedTypes = backObj.types.slice();
                 $scope.showEditBackInput = true;
+            };
+
+            ctrl.doesTagExist = function doesTagExist(tag) {
+                if ($scope.idea.tags.indexOf(tag) === -1) {
+                    return false;
+                }
+                return true;
+            };
+
+            ctrl.addTag = function addTag(tag) {
+                var reNonAlpha = /[.,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
+                tag = tag.replace(reNonAlpha, " ");
+                tag = _.capitalize(_.camelCase(tag));
+                if ($scope.idea.tags.length !== 5 && !ctrl.doesTagExist(tag) && tag !== '') {
+                    $scope.idea.tags.push(tag);
+                }
+            };
+
+            ctrl.tagKeyEvent = function tagKeyEvent(keyEvent) {
+                // Enter
+                if (keyEvent.keyCode === 13) {
+                    ctrl.addTag($scope.tagInput);
+                    $scope.tagInput = "";
+                }
+            };
+
+            ctrl.removeTag = function removeTag(tag) {
+                var index = $scope.idea.tags.indexOf(tag);
+                $scope.idea.tags.splice(index, 1);
             };
         }
     ]
