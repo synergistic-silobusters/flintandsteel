@@ -121,7 +121,7 @@
         <span flex ng-if="!isUserLoggedIn()">
             <md-button class="md-icon-button" aria-label="Back">
                 {{idea.backs.length}}
-                <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                <i class="material-icons icon-button-adjust">&#xE893;</i>
             </md-button>
             <md-tooltip ng-if="!hasUserBacked()" md-direction="bottom">Login to Back</md-tooltip>
         </span>
@@ -129,17 +129,38 @@
             <span flex ng-if="!hasUserBacked()">
                 <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
                     {{idea.backs.length}}
-                    <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                    <i class="material-icons icon-button-adjust">&#xE893;</i>
                 </md-button>
                 <md-tooltip md-direction="bottom">Contribute</md-tooltip>
             </span>
             <span flex ng-if="hasUserBacked()">
                 <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
                     {{idea.backs.length}}
-                    <i class="material-icons icon-button-adjust">&#xE7FB;</i>
+                    <i class="material-icons icon-button-adjust">&#xE892;</i>
                 </md-button>
                 <md-tooltip md-direction="bottom">Edit Contribution</md-tooltip>
             </span>
+        </span>
+        <span flex ng-if="!isUserLoggedIn()">
+            <md-button class="md-icon-button" aria-label="Team">
+                {{idea.team.length}}
+                <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+            </md-button>
+            <md-tooltip md-direction="bottom">Login to Join Team</md-tooltip>
+        </span>
+        <span flex ng-if="isUserLoggedIn()">
+            <md-button class="md-icon-button" aria-label="Team">
+                {{idea.team.length}}
+                <i class="material-icons icon-button-adjust" ng-if="!ideasView.isUserMemberOfTeam()">&#xE7FC;</i>
+                <i class="material-icons icon-button-adjust" ng-if="ideasView.isUserMemberOfTeam()">&#xE7FB;</i>
+            </md-button>
+            <md-tooltip md-direction="bottom">
+                <ng-pluralize count={{idea.team.length}} 
+                     when="{'0': 'Team Members',
+                            'one': 'Team Member',
+                            'other': 'Team Members'}">
+                </ng-pluralize>
+            </md-tooltip>
         </span>
     </md-card-content>
 </md-card>
@@ -243,10 +264,10 @@
                         <md-tooltip md-direction="bottom">Edit Contribution</md-tooltip>
                     </md-button>
                     <!-- Delete current backing -->
-                    <!--<md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="removeBack()" ng-disabled="!hasUserBacked()">
+                    <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="removeBack()" ng-disabled="!hasUserBacked()">
                         <i class="material-icons icon-button-adjust">&#xE5CD;</i>
                         <md-tooltip md-direction="bottom">Delete Back</md-tooltip>
-                    </md-button>-->
+                    </md-button>
                     <md-list>
                         <md-list-item class="md-3-line" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                             <div ng-show="hovered === true && ideasView.isUserAuthorOfInteraction(back)">
