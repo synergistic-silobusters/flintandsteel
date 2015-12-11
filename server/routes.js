@@ -59,22 +59,27 @@ module.exports = function(app, db) {
             });
         }
     }, function(req, res) {
-        var query = {},
-            projection = { title: 1, authorId: 1 },
-            theDatabase = db.getDb();
+        if (!req.query.inpath || !req.query.forterm) {
+            res.status(422).send('A query parameter is missing from the request.');
+        }
+        else {
+            var query = {},
+                projection = { title: 1, authorId: 1 },
+                theDatabase = db.getDb();
 
-        query[req.query.inpath] = req.query.forterm;
+            query[req.query.inpath] = req.query.forterm;
 
-        // I'm skeptical here since mongo ids are not working with this search method
-        // but will have to try with the frontend to actually see. 
-        theDatabase.collection('ideas').find(query, projection).toArray(function(err, docs) {
-            if (err) {
-                res.sendStatus(500);
-            }
-            else {
-                res.status(200).json(docs);
-            }
-        });
+            // I'm skeptical here since mongo ids are not working with this search method
+            // but will have to try with the frontend to actually see. 
+            theDatabase.collection('ideas').find(query, projection).toArray(function(err, docs) {
+                if (err) {
+                    res.sendStatus(500);
+                }
+                else {
+                    res.status(200).json(docs);
+                }
+            });
+        }
     });
 
     app.delete('/ideas/:id', function(req, res) {
