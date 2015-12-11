@@ -22,8 +22,13 @@
                 </h3>
             </div>
             <p>{{idea.description}}</p>
+            <div layout="row" flex layout-wrap>
+                <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
+                    <small class="custom-chip">#{{tag}}</small>
+                </span>
+            </div>
         </div>
-        <form ng-show="ideasView.enableEdit" name="editIdeaForm" ng-submit="ideasView.editIdea(idea.title, idea.description)">
+        <form ng-show="ideasView.enableEdit" name="editIdeaForm" ng-submit="ideasView.editIdea(idea.title, idea.description, idea.tags)">
             <div layout="column">
                 <md-input-container>
                     <label>Title</label>
@@ -54,6 +59,21 @@
                         <div ng-message="maxlength">Your description is too long</div>
                     </div>
                 </md-input-container>
+                <md-input-container class="idea-tags-input-container">
+                    <label>Tags</label>
+                    <input name="tags" ng-model="tagInput" ng-keypress="ideasView.tagKeyEvent($event)" type="text" maxLength="50" ng-disabled="idea.tags.length === 5"></input>
+                    <div ng-messages="tags.$error">
+                        <div ng-message="" class="tag-message">Press Enter to Add Tag - Limit 5</div>
+                    </div>
+                </md-input-container>
+                <div layout="row" flex layout-wrap>
+                    <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
+                        <small class="custom-chip tag">
+                            #{{tag}}
+                            <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="ideasView.removeTag(tag)" aria-hidden="true"></md-icon>
+                        </small>
+                    </span>
+                </div>
                 <div layout="row" layout-align="end center" class="extra-padding-lg">
                     <md-button class="md-raised md-primary" type="submit" ng-disabled="editIdeaForm.$invalid">Submit</md-button>
                     <md-button class="md-raised md-primary" type="button" ng-click="ideasView.refreshIdea()">Cancel</md-button>
