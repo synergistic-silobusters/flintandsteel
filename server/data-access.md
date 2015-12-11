@@ -23,10 +23,7 @@
 
 The API endpoint `/ideas/search` can be used to search through the list of ideas for some data in particular. This API endpoint needs 2 query parameters to work, `forterm` and `inpath`. The `forterm` parameter is used to specify the value that you want the server to search for while the `inpath` parameter indicates where to search. 
 
-For example, 
-* to search for a particular `authorId` across all the ideas, use `/ideas/search?forterm=<author_id_to_search_for>&inpath=authorId` as the request.
-* to search for all ideas backed by a certain user, use `/ideas/search?forterm=<author_id_to_search_for>&inpath=backs.authorId` as the request.
-* to search for all the ideas in a particular event, use `/ideas/search?forterm=<event_id_to_search_for>&inpath=eventId` as the request. 
+Check out the end of the examples section to see implementations using Angular's `$http` service. 
 
 ## Using a PATCH to update
 
@@ -84,6 +81,30 @@ var patchCommands = [
 ];
 $http.patch('/ideas/' + ideaId, patchCommands).then(function(response) {
     console.log('Idea updated!');
+}).catch(function(error) {
+    // something went wrong!
+});
+
+// search for all ideas by a particular author
+$http.get('/ideas/search?forterm=' + anAuthorId + '&inpath=authorId')
+.then(function(docs) {
+    console.log(docs);
+}).catch(function(error) {
+    // something went wrong!
+});
+
+// search all ideas backed by a certain user
+$http.get('/ideas/search?forterm=' + anAuthorId + '&inpath=backs.authorId')
+.then(function(docs) {
+    console.log(docs);
+}).catch(function(error) {
+    // something went wrong!
+});
+
+// search for all ideas in an event
+$http.get('/ideas/search?forterm=' + anEventId + '&inpath=eventId')
+.then(function(docs) {
+    console.log(docs);
 }).catch(function(error) {
     // something went wrong!
 });
