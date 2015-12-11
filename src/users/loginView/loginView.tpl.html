@@ -12,15 +12,15 @@
         <md-dialog-content>
             <md-input-container flex>
                 <label>Username</label>
-                <input id="username" ng-model="account.username" name="username" required="loginForm.username.$touched">
-                <div ng-messages="loginForm.username.$error">
+                <input id="username" ng-model="account.username" name="username" required>
+                <div ng-messages="loginForm.username.$error" ng-show="loginForm.username.$touched">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
             <md-input-container flex>
                 <label>Password</label>
-                <input ng-model="account.password" name="password" type="password" required="loginForm.password.$touched">
-                <div ng-messages="loginForm.password.$error">
+                <input ng-model="account.password" name="password" type="password" required>
+                <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
