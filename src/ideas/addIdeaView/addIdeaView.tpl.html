@@ -1,19 +1,40 @@
 <md-card>
     <md-card-content>
         <h2>New Idea</h2>
-        <form name="newIdeaForm">
+        <form name="newIdeaForm" novalidate ng-submit="addNewIdea(idea)">
             <div layout="column">
                 <md-input-container>
                     <label>Title</label>
-                    <input ng-model="idea.title" required>
+                    <input ng-model="idea.title"
+                           name="title"
+                           ng-minlength="4"
+                           ng-maxlength="30"
+                           md-maxlength="30"
+                           ng-required />
+                    <div ng-messages="newIdeaForm.title.$error" role="alert">
+                        <div ng-message="required">Required</div>
+                        <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
+                        <div ng-message="maxlength">Your title is too long</div>
+                    </div>
                 </md-input-container>
                 <md-input-container flex>
                     <label>Description</label>
-                    <textarea ng-model="idea.description" columns="1" md-maxlength="1000" required></textarea>
+                    <textarea ng-model="idea.description"
+                              name="desc"
+                              columns="1"
+                              ng-minlength="15"
+                              ng-maxlength="1000"
+                              md-maxlength="1000"
+                              ng-required></textarea>
+                    <div ng-messages="newIdeaForm.desc.$error" role="alert">
+                        <div ng-message="required">Required</div>
+                        <div ng-message="minlength">Your description is too short. Must be at least 15 characters</div>
+                        <div ng-message="maxlength">Your description is too long</div>
+                    </div>
                 </md-input-container>
-                <p></p>
+                </p></p>
                 <div layout="row" layout-align="end center">
-                    <md-button class="md-raised md-primary" ng-click="addNewIdea(idea)">Submit idea</md-button>
+                    <md-button class="md-raised md-primary" type="submit" ng-disabled="newIdeaForm.$invalid">Submit idea</md-button>
                 </div>
             </div>
         </form>

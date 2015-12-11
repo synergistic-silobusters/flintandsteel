@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('AccountViewCtrl',
     [
-        '$scope', '$state', 'toastSvc', 'loginSvc',
-        function($scope, $state, toastSvc, loginSvc) {
+        '$scope', '$state', 'toastSvc', 'loginSvc', 'ideaSvc',
+        function($scope, $state, toastSvc, loginSvc, ideaSvc) {
             "use strict";
 
             // NOTE: Nothing can go above this!
@@ -20,6 +20,20 @@ angular.module('flintAndSteel')
                     email: loginSvc.getProperty('email')
                 };
             }
+
+            ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
+                $scope.userIdeas = [];
+
+                // Find all User Ideas
+                for (var i = 0; i < data.length; i++) {  // was let
+                    if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === data[i].authorId) {
+                        $scope.userIdeas.push(data[i]);
+                    }
+                }
+
+            }, function getIdeaHeadersError(data, status) {
+                console.log(status);
+            });
 
             // /Replace
             $scope.logout = function logout() {
