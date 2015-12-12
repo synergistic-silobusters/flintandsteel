@@ -1,7 +1,7 @@
 <md-card>
     <md-card-content>
         <h2>New Idea</h2>
-        <form name="newIdeaForm" novalidate ng-submit="addNewIdea(idea)">
+        <form name="newIdeaForm" novalidate>
             <div layout="column">
                 <md-input-container>
                     <label>Title</label>
@@ -40,10 +40,9 @@
                            maxLength="50"
                            type="text"
                            ng-disabled="idea.tags.length === 5"></input>
-                    <div ng-messages="tags.$error">
-                        <div ng-message="" class="tag-message">Press Enter to Add Tag - Limit 5</div>
-                    </div>
                 </md-input-container>
+                <small class="tag-message" ng-show="idea.tags.length < 5">Press Enter to Add Tag - Limit 5</small>
+                <small class="tag-message" ng-show="idea.tags.length === 5">Tag Limit of 5 Reached</small>
                 <div layout="row" flex layout-wrap>
                     <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
                         <small class="custom-chip tag">
@@ -53,7 +52,7 @@
                     </span>
                 </div>
                 <div layout="row" layout-align="end center" class="extra-padding-lg">
-                    <md-button class="md-raised md-primary" type="submit" ng-disabled="newIdeaForm.$invalid">Submit idea</md-button>
+                    <md-button class="md-raised md-primary" type="button" ng-click="addNewIdea(idea)" ng-disabled="newIdeaForm.$invalid">Submit idea</md-button>
                 </div>
             </div>
         </form>
