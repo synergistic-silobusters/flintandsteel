@@ -38,7 +38,7 @@
                            ng-maxlength="30"
                            md-maxlength="30"
                            required />
-                    <div ng-messages="editIdeaForm.title.$error" role="alert" ng-show="editIdeaForm.title.$touched">
+                    <div ng-messages="editIdeaForm.title.$error" role="alert">
                         <div ng-message="required">Required</div>
                         <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
                         <div ng-message="maxlength">Your title is too long</div>
@@ -53,7 +53,7 @@
                               ng-maxlength="1000"
                               md-maxlength="1000"
                               required></textarea>
-                    <div ng-messages="editIdeaForm.desc.$error" role="alert" ng-show="editIdeaForm.desc.$touched">
+                    <div ng-messages="editIdeaForm.desc.$error" role="alert">
                         <div ng-message="required">Required</div>
                         <div ng-message="minlength">Your description is too short. Must be at least 15 characters</div>
                         <div ng-message="maxlength">Your description is too long</div>
