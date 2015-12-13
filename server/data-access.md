@@ -27,6 +27,19 @@ Check out the end of the examples section to see implementations using Angular's
 
 ## Using a PATCH to update
 
+To update an existing object, run a PATCH request against the appropriate route with a set of patch commands in the format mentioned below. If nothing is passed as a command, the request will be ignored.
+
+A patch command is a plain old JavaScript object containing either two or three members depending on the operation requested. The members are as follows:
+
+
+| Member      | Type     | Description                                                                                                                                                                                                                                                                                    |
+|-------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `operation` | `string` | `{"append"|"create"|"delete"|"modify"}` - This member specifies the operation to run. Append adds to an array, create will add the `path` and the `value` under the given id, delete with remove the provided `path` and modify will reassign the data at the `path` to the `value` passed in. |
+| `path`      | `string` | Location to run the operation on represented as a string delimited by '/'.                                                                                                                                                                                                                     |
+| `value`     | `string` | If the operation is `append`, `create`, or `modify`, this data will be stored, appended to the array or used to replace old data. If the operation is `delete`, this member will be ignored. Stringified JSON is allowed.                                                                      |
+
+Check out the end of the examples section to see implementations using Angular's `$http` service. 
+
 ## Examples
 
 | Operation                      | HTTP Call             |
