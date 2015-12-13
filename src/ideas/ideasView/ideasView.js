@@ -212,7 +212,8 @@ angular.module('flintAndSteel')
                     obj = {
                         text: ctrl.newBack,
                         authorId: loginSvc.getProperty('_id'),
-                        time: now,
+                        timeCreated: now,
+                        timeModified: '',
                         types: $scope.selectedTypes
                     };
 
@@ -506,8 +507,7 @@ angular.module('flintAndSteel')
                         newBack = {
                             text: ctrl.editBackText,
                             authorId: back.authorId,
-                            time: back.time,
-                            timeModified: now,
+                            timeCreated: back.timeCreated,
                             types: $scope.selectedTypes
                         };
                     }
@@ -515,7 +515,8 @@ angular.module('flintAndSteel')
                         newBack = {
                             text: ctrl.editBackText,
                             authorId: back.authorId,
-                            time: back.time,
+                            timeCreated: back.timeCreated,
+                            timeModified: now,
                             types: $scope.selectedTypes
                         };
                     }
