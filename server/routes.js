@@ -10,7 +10,8 @@ module.exports = function(app, db) {
 
     var ideas = require('./ideas/ideas')(db),
         replaceIds = require('./replaceIds')(db),
-        chalk = require('chalk');
+        chalk = require('chalk'),
+        _ = require('lodash');
 
     var IdeasInstance = ideas.getInstance();
 
