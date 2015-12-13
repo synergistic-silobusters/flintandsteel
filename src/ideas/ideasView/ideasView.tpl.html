@@ -190,7 +190,7 @@
                         </md-card-content>
                     </md-card>
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
+                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-timeCreated'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
                             <div ng-show="(ideasView.isUserAuthorOfInteraction(update) || ideasView.isUserAuthor()) && hoverUpdate === true">
                                 <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "removeInteraction('updates', update)">
                                     <i class="material-icons icon-button-adjust">&#xE14C;</i>
@@ -202,7 +202,7 @@
                                     <div layout="row" layout-align="center center">
                                         <identicon username='update.author.username' size='18'></identicon>
                                     </div>
-                                    <p>&nbsp;<email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.time)"></small></p>
+                                    <p>&nbsp;<email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.timeCreated)"></small></p>
                                 </div>
                             </div>
 

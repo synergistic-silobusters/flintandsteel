@@ -225,7 +225,7 @@ angular.module('flintAndSteel')
                     obj = {
                         text: ctrl.newUpdate,
                         authorId: loginSvc.getProperty('_id'),
-                        time: now
+                        timeCreated: now
                     };
 
                     ctrl.newUpdate = '';
@@ -269,7 +269,15 @@ angular.module('flintAndSteel')
                     else {
                         var copyObj = angular.copy(obj);
                         delete copyObj.author; // author object is not stored in database
-                        ideaSvc.removeInteraction($scope.idea._id, type, copyObj,
+                        delete copyObj.isInTeam;
+                        var backObjs = {
+                            text: copyObj.text,
+                            authorId: copyObj.authorId,
+                            types: copyObj.types,
+                            timeCreated: copyObj.timeCreated,
+                            timeModified: copyObj.timeModified
+                        };
+                        ideaSvc.removeInteraction($scope.idea._id, type, backObjs,
                             function success() {
                                 ctrl.refreshIdea();
                             },
