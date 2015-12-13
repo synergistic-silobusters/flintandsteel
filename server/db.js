@@ -293,5 +293,9 @@ module.exports = function(dbName, cb) {
         });
     };
 
+    module.patchObject = function patchObject(collection, id, comamnd) {
+        console.log(collection, '\n', id, '\n', command);
+    }
+
     return module;
 };

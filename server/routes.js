@@ -91,6 +91,16 @@ module.exports = function(app, db) {
         });
     });
 
+    app.patch('/ideas/:id', function(req, res) {
+        console.log(req.body);
+
+        _.forEach(req.body, function(patchOp) {
+            db.patchObject('ideas', req.params.id, patchOp);
+        });
+
+        res.sendStatus(204);
+    });
+
     /*var users = require('./users/users')(GLOBAL.db),
         ideas = require('./ideas/ideas')(GLOBAL.db),
         comments = require('./comments/comments')(GLOBAL.db),
