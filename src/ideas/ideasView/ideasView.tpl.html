@@ -93,29 +93,23 @@
             <md-button class="md-icon-button" aria-label="Like">
                 {{idea.likes.length}}
                 <i class="material-icons icon-button-adjust">&#xE87E;</i>
-                <md-tooltip md-direction="bottom">
-                    Login to Like
-                </md-tooltip>
             </md-button>
+            <md-tooltip md-direction="bottom">Login to Like</md-tooltip>
         </span>
         <span flex ng-if="isUserLoggedIn()">
             <span flex ng-if="!isUserLiked()">
                 <md-button class="md-icon-button" aria-label="Like" ng-click="addNewInteraction('likes')">
                     {{idea.likes.length}}
                     <i class="material-icons icon-button-adjust">&#xE87E;</i>
-                    <md-tooltip md-direction="bottom">
-                        Like Idea
-                    </md-tooltip>
                 </md-button>
+                <md-tooltip md-direction="bottom">Like Idea</md-tooltip>
             </span>
             <span flex ng-if="isUserLiked()">
                 <md-button class="md-icon-button" aria-label="Unlike" ng-click="removeInteraction('likes')">
                 {{idea.likes.length}}
                     <i class="material-icons icon-button-adjust">&#xE87D;</i>
-                    <md-tooltip md-direction="bottom">
-                        Idea Liked
-                    </md-tooltip>
                 </md-button>
+                <md-tooltip md-direction="bottom">Idea Liked</md-tooltip>
             </span>
         </span>
         <span flex ng-if="!isUserLoggedIn()">
@@ -301,7 +295,7 @@
                 <md-content class="md-padding">
                     <md-button aria-label="email group" class="md-icon-button" ng-href="{{ideasView.parseTeamEmail()}}">
                             <i class="material-icons icon-button-adjust">&#xE0BE;</i>
-                            <md-tooltip md-direction="top">Email Team</md-tooltip>
+                            <md-tooltip md-direction="bottom">Email Team</md-tooltip>
                     </md-button>
                     <div layout="row">
                         <div layout="column">
@@ -346,13 +340,13 @@
                                 <md-list-item class="md-2-line" ng-show="ideasView.isUserAuthor() && idea.team.length > 1">
                                     <p>Your current team is shown below. You can edit who makes up your team at any time.</p>
                                 </md-list-item>
-                                <md-list-item class="md-2-line" ng-show="!ideasView.isUserAuthor() && !ideasView.isUserMemberOfTeam() && isUserLoggedIn() && idea.team.length > 0">
+                                <md-list-item class="md-3-line" ng-show="!ideasView.isUserAuthor() && !ideasView.isUserMemberOfTeam() && isUserLoggedIn() && idea.team.length > 0">
                                     <p>You are currently not part of the team.  If you would like to become part of the team, please back the idea so the author can be notified about your interest in being involved.</p>
                                 </md-list-item>
                                 <md-list-item class="md-2-line" ng-show="!ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && isUserLoggedIn()">
                                     <p>You are part of the team!</p>
                                 </md-list-item>
-                                <md-list-item class="md-1-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                                <md-list-item class="md-2-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                                     <div ng-show="hovered === true && !ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && ideasView.isUserExactMemberOfTeam($index)">
                                         <md-button class="md-icon-button" aria-label="Remove From Team" ng-click="ideasView.removeUserFromTeam(back)">
                                             <i class="material-icons icon-button-adjust">&#xE14C;</i>
@@ -376,15 +370,15 @@
                     </div>
                     <div ng-show="ideasView.isUserAuthor()">
                         <md-button ng-show="ideasView.enableTeamEdit === false" class="md-raised md-primary margin-top" ng-click="ideasView.enableTeamEdit = true">
-                            <md-tooltip md-direction="top">Edit Team Members</md-tooltip>
+                            <md-tooltip md-direction="bottom">Edit Team Members</md-tooltip>
                             Edit
                         </md-button>
                         <md-button ng-show="ideasView.enableTeamEdit === true" class="md-raised md-primary margin-top" ng-click="ideasView.updateTeam()">
-                            <md-tooltip md-direction="top">Submit Team Members</md-tooltip>
+                            <md-tooltip md-direction="bottom">Submit Team Members</md-tooltip>
                             Submit
                         </md-button>
                         <md-button ng-show="ideasView.enableTeamEdit === true" class="md-raised md-primary margin-top" ng-click="ideasView.refreshTeam()">
-                            <md-tooltip md-direction="top">Cancel Team Member Edit</md-tooltip>
+                            <md-tooltip md-direction="bottom">Cancel Team Member Edit</md-tooltip>
                             Cancel
                         </md-button>
                     </div>
