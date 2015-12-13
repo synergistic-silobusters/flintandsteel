@@ -418,21 +418,6 @@ angular.module('flintAndSteel')
                 return false;
             };
 
-            $scope.showEditTeam = function(ev) {
-                var teamObj = '';
-
-                $mdDialog.show({
-                    controller: 'DialogBackCtrl',
-                    templateUrl: 'ideas/ideaTeam/ideaEditTeam.tpl.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    locals: {
-                        backingObj: null
-                    }
-                })
-            };
-
             ///////////////////////
             // BACKING FUNCTIONS //
             ///////////////////////
