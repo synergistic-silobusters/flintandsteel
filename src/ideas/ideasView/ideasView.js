@@ -4,9 +4,10 @@
 /* global EventSource */
 
 // Dialog Controller used for controlling the behavior of the dialog
-//   used for login.
+//   used for backing.
 function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
     "use strict";
+
     // Populate values based off current back info
     $scope.types = ideaSvc.getBackTypeChips();
     $scope.backText = backingObj.text;
@@ -35,6 +36,7 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
     $scope.cancel = function() {
         $mdDialog.cancel();
     };
+
     // what happens when you hit the back idea button
     $scope.backIdea = function() {
         $mdDialog.hide($scope.backObject());
@@ -49,7 +51,7 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
 
         return obj;
     };
-    
+
     // add checked types to list
     $scope.toggle = function(item, i) {
         var idx = -1;
@@ -69,8 +71,7 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
         else {
             $scope.selectTypes.push(item);
             $scope.types[i].checked = true;
-        }
-        
+        }  
     };
 }
 
@@ -212,7 +213,8 @@ angular.module('flintAndSteel')
                     obj = {
                         text: ctrl.newBack,
                         authorId: loginSvc.getProperty('_id'),
-                        time: now,
+                        timeCreated: now,
+                        timeModified: '',
                         types: $scope.selectedTypes
                     };
 
@@ -224,7 +226,7 @@ angular.module('flintAndSteel')
                     obj = {
                         text: ctrl.newUpdate,
                         authorId: loginSvc.getProperty('_id'),
-                        time: now
+                        timeCreated: now
                     };
 
                     ctrl.newUpdate = '';
@@ -268,7 +270,15 @@ angular.module('flintAndSteel')
                     else {
                         var copyObj = angular.copy(obj);
                         delete copyObj.author; // author object is not stored in database
-                        ideaSvc.removeInteraction($scope.idea._id, type, copyObj,
+                        delete copyObj.isInTeam;
+                        var backObjs = {
+                            text: copyObj.text,
+                            authorId: copyObj.authorId,
+                            types: copyObj.types,
+                            timeCreated: copyObj.timeCreated,
+                            timeModified: copyObj.timeModified
+                        };
+                        ideaSvc.removeInteraction($scope.idea._id, type, backObjs,
                             function success() {
                                 ctrl.refreshIdea();
                             },
@@ -288,52 +298,6 @@ angular.module('flintAndSteel')
             $scope.querySearch = function querySearch(query) {
                 var results = query ? $scope.typeChips.filter(createFilterFor(query)) : $scope.typeChips;
                 return results;
-            };
-
-            $scope.openLikes = function openLikes(ev, likesArray) {
-                $mdDialog.show({
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    template:
-                        '<md-dialog aria-label="Users dialog">' +
-                        '   <md-toolbar>' +
-                        '       <div class="md-toolbar-tools">' +
-                        '           <h2>Users who liked this idea</h2>' +
-                        '       </div>' +
-                        '   </md-toolbar>' +
-                        '   <md-dialog-content>' +
-                        '       <md-list>' +
-                        '           <md-list-item ng-if="users.length > 0" ng-repeat="user in users">' +
-                        '               <div layout="row">' +
-                        '                   <div layout="row" layout-align="center center">' +
-                        '                       <identicon username="user.user.username" size="24"></identicon>' +
-                        '                   </div>' +
-                        '                   <span>&nbsp;</span>' +
-                        '                   {{user.user.name}}' +
-                        '               </div>' +
-                        '           </md-list-item>' +
-                        '           <md-list-item ng-if="users.length === 0">' +
-                        '               <div>No likes yet!</div>' +
-                        '           </md-list-item>' +
-                        '       </md-list>' +
-                        '   </md-dialog-content>' +
-                        '   <div class="md-actions">' +
-                        '       <md-button ng-click="closeDialog()" class="md-primary">' +
-                        '           Close' +
-                        '       </md-button>' +
-                        '   </div>' +
-                        '</md-dialog>',
-                    locals: {
-                        users: likesArray
-                    },
-                    controller: function($scope, $mdDialog, users) {
-                        $scope.users = users;
-                        console.log($scope.users);
-                        $scope.closeDialog = function() {
-                            $mdDialog.hide();
-                        };
-                    }
-                });
             };
 
             $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
@@ -381,6 +345,21 @@ angular.module('flintAndSteel')
                 });
             };
 
+            ctrl.isUserAuthor = function() {
+                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.authorId) {
+                    return true;
+                }
+                return false;
+            };
+
+            ////////////////////
+            // TEAM FUNCTIONS //
+            ////////////////////
+
+            $scope.focusTeam = function() {
+                $scope.selectedTab = 3;
+            };
+
             ctrl.updateTeam = function() {
                 // Zero out the array
                 $scope.idea.team = [];
@@ -404,13 +383,6 @@ angular.module('flintAndSteel')
                     });
 
                 toastSvc.show('Team has been updated!');
-            };
-
-            ctrl.isUserAuthor = function() {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.authorId) {
-                    return true;
-                }
-                return false;
             };
 
             ctrl.isUserMemberOfTeam = function() {
@@ -449,6 +421,10 @@ angular.module('flintAndSteel')
             ///////////////////////
             // BACKING FUNCTIONS //
             ///////////////////////
+
+            $scope.focusBack = function() {
+                $scope.selectedTab = 2;
+            };
 
             // Function used to trigger dialog for adding or editting a back
             $scope.showAddBack = function(ev) {
@@ -506,8 +482,8 @@ angular.module('flintAndSteel')
                         newBack = {
                             text: ctrl.editBackText,
                             authorId: back.authorId,
-                            time: back.time,
-                            timeModified: now,
+                            timeCreated: back.timeCreated,
+                            timeModified: back.timeModified,
                             types: $scope.selectedTypes
                         };
                     }
@@ -515,7 +491,8 @@ angular.module('flintAndSteel')
                         newBack = {
                             text: ctrl.editBackText,
                             authorId: back.authorId,
-                            time: back.time,
+                            timeCreated: back.timeCreated,
+                            timeModified: now,
                             types: $scope.selectedTypes
                         };
                     }
