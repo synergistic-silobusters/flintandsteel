@@ -17,7 +17,7 @@ module.exports = function(db) {
 
     module.create = function(title, description, authorId, eventId, tags, rolesreq, cb) {
         var objAuthorId = new ObjectId(authorId);
-        var objEventId = eventId !== '' ? new ObjectId(eventId) : '';
+        var objEventId = eventId !== '' ? new ObjectId(eventId) : eventId;
         var idea = IdeaModel.create(title, description, objAuthorId, objEventId, tags, rolesreq);
         db.insertOne(COLLECTION, idea, function(err, doc) {
             cb(err, doc);
