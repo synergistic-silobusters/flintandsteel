@@ -237,20 +237,20 @@ describe('IdeasViewCtrl', function() {
         it('should allow the author to edit the idea', function() {
             loginSvcMock.checkLogin(authorAccount);
             expect(ctrl.isUserAuthor()).toBe(true);
-            ctrl.editIdea(mockIdea.title, mockIdea.description);
+            ctrl.editIdea(mockIdea.title, mockIdea.description, mockIdea.tags);
             expect(ideaSvcMock.editIdea).toHaveBeenCalled();
         });
 
         it('should not allow someone other than the author to edit the idea', function() {
             loginSvcMock.checkLogin(nonAuthorAccount);
             expect(ctrl.isUserAuthor()).toBe(false);
-            ctrl.editIdea(mockIdea.title, mockIdea.description);
+            ctrl.editIdea(mockIdea.title, mockIdea.description, mockIdea.tags);
             expect(ideaSvcMock.editIdea).not.toHaveBeenCalled();
         });
 
         it('should allow the author to add text to the idea description', function() {
             var description = mockIdea.description;
-            ctrl.editIdea(mockIdea.title, mockIdea.description + " Booyah!");
+            ctrl.editIdea(mockIdea.title, mockIdea.description + " Booyah!", mockIdea.tags);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -259,7 +259,7 @@ describe('IdeasViewCtrl', function() {
 
         it('should allow the author to delete text to the idea description', function() {
             var description = mockIdea.description;
-            ctrl.editIdea(mockIdea.title, mockIdea.description.substr(0, 4));
+            ctrl.editIdea(mockIdea.title, mockIdea.description.substr(0, 4), mockIdea.tags);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -268,7 +268,7 @@ describe('IdeasViewCtrl', function() {
 
         it('should allow the author to overwrite the old idea title', function() {
             var title = mockIdea.title;
-            ctrl.editIdea("New Title", mockIdea.description);
+            ctrl.editIdea("New Title", mockIdea.description, mockIdea.tags);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -276,9 +276,106 @@ describe('IdeasViewCtrl', function() {
             expect(mockIdea.title).toBe("New Title");
         });
 
+        it('should allow the author to add a tag', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['TestTag1', 'TestTag2']
+            };
+            ctrl.addTag('TestTag3');
+
+            expect(scope.idea.tags.length).not.toBe(2);
+            expect(scope.idea.tags.length).toBe(3);
+            scope.idea = {};
+        });
+
+        it('should allow the author to remove a tag', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['TestTag1', 'TestTag2']
+            };
+            ctrl.removeTag('TestTag2');
+
+            expect(scope.idea.tags.length).not.toBe(2);
+            expect(scope.idea.tags.length).toBe(1);
+            scope.idea = {};
+        });
+
+        it('should not add duplicate tags', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['TestTag1', 'TestTag2']
+            };
+            ctrl.addTag('TestTag2');
+
+            expect(scope.idea.tags.length).not.toBe(3);
+            expect(scope.idea.tags.length).toBe(2);
+            scope.idea = {};
+        });
+
+        it('should not add more than 5 tags', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['TestTag1', 'TestTag2', 'TestTag3', 'TestTag4', 'TestTag5']
+            };
+            ctrl.addTag('TestTag6');
+
+            expect(scope.idea.tags.length).not.toBe(6);
+            expect(scope.idea.tags.length).toBe(5);
+            scope.idea = {};
+        });
+
+        it('should not add a blank tag', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['TestTag1', 'TestTag2']
+            };
+            ctrl.addTag('');
+
+            expect(scope.idea.tags.length).not.toBe(3);
+            expect(scope.idea.tags.length).toBe(2);
+        });
+
+        it('should remove special characters from tags', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['TestTag1', 'TestTag2']
+            };
+            ctrl.addTag('hello!@world&*@');
+
+            expect(scope.idea.tags.length).toBe(3);
+            expect(ctrl.doesTagExist('hello!@world&*@')).toBe(false);
+            expect(ctrl.doesTagExist('HelloWorld')).toBe(true);
+        });
+
+        it('should use CamelCase for tags', function() {
+            scope.idea = {
+                title: 'Test Title',
+                authorId: 3,
+                description: 'This is a test idea.',
+                tags: ['TestTag1', 'TestTag2']
+            };
+            ctrl.addTag('This is a tag');
+
+            expect(scope.idea.tags.length).toBe(3);
+            expect(ctrl.doesTagExist('This is a tag')).toBe(false);
+            expect(ctrl.doesTagExist('ThisIsATag')).toBe(true);
+        });
+
         it('should save the last edited date/time', function() {
             var now = (new Date()).toISOString();
-            ctrl.editIdea(mockIdea.title, mockIdea.description);
+            ctrl.editIdea(mockIdea.title, mockIdea.description, mockIdea.tags);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -286,7 +383,7 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should refresh $scope.idea with the new idea data', function() {
-            ctrl.editIdea(mockIdea.title, mockIdea.description);
+            ctrl.editIdea(mockIdea.title, mockIdea.description, mockIdea.tags);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });

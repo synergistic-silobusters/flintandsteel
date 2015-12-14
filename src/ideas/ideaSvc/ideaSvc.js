@@ -103,13 +103,14 @@ angular.module('flintAndSteel')
                 }
             };
 
-            this.editIdea = function editIdea(ideaId, title, description, rolesreq, successCb, errorCb) {
+            this.editIdea = function editIdea(ideaId, title, description, tags, rolesreq, successCb, errorCb) {
                 if (ideaId !== 'mock_idea') {
                     $http.post('/editidea',
                             {
                                 id: ideaId,
                                 title: title,
                                 description: description,
+                                tags: tags,
                                 rolesreq: rolesreq
                             }
                         )

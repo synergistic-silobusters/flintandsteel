@@ -115,6 +115,10 @@ body {
     color: #FFFFFF;
 }
 
+.custom-chip.tag {
+    padding-right: 6px;
+}
+
 .idea-pointer {
     cursor: pointer;
 }
@@ -233,6 +237,24 @@ body {
     width: 100%;
 }
 
+.small-padding-bottom{
+    padding-bottom: 15px;
+}
+
 .back-box {
     width: 600px;
+}
+
+.idea-tag-delete-icon {
+    width: 18px;
+    height: 18px;
+    outline: none;
+}
+
+.idea-tags-input-container {
+    padding-bottom: 8px;
+}
+
+.tag-message {
+    color: black !important;
 }
