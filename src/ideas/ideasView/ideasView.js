@@ -483,6 +483,7 @@ angular.module('flintAndSteel')
                             text: ctrl.editBackText,
                             authorId: back.authorId,
                             timeCreated: back.timeCreated,
+                            timeModified: back.timeModified,
                             types: $scope.selectedTypes
                         };
                     }

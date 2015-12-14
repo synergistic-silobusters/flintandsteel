@@ -20,7 +20,7 @@ function Idea(title, description, authorId, eventId, tags, rolesreq) {
         text: "Idea Owner",
         authorId: this.authorId,
         timeCreated: new Date().toISOString(),
-        timeModified: now,
+        timeModified: '',
         types: [{name: "Owner", _lowername: "owner"}]
     }];
     this.team = [{memberId: this.authorId}];
