@@ -19,7 +19,8 @@ function Idea(title, description, authorId, eventId, tags, rolesreq) {
     this.backs = [{
         text: "Idea Owner",
         authorId: this.authorId,
-        time: new Date().toISOString(),
+        timeCreated: new Date().toISOString(),
+        timeModified: '',
         types: [{name: "Owner", _lowername: "owner"}]
     }];
     this.team = [{memberId: this.authorId}];

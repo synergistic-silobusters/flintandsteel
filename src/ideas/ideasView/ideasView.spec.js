@@ -209,20 +209,6 @@ describe('IdeasViewCtrl', function() {
         });
     });
 
-    describe('$scope.openLikes()', function() {
-
-        beforeEach(function() {
-            spyOn($mdDialog, 'show').and.callFake(function() {
-            });
-        });
-
-        it('should open a dialog when clicked', function() {
-            scope.openLikes({name: 'clickEvent'}, ['User 1', 'User 2']);
-
-            expect($mdDialog.show).toHaveBeenCalled();
-        });
-    });
-
     describe('editing the idea', function() {
         var mockIdea;
 
