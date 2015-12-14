@@ -28,23 +28,48 @@
                 </span>
             </div>
         </div>
-        <div ng-show="ideasView.enableEdit">
+        <form ng-show="ideasView.enableEdit" name="editIdeaForm">
             <div layout="column">
                 <md-input-container>
                     <label>Title</label>
-                    <input ng-model="idea.title" required>
+                    <input ng-model="idea.title"
+                           name="title"
+                           ng-minlength="4"
+                           ng-maxlength="30"
+                           md-maxlength="30"
+                           required />
+                    <div ng-messages="editIdeaForm.title.$error" role="alert">
+                        <div ng-message="required">Required</div>
+                        <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
+                        <div ng-message="maxlength">Your title is too long</div>
+                    </div>
                 </md-input-container>
                 <md-input-container flex>
                     <label>Description</label>
-                    <textarea ng-model="idea.description" columns="1" md-maxlength="1000" required></textarea>
+                    <textarea ng-model="idea.description"
+                              name="desc"
+                              columns="1"
+                              ng-minlength="15"
+                              ng-maxlength="1000"
+                              md-maxlength="1000"
+                              required></textarea>
+                    <div ng-messages="editIdeaForm.desc.$error" role="alert">
+                        <div ng-message="required">Required</div>
+                        <div ng-message="minlength">Your description is too short. Must be at least 15 characters</div>
+                        <div ng-message="maxlength">Your description is too long</div>
+                    </div>
                 </md-input-container>
                 <md-input-container class="idea-tags-input-container">
                     <label>Tags</label>
-                    <input name="tags" ng-model="tagInput" ng-keypress="ideasView.tagKeyEvent($event)" type="text" maxLength="50" ng-disabled="idea.tags.length === 5"></input>
-                    <div ng-messages="tags.$error">
-                        <div ng-message="" class="tag-message">Press Enter to Add Tag - Limit 5</div>
-                    </div>
+                    <input name="tags"
+                           ng-model="tagInput"
+                           ng-keypress="ideasView.tagKeyEvent($event)"
+                           type="text"
+                           maxLength="50"
+                           ng-disabled="idea.tags.length === 5"></input>
                 </md-input-container>
+                <small class="tag-message" ng-show="idea.tags.length < 5">Press Enter to Add Tag - Limit 5</small>
+                <small class="tag-message" ng-show="idea.tags.length === 5">Tag Limit of 5 Reached</small>
                 <div layout="row" flex layout-wrap>
                     <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
                         <small class="custom-chip tag">
@@ -52,14 +77,13 @@
                             <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="ideasView.removeTag(tag)" aria-hidden="true"></md-icon>
                         </small>
                     </span>
-                </div>                
-                <p></p>
-                <div layout="row" layout-align="end center">
-                    <md-button class="md-raised md-primary" ng-click="ideasView.editIdea(idea.title, idea.description, idea.tags)">Submit</md-button>
-                    <md-button class="md-raised md-primary" ng-click="ideasView.refreshIdea()">Cancel</md-button>
+                </div>
+                <div layout="row" layout-align="end center" class="extra-padding-lg">
+                    <md-button class="md-raised md-primary" type="button" ng-click="ideasView.editIdea(idea.title, idea.description, idea.tags)" ng-disabled="editIdeaForm.$invalid">Submit</md-button>
+                    <md-button class="md-raised md-primary" type="button" ng-click="ideasView.refreshIdea()">Cancel</md-button>
                 </div>
             </div>
-        </div>
+        </form>
     </md-card-content>
     <md-card-footer>
         <md-fab-speed-dial md-direction="right" class="md-fling" md-open="isOpen" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
@@ -196,12 +220,23 @@
                             <p>There are no status updates on this idea.  Please update this idea. </p>
                         </md-card-content>
                         <md-card-content ng-if="ideasView.isUserAuthor() || ideasView.isUserMemberOfTeam()">
-                            <form layout="row">
-                                <md-input-container id="comment-box-container" class="some-padding-bottom" flex>
+                            <form name="newUpdateForm" layout="row" novalidate ng-submit="addNewInteraction('updates')">
+                                <md-input-container id="update-box-container" class="some-padding-bottom" flex>
                                     <label>Add a status update</label>
-                                    <input id="comment-box" ng-model="ideasView.newUpdate" type="text" />
+                                    <textarea id="update-box"
+                                           name="updateBox"
+                                           ng-model="ideasView.newUpdate"
+                                           type="text"
+                                           columns="1"
+                                           ng-minlength="4"
+                                           ng-maxlength="500"
+                                           md-maxlength="500"></textarea>
+                                    <div ng-messages="newUpdateForm.updateBox.$error">
+                                        <div ng-message="minlength">Your comment is too short. Must be at least 4 characters</div>
+                                        <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                                    </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newUpdate === ''" ng-click="addNewInteraction('updates')">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
@@ -236,12 +271,23 @@
                 <md-content class="md-padding">
                     <md-card>
                         <md-card-content ng-if="isUserLoggedIn()">
-                            <form layout="row" ng-if="isUserLoggedIn()">
+                            <form name="newCommentForm" layout="row" ng-if="isUserLoggedIn()" novalidate ng-submit="addNewInteraction('comments')">
                                 <md-input-container id="comment-box-container" class="no-padding-bottom" flex>
                                     <label>Add a comment</label>
-                                    <input id="comment-box" ng-model="ideasView.newComment" type="text" />
+                                    <textarea id="comment-box"
+                                           name="commentBox"
+                                           ng-model="ideasView.newComment"
+                                           type="text"
+                                           columns="1"
+                                           ng-minlength="4"
+                                           ng-maxlength="500"
+                                           md-maxlength="500"></textarea>
+                                    <div ng-messages="newCommentForm.commentBox.$error">
+                                        <div ng-message="minlength">Your comment is too short. Must be at least 4 characters</div>
+                                        <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                                    </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newCommentForm.$invalid">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>

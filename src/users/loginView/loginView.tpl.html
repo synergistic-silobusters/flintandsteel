@@ -1,5 +1,5 @@
 <md-dialog aria-label="Login" ng-cloak>
-    <form name="loginForm">
+    <form name="loginForm" novalidate ng-submit="login(account)">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Sign In </h2>
@@ -13,21 +13,21 @@
         <md-dialog-content class="extra-padding-15 extra-padding-top-md">
             <md-input-container flex>
                 <label>Username</label>
-                <input id="username" ng-model="account.username" name="username" ng-required="loginForm.username.$touched">
-                <div ng-messages="loginForm.username.$error">
+                <input id="username" ng-model="account.username" name="username" required>
+                <div ng-messages="loginForm.username.$error" ng-show="loginForm.username.$touched">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
             <md-input-container flex>
                 <label>Password</label>
-                <input ng-model="account.password" name="password" type="password" ng-required="loginForm.password.$touched">
-                <div ng-messages="loginForm.password.$error">
+                <input ng-model="account.password" name="password" type="password" required>
+                <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
             <br></br>
             <md-dialog-actions flex layout="column">
-                <md-button class="md-raised md-primary login-button" ng-click="login(account)" flex>
+                <md-button class="md-raised md-primary login-button" type="submit" ng-disabled="loginForm.$invalid" flex>
                     Login
                 </md-button>
             </md-dialog-actions>

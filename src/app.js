@@ -8,6 +8,7 @@ angular.module('flintAndSteel', [
         'ngAnimate',
         'ui.router',
         'ngMaterial',
+        'ngMessages',
         'ui.identicon'
     ]
 )
