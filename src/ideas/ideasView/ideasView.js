@@ -385,6 +385,92 @@ angular.module('flintAndSteel')
                 toastSvc.show('Team has been updated!');
             };
 
+            ctrl.editTeam = function(ev) {
+                $mdDialog.show({
+                    templateUrl: 'ideas/ideasView/ideaTeam/editTeam.tpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    locals: {
+                        ideaObj: $scope.idea
+                    },
+                    controller: function($scope, $mdDialog, ideaObj) {
+                        var temp = [];
+                        temp.push(ideaObj);
+                        $scope.currIdea = temp[0];
+
+                        $scope.cancel = function() {
+                            $mdDialog.cancel();
+                        };
+
+                        $scope.submitEdit = function() {
+                            $mdDialog.hide($scope.confirmStatus());
+                        };
+
+                        // pass the account object to the dialog window
+                        $scope.confirmStatus = function() {
+                            var option = {
+                                idea: $scope.currIdea
+                            };
+
+                            return option;
+                        };
+                    }
+                })
+                .then(function(answer) {
+                    $scope.idea = answer.idea;
+                    ctrl.updateTeam();
+                }, function() {
+                    ctrl.refreshTeam();
+                    $scope.status = 'You canceled the dialog.';
+                });
+            };
+
+            // remove yourself from a team with the option to remove your back
+            ctrl.removeSelfFromTeam = function(ev) {
+                $mdDialog.show({
+                    templateUrl: 'ideas/ideasView/ideaTeam/deleteFromTeam.tpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    controller: function($scope, $mdDialog) {
+
+                        $scope.delBack = null; // true by default
+
+                        $scope.cancel = function() {
+                            $mdDialog.cancel();
+                        };
+
+                        $scope.submitDelete = function() {
+                            $mdDialog.hide($scope.confirmStatus());
+                        };
+
+                        $scope.toggle = function(type) {
+                            $scope.delBack = type;
+                        };
+
+                        // pass the account object to the dialog window
+                        $scope.confirmStatus = function() {
+                            var option = {
+                                delBack: $scope.delBack
+                            };
+
+                            return option;
+                        };
+                    }
+                })
+                .then(function(answer) {
+                    $scope.loadEditBack();
+                    ctrl.removeUserFromTeam($scope.userBack);
+
+                    if (answer.delBack) {
+                        $scope.removeInteraction('back', $scope.userBack);
+                    }
+                }, function() {
+                    $scope.status = 'You canceled the dialog.';
+                });
+            };
+
             ctrl.isUserMemberOfTeam = function() {
                 if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
                     for (var i = 0; i < $scope.idea.team.length; i++) {
@@ -443,9 +529,9 @@ angular.module('flintAndSteel')
                     template = 'ideas/ideaBack/ideaEditBack.tpl.html';
                     $scope.loadEditBack();
                     backObj = $scope.userBack;
-                }
 
                 // Show Dialog
+                }
                 $mdDialog.show({
                     controller: DialogBackCtrl,
                     templateUrl: template,
@@ -509,11 +595,13 @@ angular.module('flintAndSteel')
                 }
             };
 
-            ctrl.parseTeamEmail = function parseTeamEmail() {
+            $scope.parseTeamEmail = function parseTeamEmail() {
                 var emailString = "mailto:";
                 if (angular.isDefined($scope.idea.team)) {
                     $scope.idea.team.forEach(function(teamElement) {
-                        emailString += teamElement.member.mail + ';';
+                        if (teamElement.member.mail !== 'undefined') {
+                            emailString += teamElement.member.mail + ';';
+                        }
                     });
                 }
                 return emailString;

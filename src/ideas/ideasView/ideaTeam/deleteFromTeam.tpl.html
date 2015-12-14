@@ -1,0 +1,31 @@
+<md-dialog class="delete-box" aria-label="delete self from team" ng-cloak>
+    <form name="deleteSelf">
+        <!-- Dialog Header -->
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Leave Team</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close" type="button">
+                    <i class="material-icons icon-button-adjust">&#xE5CD;</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <!-- Tag Types -->
+            <md-input-container flex>
+                Remove Back As Well?
+                <span>
+                <md-checkbox ng-click="toggle(true)" ng-disabled="true"> Yes </md-checkbox>
+                <md-checkbox ng-click="toggle(false)"> No </md-checkbox>
+                </span>
+            </md-input-container>
+            <!-- Submitting -->
+            <md-dialog-actions flex layout="column">
+                <md-button class="md-raised md-primary" ng-click="submitDelete()">
+                    Confirm Delete
+                </md-button>
+            </md-dialog-actions>
+            <p></p>
+        </md-dialog-content>
+    </form>
+</md-dialog>
