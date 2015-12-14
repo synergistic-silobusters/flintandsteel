@@ -178,12 +178,25 @@
                             <p>There are no status updates on this idea.  Please update this idea. </p>
                         </md-card-content>
                         <md-card-content ng-if="ideasView.isUserAuthor() || ideasView.isUserMemberOfTeam()">
-                            <form layout="row">
-                                <md-input-container id="comment-box-container" class="some-padding-bottom" flex>
+                            <form name="newUpdateForm" layout="row" novalidate ng-submit="addNewInteraction('updates')">
+                                <md-input-container id="update-box-container" class="some-padding-bottom" flex>
                                     <label>Add a status update</label>
-                                    <input id="comment-box" ng-model="ideasView.newUpdate" type="text" />
+                                    <textarea id="update-box"
+                                           name="updateBox"
+                                           ng-model="ideasView.newUpdate"
+                                           type="text"
+                                           columns="1"
+                                           ng-minlength="4"
+                                           ng-maxlength="500"
+                                           md-maxlength="500"
+                                           required></textarea>
+                                    <div ng-messages="newUpdateForm.updateBox.$error">
+                                        <div ng-message="required">Required</div>
+                                        <div ng-message="minlength">Your comment is too short. Must be at least 4 characters</div>
+                                        <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                                    </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newUpdate === ''" ng-click="addNewInteraction('updates')">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
@@ -218,12 +231,25 @@
                 <md-content class="md-padding">
                     <md-card>
                         <md-card-content ng-if="isUserLoggedIn()">
-                            <form layout="row" ng-if="isUserLoggedIn()">
+                            <form name="newCommentForm" layout="row" ng-if="isUserLoggedIn()" novalidate ng-submit="addNewInteraction('comments')">
                                 <md-input-container id="comment-box-container" class="no-padding-bottom" flex>
                                     <label>Add a comment</label>
-                                    <input id="comment-box" ng-model="ideasView.newComment" type="text" />
+                                    <textarea id="comment-box"
+                                           name="commentBox"
+                                           ng-model="ideasView.newComment"
+                                           type="text"
+                                           columns="1"
+                                           ng-minlength="4"
+                                           ng-maxlength="500"
+                                           md-maxlength="500"
+                                           required></textarea>
+                                    <div ng-messages="newCommentForm.commentBox.$error">
+                                        <div ng-message="required">Required</div>
+                                        <div ng-message="minlength">Your comment is too short. Must be at least 4 characters</div>
+                                        <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                                    </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newCommentForm.$invalid">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
