@@ -13,7 +13,7 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
     $scope.backText = backingObj.text;
     $scope.tempTypes = backingObj.types;
     $scope.selectTypes = []; // Variable used for scope issues
-    
+
     for (var k = 0; k < $scope.tempTypes.length; k++) {
         $scope.tempTypes[k].checked = true;
     }
@@ -71,7 +71,7 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
         else {
             $scope.selectTypes.push(item);
             $scope.types[i].checked = true;
-        }  
+        }
     };
 }
 
