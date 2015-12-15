@@ -258,3 +258,8 @@ body {
 .tag-message {
     color: black !important;
 }
+
+.ellipsis-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
