@@ -18,6 +18,17 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
         $scope.tempTypes[k].checked = true;
     }
 
+    this.isUserAuthor = function() {
+        if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.authorId) {
+            return true;
+        }
+        return false;
+    };
+
+    if (this.isUserAuthor) {
+        $scope.selectTypes.push({name: 'Owner'});
+    }
+
     // Precheck previous boxes for editting backs
     for (var i = 0; i < $scope.types.length; i++) {
         for (var j = 0; j < $scope.tempTypes.length; j++) {

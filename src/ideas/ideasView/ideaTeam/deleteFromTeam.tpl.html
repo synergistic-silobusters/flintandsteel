@@ -1,4 +1,4 @@
-<md-dialog class="delete-box" aria-label="delete self from team" ng-cloak>
+<md-dialog class="delete-box" aria-label="delete self from team" ng-cloak flex="35">
     <form name="deleteSelf">
         <!-- Dialog Header -->
         <md-toolbar>
@@ -12,16 +12,14 @@
         </md-toolbar>
         <md-dialog-content>
             <!-- Tag Types -->
-            <md-input-container columns="1">
-                Warning: Leaving the Team will remove your back for the idea.
-            </md-input-container>
+            <p class="center-text">Warning: Leaving the Team will remove your back for the idea.</p>
             <!-- Submitting -->
-            <md-dialog-actions flex layout="column">
-                <span flex>
-                    <md-button class="md-raised md-primary" ng-click="submitDelete()">
+            <md-dialog-actions layout="column">
+                <span class="center-img">
+                    <md-button class="md-raised md-warn" ng-click="submitDelete()">
                         Confirm Delete
                     </md-button>
-                    <md-button class="md-raised md-warning" ng-click="cancel()">
+                    <md-button class="md-raised" ng-click="cancel()">
                         No Thanks
                     </md-button>
                 </span>
