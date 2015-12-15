@@ -78,8 +78,8 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
-        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc',
-        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc) {
+        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc', '$window',
+        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc, $window) {
             "use strict";
 
             /*
@@ -395,9 +395,7 @@ angular.module('flintAndSteel')
                         ideaObj: $scope.idea
                     },
                     controller: function($scope, $mdDialog, ideaObj) {
-                        var temp = [];
-                        temp.push(ideaObj);
-                        $scope.currIdea = temp[0];
+                        $scope.currIdea = angular.copy(ideaObj);
 
                         $scope.cancel = function() {
                             $mdDialog.cancel();
@@ -454,7 +452,6 @@ angular.module('flintAndSteel')
                             var option = {
                                 delBack: $scope.delBack
                             };
-
                             return option;
                         };
                     }
@@ -462,10 +459,7 @@ angular.module('flintAndSteel')
                 .then(function(answer) {
                     $scope.loadEditBack();
                     ctrl.removeUserFromTeam($scope.userBack);
-
-                    if (answer.delBack) {
-                        $scope.removeInteraction('back', $scope.userBack);
-                    }
+                    $scope.removeInteraction('backs', $scope.userBack);
                 }, function() {
                     $scope.status = 'You canceled the dialog.';
                 });
@@ -513,7 +507,7 @@ angular.module('flintAndSteel')
             };
 
             // Function used to trigger dialog for adding or editting a back
-            $scope.showAddBack = function(ev) {
+            ctrl.showAddBack = function(ev) {
                 var template = '';
                 var backObj = '';
 
@@ -596,21 +590,10 @@ angular.module('flintAndSteel')
                 }
             };
 
-            $scope.parseTeamEmail = function parseTeamEmail() {
-                var emailString = "mailto:";
-                if (angular.isDefined($scope.idea.team)) {
-                    $scope.idea.team.forEach(function(teamElement) {
-                        if (teamElement.member.mail !== 'undefined') {
-                            emailString += teamElement.member.mail + ';';
-                        }
-                    });
-                }
-                return emailString;
-            };
-
+            // Removes back for the current author on current idea
             $scope.removeBack = function() {
                 $scope.loadEditBack();
-                $scope.removeInteraction('back', $scope.userBack);
+                $scope.removeInteraction('backs', $scope.userBack);
             };
 
             // Checks if the current user has backed the current idea
@@ -678,6 +661,17 @@ angular.module('flintAndSteel')
             ctrl.removeTag = function removeTag(tag) {
                 var index = $scope.idea.tags.indexOf(tag);
                 $scope.idea.tags.splice(index, 1);
+            };
+
+            // Open up an email to team members
+            ctrl.parseTeamEmail = function parseTeamEmail() {
+                var emailString = "mailto:";
+                $scope.idea.team.forEach(function(teamElement) {
+                    if (teamElement.member.mail !== 'undefined') {
+                        emailString += teamElement.member.mail + ';';
+                    }
+                });
+                $window.location = emailString;
             };
         }
     ]

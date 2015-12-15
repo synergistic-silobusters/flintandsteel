@@ -12,18 +12,19 @@
         </md-toolbar>
         <md-dialog-content>
             <!-- Tag Types -->
-            <md-input-container flex>
-                Remove Back As Well?
-                <span>
-                <md-checkbox ng-click="toggle(true)" ng-disabled="true"> Yes </md-checkbox>
-                <md-checkbox ng-click="toggle(false)"> No </md-checkbox>
-                </span>
+            <md-input-container columns="1">
+                Warning: Leaving the Team will remove your back for the idea.
             </md-input-container>
             <!-- Submitting -->
             <md-dialog-actions flex layout="column">
-                <md-button class="md-raised md-primary" ng-click="submitDelete()">
-                    Confirm Delete
-                </md-button>
+                <span flex>
+                    <md-button class="md-raised md-primary" ng-click="submitDelete()">
+                        Confirm Delete
+                    </md-button>
+                    <md-button class="md-raised md-warning" ng-click="cancel()">
+                        No Thanks
+                    </md-button>
+                </span>
             </md-dialog-actions>
             <p></p>
         </md-dialog-content>

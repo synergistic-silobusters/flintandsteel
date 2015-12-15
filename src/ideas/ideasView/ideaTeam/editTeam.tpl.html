@@ -16,14 +16,16 @@
                 <md-list-item class="md-2-line" ng-repeat="back in currIdea.backs">
                     <!--<div class="md-list-item-text">-->
                     <md-switch ng-model="back.isInTeam" aria-label="select team" class="md-warn"> <!-- Be careful when editing backs because of this -->
-
                     </md-switch>
-                    <span flex> 
+                    <span> 
                         <div> {{back.author.name}} </div>
                         <div class="custom-chip-wrapper" ng-repeat="type in back.types">
                             <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
                         </div>
                     </span>
+                </md-list-item>
+                <md-list-item ng-if="currIdea.backs.length < 1">
+                    No one has backed this idea.
                 </md-list-item>
             </md-input-container>
             <!-- Submitting -->
