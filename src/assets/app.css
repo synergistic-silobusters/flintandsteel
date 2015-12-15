@@ -9,6 +9,28 @@ body {
     color: #666;
 }
 
+.gray-bg {
+    background-color: rgba(181, 181, 181, 0.6);
+    width: 100%;
+}
+
+img.grayscale {
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 3.5+ */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(100%); /* Chrome 19+ & Safari 6+ */
+  -webkit-transition: all .6s ease; /* Fade to color for Chrome and Safari */
+}
+
+img.grayscale:hover {
+  filter: none;
+  -webkit-filter: grayscale(0%);
+}
+
+.img-block {
+    display: inline-block;
+    padding: 10px 0 10px;
+}
+
 .add-idea {
     min-height: 40px;
     max-height: 40px;
@@ -139,6 +161,10 @@ body {
     padding-top: 10px;
 }
 
+.extra-padding-top-lg {
+    padding-top: 30px;
+}
+
 .extra-padding-15 {
     padding: 15px;
 }
@@ -194,6 +220,10 @@ body {
 
 .margin-top {
     margin-top: 30px;
+}
+
+.margin-bottom-md {
+    margin-bottom: 15px;
 }
 
 *:focus {
