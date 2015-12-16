@@ -517,7 +517,7 @@ angular.module('flintAndSteel')
                     template = 'ideas/ideasView/ideaBack/ideaAddBack.tpl.html';
                     backObj = {
                         text: '',
-                        types: $scope.selectedTypes
+                        types: ''
                     };
                 }
                 else {
@@ -617,7 +617,7 @@ angular.module('flintAndSteel')
                     .then(function() {
                         $scope.removeInteraction('backs', $scope.userBack);
                         if (ctrl.isUserMemberOfTeam()) {
-                            ctrl.removeUserFromTeam();
+                            ctrl.removeUserFromTeam($scope.userBack);
                         }
                     }, function() {
                         $scope.status = 'You canceled the dialog.';
