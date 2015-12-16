@@ -108,6 +108,7 @@ insertResult = db.ideas.insert(
             updates: [],
             comments: [],
             backs: [{
+                _id: new ObjectId(),
                 text: 'Idea Owner',
                 authorId: userIds[0],
                 time: ISODate(),
@@ -128,6 +129,7 @@ insertResult = db.ideas.insert(
             updates: [],
             comments: [],
             backs: [{
+                _id: new ObjectId(),
                 text: 'Idea Owner',
                 authorId: userIds[1],
                 time: ISODate(),
@@ -148,6 +150,7 @@ insertResult = db.ideas.insert(
             updates: [],
             comments: [],
             backs: [{
+                _id: new ObjectId(),
                 text: 'Idea Owner',
                 authorId: userIds[2],
                 time: ISODate(),
