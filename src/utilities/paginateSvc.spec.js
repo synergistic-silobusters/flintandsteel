@@ -12,7 +12,7 @@ describe('paginateSvc', function() {
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function(_paginateSvc_, _$httpBackend_) {
+    beforeEach(inject(function(_paginateSvc_) {
         paginateSvc = _paginateSvc_;
     }));
 
@@ -34,7 +34,7 @@ describe('paginateSvc', function() {
                 42,
                 "Alderaan, always remember.",
                 10
-            ]
+            ];
             numPages = 4;
         });
 

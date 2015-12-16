@@ -1,7 +1,11 @@
+/* global angular */
+
 angular.module('flintAndSteel')
 .service('paginateSvc',
     [
         function() {
+            "use strict";
+
             this.createPages = function createPages(content, numPages) {
                 var pages = [];
                 var contentLength = content.length;
@@ -14,7 +18,7 @@ angular.module('flintAndSteel')
                     pages.push({start: index, length: numPerPage});
                 }
                 return pages;
-            }
+            };
         }
     ]
-)
+);

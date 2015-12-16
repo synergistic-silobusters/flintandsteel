@@ -21,7 +21,7 @@ describe('startFromFilter', function() {
         "O",
         {text: "It doesn't matter what the contents are."},
         "The Last Element"
-    ]
+    ];
 
     beforeEach(module('flintAndSteel'));
 
@@ -34,7 +34,7 @@ describe('startFromFilter', function() {
     it('should not alter the original array', function() {
         var index = 8;
         var originalLength = testList.length;
-        var result = startFrom(testList, index);
+        startFrom(testList, index);
 
         expect(testList.length).toEqual(originalLength);
     });
@@ -75,12 +75,12 @@ describe('startFromFilter', function() {
     it('should throw an error if the second argument is not parsable to an integer', function() {
         var expectedErrMsg = "arg1 is not valid! Expected to be parsable to an integer";
 
-        index = 3.14;
+        var index = 3.14;
         expect(function() {
             startFrom(testList, index);
         }).toThrowError(TypeError, expectedErrMsg);
 
-        var index = {number: 0};
+        index = {number: 0};
         expect(function() {
             startFrom(testList, index);
         }).toThrowError(TypeError, expectedErrMsg);
