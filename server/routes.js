@@ -94,12 +94,18 @@ module.exports = function(app, db) {
 
     app.patch('/ideas/:id', function(req, res) {
         console.log(req.body);
+        var promises = [];
 
         _.forEach(req.body, function(patchOp) {
-            db.patchObject('ideas', req.params.id, patchOp);
+            promises.push(db.patchObject('ideas', req.params.id, patchOp));
         });
 
-        res.sendStatus(204);
+        Promise.all(promises).then(function(results) {
+            res.status(200).json(results);
+        }).catch(function(error) {
+            console.log(error);
+            res.sendStatus(500);
+        });
     });
 
     /*var users = require('./users/users')(GLOBAL.db),

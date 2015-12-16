@@ -294,7 +294,38 @@ module.exports = function(dbName, cb) {
     };
 
     module.patchObject = function patchObject(collection, id, command) {
-        console.log(collection, '\n', id, '\n', command);
+        return new Promise(function(resolve, reject) {
+            switch(command.operation) {
+                case "append":
+                    var toAppend = {};
+                    toAppend[command.path] = JSON.parse(command.value);
+                    db.collection(collection).update(
+                        { _id: ObjectId(id) },
+                        { $push: toAppend },
+                        function(err, results) {
+                            if (err) {
+                                reject(err);
+                            }
+                            else {
+                                resolve(results);
+                            }
+                        }
+                    );
+                    break;
+                case "create":
+                    resolve('operation not implemented yet!');
+                    break;
+                case "delete":
+                    resolve('operation not implemented yet!');
+                    break;
+                case "modify":
+                    resolve('operation not implemented yet!');
+                    break;
+                default:
+                    resolve('operation not understood by the server :/');
+                    break;
+            }
+        });
     };
 
     return module;
