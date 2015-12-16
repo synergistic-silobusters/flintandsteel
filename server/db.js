@@ -295,8 +295,9 @@ module.exports = function(dbName, cb) {
 
     module.patchObject = function patchObject(collection, id, command) {
         return new Promise(function(resolve, reject) {
-            var updateConfig = {}, valueObj = {}, runOperation = true;
+            var updateConfig = {}, valueObj = {}, toChange = {}, runOperation = true;
             
+            // jshint newcap:false
             if (command.operation === 'append' || command.operation === 'create' || command.operation === 'modify') {
                 valueObj = JSON.parse(command.value);
                 if (command.path === 'backs') {
@@ -312,19 +313,20 @@ module.exports = function(dbName, cb) {
                     valueObj = ObjectId(valueObj);
                 }
             }
+            // jshint newcap:true
 
             console.log(valueObj);
                     
-            switch(command.operation) {
+            switch (command.operation) {
                 case "append":
-                    var toChange = {};
+                    toChange = {};
                     valueObj._id = new ObjectId();
                     toChange[command.path] = valueObj;
                     updateConfig = { $push: toChange };
                     break;
                 case "create":
                 case "modify":
-                    var toChange = {};
+                    toChange = {};
                     toChange[command.path] = valueObj;
                     console.log(toChange);
                     updateConfig = { $set: toChange };
@@ -338,6 +340,7 @@ module.exports = function(dbName, cb) {
                     break;
             }
             if (runOperation) {
+                // jshint newcap:false
                 db.collection(collection).update(
                     { _id: ObjectId(id) },
                     updateConfig,
@@ -350,6 +353,7 @@ module.exports = function(dbName, cb) {
                         }
                     }
                 );
+                // jshint newcap:true
             }
         });
     };

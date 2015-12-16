@@ -13,6 +13,7 @@ module.exports = function(app, db) {
         chalk = require('chalk'),
         _ = require('lodash'),
         mongo = require('mongodb'),
+        Promise = require('bluebird'),
         ObjectId = mongo.ObjectID;
 
     var IdeasInstance = ideas.getInstance();
@@ -70,7 +71,9 @@ module.exports = function(app, db) {
                 projection = { title: 1, authorId: 1 },
                 theDatabase = db.getDb();
 
+            // jshint newcap:false
             query[req.query.inpath] = /id/i.test(req.query.inpath) ? ObjectId(req.query.forterm) : req.query.forterm;
+            // jshint newcap:true
 
             theDatabase.collection('ideas').find(query, projection).toArray(function(err, docs) {
                 if (err) {
