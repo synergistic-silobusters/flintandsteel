@@ -525,7 +525,7 @@ angular.module('flintAndSteel')
                     $scope.loadEditBack();
                     backObj = $scope.userBack;
                 }
-                
+
                 // Show Dialog
                 $mdDialog.show({
                     controller: DialogBackCtrl,
@@ -616,6 +616,9 @@ angular.module('flintAndSteel')
                     })
                     .then(function() {
                         $scope.removeInteraction('backs', $scope.userBack);
+                        if (ctrl.isUserMemberOfTeam()) {
+                            ctrl.removeUserFromTeam();
+                        }
                     }, function() {
                         $scope.status = 'You canceled the dialog.';
                     });
