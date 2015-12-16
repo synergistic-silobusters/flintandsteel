@@ -34,6 +34,7 @@
             {
                 "_id": "mongo_generated",
                 "text": "",
+                "authorId": "one user._id",
                 "timeCreated": "",
                 "timeModified": ""
             }
