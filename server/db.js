@@ -358,7 +358,6 @@ module.exports = function(dbName, cb) {
                     updateConfig = { $push: toChange };
                     break;
                 case "create":
-                case "modify":
                     toChange = {};
                     toChange[command.path] = valueObj;
                     updateConfig = { $set: toChange };
@@ -374,6 +373,16 @@ module.exports = function(dbName, cb) {
                     else {
                         toChange[command.path] = '';
                         updateConfig = { $unset: toChange };
+                    }
+                    break;
+                case "modify":
+                    toChange = {};
+                    if (/backs|team|updates|likes/.test(command.path)){
+                        
+                    }
+                    else {
+                        toChange[command.path] = valueObj;
+                        updateConfig = { $set: toChange };
                     }
                     break;
                 default:
