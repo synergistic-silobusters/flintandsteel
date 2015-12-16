@@ -329,7 +329,7 @@ module.exports = function(dbName, cb) {
             var updateConfig = {}, valueObj = {}, toChange = {}, runOperation = true;
             
             
-            if (command.operation === 'append' || command.operation === 'create' || command.operation === 'modify') {
+            if (/append|create|modify/.test(command.operation)) {
                 valueObj = JSON.parse(command.value);
 
                 // jshint newcap:false
@@ -365,8 +365,16 @@ module.exports = function(dbName, cb) {
                     break;
                 case "delete":
                     toChange = {};
-                    toChange[command.path] = '';
-                    updateConfig = { $unset: toChange };
+                    if (/backs|team|updates|likes/.test(command.path)) {
+                        var path = command.path.split('/')[0],
+                            idToDelete = command.path.split('/')[1];
+                            toChange[path] = { _id: ObjectId(idToDelete) };
+                        updateConfig = { $pull: toChange };
+                    }
+                    else {
+                        toChange[command.path] = '';
+                        updateConfig = { $unset: toChange };
+                    }
                     break;
                 default:
                     resolve('operation ' + command.operation + ' not understood by the server :/');
