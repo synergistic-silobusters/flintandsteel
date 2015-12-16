@@ -16,7 +16,7 @@
                 <p>Tag the type of your contribution (choose at least one)</p>
                 <div layout="row" layout-wrap>
                     <div ng-repeat="type in types" flex="50" ng-click="toggle(type, $index)">
-                        <md-checkbox>
+                        <md-checkbox ng-checked="type.checked">
                             {{type.name}}
                         </md-checkbox>
                     </div>
@@ -25,12 +25,21 @@
             <!-- Personal Contribution -->
             <md-input-container flex>
                 <label>More details</label>
-                <input id="back-box" ng-model="backText" type="text" >
+                <textarea id="back-box"
+                          name="backBox"
+                          ng-model="backText"
+                          type="text"
+                          ng-minlength="4"
+                          ng-maxlength="500"
+                          md-maxlength="500"></textarea>
+                <div ng-messages="backForm.backBox.$error">
+                    <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                </div>
             </md-input-container>
             <br></br>
             <!-- Submitting -->
             <md-dialog-actions flex layout="column">
-                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="selectTypes.length < 1">
+                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="selectTypes.length < 1 || backForm.backBox.$invalid">
                     Back Idea
                 </md-button>
             </md-dialog-actions>

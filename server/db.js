@@ -140,6 +140,10 @@ module.exports = function(dbName, cb) {
                     console.error(chalk.bgRed(err));
                     cb(err);
                 }
+                else if (results.nMatched === 0) {
+                    console.error(chalk.yellow('No documents with id ' + id + ' were found.'));
+                    cb(null, results);
+                }
                 else {
                     // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' colletion.'), id);
                     cb(null, results);
@@ -166,6 +170,10 @@ module.exports = function(dbName, cb) {
                 if (err) {
                     console.error(chalk.bgRed(err));
                     cb(err);
+                }
+                else if (results.nMatched === 0) {
+                    console.error(chalk.yellow('No documents with id ' + id + ' were found.'));
+                    cb(null, results);
                 }
                 else {
                     // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
@@ -195,6 +203,11 @@ module.exports = function(dbName, cb) {
                     console.error(chalk.bgRed(err));
                     cb(err);
                 }
+                else if (results.nMatched === 0) {
+                    console.error(chalk.yellow('No documents matching the following query were found:'));
+                    console.log(query);
+                    cb(null, results);
+                }
                 else {
                     // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
                     cb(null, results);
@@ -221,6 +234,10 @@ module.exports = function(dbName, cb) {
                     console.error(chalk.bgRed(err));
                     cb(err);
                 }
+                else if (results.nMatched === 0) {
+                    console.error(chalk.yellow('No documents with id ' + id + ' were found.'));
+                    cb(null, results);
+                }
                 else {
                     // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
                     cb(null, results);
@@ -244,6 +261,11 @@ module.exports = function(dbName, cb) {
               if (err) {
                   console.error(chalk.bgRed(err));
                   cb(err);
+              }
+              else if (results.nMatched === 0) {
+                  console.error(chalk.yellow('No documents matching the following query were found:'));
+                  console.log(find);
+                  cb(null, results.value._id);
               }
               else {
                   //   console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), results.value._id);
@@ -270,6 +292,11 @@ module.exports = function(dbName, cb) {
                     console.error(chalk.bgRed(err));
                     cb(err);
                 }
+                else if (results.nMatched === 0) {
+                    console.error(chalk.yellow('No documents matching the following query were found:'));
+                    console.log(find);
+                    cb(null, results);
+                }
                 else {
                     // console.log(chalk.bgGreen('Document with ' + property + ' %s updated in the database.'), obj.email);
                     cb(null, results);
@@ -285,6 +312,10 @@ module.exports = function(dbName, cb) {
             if (err) {
                 console.error(chalk.bgRed(err));
                 cb(err);
+            }
+            else if (results.nMatched === 0) {
+                console.error(chalk.yellow('No documents with id ' + id + ' were found.'));
+                cb(null, results);
             }
             else {
                 // console.log(chalk.bgGreen('Document with id %s removed from the ' + collection + ' collection.'), id);

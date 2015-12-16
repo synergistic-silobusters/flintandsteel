@@ -22,21 +22,65 @@
                 </h3>
             </div>
             <p>{{idea.description}}</p>
+            <div layout="row" flex layout-wrap>
+                <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
+                    <small class="custom-chip">#{{tag}}</small>
+                </span>
+            </div>
         </div>
-        <form ng-show="ideasView.enableEdit" name="newIdeaForm">
+        <form ng-show="ideasView.enableEdit" name="editIdeaForm">
             <div layout="column">
                 <md-input-container>
                     <label>Title</label>
-                    <input ng-model="idea.title" required>
+                    <input ng-model="idea.title"
+                           name="title"
+                           ng-minlength="4"
+                           ng-maxlength="30"
+                           md-maxlength="30"
+                           required />
+                    <div ng-messages="editIdeaForm.title.$error" role="alert">
+                        <div ng-message="required">Required</div>
+                        <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
+                        <div ng-message="maxlength">Your title is too long</div>
+                    </div>
                 </md-input-container>
                 <md-input-container flex>
                     <label>Description</label>
-                    <textarea ng-model="idea.description" columns="1" md-maxlength="1000" required></textarea>
+                    <textarea ng-model="idea.description"
+                              name="desc"
+                              columns="1"
+                              ng-minlength="15"
+                              ng-maxlength="1000"
+                              md-maxlength="1000"
+                              required></textarea>
+                    <div ng-messages="editIdeaForm.desc.$error" role="alert">
+                        <div ng-message="required">Required</div>
+                        <div ng-message="minlength">Your description is too short. Must be at least 15 characters</div>
+                        <div ng-message="maxlength">Your description is too long</div>
+                    </div>
                 </md-input-container>
-                <p></p>
-                <div layout="row" layout-align="end center">
-                    <md-button class="md-raised md-primary" ng-click="ideasView.editIdea(idea.title, idea.description)">Submit</md-button>
-                    <md-button class="md-raised md-primary" ng-click="ideasView.refreshIdea()">Cancel</md-button>
+                <md-input-container class="idea-tags-input-container">
+                    <label>Tags</label>
+                    <input name="tags"
+                           ng-model="tagInput"
+                           ng-keypress="ideasView.tagKeyEvent($event)"
+                           type="text"
+                           maxLength="50"
+                           ng-disabled="idea.tags.length === 5"></input>
+                </md-input-container>
+                <small class="tag-message" ng-show="idea.tags.length < 5">Press Enter to Add Tag - Limit 5</small>
+                <small class="tag-message" ng-show="idea.tags.length === 5">Tag Limit of 5 Reached</small>
+                <div layout="row" flex layout-wrap>
+                    <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
+                        <small class="custom-chip tag">
+                            #{{tag}}
+                            <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="ideasView.removeTag(tag)" aria-hidden="true"></md-icon>
+                        </small>
+                    </span>
+                </div>
+                <div layout="row" layout-align="end center" class="extra-padding-lg">
+                    <md-button class="md-raised md-primary" type="button" ng-click="ideasView.editIdea(idea.title, idea.description, idea.tags)" ng-disabled="editIdeaForm.$invalid">Submit</md-button>
+                    <md-button class="md-raised md-primary" type="button" ng-click="ideasView.refreshIdea()">Cancel</md-button>
                 </div>
             </div>
         </form>
@@ -73,59 +117,101 @@
             <md-button class="md-icon-button" aria-label="Like">
                 {{idea.likes.length}}
                 <i class="material-icons icon-button-adjust">&#xE87E;</i>
-                <md-tooltip md-direction="bottom">
-                    Login to Like
-                </md-tooltip>
             </md-button>
+            <md-tooltip md-direction="bottom">Login to Like</md-tooltip>
         </span>
         <span flex ng-if="isUserLoggedIn()">
             <span flex ng-if="!isUserLiked()">
                 <md-button class="md-icon-button" aria-label="Like" ng-click="addNewInteraction('likes')">
                     {{idea.likes.length}}
                     <i class="material-icons icon-button-adjust">&#xE87E;</i>
-                    <md-tooltip md-direction="bottom">
-                        Like Idea
-                    </md-tooltip>
                 </md-button>
+                <md-tooltip md-direction="bottom">Like Idea</md-tooltip>
             </span>
             <span flex ng-if="isUserLiked()">
                 <md-button class="md-icon-button" aria-label="Unlike" ng-click="removeInteraction('likes')">
                 {{idea.likes.length}}
                     <i class="material-icons icon-button-adjust">&#xE87D;</i>
-                    <md-tooltip md-direction="bottom">
-                        Idea Liked
-                    </md-tooltip>
                 </md-button>
+                <md-tooltip md-direction="bottom">Idea Liked</md-tooltip>
             </span>
         </span>
         <span flex ng-if="!isUserLoggedIn()">
-            <md-button class="md-icon-button" aria-label="Back">
+            <md-button class="md-icon-button" aria-label="Back" ng-click="focusBack()">
                 {{idea.backs.length}}
-                <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                <i class="material-icons icon-button-adjust">&#xE893;</i>
             </md-button>
             <md-tooltip ng-if="!hasUserBacked()" md-direction="bottom">Login to Back</md-tooltip>
         </span>
         <span flex ng-if="isUserLoggedIn()">
             <span flex ng-if="!hasUserBacked()">
-                <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
+                <md-button class="md-icon-button" aria-label="Back" ng-click="focusBack()">
                     {{idea.backs.length}}
-                    <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                    <i class="material-icons icon-button-adjust">&#xE893;</i>
                 </md-button>
-                <md-tooltip md-direction="bottom">Contribute</md-tooltip>
+                <md-tooltip md-direction="bottom">
+                    <ng-pluralize count="idea.backs.length" 
+                        when="{'0': 'Backs',
+                               'one': 'Back',
+                               'other': 'Backs'}">
+                    </ng-pluralize>
+                </md-tooltip>
             </span>
             <span flex ng-if="hasUserBacked()">
-                <md-button class="md-icon-button" aria-label="Back" ng-click="showAddBack($event)">
+                <md-button class="md-icon-button" aria-label="Back" ng-click="focusBack()">
                     {{idea.backs.length}}
+                    <i class="material-icons icon-button-adjust">&#xE892;</i>
+                </md-button>
+                <md-tooltip md-direction="bottom">Idea Backed</md-tooltip>
+            </span>
+        </span>
+        <span flex ng-if="!isUserLoggedIn()">
+            <md-button class="md-icon-button" aria-label="Team" ng-click="focusTeam()">
+                {{idea.team.length}}
+                <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+            </md-button>
+            <md-tooltip md-direction="bottom">Login to Join</md-tooltip>
+        </span>
+        <span flex ng-if="isUserLoggedIn()">
+            <span flex ng-if="!ideasView.isUserMemberOfTeam() && !hasUserBacked()">
+                <md-button class="md-icon-button" aria-label="Team" ng-click="focusBack()">
+                    {{idea.team.length}}
+                    <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                </md-button>
+                <md-tooltip md-direction="bottom">Back Idea First</md-tooltip>
+            </span>
+            <span flex ng-if="!ideasView.isUserMemberOfTeam() && hasUserBacked()">
+                <md-button class="md-icon-button" aria-label="Team" ng-click="focusTeam()">
+                    {{idea.team.length}}
+                    <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                </md-button>
+                <md-tooltip md-direction="bottom">
+                    <ng-pluralize count="idea.team.length" 
+                        when="{'0': 'Team Members',
+                               'one': 'Team Member',
+                               'other': 'Team Members'}">
+                    </ng-pluralize>
+                </md-tooltip>
+            </span>
+            <span flex ng-if="ideasView.isUserMemberOfTeam()" ng-click="focusTeam()">
+                <md-button class="md-icon-button" aria-label="Team">
+                    {{idea.team.length}}
                     <i class="material-icons icon-button-adjust">&#xE7FB;</i>
                 </md-button>
-                <md-tooltip md-direction="bottom">Edit Contribution</md-tooltip>
+                <md-tooltip md-direction="bottom">
+                    <ng-pluralize count="idea.team.length" 
+                        when="{'0': 'Team Members',
+                               'one': 'Team Member',
+                               'other': 'Team Members'}">
+                    </ng-pluralize>
+                </md-tooltip>
             </span>
         </span>
     </md-card-content>
 </md-card>
 <md-card>
     <md-card-content>
-        <md-tabs md-dynamic-height md-border-bottom="">
+        <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">
             <!-- Tab Used to show updates for the idea -->
             <md-tab label="Updates">
                 <md-content class="md-padding">
@@ -134,12 +220,23 @@
                             <p>There are no status updates on this idea.  Please update this idea. </p>
                         </md-card-content>
                         <md-card-content ng-if="ideasView.isUserAuthor() || ideasView.isUserMemberOfTeam()">
-                            <form layout="row">
-                                <md-input-container id="comment-box-container" class="some-padding-bottom" flex>
+                            <form name="newUpdateForm" layout="row" novalidate ng-submit="addNewInteraction('updates')">
+                                <md-input-container id="update-box-container" class="some-padding-bottom" flex>
                                     <label>Add a status update</label>
-                                    <input id="comment-box" ng-model="ideasView.newUpdate" type="text" />
+                                    <textarea id="update-box"
+                                           name="updateBox"
+                                           ng-model="ideasView.newUpdate"
+                                           type="text"
+                                           columns="1"
+                                           ng-minlength="4"
+                                           ng-maxlength="500"
+                                           md-maxlength="500"></textarea>
+                                    <div ng-messages="newUpdateForm.updateBox.$error">
+                                        <div ng-message="minlength">Your comment is too short. Must be at least 4 characters</div>
+                                        <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                                    </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newUpdate === ''" ng-click="addNewInteraction('updates')">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
@@ -149,7 +246,7 @@
                         </md-card-content>
                     </md-card>
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-time'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
+                        <md-list-item class="md-2-line" ng-repeat="update in idea.updates | orderBy: '-timeCreated'" ng-show="idea.updates" ng-mouseover="hoverUpdate = true" ng-mouseout="hoverUpdate = false">
                             <div ng-show="(ideasView.isUserAuthorOfInteraction(update) || ideasView.isUserAuthor()) && hoverUpdate === true">
                                 <md-button class="md-icon-button" aria-label="Delete Update" ng-click= "removeInteraction('updates', update)">
                                     <i class="material-icons icon-button-adjust">&#xE14C;</i>
@@ -161,7 +258,7 @@
                                     <div layout="row" layout-align="center center">
                                         <identicon username='update.author.username' size='18'></identicon>
                                     </div>
-                                    <p>&nbsp;<email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.time)"></small></p>
+                                    <p>&nbsp;<email-link author-obj="update.author"></email-link><small class="extra-space-left" ng-bind="momentizeTime(update.timeCreated)"></small></p>
                                 </div>
                             </div>
 
@@ -174,12 +271,23 @@
                 <md-content class="md-padding">
                     <md-card>
                         <md-card-content ng-if="isUserLoggedIn()">
-                            <form layout="row" ng-if="isUserLoggedIn()">
+                            <form name="newCommentForm" layout="row" ng-if="isUserLoggedIn()" novalidate ng-submit="addNewInteraction('comments')">
                                 <md-input-container id="comment-box-container" class="no-padding-bottom" flex>
                                     <label>Add a comment</label>
-                                    <input id="comment-box" ng-model="ideasView.newComment" type="text" />
+                                    <textarea id="comment-box"
+                                           name="commentBox"
+                                           ng-model="ideasView.newComment"
+                                           type="text"
+                                           columns="1"
+                                           ng-minlength="4"
+                                           ng-maxlength="500"
+                                           md-maxlength="500"></textarea>
+                                    <div ng-messages="newCommentForm.commentBox.$error">
+                                        <div ng-message="minlength">Your comment is too short. Must be at least 4 characters</div>
+                                        <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                                    </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="ideasView.newComment === ''" ng-click="addNewInteraction('comments')">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newCommentForm.$invalid">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
@@ -223,10 +331,10 @@
                         <md-tooltip md-direction="bottom">Edit Contribution</md-tooltip>
                     </md-button>
                     <!-- Delete current backing -->
-                    <!--<md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="removeBack()" ng-disabled="!hasUserBacked()">
+                    <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="removeBack()" ng-disabled="!hasUserBacked()">
                         <i class="material-icons icon-button-adjust">&#xE5CD;</i>
                         <md-tooltip md-direction="bottom">Delete Back</md-tooltip>
-                    </md-button>-->
+                    </md-button>
                     <md-list>
                         <md-list-item class="md-3-line" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                             <div ng-show="hovered === true && ideasView.isUserAuthorOfInteraction(back)">
@@ -237,7 +345,7 @@
                             <div class="md-list-item-text">
                                 <h3>{{back.text}}
                                     <span class="extra-padding-left-sm">
-                                        <small ng-show="!hasBackBeenEdited(back)" ng-bind="momentizeTime(back.time)"></small>
+                                        <small ng-show="!hasBackBeenEdited(back)" ng-bind="momentizeTime(back.timeCreated)"></small>
                                         <small ng-show="hasBackBeenEdited(back)" ng-bind="momentizeModifiedTime(back.timeModified)"></small>
                                     </span>
                                 </h3>
@@ -260,7 +368,7 @@
                 <md-content class="md-padding">
                     <md-button aria-label="email group" class="md-icon-button" ng-href="{{ideasView.parseTeamEmail()}}">
                             <i class="material-icons icon-button-adjust">&#xE0BE;</i>
-                            <md-tooltip md-direction="top">Email Team</md-tooltip>
+                            <md-tooltip md-direction="bottom">Email Team</md-tooltip>
                     </md-button>
                     <div layout="row">
                         <div layout="column">
@@ -305,13 +413,13 @@
                                 <md-list-item class="md-2-line" ng-show="ideasView.isUserAuthor() && idea.team.length > 1">
                                     <p>Your current team is shown below. You can edit who makes up your team at any time.</p>
                                 </md-list-item>
-                                <md-list-item class="md-2-line" ng-show="!ideasView.isUserAuthor() && !ideasView.isUserMemberOfTeam() && isUserLoggedIn() && idea.team.length > 0">
+                                <md-list-item class="md-3-line" ng-show="!ideasView.isUserAuthor() && !ideasView.isUserMemberOfTeam() && isUserLoggedIn() && idea.team.length > 0">
                                     <p>You are currently not part of the team.  If you would like to become part of the team, please back the idea so the author can be notified about your interest in being involved.</p>
                                 </md-list-item>
                                 <md-list-item class="md-2-line" ng-show="!ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && isUserLoggedIn()">
                                     <p>You are part of the team!</p>
                                 </md-list-item>
-                                <md-list-item class="md-1-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                                <md-list-item class="md-2-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                                     <div ng-show="hovered === true && !ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && ideasView.isUserExactMemberOfTeam($index)">
                                         <md-button class="md-icon-button" aria-label="Remove From Team" ng-click="ideasView.removeUserFromTeam(back)">
                                             <i class="material-icons icon-button-adjust">&#xE14C;</i>
@@ -335,15 +443,15 @@
                     </div>
                     <div ng-show="ideasView.isUserAuthor()">
                         <md-button ng-show="ideasView.enableTeamEdit === false" class="md-raised md-primary margin-top" ng-click="ideasView.enableTeamEdit = true">
-                            <md-tooltip md-direction="top">Edit Team Members</md-tooltip>
+                            <md-tooltip md-direction="bottom">Edit Team Members</md-tooltip>
                             Edit
                         </md-button>
                         <md-button ng-show="ideasView.enableTeamEdit === true" class="md-raised md-primary margin-top" ng-click="ideasView.updateTeam()">
-                            <md-tooltip md-direction="top">Submit Team Members</md-tooltip>
+                            <md-tooltip md-direction="bottom">Submit Team Members</md-tooltip>
                             Submit
                         </md-button>
                         <md-button ng-show="ideasView.enableTeamEdit === true" class="md-raised md-primary margin-top" ng-click="ideasView.refreshTeam()">
-                            <md-tooltip md-direction="top">Cancel Team Member Edit</md-tooltip>
+                            <md-tooltip md-direction="bottom">Cancel Team Member Edit</md-tooltip>
                             Cancel
                         </md-button>
                     </div>

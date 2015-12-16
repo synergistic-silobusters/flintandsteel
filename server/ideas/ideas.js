@@ -17,6 +17,7 @@ module.exports = function(db) {
     var COLLECTION = "ideas";
     var IdeasSingleton;
 
+<<<<<<< HEAD
     module.create = function(title, description, authorId, eventId, tags, rolesreq) {
         var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq);
         return new Promise(function(resolve, reject) {
@@ -105,12 +106,13 @@ module.exports = function(db) {
         });
     };
 
-    module.edit = function(id, title, description, rolesreq, cb) {
+    module.edit = function(id, title, description, tags, rolesreq, cb) {
         var now = new Date().toISOString();
 
         var editObj = {};
         editObj.title = title;
         editObj.description = description;
+        editObj.tags = tags;
         editObj.rolesreq = rolesreq;
         editObj.timeModified = now;
 
@@ -138,7 +140,14 @@ module.exports = function(db) {
             description: 1,
             authorId: 1,
             likes: 1,
+<<<<<<< HEAD
             backs: 1
+=======
+            backs: 1,
+            team: 1,
+            updates: 1,
+            tags: 1
+>>>>>>> master
         };
 
         return new Promise(function(resolve, reject) {
