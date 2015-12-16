@@ -328,9 +328,11 @@ module.exports = function(dbName, cb) {
         return new Promise(function(resolve, reject) {
             var updateConfig = {}, valueObj = {}, toChange = {}, runOperation = true;
             
-            // jshint newcap:false
+            
             if (command.operation === 'append' || command.operation === 'create' || command.operation === 'modify') {
                 valueObj = JSON.parse(command.value);
+
+                // jshint newcap:false
                 if (command.path === 'backs') {
                     valueObj.authorId = ObjectId(valueObj.authorId);
                 }
@@ -343,8 +345,8 @@ module.exports = function(dbName, cb) {
                 else if (command.path === 'eventId') {
                     valueObj = ObjectId(valueObj);
                 }
+                // jshint newcap:true
             }
-            // jshint newcap:true
 
             console.log(valueObj);
                     
@@ -359,11 +361,12 @@ module.exports = function(dbName, cb) {
                 case "modify":
                     toChange = {};
                     toChange[command.path] = valueObj;
-                    console.log(toChange);
                     updateConfig = { $set: toChange };
                     break;
                 case "delete":
-                    resolve('operation not implemented yet!');
+                    toChange = {};
+                    toChange[command.path] = '';
+                    updateConfig = { $unset: toChange };
                     break;
                 default:
                     resolve('operation ' + command.operation + ' not understood by the server :/');
