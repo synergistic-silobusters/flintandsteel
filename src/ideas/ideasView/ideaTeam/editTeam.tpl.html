@@ -4,7 +4,6 @@
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Edit Team</h2>
-                <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close" type="button">
                     <i class="material-icons icon-button-adjust">&#xE5CD;</i>
                 </md-button>
@@ -17,7 +16,7 @@
                     <!--<div class="md-list-item-text">-->
                     <md-switch ng-model="back.isInTeam" aria-label="select team" class="md-warn"> <!-- Be careful when editing backs because of this -->
                     </md-switch>
-                    <span> 
+                    <span flex> 
                         <div> {{back.author.name}} </div>
                         <div class="custom-chip-wrapper" ng-repeat="type in back.types">
                             <small class="custom-chip {{type._lowername}}">{{type.name}}</small>

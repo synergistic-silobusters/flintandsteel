@@ -5,7 +5,7 @@
 
 // Dialog Controller used for controlling the behavior of the dialog
 //   used for backing.
-function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
+function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc) {
     "use strict";
 
     // Populate values based off current back info
@@ -19,14 +19,14 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
     }
 
     this.isUserAuthor = function() {
-        if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.authorId) {
+        if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === author) {
             return true;
         }
         return false;
     };
 
-    if (this.isUserAuthor) {
-        $scope.selectTypes.push({name: 'Owner'});
+    if (this.isUserAuthor()) {
+        $scope.selectTypes.push({name: "Owner", _lowername: "owner"});
     }
 
     // Precheck previous boxes for editting backs
@@ -437,43 +437,33 @@ angular.module('flintAndSteel')
 
             // remove yourself from a team with the option to remove your back
             ctrl.removeSelfFromTeam = function(ev) {
-                $mdDialog.show({
-                    templateUrl: 'ideas/ideasView/ideaTeam/deleteFromTeam.tpl.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    controller: function($scope, $mdDialog) {
+                $scope.loadEditBack();
+                if (ctrl.isUserAuthorOfInteraction($scope.userBack)) {
+                    $mdDialog.show({
+                        templateUrl: 'ideas/ideasView/ideaTeam/deleteFromTeam.tpl.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose: true,
+                        locals: { team: true },
+                        controller: function($scope, $mdDialog, team) {
+                            $scope.team = team;
 
-                        $scope.delBack = null; // true by default
-
-                        $scope.cancel = function() {
-                            $mdDialog.cancel();
-                        };
-
-                        $scope.submitDelete = function() {
-                            $mdDialog.hide($scope.confirmStatus());
-                        };
-
-                        $scope.toggle = function(type) {
-                            $scope.delBack = type;
-                        };
-
-                        // pass the account object to the dialog window
-                        $scope.confirmStatus = function() {
-                            var option = {
-                                delBack: $scope.delBack
+                            $scope.cancel = function() {
+                                $mdDialog.cancel();
                             };
-                            return option;
-                        };
-                    }
-                })
-                .then(function(answer) {
-                    $scope.loadEditBack();
-                    ctrl.removeUserFromTeam($scope.userBack);
-                    $scope.removeInteraction('backs', $scope.userBack);
-                }, function() {
-                    $scope.status = 'You canceled the dialog.';
-                });
+
+                            $scope.submitDelete = function() {
+                                $mdDialog.hide();
+                            };
+                        }
+                    })
+                    .then(function() {
+                        ctrl.removeUserFromTeam($scope.userBack);
+                        $scope.removeInteraction('backs', $scope.userBack);
+                    }, function() {
+                        $scope.status = 'You canceled the dialog.';
+                    });
+                }
             };
 
             ctrl.isUserMemberOfTeam = function() {
@@ -524,19 +514,19 @@ angular.module('flintAndSteel')
 
                 // Change data passed and template depending on if adding or editting
                 if (!$scope.hasUserBacked()) {
-                    template = 'ideas/ideaBack/ideaAddBack.tpl.html';
+                    template = 'ideas/ideasView/ideaBack/ideaAddBack.tpl.html';
                     backObj = {
                         text: '',
                         types: $scope.selectedTypes
                     };
                 }
                 else {
-                    template = 'ideas/ideaBack/ideaEditBack.tpl.html';
+                    template = 'ideas/ideasView/ideaBack/ideaEditBack.tpl.html';
                     $scope.loadEditBack();
                     backObj = $scope.userBack;
-
-                // Show Dialog
                 }
+                
+                // Show Dialog
                 $mdDialog.show({
                     controller: DialogBackCtrl,
                     templateUrl: template,
@@ -544,7 +534,8 @@ angular.module('flintAndSteel')
                     targetEvent: ev,
                     clickOutsideToClose: true,
                     locals: {
-                        backingObj: backObj
+                        backingObj: backObj,
+                        author: $scope.idea.authorId
                     }
                 })
                 .then(function(answer) {
@@ -602,9 +593,33 @@ angular.module('flintAndSteel')
             };
 
             // Removes back for the current author on current idea
-            $scope.removeBack = function() {
+            $scope.removeBack = function(ev) {
                 $scope.loadEditBack();
-                $scope.removeInteraction('backs', $scope.userBack);
+                if (ctrl.isUserAuthorOfInteraction($scope.userBack)) {
+                    $mdDialog.show({
+                        templateUrl: 'ideas/ideasView/ideaTeam/deleteFromTeam.tpl.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose: true,
+                        locals: { team: false },
+                        controller: function($scope, $mdDialog, team) {
+                            $scope.team = team;
+
+                            $scope.cancel = function() {
+                                $mdDialog.cancel();
+                            };
+
+                            $scope.submitDelete = function() {
+                                $mdDialog.hide();
+                            };
+                        }
+                    })
+                    .then(function() {
+                        $scope.removeInteraction('backs', $scope.userBack);
+                    }, function() {
+                        $scope.status = 'You canceled the dialog.';
+                    });
+                }
             };
 
             // Checks if the current user has backed the current idea

@@ -331,12 +331,12 @@
                         <md-tooltip md-direction="bottom">Edit Contribution</md-tooltip>
                     </md-button>
                     <!-- Delete current backing -->
-                    <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="removeBack()" ng-disabled="!hasUserBacked()">
+                    <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="removeBack($event)" ng-disabled="!hasUserBacked()">
                         <i class="material-icons icon-button-adjust">&#xE5CD;</i>
                         <md-tooltip md-direction="bottom">Delete Back</md-tooltip>
                     </md-button>
                     <md-list>
-                        <md-list-item class="md-3-line" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                        <md-list-item class="md-3-line md-long-text" ng-repeat="back in idea.backs" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                             <div ng-show="hovered === true && ideasView.isUserAuthorOfInteraction(back)">
                                 <md-button class="md-icon-button" aria-label="Edit Back" ng-click="ideasView.showAddBack($event)">
                                     <i class="material-icons icon-button-adjust">&#xE3C9;</i>
@@ -356,7 +356,7 @@
                                     <p>&nbsp;<email-link author-obj="back.author"></email-link></p>
                                 </div>
                                 <span class="custom-chip-wrapper" ng-repeat="type in back.types">
-                                    <small  class="custom-chip {{type._lowername}}" >{{type.name}}</small>
+                                    <small class="custom-chip {{type._lowername}}" >{{type.name}}</small>
                                 </span>
                             </div>
                         </md-list-item>
@@ -375,7 +375,7 @@
                         <i class="material-icons icon-button-adjust">&#xE3C9;</i>
                         <md-tooltip md-direction="bottom">Edit Team Members</md-tooltip>
                     </md-button>
-                    <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="ideasView.removeSelfFromTeam($event)" ng-disabled="!ideasView.isUserMemberOfTeam()">
+                    <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="ideasView.removeSelfFromTeam($event)" ng-disabled="!ideasView.isUserMemberOfTeam() || !hasUserBacked()">
                         <i class="material-icons icon-button-adjust">&#xE5CD;</i>
                         <md-tooltip md-direction="bottom">Leave Team</md-tooltip>
                     </md-button>
