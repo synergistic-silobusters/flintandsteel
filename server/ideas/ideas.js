@@ -17,7 +17,6 @@ module.exports = function(db) {
     var COLLECTION = "ideas";
     var IdeasSingleton;
 
-<<<<<<< HEAD
     module.create = function(title, description, authorId, eventId, tags, rolesreq) {
         var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq);
         return new Promise(function(resolve, reject) {
