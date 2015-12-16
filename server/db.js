@@ -326,7 +326,12 @@ module.exports = function(dbName, cb) {
 
     module.patchObject = function patchObject(collection, id, command) {
         return new Promise(function(resolve, reject) {
-            var updateConfig = {}, valueObj = {}, toChange = {}, runOperation = true;
+            var updateConfig = {},
+                valueObj = {},
+                toChange = {},
+                idToChange = '',
+                path = '',
+                runOperation = true;
             
             
             if (/append|create|modify/.test(command.operation)) {
@@ -365,9 +370,12 @@ module.exports = function(dbName, cb) {
                 case "delete":
                     toChange = {};
                     if (/backs|team|updates|likes/.test(command.path)) {
-                        var path = command.path.split('/')[0],
-                            idToDelete = command.path.split('/')[1];
-                            toChange[path] = { _id: ObjectId(idToDelete) };
+                        path = command.path.split('/')[0];
+                        idToChange = command.path.split('/')[1];
+
+                        // jshint newcap:false
+                        toChange[path] = { _id: ObjectId(idToChange) };
+                        // jshint newcap:true
                         updateConfig = { $pull: toChange };
                     }
                     else {
@@ -377,8 +385,10 @@ module.exports = function(dbName, cb) {
                     break;
                 case "modify":
                     toChange = {};
-                    if (/backs|team|updates|likes/.test(command.path)){
-                        
+                    if (/backs|team|updates|likes/.test(command.path)) {
+                        path = command.path.split('/')[0];
+                        idToChange = command.path.split('/')[1];
+                        console.log(path, idToChange);
                     }
                     else {
                         toChange[command.path] = valueObj;
