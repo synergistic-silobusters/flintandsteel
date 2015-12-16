@@ -139,14 +139,8 @@ module.exports = function(db) {
             description: 1,
             authorId: 1,
             likes: 1,
-<<<<<<< HEAD
-            backs: 1
-=======
             backs: 1,
-            team: 1,
-            updates: 1,
             tags: 1
->>>>>>> master
         };
 
         return new Promise(function(resolve, reject) {
