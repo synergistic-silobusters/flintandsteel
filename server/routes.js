@@ -93,7 +93,7 @@ module.exports = function(app, db) {
     });
 
     app.patch('/ideas/:id', function(req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {

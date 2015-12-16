@@ -295,35 +295,61 @@ module.exports = function(dbName, cb) {
 
     module.patchObject = function patchObject(collection, id, command) {
         return new Promise(function(resolve, reject) {
+            var updateConfig = {}, valueObj = {}, runOperation = true;
+            
+            if (command.operation === 'append' || command.operation === 'create' || command.operation === 'modify') {
+                valueObj = JSON.parse(command.value);
+                if (command.path === 'backs') {
+                    valueObj.authorId = ObjectId(valueObj.authorId);
+                }
+                else if (command.path === 'team') {
+                    valueObj.memberId = ObjectId(valueObj.memberId);
+                }
+                else if (command.path === 'likes') {
+                    valueObj.userId = ObjectId(valueObj.userId);
+                }
+                else if (command.path === 'eventId') {
+                    valueObj = ObjectId(valueObj);
+                }
+            }
+
+            console.log(valueObj);
+                    
             switch(command.operation) {
                 case "append":
-                    var toAppend = {};
-                    toAppend[command.path] = JSON.parse(command.value);
-                    db.collection(collection).update(
-                        { _id: ObjectId(id) },
-                        { $push: toAppend },
-                        function(err, results) {
-                            if (err) {
-                                reject(err);
-                            }
-                            else {
-                                resolve(results);
-                            }
-                        }
-                    );
+                    var toChange = {};
+                    valueObj._id = new ObjectId();
+                    toChange[command.path] = valueObj;
+                    updateConfig = { $push: toChange };
                     break;
                 case "create":
-                    resolve('operation not implemented yet!');
+                case "modify":
+                    var toChange = {};
+                    toChange[command.path] = valueObj;
+                    console.log(toChange);
+                    updateConfig = { $set: toChange };
                     break;
                 case "delete":
                     resolve('operation not implemented yet!');
                     break;
-                case "modify":
-                    resolve('operation not implemented yet!');
-                    break;
                 default:
-                    resolve('operation not understood by the server :/');
+                    resolve('operation ' + command.operation + ' not understood by the server :/');
+                    runOperation = false;
                     break;
+            }
+            if (runOperation) {
+                db.collection(collection).update(
+                    { _id: ObjectId(id) },
+                    updateConfig,
+                    function(err, results) {
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            resolve(results);
+                        }
+                    }
+                );
             }
         });
     };
