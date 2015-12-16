@@ -72,8 +72,6 @@ module.exports = function(app, db) {
 
             query[req.query.inpath] = /id/i.test(req.query.inpath) ? ObjectId(req.query.forterm) : req.query.forterm;
 
-            // I'm skeptical here since mongo ids are not working with this search method
-            // but will have to try with the frontend to actually see. 
             theDatabase.collection('ideas').find(query, projection).toArray(function(err, docs) {
                 if (err) {
                     res.sendStatus(500);
