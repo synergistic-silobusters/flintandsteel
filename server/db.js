@@ -404,7 +404,12 @@ module.exports = function(dbName, cb) {
                         }
 
                         db.collection(collection).update(toFind, { $set: toChange }, function(err, result) {
-                            err ? reject(err) : resolve(result);
+                            if (err) {
+                                reject(err);
+                            }
+                            else {
+                                resolve(result);
+                            }
                         });
                     }
                     else {
@@ -423,7 +428,12 @@ module.exports = function(dbName, cb) {
                     { _id: ObjectId(id) },
                     updateConfig,
                     function(err, results) {
-                        err ? reject(err) : resolve(results);
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            resolve(results);
+                        }
                     }
                 );
                 // jshint newcap:true

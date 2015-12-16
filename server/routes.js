@@ -76,7 +76,12 @@ module.exports = function(app, db) {
             // jshint newcap:true
 
             theDatabase.collection('ideas').find(query, projection).toArray(function(err, docs) {
-                err ? res.sendStatus(500) : res.status(200).json(docs);
+                if (err) {
+                    res.sendStatus(500);
+                }
+                else {
+                    res.status(200).json(docs);
+                }
             });
         }
     });
