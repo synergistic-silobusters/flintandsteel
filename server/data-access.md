@@ -9,6 +9,8 @@
 * `/users/{id}`
 * `/events`
 * `/events/{id}`
+* `/comments`
+* `/comments/{id}`
 
 ## CRUD Operations
 
@@ -42,24 +44,27 @@ Check out the end of the examples section to see implementations using Angular's
 
 ## Examples
 
-| Operation                      | HTTP Call             |
-|--------------------------------|-----------------------|
-| To get idea headers            | `GET /ideas`          |
-| To get one idea object         | `GET /ideas/{id}`     |
-| To add a new idea to the list  | `POST /ideas`         |
-| To delete an idea              | `DELETE /ideas/{id}`  |
-| To update an idea              | `PATCH /ideas/{id}`   |
-| To search for an idea          | `GET /ideas/search`   |
-| To get a user object           | `GET /users/{id}`     |
-| To login a user                | `POST /users/login`   |
-| To register a new user         | `POST /users`         |
-| To delete a user               | `DELETE /users/{id}`  |
-| To update an existing user     | `PATCH /users/{id}`   |
-| To get event headers           | `GET /events`         |
-| To get an event object         | `GET /events/{id}`    |
-| To add a new event             | `POST /events`        |
-| To update an event             | `PATCH /events/{id}`  |
-| To delete an event             | `DELETE /events/{id}` |
+| Operation                      | HTTP Call                |
+|--------------------------------|--------------------------|
+| To get idea headers            | `GET /ideas`             |
+| To get one idea object         | `GET /ideas/{id}`        |
+| To add a new idea to the list  | `POST /ideas`            |
+| To delete an idea              | `DELETE /ideas/{id}`     |
+| To update an idea              | `PATCH /ideas/{id}`      |
+| To search for an idea          | `GET /ideas/search`      |
+| To get a user object           | `GET /users/{id}`        |
+| To login a user                | `POST /users/login`      |
+| To register a new user         | `POST /users`            |
+| To delete a user               | `DELETE /users/{id}`     |
+| To update an existing user     | `PATCH /users/{id}`      |
+| To get event headers           | `GET /events`            |
+| To get an event object         | `GET /events/{id}`       |
+| To add a new event             | `POST /events`           |
+| To update an event             | `PATCH /events/{id}`     |
+| To delete an event             | `DELETE /events/{id}`    |
+| To post a new comment          | `POST /comments`         |
+| To update a comment            | `PATCH /comments/{id}`   |
+| To delete a comment            | `DELETE /comments/{id}`  |
 
 In angular using the `$http` service,
 
