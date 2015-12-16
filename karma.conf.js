@@ -27,6 +27,7 @@ module.exports = function(config) {
             'src/lib/moment/moment.js',
             'src/lib/lodash/lodash.js',
             'src/app.js',
+            'src/about/about.js',
             'src/ideas/ideaSvc/ideaSvc.mock.js',
             'src/users/loginSvc/loginSvc.mock.js',
             'src/toastSvc/toastSvc.js',
@@ -34,6 +35,7 @@ module.exports = function(config) {
             'src/ideas/**/*.js',
             'src/navigation/**/*.js',
             'src/users/**/*.js',
+            'src/utilities/**/*.js',
             'src/**/*.spec.js'
         ],
 

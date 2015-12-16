@@ -171,6 +171,11 @@ img.grayscale:hover {
     padding: 15px;
 }
 
+.extra-padding-sides-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 .extra-padding-lg {
     padding: 30px;
 }
