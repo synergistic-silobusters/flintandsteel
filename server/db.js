@@ -331,14 +331,14 @@ module.exports = function(dbName, cb) {
                 toChange = {},
                 idToChange = '',
                 path = '',
-                runOperation = true;
+                runUpdate = true;
             
             
             if (/append|create|modify/.test(command.operation)) {
                 valueObj = JSON.parse(command.value);
 
                 // jshint newcap:false
-                if (command.path === 'backs') {
+                if (command.path === 'backs' || command.path === 'updates') {
                     valueObj.authorId = ObjectId(valueObj.authorId);
                 }
                 else if (command.path === 'team') {
@@ -386,9 +386,26 @@ module.exports = function(dbName, cb) {
                 case "modify":
                     toChange = {};
                     if (/backs|team|updates|likes/.test(command.path)) {
+                        var toFind = {}, projection = {};
+
                         path = command.path.split('/')[0];
                         idToChange = command.path.split('/')[1];
-                        console.log(path, idToChange);
+
+                        // jshint newcap:false
+                        toFind[path + '._id'] = ObjectId(idToChange);
+                        // jshint newcap:true
+                        projection[path] = 1;
+                        runUpdate = false;
+
+                        for (var prop in valueObj) {
+                            if (valueObj.hasOwnProperty(prop)) {
+                                toChange[path + '.$.' + prop] = valueObj[prop];
+                            }
+                        }
+
+                        db.collection(collection).update(toFind, { $set: toChange }, function(err, result) {
+                            err ? reject(err) : resolve(result);
+                        });
                     }
                     else {
                         toChange[command.path] = valueObj;
@@ -397,21 +414,16 @@ module.exports = function(dbName, cb) {
                     break;
                 default:
                     resolve('operation ' + command.operation + ' not understood by the server :/');
-                    runOperation = false;
+                    runUpdate = false;
                     break;
             }
-            if (runOperation) {
+            if (runUpdate) {
                 // jshint newcap:false
                 db.collection(collection).update(
                     { _id: ObjectId(id) },
                     updateConfig,
                     function(err, results) {
-                        if (err) {
-                            reject(err);
-                        }
-                        else {
-                            resolve(results);
-                        }
+                        err ? reject(err) : resolve(results);
                     }
                 );
                 // jshint newcap:true
