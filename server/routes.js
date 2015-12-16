@@ -11,7 +11,9 @@ module.exports = function(app, db) {
     var ideas = require('./ideas/ideas')(db),
         replaceIds = require('./replaceIds')(db),
         chalk = require('chalk'),
-        _ = require('lodash');
+        _ = require('lodash'),
+        mongo = require('mongodb'),
+        ObjectId = mongo.ObjectID;
 
     var IdeasInstance = ideas.getInstance();
 
@@ -68,7 +70,7 @@ module.exports = function(app, db) {
                 projection = { title: 1, authorId: 1 },
                 theDatabase = db.getDb();
 
-            query[req.query.inpath] = req.query.forterm;
+            query[req.query.inpath] = /id/i.test(req.query.inpath) ? ObjectId(req.query.forterm) : req.query.forterm;
 
             // I'm skeptical here since mongo ids are not working with this search method
             // but will have to try with the frontend to actually see. 
