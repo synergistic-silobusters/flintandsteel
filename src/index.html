@@ -67,8 +67,9 @@
 
             <div class="md-padding">
                 <!-- Login Button -->
-                <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust">&#xE8A6;</i>
+                <md-button aria-label="Account" ng-click="showLogin($event)" ng-if="!isUserLoggedIn()">
+                    <i class="material-icons icon-button-adjust md-icon-button" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE8A6;</i>
+                    Login
                     <md-tooltip md-direction="left">Login</md-tooltip>
                 </md-button>
                 <!-- Profile button -->
