@@ -24,6 +24,9 @@ module.exports = function(config) {
             'src/lib/angular-material/angular-material-mocks.js',
             'src/lib/angular-messages/angular-messages.js',
             'src/lib/angular-identicon/src/identiconDirective.js',
+            'src/lib/angular-identicon/src/md5.js',
+            'src/lib/identicon/identicon.js',
+            'src/lib/identicon/pnglib.js',
             'src/lib/moment/moment.js',
             'src/lib/lodash/lodash.js',
             'src/app.js',
@@ -36,7 +39,8 @@ module.exports = function(config) {
             'src/navigation/**/*.js',
             'src/users/**/*.js',
             'src/utilities/**/*.js',
-            'src/**/*.spec.js'
+            'src/**/*.spec.js',
+            'src/**/*.tpl.html'
         ],
 
 
@@ -56,7 +60,12 @@ module.exports = function(config) {
             'src/ideas/**/!(*spec|*mock).js': ['coverage'],
             'src/navigation/**/!(*spec|*mock).js': ['coverage'],
             'src/users/**/!(*spec|*mock).js': ['coverage'],
-            'src/utilities/**/!(*spec|*mock).js': ['coverage']
+            'src/utilities/**/!(*spec|*mock).js': ['coverage'],
+            'src/**/*.tpl.html': ['ng-html2js']
+        },
+
+        ngHtml2JsPreprocessor: {
+            stripPrefix: 'src/'
         },
 
 

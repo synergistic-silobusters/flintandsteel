@@ -22,7 +22,7 @@ describe('AddIdeaViewCtrl', function() {
         loginSvcMock = _loginSvcMock_;
 
         spyOn($state, 'go');
-        spyOn(ideaSvcMock, 'postIdea');
+        spyOn(ideaSvcMock, 'postIdea').and.callThrough();
 
         ctrl = $controller('AddIdeaViewCtrl', {
             $scope: scope,
