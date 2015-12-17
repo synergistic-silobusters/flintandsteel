@@ -4,8 +4,8 @@
 angular.module('flintAndSteel')
 .controller('IdeaBrowseViewCtrl',
     [
-        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'sseSvc',
-        function($scope, $state, $mdSidenav, ideaSvc, sseSvc) {
+        '$scope', 'ideaSvc', 'sseSvc',
+        function($scope, ideaSvc, sseSvc) {
             "use strict";
 
             function setIdeaHeaders(data) {

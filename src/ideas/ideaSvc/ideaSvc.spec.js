@@ -18,6 +18,7 @@ describe('ideaSvc', function() {
         $httpBackend = _$httpBackend_;
 
         dummyIdea = {
+            _id: 0,
             title: 'Test title',
             author: 'Guybrush Threepwood',
             description: 'Test description',
@@ -161,6 +162,158 @@ describe('ideaSvc', function() {
             $httpBackend.expectPOST('/deleteidea', deletedIdea);
 
             ideaSvc.deleteIdea('dummy_idea', function() { }, function() { });
+
+            $httpBackend.flush();
+        });
+    });
+
+    describe('ideaSvc.postComment', function() {
+        var postCommentHandler, dummyComment;
+
+        beforeEach(function() {
+            postCommentHandler = $httpBackend.whenPOST('/comment')
+                                .respond(201, 'Created');
+
+            dummyComment = {
+                parentId: dummyIdea._id,
+                text: "This is a test comment",
+                authorId: 1
+            }
+        });
+
+        it('should add a newly submitted comment', function() {
+            $httpBackend.expectPOST('/comment', dummyComment);
+
+            ideaSvc.postComment(dummyComment.parentId, dummyComment.text, dummyComment.authorId, function(data) {
+                expect(data).toBe('Created');
+            }, function() { });
+
+            $httpBackend.flush();
+        });
+    });
+
+    describe('ideaSvc.deleteComment', function() {
+        var deletedComment, updateCommentHandler;
+
+        beforeEach(function() {
+            deletedComment = {
+                commentId: 'dummy_comment'
+            };
+            updateCommentHandler = $httpBackend.whenPOST('/deleteComment', deletedComment.id).respond(200, 'OK');
+        });
+
+        it('should delete the comment', function() {
+            $httpBackend.expectPOST('/deleteComment', deletedComment.id);
+
+            ideaSvc.deleteComment(deletedComment.id, function() { }, function() { });
+
+            $httpBackend.flush();
+        });
+    });
+
+    describe('ideaSvc.addInteraction', function() {
+        var addInteractionHandler, dummyInteraction;
+
+        beforeEach(function() {
+            addInteractionHandler = $httpBackend.whenPOST('/idea/addinteraction')
+                                .respond(201, 'Created');
+
+            dummyInteraction = {
+                id: dummyIdea._id,
+                interactionType: "likes",
+                interactionObject: {userId: 1}
+            }
+        });
+
+        it('should add a new interaction', function() {
+            $httpBackend.expectPOST('/idea/addinteraction', dummyInteraction);
+
+            ideaSvc.addInteraction(dummyIdea._id, dummyInteraction.interactionType, dummyInteraction.interactionObject, function(data) {
+                expect(data).toBe('Created');
+            }, function() { });
+
+            $httpBackend.flush();
+        });
+    });
+
+    describe('ideaSvc.removeInteraction', function() {
+        var removeInteractionHandler, dummyInteraction;
+
+        beforeEach(function() {
+            removeInteractionHandler = $httpBackend.whenPOST('/idea/removeinteraction')
+                                .respond(200, 'OK');
+
+            dummyInteraction = {
+                id: dummyIdea._id,
+                interactionType: "likes",
+                interactionObject: {userId: 1}
+            }
+        });
+
+        it('should remove an existing interaction', function() {
+            $httpBackend.expectPOST('/idea/removeinteraction', dummyInteraction);
+
+            ideaSvc.removeInteraction(dummyIdea._id, dummyInteraction.interactionType, dummyInteraction.interactionObject, function(data) {
+                expect(data).toBe('OK');
+            }, function() { });
+
+            $httpBackend.flush();
+        });
+    });
+
+    describe('ideaSvc.editBack', function() {
+        var editBackHandler, dummyBack;
+
+        beforeEach(function() {
+            editBackHandler = $httpBackend.whenPOST('/idea/editback')
+                                .respond(200, 'OK');
+
+            dummyBack = {
+                id: dummyIdea._id,
+                authorId: 1,
+                new: {
+                    text: 'Just Experience',
+                    name: 'Some Guy',
+                    time: moment().calendar(),
+                    types: [
+                        { name: 'Experience' }
+                    ]
+                }
+            };
+        });
+
+        it('should edit an existing back', function() {
+            $httpBackend.expectPOST('/idea/editback', dummyBack);
+
+            ideaSvc.editBack(dummyIdea._id, dummyBack.authorId, dummyBack.new, function(data) {
+                expect(data).toBe('OK');
+            }, function() { });
+
+            $httpBackend.flush();
+        });
+    });
+
+    describe('ideaSvc.editIdea', function() {
+        var editIdeaHandler, smallDummyIdea;
+
+        beforeEach(function() {
+            editIdeaHandler = $httpBackend.whenPOST('/editidea')
+                                .respond(200, 'OK');
+            smallDummyIdea = {
+                id: dummyIdea._id,
+                title: dummyIdea.title,
+                description: dummyIdea.description,
+                tags: dummyIdea.tags,
+                rolesreq: dummyIdea.rolesreq
+            }
+        });
+
+        it('should edit an existing idea', function() {
+            $httpBackend.expectPOST('/editidea', smallDummyIdea);
+
+            ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq, function(data) {
+                expect(data).toBe('OK');
+            }, function() { });
 
             $httpBackend.flush();
         });
