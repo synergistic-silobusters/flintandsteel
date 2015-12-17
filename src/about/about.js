@@ -22,12 +22,6 @@ angular.module('flintAndSteel')
 
 
             ctrl.columns = paginateSvc.createPages(ctrl.devTeam, NUM_DEV_TEAM_COLUMNS);
-            // var teamLength = ctrl.devTeam.length;
-            // var numPerColumn =  Math.ceil(teamLength / NUM_DEV_TEAM_COLUMNS);
-            // var columnIndex = 0;
-            // for (var memberIndex = 0; memberIndex < teamLength; columnIndex++, memberIndex += numPerColumn) {
-            //     ctrl.columns.push({start: memberIndex, length: numPerColumn});
-            // }
         }
     ]
 );

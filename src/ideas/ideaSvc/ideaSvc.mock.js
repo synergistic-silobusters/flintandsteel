@@ -181,7 +181,17 @@ angular.module('flintAndSteel')
                         type._lowername = type.name.toLowerCase().replace(/[ ]/g, '-').replace('?', '');
                         return type;
                     });
+                },
+                dialogRemoveFromTeamCtrl: function dialogRemoveFromTeamCtrl($scope, $mdDialog) {
+                    $scope.cancel = function() {
+                        $mdDialog.cancel();
+                    };
+
+                    $scope.submitDelete = function() {
+                        $mdDialog.hide(true);
+                    };
                 }
+
             };
         }
     ]
