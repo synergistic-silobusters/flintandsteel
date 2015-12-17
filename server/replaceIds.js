@@ -18,15 +18,12 @@ module.exports = function(db) {
         }
 
         var ideaAuthor = new Promise(function(resolve, reject) {
-            users.get(data.authorId, function(err, ideaAuthorObj) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-                else {
-                    data.author = ideaAuthorObj;
-                    resolve(data);
-                }
+            users.get(data.authorId).then(function(ideaAuthorObj) {
+                data.author = ideaAuthorObj;
+                resolve(data);
+            }).catch(function(error) {
+                console.log(error);
+                reject(error);
             });
         });
 
@@ -56,15 +53,12 @@ module.exports = function(db) {
         else {
             ideaLikes = data.likes.map(function(like) {
                 return new Promise(function(resolve, reject) {
-                    users.get(like.userId, function(err, likeUserObj) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        }
-                        else {
-                            like.user = likeUserObj;
-                            resolve(like);
-                        }
+                    users.get(like.userId).then(function(likeUserObj) {
+                        like.user = likeUserObj;
+                        resolve(like);
+                    }).catch(function(error) {
+                        console.log(error);
+                        reject(error);
                     });
                 });
             });
@@ -108,15 +102,12 @@ module.exports = function(db) {
             ideaCommentAuthors = Promise.all(ideaComments).then(function() {
                 ideaCommentAuthors = data.comments.map(function(comment) {
                     return new Promise(function(resolve, reject) {
-                        users.get(comment.authorId, function(err, commentObj) {
-                            if (err) {
-                                console.log(err);
-                                reject(err);
-                            }
-                            else {
-                                comment.author = commentObj;
-                                resolve(comment);
-                            }
+                        users.get(comment.authorId).then(function(commentObj) {
+                            comment.author = commentObj;
+                            resolve(comment);
+                        }).catch(function(error) {
+                            console.log(error);
+                            reject(error);
                         });
                     });
                 });
@@ -138,15 +129,12 @@ module.exports = function(db) {
         else {
             ideaBacks = data.backs.map(function(back) {
                 return new Promise(function(resolve, reject) {
-                    users.get(back.authorId, function(err, backObj) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        }
-                        else {
-                            back.author = backObj;
-                            resolve(back);
-                        }
+                    users.get(back.authorId).then(function(backObj) {
+                        back.author = backObj;
+                        resolve(back);
+                    }).catch(function(err) {
+                        console.log(err);
+                        reject(err);
                     });
                 });
             });
@@ -161,15 +149,12 @@ module.exports = function(db) {
         else {
             ideaTeam = data.team.map(function(member) {
                 return new Promise(function(resolve, reject) {
-                    users.get(member.memberId, function(err, memberObj) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        }
-                        else {
-                            member.member = memberObj;
-                            resolve(member);
-                        }
+                    users.get(member.memberId).then(function(memberObj) {
+                        member.member = memberObj;
+                        resolve(member);
+                    }).catch(function(err) {
+                        console.log(err);
+                        reject(err);
                     });
                 });
             });
@@ -184,15 +169,12 @@ module.exports = function(db) {
         else {
             ideaUpdates = data.updates.map(function(update) {
                 return new Promise(function(resolve, reject) {
-                    users.get(update.authorId, function(err, updateObj) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        }
-                        else {
-                            update.author = updateObj;
-                            resolve(update);
-                        }
+                    users.get(update.authorId).then(function(updateObj) {
+                        update.author = updateObj;
+                        resolve(update);
+                    }).catch(function(err) {
+                        console.log(err);
+                        reject(err);
                     });
                 });
             });
@@ -220,15 +202,12 @@ module.exports = function(db) {
         else {
             ideaHeaders = data.map(function(header) {
                 return new Promise(function(resolve, reject) {
-                    users.get(header.authorId, function(err, headerObj) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        }
-                        else {
-                            header.author = headerObj;
-                            resolve(header);
-                        }
+                    users.get(header.authorId).then(function(headerObj) {
+                        header.author = headerObj;
+                        resolve(header);
+                    }).catch(function(error) {
+                        console.log(error);
+                        reject(error);
                     });
                 });
             });
