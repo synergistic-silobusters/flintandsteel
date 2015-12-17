@@ -9,6 +9,7 @@ module.exports = function(app, db) {
     var module = {};
 
     var ideas = require('./ideas/ideas')(db),
+        users = require('./users/users')(db),
         replaceIds = require('./replaceIds')(db),
         chalk = require('chalk'),
         _ = require('lodash'),
@@ -109,6 +110,26 @@ module.exports = function(app, db) {
             console.log(error);
             res.sendStatus(500);
         });
+    });
+
+    app.get('/users/:id', function(req, res, next) {
+        if (req.params.id === 'search') {
+            next();
+        }
+        else {
+            users.get(req.params.id, true).then(function(results) {
+                res.status(200).json(results);
+            }).catch(function(error) {
+                if (error === 'NO_USER') {
+                    res.status(404).send('Can\'t find that user :(');
+                }
+                else {
+                    res.sendStatus(500);
+                }
+            });
+        }
+    }, function(req, res) {
+        res.status(200).send('search has not been implemented yet!');
     });
 
     /*var users = require('./users/users')(GLOBAL.db),
