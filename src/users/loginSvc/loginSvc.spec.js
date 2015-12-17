@@ -117,9 +117,8 @@ describe('loginSvc', function() {
 
     describe('loginSvc.getUserById', function() {
         it('should query the server for a user when an id is supplied', function() {
-            var getUserByIdHandler = $httpBackend.whenGET('/user?id=1')
-                                    .respond(200, dummyRes);
-            loginSvc.getUserById(1, function(){}, function(){});
+            $httpBackend.whenGET('/user?id=1').respond(200, dummyRes);
+            loginSvc.getUserById(1, function() {}, function() {});
             $httpBackend.flush();
         });
 

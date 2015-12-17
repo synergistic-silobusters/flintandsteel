@@ -1,5 +1,4 @@
 /* global angular */
-/* global EventSource */
 
 angular.module('flintAndSteel')
 .controller('SidenavCtrl',
@@ -20,7 +19,7 @@ angular.module('flintAndSteel')
                 }, function getIdeaHeadersError(data, status) {
                     console.log(status);
                 });
-            };
+            }
 
             refreshHeaders();
 

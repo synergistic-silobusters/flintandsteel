@@ -1,5 +1,4 @@
 /* global angular */
-/* global EventSource */
 
 angular.module('flintAndSteel')
 .controller('IdeaBrowseViewCtrl',

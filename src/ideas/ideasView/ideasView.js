@@ -1,7 +1,6 @@
 /* global angular */
 /* global _ */
 /* global moment */
-/* global EventSource */
 
 // Dialog Controller used for controlling the behavior of the dialog
 //   used for backing.

@@ -98,7 +98,7 @@ angular.module('flintAndSteel')
 
             return {
                 postIdea: function postIdea(idea, successCb) {
-                    successCb({status:'Created'});
+                    successCb({status: 'Created'});
                 },
                 getIdea: function getIdea(ideaId, successCb) {
                     successCb(mockIdea);

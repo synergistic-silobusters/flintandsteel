@@ -4,11 +4,12 @@
 /* global inject */
 /* global it */
 /* global expect */
+/* global spyOn */
 
 describe('sseSvc', function() {
     "use strict";
 
-    var sseSvc, $httpBackend;
+    var sseSvc;
 
     var dummyObj = {};
 
@@ -17,9 +18,9 @@ describe('sseSvc', function() {
     beforeEach(inject(function(_sseSvc_) {
         sseSvc = _sseSvc_;
 
-        dummyObj.spyCallback = function(data) {};
+        dummyObj.spyCallback = function() {};
 
-        spyOn(dummyObj, "spyCallback")
+        spyOn(dummyObj, "spyCallback");
         spyOn(window, 'EventSource').and.callFake(function() {
             var obj = {};
             obj.addEventListener = function(name, cb) {
@@ -50,7 +51,7 @@ describe('sseSvc', function() {
         it('should close the event', function() {
             sseSvc.create("test", "/test", dummyObj.spyCallback);
             expect(function() {
-                sseSvc.destroy()
+                sseSvc.destroy();
             }).not.toThrowError(Error, "Could not close event!");
         });
     });
