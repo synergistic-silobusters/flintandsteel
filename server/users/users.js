@@ -6,7 +6,8 @@ module.exports = function(db) {
 
     var module = {};
 
-    var UserModel = require('./userModel');
+    var UserModel = require('./userModel'),
+        Promise = require('bluebird');
 
     var COLLECTION = "users";
 
@@ -70,19 +71,26 @@ module.exports = function(db) {
 
     module.findForLogin = loginFn;
 
-    module.get = function(id, cb) {
-        db.findOneById(COLLECTION, id, function(err, doc) {
-            if (err || doc === null) {
-                cb(err);
-            }
-            else {
-                var responseObj = {
-                    name: doc.fullName,
-                    mail: doc.email,
-                    username: doc.username
-                };
-                cb(null, responseObj);
-            }
+    module.get = function(id, getEntireObject) {
+        return new Promise(function(resolve, reject) {
+            db.findOneById(COLLECTION, id, function(err, doc) {
+                if (err || doc === null) {
+                    reject(err || 'NO_USER');
+                }
+                else {
+                    if (getEntireObject) {
+                        resolve(doc);
+                    }
+                    else {
+                        var responseObj = {
+                            name: doc.fullName,
+                            mail: doc.email,
+                            username: doc.username
+                        };
+                        resolve(responseObj);
+                    }
+                }
+            });
         });
     };
 
