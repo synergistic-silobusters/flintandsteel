@@ -13,6 +13,8 @@ describe('SidenavCtrl', function() {
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
+    // needed because $state takes us to home by default
+    beforeEach(module('homeView/homeView.tpl.html'));
 
     beforeEach(inject(function(_$rootScope_, $controller, _$state_, _$mdSidenav_, _ideaSvcMock_, _loginSvcMock_, _sseSvcMock_) {
         $rootScope = _$rootScope_;
@@ -92,13 +94,22 @@ describe('SidenavCtrl', function() {
     describe('$scope.$on(newIdeaAdded)', function() {
 
         beforeEach(function() {
-            spyOn(ideaSvcMock, 'getIdeaHeaders');
+            spyOn(ideaSvcMock, 'getIdeaHeaders').and.callThrough();
         });
 
         it('should catch the newIdeaAdded event', function() {
             $rootScope.$emit('newIdeaAdded');
 
             expect(ideaSvcMock.getIdeaHeaders).toHaveBeenCalled();
+        });
+    });
+
+    describe('receiving a server-sent event', function() {
+
+        it('should set $scope.topIdeas to data from event', function() {
+            expect(scope.topIdeas).not.toBe(null);
+            sseSvcMock.simulate();
+            expect(scope.topIdeas).toBe(null);
         });
     });
 

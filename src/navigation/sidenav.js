@@ -14,11 +14,15 @@ angular.module('flintAndSteel')
                 });
             }
 
-            ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                $scope.topIdeas = data;
-            }, function getIdeaHeadersError(data, status) {
-                console.log(status);
-            });
+            function refreshHeaders() {
+                ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
+                    $scope.topIdeas = data;
+                }, function getIdeaHeadersError(data, status) {
+                    console.log(status);
+                });
+            };
+
+            refreshHeaders();
 
             sseSvc.create("newHeaders", "/ideaheaders/events", setIdeaHeaders);
 
@@ -44,13 +48,7 @@ angular.module('flintAndSteel')
 
             $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 
-            $scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent() {
-                ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                    $scope.topIdeas = data;
-                },function getIdeaHeadersError(data, status) {
-                    console.log(status);
-                });
-            });
+            $scope.$root.$on('newIdeaAdded', refreshHeaders);
         }
     ]
 );

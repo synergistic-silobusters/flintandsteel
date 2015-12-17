@@ -20,6 +20,12 @@ angular.module('flintAndSteel')
 
             svc.destroy = function destroy() {
                 EV.close();
+                if (EV.readyState === 2) {
+                    EV = null;
+                }
+                else {
+                    throw new Error("Could not close event!");
+                }
             };
 
             return {
