@@ -338,13 +338,13 @@ module.exports = function(dbName, cb) {
                 valueObj = JSON.parse(command.value);
 
                 // jshint newcap:false
-                if (command.path === 'backs' || command.path === 'updates') {
+                if (command.path === 'backs' || command.path === 'updates' && valueObj.authorId) {
                     valueObj.authorId = ObjectId(valueObj.authorId);
                 }
-                else if (command.path === 'team') {
+                else if (command.path === 'team' && valueObj.memberId) {
                     valueObj.memberId = ObjectId(valueObj.memberId);
                 }
-                else if (command.path === 'likes') {
+                else if (command.path === 'likes' && valueObj.userId) {
                     valueObj.userId = ObjectId(valueObj.userId);
                 }
                 else if (command.path === 'eventId') {
