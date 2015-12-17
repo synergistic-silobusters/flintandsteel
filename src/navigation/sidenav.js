@@ -1,26 +1,29 @@
 /* global angular */
-/* global EventSource */
 
 angular.module('flintAndSteel')
 .controller('SidenavCtrl',
     [
-        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'loginSvc',
-        function($scope, $state, $mdSidenav, ideaSvc, loginSvc) {
+        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'loginSvc', 'sseSvc',
+        function($scope, $state, $mdSidenav, ideaSvc, loginSvc, sseSvc) {
             "use strict";
 
-            ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                $scope.topIdeas = data;
-            }, function getIdeaHeadersError(data, status) {
-                console.log(status);
-            });
-
-            var ideaAddEvents = new EventSource('/ideaheaders/events');
-            ideaAddEvents.addEventListener("newHeaders", function(event) {
-                var headers = JSON.parse(event.data);
+            function setIdeaHeaders(data) {
                 $scope.$apply(function() {
-                    $scope.topIdeas = headers;
+                    $scope.topIdeas = data;
                 });
-            });
+            }
+
+            function refreshHeaders() {
+                ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
+                    $scope.topIdeas = data;
+                }, function getIdeaHeadersError(data, status) {
+                    console.log(status);
+                });
+            }
+
+            refreshHeaders();
+
+            sseSvc.create("newHeaders", "/ideaheaders/events", setIdeaHeaders);
 
             $scope.navTo = function navTo(state) {
                 if (state === 'addIdea') {
@@ -44,13 +47,7 @@ angular.module('flintAndSteel')
 
             $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
 
-            $scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent() {
-                ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                    $scope.topIdeas = data;
-                },function getIdeaHeadersError(data, status) {
-                    console.log(status);
-                });
-            });
+            $scope.$root.$on('newIdeaAdded', refreshHeaders);
         }
     ]
 );

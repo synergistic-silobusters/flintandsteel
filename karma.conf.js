@@ -24,9 +24,13 @@ module.exports = function(config) {
             'src/lib/angular-material/angular-material-mocks.js',
             'src/lib/angular-messages/angular-messages.js',
             'src/lib/angular-identicon/src/identiconDirective.js',
+            'src/lib/angular-identicon/src/md5.js',
+            'src/lib/identicon/identicon.js',
+            'src/lib/identicon/pnglib.js',
             'src/lib/moment/moment.js',
             'src/lib/lodash/lodash.js',
             'src/app.js',
+            'src/about/about.js',
             'src/ideas/ideaSvc/ideaSvc.mock.js',
             'src/users/loginSvc/loginSvc.mock.js',
             'src/toastSvc/toastSvc.js',
@@ -34,7 +38,9 @@ module.exports = function(config) {
             'src/ideas/**/*.js',
             'src/navigation/**/*.js',
             'src/users/**/*.js',
-            'src/**/*.spec.js'
+            'src/utilities/**/*.js',
+            'src/**/*.spec.js',
+            'src/**/*.tpl.html'
         ],
 
 
@@ -47,13 +53,26 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            'src/app.js': ['coverage'],
+            'src/about/about.js': ['coverage'],
+            'src/toastSvc/toastSvc.js': ['coverage'],
+            'src/homeView/homeView.js': ['coverage'],
+            'src/ideas/**/!(*spec|*mock).js': ['coverage'],
+            'src/navigation/**/!(*spec|*mock).js': ['coverage'],
+            'src/users/**/!(*spec|*mock).js': ['coverage'],
+            'src/utilities/**/!(*spec|*mock).js': ['coverage'],
+            'src/**/*.tpl.html': ['ng-html2js']
+        },
+
+        ngHtml2JsPreprocessor: {
+            stripPrefix: 'src/'
         },
 
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage'],
 
 
         // web server port

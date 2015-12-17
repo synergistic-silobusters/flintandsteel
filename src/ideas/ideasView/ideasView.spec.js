@@ -9,7 +9,7 @@
 describe('IdeasViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc;
+    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc, sseSvcMock;
 
     var authorAccount = {
         id: 1,
@@ -25,7 +25,7 @@ describe('IdeasViewCtrl', function() {
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_, _$state_, _toastSvc_) {
+    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_, _$state_, _toastSvc_, _sseSvcMock_) {
         scope = $rootScope.$new();
         $stateParams = _$stateParams_;
         $mdDialog = _$mdDialog_;
@@ -33,6 +33,7 @@ describe('IdeasViewCtrl', function() {
         loginSvcMock = _loginSvcMock_;
         $state = _$state_;
         toastSvc = _toastSvc_;
+        sseSvcMock = _sseSvcMock_;
 
         ctrl = $controller('IdeasViewCtrl', {
             $scope: scope,
@@ -41,7 +42,8 @@ describe('IdeasViewCtrl', function() {
             ideaSvc: ideaSvcMock,
             loginSvc: loginSvcMock,
             $state: $state,
-            toastSvc: toastSvc
+            toastSvc: toastSvc,
+            sseSvc: sseSvcMock
         });
     }));
 
@@ -488,6 +490,42 @@ describe('IdeasViewCtrl', function() {
         });
     });
 
+    describe('deleting a back', function() {
+        var backIndex = 0;
+        var mockIdea;
+
+        beforeEach(function() {
+            ctrl.newBack = 'This is a test back!';
+            scope.addNewInteraction('backs');
+            spyOn(ideaSvcMock, 'removeInteraction').and.callThrough();
+            spyOn($mdDialog, 'show').and.callThrough();
+            ideaSvcMock.getIdea(null, function(idea) {
+                mockIdea = idea;
+            });
+            backIndex = scope.idea.backs.length - 1;
+        });
+
+        it('should allow the author to delete the back', function() {
+            loginSvcMock.checkLogin(authorAccount);
+            scope.removeInteraction('backs', scope.idea.backs[backIndex]);
+            expect(ideaSvcMock.removeInteraction).toHaveBeenCalled();
+            expect(scope.idea.backs.length).toBe(backIndex);
+        });
+
+        it('should not allow someone other than the author to delete the back', function() {
+            loginSvcMock.checkLogin(nonAuthorAccount);
+            scope.removeInteraction('backs', scope.idea.updates[backIndex]);
+            expect(ideaSvcMock.removeInteraction).not.toHaveBeenCalled();
+            expect(scope.idea.backs.length).toBe(backIndex + 1);
+        });
+
+        it('show ask for confirmation', function() {
+            loginSvcMock.checkLogin(authorAccount);
+            scope.removeBack();
+            expect($mdDialog.show).toHaveBeenCalled();
+        });
+    });
+
     describe('forming a team', function() {
         var teamLength = 0;
         var mockIdea;
@@ -500,6 +538,9 @@ describe('IdeasViewCtrl', function() {
             // Zero out the array
             scope.idea.team = [];
             teamLength = scope.idea.team.length;
+            spyOn(ideaSvcMock, 'removeInteraction').and.callThrough();
+            spyOn($mdDialog, 'show').and.callThrough();
+            spyOn(loginSvcMock, 'checkLogin').and.callThrough();
         });
 
         it('Should not display a team when no team exists', function() {
@@ -582,7 +623,7 @@ describe('IdeasViewCtrl', function() {
             expect(ctrl.isUserExactMemberOfTeam(index)).toBe(false);
         });
 
-        it('Should remove the backer from the team', function() {
+        it('Should warn about removing back', function() {
             ctrl.newBack = 'Rick backs this idea!';
             scope.addNewInteraction('backs');
             scope.idea.backs[teamLength].isInTeam = true;
@@ -591,9 +632,47 @@ describe('IdeasViewCtrl', function() {
             // Should be one member on the team
             expect(scope.idea.team.length).toBe(1);
 
+            // Notify that a warning was given before removing back
+            ctrl.removeSelfFromTeam();
+            expect($mdDialog.show).toHaveBeenCalled();
+        });
+
+        it('Should delete back when removing from team', function() {
+            ctrl.newBack = 'Rick backs this idea!';
+            scope.addNewInteraction('backs');
+            scope.idea.backs[teamLength].isInTeam = true;
+            ctrl.updateTeam();
+            var backLength = scope.idea.backs.length;
+
+            // Should be one member on the team
+            expect(scope.idea.team.length).toBe(1);
+
             // Remove user from the team and verify the team is empty
+            loginSvcMock.checkLogin(authorAccount);
+            ctrl.removeSelfFromTeam();
+            expect($mdDialog.show).toHaveBeenCalled();
+            scope.removeInteraction('backs', scope.idea.backs[backLength - 1]);
             ctrl.removeUserFromTeam(scope.idea.backs[teamLength]);
             expect(scope.idea.team.length).toBe(0);
+            expect(scope.idea.backs.length).toBe(backLength - 1);
+        });
+
+        it('Should not work if not author of idea', function() {
+            ctrl.newBack = 'Rick backs this idea!';
+            scope.addNewInteraction('backs');
+            scope.idea.backs[teamLength].isInTeam = true;
+            ctrl.updateTeam();
+            var backLength = scope.idea.backs.length;
+
+            // Should be one member on the team
+            expect(scope.idea.team.length).toBe(1);
+
+            // Remove user from the team and verify the team is not empty
+            loginSvcMock.checkLogin(nonAuthorAccount);
+            ctrl.removeSelfFromTeam();
+            expect($mdDialog.show).not.toHaveBeenCalled();
+            expect(scope.idea.team.length).toBe(1);
+            expect(scope.idea.backs.length).toBe(backLength);
         });
     });
 });
