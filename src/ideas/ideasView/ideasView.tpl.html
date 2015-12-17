@@ -44,7 +44,7 @@
                         <div ng-message="maxlength">Your title is too long</div>
                     </div>
                 </md-input-container>
-                <md-input-container flex>
+                <md-input-container>
                     <label>Description</label>
                     <textarea ng-model="idea.description"
                               name="desc"
@@ -150,7 +150,7 @@
                     <i class="material-icons icon-button-adjust">&#xE893;</i>
                 </md-button>
                 <md-tooltip md-direction="bottom">
-                    <ng-pluralize count="idea.backs.length" 
+                    <ng-pluralize count="idea.backs.length"
                         when="{'0': 'Backs',
                                'one': 'Back',
                                'other': 'Backs'}">
@@ -186,7 +186,7 @@
                     <i class="material-icons icon-button-adjust">&#xE7FC;</i>
                 </md-button>
                 <md-tooltip md-direction="bottom">
-                    <ng-pluralize count="idea.team.length" 
+                    <ng-pluralize count="idea.team.length"
                         when="{'0': 'Team Members',
                                'one': 'Team Member',
                                'other': 'Team Members'}">
@@ -199,7 +199,7 @@
                     <i class="material-icons icon-button-adjust">&#xE7FB;</i>
                 </md-button>
                 <md-tooltip md-direction="bottom">
-                    <ng-pluralize count="idea.team.length" 
+                    <ng-pluralize count="idea.team.length"
                         when="{'0': 'Team Members',
                                'one': 'Team Member',
                                'other': 'Team Members'}">
@@ -371,9 +371,9 @@
                             <md-tooltip md-direction="bottom">Email Team</md-tooltip>
                     </md-button>
                     <div layout="row">
-                        <div layout="column">
+                        <div layout="column" ng-show="ideasView.isUserAuthor() && ideasView.enableTeamEdit === true" flex>
                             <!-- IN TEAM EDIT MODE - Currently limited to the Author -->
-                            <md-list ng-show="ideasView.isUserAuthor() && ideasView.enableTeamEdit === true">
+                            <md-list>
                                 <md-list-item class="md-1-line" ng-show="idea.team.length === 0">
                                     <p>There are no members selected for the team. Add backers to your team below.</p>
                                 </md-list-item>
@@ -398,9 +398,9 @@
                                 </md-list-item>
                             </md-list>
                         </div>
-                        <div layout="column">
+                        <div layout="column" ng-show="ideasView.enableTeamEdit === false" flex>
                             <!-- NOT IN TEAM EDIT MODE -->
-                            <md-list ng-show="ideasView.enableTeamEdit === false">
+                            <md-list>
                                 <md-list-item class="md-2-line" ng-show="idea.team.length === 0">
                                     <p>There are no members currently on the team.</p>
                                 </md-list-item>
@@ -419,7 +419,7 @@
                                 <md-list-item class="md-2-line" ng-show="!ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && isUserLoggedIn()">
                                     <p>You are part of the team!</p>
                                 </md-list-item>
-                                <md-list-item class="md-2-line" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
+                                <md-list-item class="md-2-line md-no-proxy" ng-repeat="back in idea.backs" ng-show="back.isInTeam" ng-mouseover="hovered = true" ng-mouseout="hovered = false">
                                     <div ng-show="hovered === true && !ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && ideasView.isUserExactMemberOfTeam($index)">
                                         <md-button class="md-icon-button" aria-label="Remove From Team" ng-click="ideasView.removeUserFromTeam(back)">
                                             <i class="material-icons icon-button-adjust">&#xE14C;</i>
