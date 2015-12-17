@@ -4,9 +4,15 @@
 angular.module('flintAndSteel')
 .controller('SidenavCtrl',
     [
-        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'loginSvc',
-        function($scope, $state, $mdSidenav, ideaSvc, loginSvc) {
+        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'loginSvc', 'sseSvc',
+        function($scope, $state, $mdSidenav, ideaSvc, loginSvc, sseSvc) {
             "use strict";
+
+            function setIdeaHeaders(data) {
+                $scope.$apply(function() {
+                    $scope.topIdeas = data;
+                });
+            }
 
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
                 $scope.topIdeas = data;
@@ -14,13 +20,7 @@ angular.module('flintAndSteel')
                 console.log(status);
             });
 
-            var ideaAddEvents = new EventSource('/ideaheaders/events');
-            ideaAddEvents.addEventListener("newHeaders", function(event) {
-                var headers = JSON.parse(event.data);
-                $scope.$apply(function() {
-                    $scope.topIdeas = headers;
-                });
-            });
+            sseSvc.create("newHeaders", "/ideaheaders/events", setIdeaHeaders);
 
             $scope.navTo = function navTo(state) {
                 if (state === 'addIdea') {

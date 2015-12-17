@@ -4,9 +4,15 @@
 angular.module('flintAndSteel')
 .controller('IdeaBrowseViewCtrl',
     [
-        '$scope', '$state', '$mdSidenav', 'ideaSvc',
-        function($scope, $state, $mdSidenav, ideaSvc) {
+        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'sseSvc',
+        function($scope, $state, $mdSidenav, ideaSvc, sseSvc) {
             "use strict";
+
+            function setIdeaHeaders(data) {
+                $scope.$apply(function() {
+                    $scope.topIdeas = data;
+                });
+            }
 
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
                 $scope.topIdeas = data;
@@ -14,16 +20,10 @@ angular.module('flintAndSteel')
                 console.log(status);
             });
 
-            var ideaAddEvents = new EventSource('/ideaheaders/events');
-            ideaAddEvents.addEventListener("newHeaders", function(event) {
-                var headers = JSON.parse(event.data);
-                $scope.$apply(function() {
-                    $scope.topIdeas = headers;
-                });
-            });
+            sseSvc.create("newHeaders", "/ideaheaders/events", setIdeaHeaders);
 
             $scope.$on('$stateChangeStart', function() {
-                ideaAddEvents.close();
+                sseSvc.destroy();
             });
         }
     ]
