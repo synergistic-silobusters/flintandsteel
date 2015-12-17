@@ -9,7 +9,7 @@
 describe('IdeasViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc;
+    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc, sseSvcMock;
 
     var authorAccount = {
         id: 1,
@@ -25,7 +25,7 @@ describe('IdeasViewCtrl', function() {
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_, _$state_, _toastSvc_) {
+    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_, _$state_, _toastSvc_, _sseSvcMock_) {
         scope = $rootScope.$new();
         $stateParams = _$stateParams_;
         $mdDialog = _$mdDialog_;
@@ -33,6 +33,7 @@ describe('IdeasViewCtrl', function() {
         loginSvcMock = _loginSvcMock_;
         $state = _$state_;
         toastSvc = _toastSvc_;
+        sseSvcMock = _sseSvcMock_;
 
         ctrl = $controller('IdeasViewCtrl', {
             $scope: scope,
@@ -41,7 +42,8 @@ describe('IdeasViewCtrl', function() {
             ideaSvc: ideaSvcMock,
             loginSvc: loginSvcMock,
             $state: $state,
-            toastSvc: toastSvc
+            toastSvc: toastSvc,
+            sseSvc: sseSvcMock
         });
     }));
 
