@@ -5,7 +5,7 @@
 
 // Dialog Controller used for controlling the behavior of the dialog
 //   used for backing.
-function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
+function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc) {
     "use strict";
 
     // Populate values based off current back info
@@ -16,6 +16,17 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
 
     for (var k = 0; k < $scope.tempTypes.length; k++) {
         $scope.tempTypes[k].checked = true;
+    }
+
+    this.isUserAuthor = function() {
+        if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === author) {
+            return true;
+        }
+        return false;
+    };
+
+    if (this.isUserAuthor()) {
+        $scope.selectTypes.push({name: "Owner", _lowername: "owner"});
     }
 
     // Precheck previous boxes for editting backs
@@ -78,8 +89,8 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj) {
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
-        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc',
-        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc) {
+        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc', '$window',
+        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc, $window) {
             "use strict";
 
             /*
@@ -385,6 +396,76 @@ angular.module('flintAndSteel')
                 toastSvc.show('Team has been updated!');
             };
 
+            ctrl.editTeam = function(ev) {
+                $mdDialog.show({
+                    templateUrl: 'ideas/ideasView/ideaTeam/editTeam.tpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    locals: {
+                        ideaObj: $scope.idea
+                    },
+                    controller: function($scope, $mdDialog, ideaObj) {
+                        $scope.currIdea = angular.copy(ideaObj);
+
+                        $scope.cancel = function() {
+                            $mdDialog.cancel();
+                        };
+
+                        $scope.submitEdit = function() {
+                            $mdDialog.hide($scope.confirmStatus());
+                        };
+
+                        // pass the account object to the dialog window
+                        $scope.confirmStatus = function() {
+                            var option = {
+                                idea: $scope.currIdea
+                            };
+
+                            return option;
+                        };
+                    }
+                })
+                .then(function(answer) {
+                    $scope.idea = answer.idea;
+                    ctrl.updateTeam();
+                }, function() {
+                    ctrl.refreshTeam();
+                    $scope.status = 'You canceled the dialog.';
+                });
+            };
+
+            // remove yourself from a team with the option to remove your back
+            ctrl.removeSelfFromTeam = function(ev) {
+                $scope.loadEditBack();
+                if (ctrl.isUserAuthorOfInteraction($scope.userBack)) {
+                    $mdDialog.show({
+                        templateUrl: 'ideas/ideasView/ideaTeam/deleteFromTeam.tpl.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose: true,
+                        locals: { team: true },
+                        controller: function($scope, $mdDialog, team) {
+                            $scope.team = team;
+
+                            $scope.cancel = function() {
+                                $mdDialog.cancel();
+                            };
+
+                            $scope.submitDelete = function() {
+                                $mdDialog.hide();
+                            };
+                        }
+                    })
+                    .then(function() {
+                        ctrl.removeUserFromTeam($scope.userBack);
+                        $scope.removeInteraction('backs', $scope.userBack);
+                    }, function() {
+                        $scope.status = 'You canceled the dialog.';
+                    });
+                }
+            };
+
             ctrl.isUserMemberOfTeam = function() {
                 if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
                     for (var i = 0; i < $scope.idea.team.length; i++) {
@@ -427,20 +508,20 @@ angular.module('flintAndSteel')
             };
 
             // Function used to trigger dialog for adding or editting a back
-            $scope.showAddBack = function(ev) {
+            ctrl.showAddBack = function(ev) {
                 var template = '';
                 var backObj = '';
 
                 // Change data passed and template depending on if adding or editting
                 if (!$scope.hasUserBacked()) {
-                    template = 'ideas/ideaBack/ideaAddBack.tpl.html';
+                    template = 'ideas/ideasView/ideaBack/ideaAddBack.tpl.html';
                     backObj = {
                         text: '',
-                        types: $scope.selectedTypes
+                        types: ''
                     };
                 }
                 else {
-                    template = 'ideas/ideaBack/ideaEditBack.tpl.html';
+                    template = 'ideas/ideasView/ideaBack/ideaEditBack.tpl.html';
                     $scope.loadEditBack();
                     backObj = $scope.userBack;
                 }
@@ -453,7 +534,8 @@ angular.module('flintAndSteel')
                     targetEvent: ev,
                     clickOutsideToClose: true,
                     locals: {
-                        backingObj: backObj
+                        backingObj: backObj,
+                        author: $scope.idea.authorId
                     }
                 })
                 .then(function(answer) {
@@ -510,21 +592,37 @@ angular.module('flintAndSteel')
                 }
             };
 
-            ctrl.parseTeamEmail = function parseTeamEmail() {
-                var emailString = "mailto:";
-                if (angular.isDefined($scope.idea.team)) {
-                    $scope.idea.team.forEach(function(teamElement) {
-                        emailString += teamElement.member.mail + ';';
+            // Removes back for the current author on current idea
+            $scope.removeBack = function(ev) {
+                $scope.loadEditBack();
+                if (ctrl.isUserAuthorOfInteraction($scope.userBack)) {
+                    $mdDialog.show({
+                        templateUrl: 'ideas/ideasView/ideaTeam/deleteFromTeam.tpl.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose: true,
+                        locals: { team: false },
+                        controller: function($scope, $mdDialog, team) {
+                            $scope.team = team;
+
+                            $scope.cancel = function() {
+                                $mdDialog.cancel();
+                            };
+
+                            $scope.submitDelete = function() {
+                                $mdDialog.hide();
+                            };
+                        }
+                    })
+                    .then(function() {
+                        $scope.removeInteraction('backs', $scope.userBack);
+                        if (ctrl.isUserMemberOfTeam()) {
+                            ctrl.removeUserFromTeam($scope.userBack);
+                        }
+                    }, function() {
+                        $scope.status = 'You canceled the dialog.';
                     });
                 }
-                return emailString;
-            };
-
-            $scope.removeBack = function() {
-                $scope.loadEditBack();
-                $scope.removeInteraction('backs', $scope.userBack);
-                ctrl.newBack = '';
-                $scope.selectedTypes = [];
             };
 
             // Checks if the current user has backed the current idea
@@ -592,6 +690,17 @@ angular.module('flintAndSteel')
             ctrl.removeTag = function removeTag(tag) {
                 var index = $scope.idea.tags.indexOf(tag);
                 $scope.idea.tags.splice(index, 1);
+            };
+
+            // Open up an email to team members
+            ctrl.parseTeamEmail = function parseTeamEmail() {
+                var emailString = "mailto:";
+                $scope.idea.team.forEach(function(teamElement) {
+                    if (teamElement.member.mail !== 'undefined') {
+                        emailString += teamElement.member.mail + ';';
+                    }
+                });
+                $window.location = emailString;
             };
         }
     ]
