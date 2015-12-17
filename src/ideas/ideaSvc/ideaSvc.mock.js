@@ -98,20 +98,21 @@ angular.module('flintAndSteel')
 
             return {
                 postIdea: function postIdea(idea, successCb) {
-                    successCb('Created');
+                    successCb({status: 'Created'});
                 },
                 getIdea: function getIdea(ideaId, successCb) {
                     successCb(mockIdea);
                 },
-                getIdeaHeaders: function getIdeaHeaders() {
-                    return [
+                getIdeaHeaders: function getIdeaHeaders(successCb) {
+                    successCb([
                         {
                             id: 'mock_idea',
                             title: 'The bestest Idea ever!',
                             author: 'Yash Kulshrestha',
+                            authorId: 1,
                             likes: 23
                         }
-                    ];
+                    ]);
                 },
                 postComment: function postComment(parentId, text, authorId, successCb) {
                     mockIdea.comments.push(

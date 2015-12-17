@@ -1,7 +1,6 @@
 /* global angular */
 /* global _ */
 /* global moment */
-/* global EventSource */
 
 // Dialog Controller used for controlling the behavior of the dialog
 //   used for backing.
@@ -89,8 +88,8 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
-        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc', '$window',
-        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc, $window) {
+        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc', 'sseSvc', '$window',
+        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc, sseSvc, $window) {
             "use strict";
 
             /*
@@ -166,9 +165,7 @@ angular.module('flintAndSteel')
 
             ctrl.refreshIdea();
 
-            var ideaUpdateEvents = new EventSource('/idea/' + $stateParams.ideaId + '/events');
-            ideaUpdateEvents.addEventListener("updateIdea_" + $stateParams.ideaId, function(event) {
-                var idea = JSON.parse(event.data);
+            function eventUpdateIdea(idea) {
                 if (typeof idea !== 'undefined' && idea !== null) {
                     $scope.$apply(function() {
                         $scope.idea = idea;
@@ -186,10 +183,12 @@ angular.module('flintAndSteel')
                     toastSvc.show(content);
                     $state.go('home');
                 }
-            });
+            }
+
+            sseSvc.create("updateIdea_" + $stateParams.ideaId, '/idea/' + $stateParams.ideaId + '/events', eventUpdateIdea);
 
             $scope.$on('$stateChangeStart', function() {
-                ideaUpdateEvents.close();
+                sseSvc.destroy();
             });
 
             $scope.momentizeTime = function momentizeTime(time) {
