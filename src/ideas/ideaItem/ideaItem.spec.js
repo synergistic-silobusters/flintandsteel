@@ -1,3 +1,4 @@
+/* global angular */
 /* global describe */
 /* global module */
 /* global beforeEach */
@@ -12,7 +13,7 @@ describe('ideaItem', function() {
 
     var scope, compile, element;
 
-    function getCompiledElement(){
+    function getCompiledElement() {
         var element = angular.element('<' + DIRECTIVE_NAME + '></' + DIRECTIVE_NAME + '>');
         var compiledElement = compile(element)(scope);
         scope.$digest();

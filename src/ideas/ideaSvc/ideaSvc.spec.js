@@ -178,7 +178,7 @@ describe('ideaSvc', function() {
                 parentId: dummyIdea._id,
                 text: "This is a test comment",
                 authorId: 1
-            }
+            };
         });
 
         it('should add a newly submitted comment', function() {
@@ -222,7 +222,7 @@ describe('ideaSvc', function() {
                 id: dummyIdea._id,
                 interactionType: "likes",
                 interactionObject: {userId: 1}
-            }
+            };
         });
 
         it('should add a new interaction', function() {
@@ -247,7 +247,7 @@ describe('ideaSvc', function() {
                 id: dummyIdea._id,
                 interactionType: "likes",
                 interactionObject: {userId: 1}
-            }
+            };
         });
 
         it('should remove an existing interaction', function() {
@@ -305,7 +305,7 @@ describe('ideaSvc', function() {
                 description: dummyIdea.description,
                 tags: dummyIdea.tags,
                 rolesreq: dummyIdea.rolesreq
-            }
+            };
         });
 
         it('should edit an existing idea', function() {

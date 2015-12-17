@@ -28,13 +28,13 @@ describe('HomeViewCtrl', function() {
     });
 
     describe('navToBrowse()', function() {
-        beforeEach(function(){
+        beforeEach(function() {
             spyOn($state, 'go');
         });
 
         it('should go to ideabrowse state', function() {
             scope.navToBrowse();
             expect($state.go).toHaveBeenCalledWith('ideabrowse');
-        })
+        });
     });
 });

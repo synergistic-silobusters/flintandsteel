@@ -1,12 +1,17 @@
 /* global angular */
-/* global EventSource */
 
 angular.module('flintAndSteel')
 .controller('IdeaBrowseViewCtrl',
     [
-        '$scope', 'ideaSvc',
-        function($scope, ideaSvc) {
+        '$scope', 'ideaSvc', 'sseSvc',
+        function($scope, ideaSvc, sseSvc) {
             "use strict";
+
+            function setIdeaHeaders(data) {
+                $scope.$apply(function() {
+                    $scope.topIdeas = data;
+                });
+            }
 
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
                 $scope.topIdeas = data;
@@ -14,16 +19,10 @@ angular.module('flintAndSteel')
                 console.log(status);
             });
 
-            var ideaAddEvents = new EventSource('/ideaheaders/events');
-            ideaAddEvents.addEventListener("newHeaders", function(event) {
-                var headers = JSON.parse(event.data);
-                $scope.$apply(function() {
-                    $scope.topIdeas = headers;
-                });
-            });
+            sseSvc.create("newHeaders", "/ideaheaders/events", setIdeaHeaders);
 
             $scope.$on('$stateChangeStart', function() {
-                ideaAddEvents.close();
+                sseSvc.destroy();
             });
         }
     ]
