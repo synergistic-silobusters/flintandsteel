@@ -49,13 +49,21 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
+            'src/app.js': ['coverage'],
+            'src/about/about.js': ['coverage'],
+            'src/toastSvc/toastSvc.js': ['coverage'],
+            'src/homeView/homeView.js': ['coverage'],
+            'src/ideas/**/!(*spec|*mock).js': ['coverage'],
+            'src/navigation/**/!(*spec|*mock).js': ['coverage'],
+            'src/users/**/!(*spec|*mock).js': ['coverage'],
+            'src/utilities/**/!(*spec|*mock).js': ['coverage']
         },
 
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage'],
 
 
         // web server port
