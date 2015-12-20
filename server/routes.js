@@ -1,6 +1,6 @@
 /* global module */
-/* not-used-global process */
-/* not-used-global Buffer */
+/* global process */
+/* global Buffer */
 
 
 module.exports = function(app, db) {
@@ -15,7 +15,8 @@ module.exports = function(app, db) {
         _ = require('lodash'),
         mongo = require('mongodb'),
         Promise = require('bluebird'),
-        ObjectId = mongo.ObjectID;
+        ObjectId = mongo.ObjectID,
+        passport = require('passport');
 
     var IdeasInstance = ideas.getInstance();
 
@@ -132,7 +133,7 @@ module.exports = function(app, db) {
         res.status(200).send('search has not been implemented yet!');
     });
 
-    app.post('/users/login', function(req, res) {
+    app.post('/users/login', function(req, res, next) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
         if (process.env.NODE_ENV !== 'production') {

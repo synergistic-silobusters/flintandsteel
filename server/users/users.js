@@ -62,7 +62,7 @@ module.exports = function(db) {
                     });
                 }
             });
-        })
+        });
     }
 
     var loginFn;
