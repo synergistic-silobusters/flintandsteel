@@ -43,21 +43,26 @@ module.exports = function(db) {
         });
     }
 
-    function findUser(username, cb) {
-        db.findOneByProperty(COLLECTION, "username", username, function(err, doc) {
-            if (err || doc === null) {
-                cb(err, module.errResObj);
-            }
-            else {
-                cb(null, {
-                    status: 'AUTH_OK',
-                    _id: doc._id,
-                    name: doc.fullName,
-                    username: doc.username,
-                    email: doc.email
-                });
-            }
-        });
+    function findUser(username) {
+        return new Promise(function(resolve, reject) {
+            db.findOneByProperty(COLLECTION, "username", username, function(err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                else if (doc === null) {
+                    resolve(module.errResObj);
+                }
+                else {
+                    resolve({
+                        status: 'AUTH_OK',
+                        _id: doc._id,
+                        name: doc.fullName,
+                        username: doc.username,
+                        email: doc.email
+                    });
+                }
+            });
+        })
     }
 
     var loginFn;

@@ -132,6 +132,91 @@ module.exports = function(app, db) {
         res.status(200).send('search has not been implemented yet!');
     });
 
+    app.post('/users/login', function(req, res) {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+        if (process.env.NODE_ENV !== 'production') {
+            if (req.body.password === 'test') {
+                users.findForLogin(req.body.username).then(function(responseObj) {  
+                    res.status(200).json(responseObj);
+                }).catch(function(err) {
+                    console.error(chalk.bgRed(err));
+                    res.sendStatus(500);
+                });
+            }
+            else {
+                res.status(200).json(users.errResObj);
+            }
+        }
+        else {
+            req.body.password = new Buffer(req.body.password, "base64").toString("ascii");
+            passport.authenticate('WindowsAuthentication', function(err, user) {
+                if (err) {
+                    return next(err);
+                }
+                if (!user) {
+                    return res.status(200).json(users.errResObj);
+                }
+
+                req.login(user, function(err) {
+                    if (err) {
+                        console.error(chalk.bgRed(err));
+                        return res.status(200).json(users.errResObj);
+                    }
+                    else {
+                        users.findForLogin(user, function(err, responseObj) {
+                            if (err) {
+                                console.error(chalk.bgRed(err));
+                                return res.status(200).json(users.errResObj);
+                            }
+                            else {
+                                return res.status(200).json(responseObj);
+                            }
+                        });
+                    }
+                });
+            })(req, res, next);
+        }
+    });
+
+    app.delete('/users/:id', function(req, res) {
+        var promises = [], patchDelete = [
+            { "operation": "modify", "path": "firstName", "value": "\"Deleted\"" },
+            { "operation": "modify", "path": "lastName", "value": "\"User\"" },
+            { "operation": "modify", "path": "fullName", "value": "\"Deleted User\"" },
+            { "operation": "modify", "path": "username", "value": "\"deleted_user\"" },
+            { "operation": "modify", "path": "email", "value": "\"deleted@deleted.com\"" },
+            { "operation": "delete", "path": "nickname" },
+            { "operation": "delete", "path": "title" }
+        ];
+
+        _.forEach(patchDelete, function(patchOp) {
+            promises.push(db.patchObject('users', req.params.id, patchOp));
+        });
+
+        Promise.all(promises).then(function(results) {
+            res.status(200).json({ message: 'User marked deleted.', opResults: results });
+        }).catch(function(error) {
+            console.log(error);
+            res.sendStatus(500);
+        });
+    });
+
+    app.patch('/users/:id', function(req, res) {
+        var promises = [];
+
+        _.forEach(req.body, function(patchOp) {
+            promises.push(db.patchObject('users', req.params.id, patchOp));
+        });
+
+        Promise.all(promises).then(function(results) {
+            res.status(200).json(results);
+        }).catch(function(error) {
+            console.log(error);
+            res.sendStatus(500);
+        });
+    });
+
     /*var users = require('./users/users')(GLOBAL.db),
         ideas = require('./ideas/ideas')(GLOBAL.db),
         comments = require('./comments/comments')(GLOBAL.db),

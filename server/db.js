@@ -305,22 +305,18 @@ module.exports = function(dbName, cb) {
         );
     };
 
-    module.deleteOne = function deleteOne(collection, id, cb) {
+    module.deleteOne = function deleteOne(collection, id) {
         var objId = new ObjectId(id);
 
-        db.collection(collection).deleteOne({ _id: objId },function(err, results) {
+        return new Promise(function(resolve, reject) {
+            db.collection(collection).deleteOne({ _id: objId },function(err, results) {
             if (err) {
-                console.error(chalk.bgRed(err));
-                cb(err);
-            }
-            else if (results.nMatched === 0) {
-                console.error(chalk.yellow('No documents with id ' + id + ' were found.'));
-                cb(null, results);
+                reject(err);
             }
             else {
-                // console.log(chalk.bgGreen('Document with id %s removed from the ' + collection + ' collection.'), id);
-                cb(null, results);
+                resolve(results);
             }
+        });
         });
     };
 
@@ -337,23 +333,23 @@ module.exports = function(dbName, cb) {
             if (/append|create|modify/.test(command.operation)) {
                 valueObj = JSON.parse(command.value);
 
-                // jshint newcap:false
-                if (command.path === 'backs' || command.path === 'updates' && valueObj.authorId) {
-                    valueObj.authorId = ObjectId(valueObj.authorId);
+                if (collection === 'ideas') {
+                    // jshint newcap:false
+                    if (command.path === 'backs' || command.path === 'updates' && valueObj.authorId) {
+                        valueObj.authorId = ObjectId(valueObj.authorId);
+                    }
+                    else if (command.path === 'team' && valueObj.memberId) {
+                        valueObj.memberId = ObjectId(valueObj.memberId);
+                    }
+                    else if (command.path === 'likes' && valueObj.userId) {
+                        valueObj.userId = ObjectId(valueObj.userId);
+                    }
+                    else if (command.path === 'eventId') {
+                        valueObj = ObjectId(valueObj);
+                    }
+                    // jshint newcap:true
                 }
-                else if (command.path === 'team' && valueObj.memberId) {
-                    valueObj.memberId = ObjectId(valueObj.memberId);
-                }
-                else if (command.path === 'likes' && valueObj.userId) {
-                    valueObj.userId = ObjectId(valueObj.userId);
-                }
-                else if (command.path === 'eventId') {
-                    valueObj = ObjectId(valueObj);
-                }
-                // jshint newcap:true
             }
-
-            console.log(valueObj);
                     
             switch (command.operation) {
                 case "append":
