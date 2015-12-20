@@ -52,6 +52,15 @@ var insertResult = db.users.insert(
             email: 'test3@test.com',
             nickname: 'The Fracker',
             title: 'Money Bags Oil Man'
+        },
+        {
+            firstName: 'Test',
+            lastName: 'testerson',
+            fullName: 'Test Testerson',
+            username: 'test4',
+            email: 'test4@test.com',
+            nickname: 'The Tester',
+            title: 'Testin\' All Day'
         }
     ]
 );
