@@ -131,7 +131,8 @@ module.exports = function(db) {
             authorId: 1,
             likes: 1,
             backs: 1,
-            tags: 1
+            tags: 1,
+            team: 1
         };
 
         return new Promise(function(resolve, reject) {
