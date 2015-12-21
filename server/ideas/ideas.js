@@ -152,7 +152,8 @@ module.exports = function(db) {
                             authorId: doc.authorId,
                             abstract: _.take(_.words(doc.description), 20).join(' '),
                             likes: doc.likes.length,
-                            backs: doc.backs.length
+                            backs: doc.backs.length,
+                            team: doc.team.length
                         });
                     });
                     resolve(headers);
