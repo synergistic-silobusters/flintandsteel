@@ -32,15 +32,12 @@ module.exports = function(db) {
                 resolve();
                 return;
             }
-            events.get(data.eventId, function(err, ideaEventObj) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-                else {
-                    data.event = ideaEventObj;
-                    resolve(data);
-                }
+            events.get(data.eventId).then(function(ideaEventObj) {
+                data.event = ideaEventObj;
+                resolve(data);
+            }).catch(function(err) {
+                console.log(err);
+                reject(err);
             });
         });
 

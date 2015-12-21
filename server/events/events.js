@@ -15,9 +15,16 @@ module.exports = function(db) {
         });
     };
 
-    module.get = function(id, cb) {
-        db.findOneById(COLLECTION, id, function(err, doc) {
-            cb(err, doc);
+    module.get = function(id) {
+        return new Promise(function(resolve, reject) {
+            db.findOneById(COLLECTION, id, function(err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(doc);
+                }
+            });
         });
     };
 
