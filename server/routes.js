@@ -10,6 +10,7 @@ module.exports = function(app, db) {
 
     var ideas = require('./ideas/ideas')(db),
         users = require('./users/users')(db),
+        events = require('./events/events')(db),
         replaceIds = require('./replaceIds')(db),
         chalk = require('chalk'),
         _ = require('lodash'),
@@ -215,6 +216,14 @@ module.exports = function(app, db) {
         }).catch(function(error) {
             console.log(error);
             res.sendStatus(500);
+        });
+    });
+
+    app.get('/events', function(req, res) {
+        events.getAll().then(function(results) {
+            res.status(200).json(results);
+        }).catch(function(error) {
+            res.senStatus(500);
         });
     });
 
