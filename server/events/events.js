@@ -8,11 +8,18 @@ module.exports = function(db) {
 
     var COLLECTION = "events";
 
-    module.create = function(parentId, text, authorId, cb) {
-        var event = EventModel.create(parentId, text, authorId);
-        db.insertOne(COLLECTION, event, function(err, doc) {
-            cb(err, doc);
-        });
+    module.create = function(name, location, startDate, endDate) {
+        return new Promise(function(resolve, reject) {    
+            var event = EventModel.create(name, location, startDate, endDate);
+            db.insertOne(COLLECTION, event, function(err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(doc);
+                }
+            });
+        })
     };
 
     module.get = function(id) {
