@@ -4,7 +4,8 @@ module.exports = function(db) {
     "use strict";
     var module = {};
 
-    var EventModel = require('./eventModel');
+    var EventModel = require('./eventModel'),
+        Promise = require('bluebird');
 
     var COLLECTION = "events";
 
@@ -19,7 +20,7 @@ module.exports = function(db) {
                     resolve(doc);
                 }
             });
-        })
+        });
     };
 
     module.get = function(id) {

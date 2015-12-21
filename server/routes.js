@@ -114,7 +114,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.get('/users/:id', function(req, res, next) {
+    app.get('/users/:id', function(req, res) {
         users.get(req.params.id, true).then(function(results) {
             res.status(200).json(results);
         }).catch(function(error) {
@@ -227,7 +227,7 @@ module.exports = function(app, db) {
         }).catch(function(error) {
             console.log(error);
             res.sendStatus(500);
-        })
+        });
     });
 
     app.post('/events', function(req, res) {
