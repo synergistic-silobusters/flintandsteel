@@ -21,9 +21,16 @@ module.exports = function(db) {
         });
     };
 
-    module.getAll = function(cb) {
-        db.find(COLLECTION, {}, function(err, docs) {
-            cb(err, docs);
+    module.getAll = function() {
+        return new Promise(function(resolve, reject) {
+            db.find(COLLECTION, {}, function(err, docs) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(docs);
+                }
+            });
         });
     };
 
