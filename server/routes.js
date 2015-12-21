@@ -239,6 +239,15 @@ module.exports = function(app, db) {
         });
     });
 
+    app.delete('/events/:id', function(req, res) {
+        db.deleteOne('events', req.params.id).then(function() {
+            res.sendStatus(204);
+        }).catch(function(error) {
+            console.log(error);
+            res.sendStatus(500);
+        });
+    });
+
     app.patch('/events/:id', function(req, res) {
         var promises = [];
 
