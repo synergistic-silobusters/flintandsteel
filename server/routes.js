@@ -223,8 +223,18 @@ module.exports = function(app, db) {
         events.getAll().then(function(results) {
             res.status(200).json(results);
         }).catch(function(error) {
+            console.log(error);
             res.senStatus(500);
         });
+    });
+
+    app.get('/events/:id', function(req, res) {
+        events.get(req.params.id).then(function(result) {
+            res.status(200).json(result);
+        }).catch(function(error) {
+            console.log(error);
+            res.sendStatus(500);
+        })
     });
 
     /*var users = require('./users/users')(GLOBAL.db),
