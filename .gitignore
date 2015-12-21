@@ -75,3 +75,6 @@ server/datastore
 
 # Secrets files
 server/secrets
+
+# Code Coverage
+coverage
