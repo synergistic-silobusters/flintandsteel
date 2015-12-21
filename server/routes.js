@@ -239,6 +239,21 @@ module.exports = function(app, db) {
         });
     });
 
+    app.patch('/events/:id', function(req, res) {
+        var promises = [];
+
+        _.forEach(req.body, function(patchOp) {
+            promises.push(db.patchObject('events', req.params.id, patchOp));
+        });
+
+        Promise.all(promises).then(function(results) {
+            res.status(200).json(results);
+        }).catch(function(error) {
+            console.log(error);
+            res.sendStatus(500);
+        });
+    });
+
     /*var users = require('./users/users')(GLOBAL.db),
         ideas = require('./ideas/ideas')(GLOBAL.db),
         comments = require('./comments/comments')(GLOBAL.db),
