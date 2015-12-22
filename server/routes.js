@@ -22,6 +22,24 @@ module.exports = function(app, db) {
 
     var IdeasInstance = ideas.getInstance();
 
+    function startSees(res) {
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+            'Transfer-Encoding': 'identity'
+        });
+        res.write("\n");
+
+        return function sendSse(name, data, id) {
+            res.write("event: " + name + "\n");
+            if (id) {
+                res.write("id: " + id + "\n");
+            }
+            res.write("data: " + JSON.stringify(data) + "\n\n");
+        };
+    }
+
     app.get('/ideas', function(req, res) {
         ideas.fetch().then(function(headers) {
             return replaceIds.headers(headers);
@@ -91,6 +109,9 @@ module.exports = function(app, db) {
     app.delete('/ideas/:id', function(req, res) {
         ideas.delete(req.params.id).then(function() {
             res.sendStatus(204);
+            return ideas.fetch();
+        }).then(function(headers) {
+            IdeasInstance.updateHeaders(headers);
         }).catch(function(error) {
             console.error(chalk.bgRed(error));
             res.sendStatus(500);
@@ -107,6 +128,13 @@ module.exports = function(app, db) {
 
         Promise.all(promises).then(function(results) {
             res.status(200).json(results);
+            return Promise.all([
+                ideas.get(req.params.id),
+                ideas.fetch()
+            ]);
+        }).then(function(ideaResults) {
+            IdeasInstance.updateidea(ideaResults[0]);
+            IdeasInstance.updateHeaders(ideaResults[1]);
         }).catch(function(error) {
             console.log(error);
             res.sendStatus(500);
@@ -327,6 +355,46 @@ module.exports = function(app, db) {
         }).catch(function(error) {
             console.log(error);
             res.sendStatus(500);
+        });
+    });
+
+    app.get('/sse/ideas', function(req, res) {
+        var sse = startSees(res);
+
+        function updateHeaders(headers) {
+            replaceIds.headers(headers).then(function(headersData) {
+                sse("newHeaders", headersData);
+            }).catch(function(err) {
+                console.error(chalk.bgRed(err));
+            });
+        }
+
+        IdeasInstance.on("newHeaders", updateHeaders);
+
+        req.on("close", function() {
+            IdeasInstance.removeListener("newHeaders", updateHeaders);
+        });
+    });
+
+    app.get('/sse/ideas/:id', function(req, res) {
+        var sse = startSees(res);
+
+        function updateIdea(idea) {
+            if (idea === null) {
+                sse("updateIdea_" + req.params.id, idea, req.params.id);
+                return;
+            }
+            replaceIds.idea(idea).then(function(ideaData) {
+                sse("updateIdea_" + req.params.id, ideaData, req.params.id);
+            }).catch(function(err) {
+                console.error(chalk.bgRed(err));
+            });
+        }
+
+        IdeasInstance.on("updateIdea_" + req.params.id, updateIdea);
+
+        req.on("close", function() {
+            IdeasInstance.removeListener("updateIdea_" + req.params.id, updateIdea);
         });
     });
 
