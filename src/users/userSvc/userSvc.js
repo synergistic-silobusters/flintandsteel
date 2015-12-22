@@ -41,7 +41,7 @@ angular.module('flintAndSteel')
 
             this.getUserById = function getUserById(userId) {
                 if (userId) {
-                    return $http.get('/user/' + userId);
+                    return $http.get('/users/' + userId);
                 }
                 else {
                     return $q.when(false);
