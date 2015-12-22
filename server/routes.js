@@ -276,7 +276,7 @@ module.exports = function(app, db) {
                 return db.patchObject('ideas', results[0]._id, patchComments);
             }
             else {
-                return new Promise(function(resolve, reject) {
+                return new Promise(function(resolve) {
                     resolve(results[1]);
                 });
             }
@@ -315,7 +315,7 @@ module.exports = function(app, db) {
                 return db.patchObject('ideas', idea._id, patchComments);
             }
             else {
-                return new Promise(function(resolve, reject) {
+                return new Promise(function(resolve) {
                     resolve();
                 });
             }    
