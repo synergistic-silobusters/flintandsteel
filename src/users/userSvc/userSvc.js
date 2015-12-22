@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.factory('loginSvc',
+.factory('userSvc',
     [
         '$http', '$rootScope',
         function($http, $rootScope) {

@@ -3,8 +3,8 @@
 /* global moment */
 
 // Dialog Controller used for controlling the behavior of the dialog
-//   used for backing.
-function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc) {
+// used for backing.
+function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj, author, userSvc) {
     "use strict";
 
     // Populate values based off current back info
@@ -18,7 +18,7 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc
     }
 
     this.isUserAuthor = function() {
-        if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === author) {
+        if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === author) {
             return true;
         }
         return false;
@@ -88,8 +88,8 @@ function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
-        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'loginSvc', '$state', 'toastSvc', 'sseSvc', '$window',
-        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, loginSvc, $state, toastSvc, sseSvc, $window) {
+        '$scope', '$stateParams', '$interval', '$mdDialog', 'ideaSvc', 'userSvc', '$state', 'toastSvc', 'sseSvc', '$window',
+        function($scope, $stateParams, $interval, $mdDialog, ideaSvc, userSvc, $state, toastSvc, sseSvc, $window) {
             "use strict";
 
             /*
@@ -202,7 +202,7 @@ angular.module('flintAndSteel')
             $scope.addNewInteraction = function addNewInteraction(type) {
                 var now = new Date().toISOString();
                 if (type === 'comments') {
-                    ideaSvc.postComment($scope.idea._id, ctrl.newComment, loginSvc.getProperty('_id'),
+                    ideaSvc.postComment($scope.idea._id, ctrl.newComment, userSvc.getProperty('_id'),
                         function success() {
                             ctrl.refreshIdea();
                         },
@@ -216,13 +216,13 @@ angular.module('flintAndSteel')
                 var obj;
                 if (type === 'likes') {
                     obj = {
-                        userId: loginSvc.getProperty('_id')
+                        userId: userSvc.getProperty('_id')
                     };
                 }
                 else if (type === 'backs') {
                     obj = {
                         text: ctrl.newBack,
-                        authorId: loginSvc.getProperty('_id'),
+                        authorId: userSvc.getProperty('_id'),
                         timeCreated: now,
                         timeModified: '',
                         types: $scope.selectedTypes
@@ -235,7 +235,7 @@ angular.module('flintAndSteel')
                 else if (type === 'updates') {
                     obj = {
                         text: ctrl.newUpdate,
-                        authorId: loginSvc.getProperty('_id'),
+                        authorId: userSvc.getProperty('_id'),
                         timeCreated: now
                     };
 
@@ -255,7 +255,7 @@ angular.module('flintAndSteel')
             $scope.removeInteraction = function removeInteraction(type, obj) {
                 if (type === 'likes') {
                     var likeObj = {
-                        userId: loginSvc.getProperty('_id')
+                        userId: userSvc.getProperty('_id')
                     };
                     ideaSvc.removeInteraction($scope.idea._id, type, likeObj,
                         function success() {
@@ -301,7 +301,7 @@ angular.module('flintAndSteel')
             };
 
             $scope.isUserLiked = function isUserLiked() {
-                var userId = loginSvc.getProperty('_id');
+                var userId = userSvc.getProperty('_id');
                 return (_.findIndex($scope.idea.likes, function(like) { return like.userId === userId;}) !== -1);
             };
 
@@ -310,7 +310,7 @@ angular.module('flintAndSteel')
                 return results;
             };
 
-            $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+            $scope.isUserLoggedIn = userSvc.isUserLoggedIn;
 
             $scope.ideaHasImage = function() {
                 return typeof $scope.idea.image !== 'undefined';
@@ -356,7 +356,7 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserAuthor = function() {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === $scope.idea.authorId) {
+                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === $scope.idea.authorId) {
                     return true;
                 }
                 return false;
@@ -466,9 +466,9 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserMemberOfTeam = function() {
-                if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
+                if (angular.isDefined($scope.idea.team) && userSvc.isUserLoggedIn()) {
                     for (var i = 0; i < $scope.idea.team.length; i++) {
-                        if (loginSvc.getProperty('_id') === $scope.idea.team[i].memberId) {
+                        if (userSvc.getProperty('_id') === $scope.idea.team[i].memberId) {
                             return true;
                         }
                     }
@@ -477,8 +477,8 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserExactMemberOfTeam = function(teamIndex) {
-                if (angular.isDefined($scope.idea.team) && loginSvc.isUserLoggedIn()) {
-                    if (loginSvc.getProperty('_id') === $scope.idea.team[teamIndex].memberId) {
+                if (angular.isDefined($scope.idea.team) && userSvc.isUserLoggedIn()) {
+                    if (userSvc.getProperty('_id') === $scope.idea.team[teamIndex].memberId) {
                         return true;
                     }
                 }
@@ -492,7 +492,7 @@ angular.module('flintAndSteel')
             };
 
             ctrl.isUserAuthorOfInteraction = function(interactionObj) {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === interactionObj.authorId) {
+                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === interactionObj.authorId) {
                     return true;
                 }
                 return false;
@@ -627,9 +627,9 @@ angular.module('flintAndSteel')
             // Checks if the current user has backed the current idea
             $scope.hasUserBacked = function() {
                 var hasUserBacked = false;
-                if (loginSvc.isUserLoggedIn() && typeof $scope.idea.backs !== 'undefined') {
+                if (userSvc.isUserLoggedIn() && typeof $scope.idea.backs !== 'undefined') {
                     $scope.idea.backs.forEach(function(back) {
-                        if (loginSvc.getProperty('_id') === back.authorId) {
+                        if (userSvc.getProperty('_id') === back.authorId) {
                             hasUserBacked = true;
                         }
                     });
@@ -650,7 +650,7 @@ angular.module('flintAndSteel')
                 if (typeof backObj === "undefined") {
                     var backs = $scope.idea.backs;
                     for (var i = 0; i < backs.length; i++) {
-                        if (loginSvc.getProperty('_id') === backs[i].authorId) {
+                        if (userSvc.getProperty('_id') === backs[i].authorId) {
                             backObj = backs[i];
                             break;
                         }

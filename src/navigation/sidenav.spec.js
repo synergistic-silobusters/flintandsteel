@@ -9,20 +9,20 @@
 describe('SidenavCtrl', function() {
     "use strict";
 
-    var $rootScope, scope, ctrl, $mdSidenav, $state, ideaSvcMock, loginSvcMock, sseSvcMock;
+    var $rootScope, scope, ctrl, $mdSidenav, $state, ideaSvcMock, userSvcMock, sseSvcMock;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
     // needed because $state takes us to home by default
     beforeEach(module('homeView/homeView.tpl.html'));
 
-    beforeEach(inject(function(_$rootScope_, $controller, _$state_, _$mdSidenav_, _ideaSvcMock_, _loginSvcMock_, _sseSvcMock_) {
+    beforeEach(inject(function(_$rootScope_, $controller, _$state_, _$mdSidenav_, _ideaSvcMock_, _userSvcMock_, _sseSvcMock_) {
         $rootScope = _$rootScope_;
         scope = $rootScope.$new();
         $state = _$state_;
         $mdSidenav = _$mdSidenav_;
         ideaSvcMock = _ideaSvcMock_;
-        loginSvcMock = _loginSvcMock_;
+        userSvcMock = _userSvcMock_;
         sseSvcMock = _sseSvcMock_;
 
         spyOn($state, 'go');
@@ -37,7 +37,7 @@ describe('SidenavCtrl', function() {
             $state: $state,
             $mdSidenav: $mdSidenav,
             ideaSvc: ideaSvcMock,
-            loginSvc: loginSvcMock,
+            userSvc: userSvcMock,
             sseSvc: sseSvcMock
         });
     }));
@@ -74,7 +74,7 @@ describe('SidenavCtrl', function() {
         it('should navigate to the add idea page if user is logged in and tries to add idea', function() {
             var account = {'username': 'MainManDarth'};
 
-            loginSvcMock.checkLogin(account);
+            userSvcMock.checkLogin(account);
             state = 'addIdea';
             scope.navTo(state);
 

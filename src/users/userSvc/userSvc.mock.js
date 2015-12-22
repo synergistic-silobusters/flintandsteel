@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.factory('loginSvcMock',
+.factory('userSvcMock',
     [
         function() {
             "use strict";

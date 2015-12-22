@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('SidenavCtrl',
     [
-        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'loginSvc', 'sseSvc',
-        function($scope, $state, $mdSidenav, ideaSvc, loginSvc, sseSvc) {
+        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'userSvc', 'sseSvc',
+        function($scope, $state, $mdSidenav, ideaSvc, userSvc, sseSvc) {
             "use strict";
 
             function setIdeaHeaders(data) {
@@ -27,7 +27,7 @@ angular.module('flintAndSteel')
 
             $scope.navTo = function navTo(state) {
                 if (state === 'addIdea') {
-                    if (loginSvc.isUserLoggedIn()) {
+                    if (userSvc.isUserLoggedIn()) {
                         $state.go(state);
                     }
                     else {
@@ -45,7 +45,7 @@ angular.module('flintAndSteel')
                 }
             };
 
-            $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+            $scope.isUserLoggedIn = userSvc.isUserLoggedIn;
 
             $scope.$root.$on('newIdeaAdded', refreshHeaders);
         }

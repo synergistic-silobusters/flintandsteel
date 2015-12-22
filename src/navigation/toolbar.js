@@ -31,15 +31,15 @@ function DialogController($scope, $mdDialog) {
 angular.module('flintAndSteel')
 .controller('ToolbarCtrl',
     [
-        '$scope', '$state', '$stateParams', '$mdSidenav', 'loginSvc', '$mdDialog', 'toastSvc',
-        function($scope, $state, $stateParams, $mdSidenav, loginSvc, $mdDialog, toastSvc) {
+        '$scope', '$state', '$stateParams', '$mdSidenav', 'userSvc', '$mdDialog', 'toastSvc',
+        function($scope, $state, $stateParams, $mdSidenav, userSvc, $mdDialog, toastSvc) {
             "use strict";
 
             $scope.displayOverflow = false;
 
             $scope.accountClick = function accountClick() {
 
-                if (loginSvc.isUserLoggedIn()) {
+                if (userSvc.isUserLoggedIn()) {
                     $state.go('account');
                 }
                 else {
@@ -55,11 +55,11 @@ angular.module('flintAndSteel')
                 $mdSidenav('left').toggle();
             };
 
-            $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+            $scope.isUserLoggedIn = userSvc.isUserLoggedIn;
 
             $scope.getUsername = function getUsername() {
                 if ($scope.isUserLoggedIn()) {
-                    return loginSvc.getProperty('username');
+                    return userSvc.getProperty('username');
                 }
                 return null;
             };
@@ -82,7 +82,7 @@ angular.module('flintAndSteel')
 
             // Function used to display feedback on login - OK, Error, or User Not Found
             $scope.loginUser = function(account) {
-                loginSvc.checkLogin(account, function LoginSuccess(data) {
+                userSvc.checkLogin(account, function LoginSuccess(data) {
                     var content;
                     if (data.status === 'AUTH_OK') {
                         $scope.currentUser = data.name;
@@ -103,8 +103,8 @@ angular.module('flintAndSteel')
 
             // Logout from menu
             $scope.logout = function logout() {
-                var accountName = loginSvc.getProperty('name');
-                loginSvc.logout();
+                var accountName = userSvc.getProperty('name');
+                userSvc.logout();
                 toastSvc.show(accountName + ' has been logged out!');
 
                 // Reload if editing data to clear partial content

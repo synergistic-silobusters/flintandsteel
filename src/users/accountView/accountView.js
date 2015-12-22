@@ -3,21 +3,21 @@
 angular.module('flintAndSteel')
 .controller('AccountViewCtrl',
     [
-        '$scope', '$state', 'toastSvc', 'loginSvc', 'ideaSvc',
-        function($scope, $state, toastSvc, loginSvc, ideaSvc) {
+        '$scope', '$state', 'toastSvc', 'userSvc', 'ideaSvc',
+        function($scope, $state, toastSvc, userSvc, ideaSvc) {
             "use strict";
 
             // NOTE: Nothing can go above this!
-            if (!loginSvc.isUserLoggedIn()) {
+            if (!userSvc.isUserLoggedIn()) {
                 $state.go('home');
             }
             else {
                 // Replace this with a DB read from logged in user
                 $scope.user = {
-                    username: loginSvc.getProperty('username'),
-                    password: loginSvc.getProperty('password'),
-                    name: loginSvc.getProperty('name'),
-                    email: loginSvc.getProperty('email')
+                    username: userSvc.getProperty('username'),
+                    password: userSvc.getProperty('password'),
+                    name: userSvc.getProperty('name'),
+                    email: userSvc.getProperty('email')
                 };
             }
 
@@ -26,7 +26,7 @@ angular.module('flintAndSteel')
 
                 // Find all User Ideas
                 for (var i = 0; i < data.length; i++) {  // was let
-                    if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === data[i].authorId) {
+                    if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === data[i].authorId) {
                         $scope.userIdeas.push(data[i]);
                     }
                 }
@@ -37,8 +37,8 @@ angular.module('flintAndSteel')
 
             // /Replace
             $scope.logout = function logout() {
-                var accountName = loginSvc.getProperty('name');
-                loginSvc.logout();
+                var accountName = userSvc.getProperty('name');
+                userSvc.logout();
 
                 toastSvc.show(accountName + ' has been logged out!', { duration: 5000 });
 

@@ -9,7 +9,7 @@
 describe('IdeasViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc, sseSvcMock;
+    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, userSvcMock, $state, toastSvc, sseSvcMock;
 
     var authorAccount = {
         id: 1,
@@ -25,12 +25,12 @@ describe('IdeasViewCtrl', function() {
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _loginSvcMock_, _$state_, _toastSvc_, _sseSvcMock_) {
+    beforeEach(inject(function($rootScope, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _userSvcMock_, _$state_, _toastSvc_, _sseSvcMock_) {
         scope = $rootScope.$new();
         $stateParams = _$stateParams_;
         $mdDialog = _$mdDialog_;
         ideaSvcMock = _ideaSvcMock_;
-        loginSvcMock = _loginSvcMock_;
+        userSvcMock = _userSvcMock_;
         $state = _$state_;
         toastSvc = _toastSvc_;
         sseSvcMock = _sseSvcMock_;
@@ -40,7 +40,7 @@ describe('IdeasViewCtrl', function() {
             $stateParams: $stateParams,
             $mdDialog: $mdDialog,
             ideaSvc: ideaSvcMock,
-            loginSvc: loginSvcMock,
+            userSvc: userSvcMock,
             $state: $state,
             toastSvc: toastSvc,
             sseSvc: sseSvcMock
@@ -114,7 +114,7 @@ describe('IdeasViewCtrl', function() {
         var ideaLikes, commentsLength, backsLength, updatesLength;
 
         beforeEach(function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
 
             scope.addNewInteraction('likes');
             ideaLikes = scope.idea.likes.length;
@@ -215,7 +215,7 @@ describe('IdeasViewCtrl', function() {
         var mockIdea;
 
         beforeEach(function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -223,14 +223,14 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should allow the author to edit the idea', function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             expect(ctrl.isUserAuthor()).toBe(true);
             ctrl.editIdea(mockIdea.title, mockIdea.description, mockIdea.tags);
             expect(ideaSvcMock.editIdea).toHaveBeenCalled();
         });
 
         it('should not allow someone other than the author to edit the idea', function() {
-            loginSvcMock.checkLogin(nonAuthorAccount);
+            userSvcMock.checkLogin(nonAuthorAccount);
             expect(ctrl.isUserAuthor()).toBe(false);
             ctrl.editIdea(mockIdea.title, mockIdea.description, mockIdea.tags);
             expect(ideaSvcMock.editIdea).not.toHaveBeenCalled();
@@ -383,7 +383,7 @@ describe('IdeasViewCtrl', function() {
         var mockIdea;
 
         beforeEach(function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -391,14 +391,14 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should allow the author to delete the idea', function() {
-            loginSvcMock.checkLogin(authorAccount);
-            expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+            userSvcMock.checkLogin(authorAccount);
+            expect(userSvcMock.isUserLoggedIn()).toBe(true);
             ctrl.deleteIdea();
             expect(ideaSvcMock.deleteIdea).toHaveBeenCalled();
         });
 
         it('should not allow someone other than the author to delete the idea', function() {
-            loginSvcMock.checkLogin(nonAuthorAccount);
+            userSvcMock.checkLogin(nonAuthorAccount);
             ctrl.deleteIdea();
             expect(ideaSvcMock.deleteIdea).not.toHaveBeenCalled();
         });
@@ -417,15 +417,15 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should allow the author to delete it', function() {
-            loginSvcMock.checkLogin(authorAccount);
-            expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+            userSvcMock.checkLogin(authorAccount);
+            expect(userSvcMock.isUserLoggedIn()).toBe(true);
             scope.removeInteraction("comments", scope.idea.comments[commentIndex]);
             expect(ideaSvcMock.deleteComment).toHaveBeenCalled();
             expect(scope.idea.comments.length).toBe(originalLength - 1);
         });
 
         it('should not allow someone other than the author to delete the idea', function() {
-            loginSvcMock.checkLogin(nonAuthorAccount);
+            userSvcMock.checkLogin(nonAuthorAccount);
             scope.removeInteraction("comments", scope.idea.comments[commentIndex]);
             expect(ideaSvcMock.deleteComment).not.toHaveBeenCalled();
             expect(scope.idea.comments.length).toBe(originalLength);
@@ -450,14 +450,14 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should allow the author to delete it', function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             scope.removeInteraction('updates', scope.idea.updates[updateIndex]);
             expect(ideaSvcMock.removeInteraction).toHaveBeenCalled();
             expect(scope.idea.updates.length).toBe(updateIndex);
         });
 
         it('should not allow someone other than the author to delete the idea', function() {
-            loginSvcMock.checkLogin(nonAuthorAccount);
+            userSvcMock.checkLogin(nonAuthorAccount);
             scope.removeInteraction('updates', scope.idea.updates[updateIndex]);
             expect(ideaSvcMock.removeInteraction).not.toHaveBeenCalled();
             expect(scope.idea.updates.length).toBe(originalLength);
@@ -475,8 +475,8 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should allow the author to edit it', function() {
-            loginSvcMock.checkLogin(authorAccount);
-            expect(loginSvcMock.isUserLoggedIn()).toBe(true);
+            userSvcMock.checkLogin(authorAccount);
+            expect(userSvcMock.isUserLoggedIn()).toBe(true);
             ctrl.editBackText = "This back was edited!";
             ctrl.editBack(scope.idea.backs[backIndex]);
             expect(ideaSvcMock.editBack).toHaveBeenCalled();
@@ -484,7 +484,7 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should not allow someone other than the author to edit the back', function() {
-            loginSvcMock.checkLogin(nonAuthorAccount);
+            userSvcMock.checkLogin(nonAuthorAccount);
             ctrl.editBack(scope.idea.backs[backIndex]);
             expect(ideaSvcMock.editBack).not.toHaveBeenCalled();
         });
@@ -506,21 +506,21 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should allow the author to delete the back', function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             scope.removeInteraction('backs', scope.idea.backs[backIndex]);
             expect(ideaSvcMock.removeInteraction).toHaveBeenCalled();
             expect(scope.idea.backs.length).toBe(backIndex);
         });
 
         it('should not allow someone other than the author to delete the back', function() {
-            loginSvcMock.checkLogin(nonAuthorAccount);
+            userSvcMock.checkLogin(nonAuthorAccount);
             scope.removeInteraction('backs', scope.idea.updates[backIndex]);
             expect(ideaSvcMock.removeInteraction).not.toHaveBeenCalled();
             expect(scope.idea.backs.length).toBe(backIndex + 1);
         });
 
         it('show ask for confirmation', function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             scope.removeBack();
             expect($mdDialog.show).toHaveBeenCalled();
         });
@@ -531,7 +531,7 @@ describe('IdeasViewCtrl', function() {
         var mockIdea;
 
         beforeEach(function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
             });
@@ -540,7 +540,7 @@ describe('IdeasViewCtrl', function() {
             teamLength = scope.idea.team.length;
             spyOn(ideaSvcMock, 'removeInteraction').and.callThrough();
             spyOn($mdDialog, 'show').and.callThrough();
-            spyOn(loginSvcMock, 'checkLogin').and.callThrough();
+            spyOn(userSvcMock, 'checkLogin').and.callThrough();
         });
 
         it('Should not display a team when no team exists', function() {
@@ -648,7 +648,7 @@ describe('IdeasViewCtrl', function() {
             expect(scope.idea.team.length).toBe(1);
 
             // Remove user from the team and verify the team is empty
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             ctrl.removeSelfFromTeam();
             expect($mdDialog.show).toHaveBeenCalled();
             scope.removeInteraction('backs', scope.idea.backs[backLength - 1]);
@@ -668,7 +668,7 @@ describe('IdeasViewCtrl', function() {
             expect(scope.idea.team.length).toBe(1);
 
             // Remove user from the team and verify the team is not empty
-            loginSvcMock.checkLogin(nonAuthorAccount);
+            userSvcMock.checkLogin(nonAuthorAccount);
             ctrl.removeSelfFromTeam();
             expect($mdDialog.show).not.toHaveBeenCalled();
             expect(scope.idea.team.length).toBe(1);

@@ -32,7 +32,7 @@ module.exports = function(config) {
             'src/app.js',
             'src/about/about.js',
             'src/ideas/ideaSvc/ideaSvc.mock.js',
-            'src/users/loginSvc/loginSvc.mock.js',
+            'src/users/userSvc/userSvc.mock.js',
             'src/toastSvc/toastSvc.js',
             'src/homeView/homeView.js',
             'src/ideas/**/*.js',
