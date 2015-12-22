@@ -3,7 +3,8 @@
 angular.module('flintAndSteel')
 .factory('userSvcMock',
     [
-        function() {
+        '$q',
+        function($q) {
             "use strict";
 
             var mockUserAccount = {
@@ -17,12 +18,17 @@ angular.module('flintAndSteel')
 
             return {
                 checkLogin: function checkLogin(account) {
+                    var response = {};
+                    response.data = {};
                     if (account.username === mockUserAccount.username) {
                         loggedIn = true;
+                        response.data.status = 'AUTH_OK';
                     }
                     else {
                         loggedIn = false;
+                        response.data.status = 'AUTH_ERROR';
                     }
+                    return $q.when(response);
                 },
                 isUserLoggedIn: function isUserLoggedIn() {
                     return loggedIn;
@@ -34,7 +40,7 @@ angular.module('flintAndSteel')
                     return mockUserAccount[propertyName];
                 },
                 getUserById: function getUserById() {
-                    return mockUserAccount;
+                    return $q.when(mockUserAccount);
                 }
             };
         }

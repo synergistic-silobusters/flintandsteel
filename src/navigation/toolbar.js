@@ -82,7 +82,7 @@ angular.module('flintAndSteel')
 
             // Function used to display feedback on login - OK, Error, or User Not Found
             $scope.loginUser = function(account) {
-                userSvc.checkLogin(account, function LoginSuccess(data) {
+                userSvc.checkLogin(account).then(function LoginSuccess(data) {
                     var content;
                     if (data.status === 'AUTH_OK') {
                         $scope.currentUser = data.name;

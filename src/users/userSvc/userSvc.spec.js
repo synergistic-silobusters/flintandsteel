@@ -28,7 +28,7 @@ describe('userSvc', function() {
 
         dummyRes = dummyUser;
         dummyRes.password = undefined;
-        dummyRes.status = 'AUTH_OKAY';
+        dummyRes.status = 'AUTH_OK';
     }));
 
     it('should exist', function() {
