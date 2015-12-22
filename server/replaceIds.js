@@ -73,6 +73,9 @@ module.exports = function(db) {
                     comments.get(comment.commentId).then(function(commentObj) {
                         for (var attrName in commentObj) {
                             if (commentObj.hasOwnProperty(attrName)) {
+                                if (attrName === '_id') {
+                                    continue;
+                                }
                                 comment[attrName] = commentObj[attrName];
                             }
                         }

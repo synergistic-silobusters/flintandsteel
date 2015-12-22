@@ -100,8 +100,8 @@ module.exports = function(dbName, cb) {
                     resolve(doc);
                 }
                 else {
-                    var errNotFound = "Document " + id + " was not found in " + collection + " collection!";
-                    reject(errNotFound);
+                    var errNotFound = "NOT_FOUND";
+                    resolve(errNotFound);
                 }
             });
         });
@@ -341,6 +341,9 @@ module.exports = function(dbName, cb) {
                     else if (command.path === 'likes' && valueObj.userId) {
                         valueObj.userId = new ObjectId(valueObj.userId);
                     }
+                    else if (command.path === 'comments' && valueObj.commentId) {
+                        valueObj.commentId = new ObjectId(valueObj.commentId);
+                    }
                     else if (command.path === 'eventId') {
                         valueObj = new ObjectId(valueObj);
                     }
@@ -364,13 +367,16 @@ module.exports = function(dbName, cb) {
                     break;
                 case "delete":
                     toChange = {};
-                    if (/backs|team|updates|likes/.test(command.path)) {
+                    if (/backs|team|updates|likes|comments/.test(command.path)) {
                         path = command.path.split('/')[0];
                         idToChange = command.path.split('/')[1];
 
-                        // jshint newcap:false
-                        toChange[path] = { _id: ObjectId(idToChange) };
-                        // jshint newcap:true
+                        if (/comments/.test(command.path)) {
+                            toChange[path] = { commentId: new ObjectId(idToChange) };
+                        }
+                        else {
+                            toChange[path] = { _id: new ObjectId(idToChange) };
+                        }
                         updateConfig = { $pull: toChange };
                     }
                     else {
@@ -386,9 +392,7 @@ module.exports = function(dbName, cb) {
                         path = command.path.split('/')[0];
                         idToChange = command.path.split('/')[1];
 
-                        // jshint newcap:false
-                        toFind[path + '._id'] = ObjectId(idToChange);
-                        // jshint newcap:true
+                        toFind[path + '._id'] = new ObjectId(idToChange);
                         projection[path] = 1;
                         runUpdate = false;
 
@@ -418,9 +422,8 @@ module.exports = function(dbName, cb) {
                     break;
             }
             if (runUpdate) {
-                // jshint newcap:false
                 db.collection(collection).update(
-                    { _id: ObjectId(id) },
+                    { _id: new ObjectId(id) },
                     updateConfig,
                     function(err, results) {
                         if (err) {
@@ -431,7 +434,6 @@ module.exports = function(dbName, cb) {
                         }
                     }
                 );
-                // jshint newcap:true
             }
         });
     };
