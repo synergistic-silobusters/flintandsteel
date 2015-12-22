@@ -11,6 +11,7 @@ module.exports = function(app, db) {
     var ideas = require('./ideas/ideas')(db),
         users = require('./users/users')(db),
         events = require('./events/events')(db),
+        comments = require('./comments/comments')(db),
         replaceIds = require('./replaceIds')(db),
         chalk = require('chalk'),
         _ = require('lodash'),
@@ -257,6 +258,22 @@ module.exports = function(app, db) {
 
         Promise.all(promises).then(function(results) {
             res.status(200).json(results);
+        }).catch(function(error) {
+            console.log(error);
+            res.sendStatus(500);
+        });
+    });
+
+    app.post('/comments', function(req, res) {
+        comments.create(req.body.parentId, req.body.text, req.body.authorId).then(function(comment) {
+            db.findOneById('ideas', req.body.parentId).then(function(result) {
+                var patchComments = { "operation": "append", "path": "comments", "value": "{ \"commentId\": \"" + comment._id + "\"}"}
+                return db.patchObject('ideas', req.body.parentId, patchComments);
+            }).then(function(result) {
+                res.status(201).json(result);
+            }).catch(function(error) {
+                console.log(error);
+            });
         }).catch(function(error) {
             console.log(error);
             res.sendStatus(500);

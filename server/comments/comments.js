@@ -8,17 +8,22 @@ module.exports = function(db) {
 
     var COLLECTION = "comments";
 
-    module.create = function(parentId, text, authorId, cb) {
-        var comment = CommentModel.create(parentId, text, authorId);
-        db.insertOne(COLLECTION, comment, function(err, doc) {
-            cb(err, doc);
+    module.create = function(parentId, text, authorId) {
+        return new Promise(function(resolve, reject) {
+            var comment = CommentModel.create(parentId, text, authorId);
+            db.insertOne(COLLECTION, comment, function(err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve({_id: comment._id, result: doc});
+                }
+            });
         });
     };
 
-    module.get = function(id, cb) {
-        db.findOneById(COLLECTION, id, function(err, doc) {
-            cb(err, doc);
-        });
+    module.get = function(id) {
+        return db.findOneById(COLLECTION, id);
     };
 
     module.update = function(id, property, value, cb) {
