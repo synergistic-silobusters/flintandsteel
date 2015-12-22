@@ -8,14 +8,15 @@
 describe('userSvc', function() {
     "use strict";
 
-    var userSvc, $httpBackend, $rootScope, dummyUser, dummyRes;
+    var userSvc, $httpBackend, $rootScope, $q, dummyUser, dummyRes;
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function(_userSvc_, _$httpBackend_, _$rootScope_) {
+    beforeEach(inject(function(_userSvc_, _$httpBackend_, _$rootScope_, _$q_) {
         userSvc = _userSvc_;
         $httpBackend = _$httpBackend_;
         $rootScope = _$rootScope_;
+        $q = _$q_;
 
         dummyUser = {
             id: 'dummy_user',
@@ -43,18 +44,17 @@ describe('userSvc', function() {
         var checkLoginHandler;
 
         beforeEach(function() {
-            checkLoginHandler = $httpBackend.whenPOST('/login', dummyUser)
-                                    .respond(200, dummyRes);
+            checkLoginHandler = $httpBackend.whenPOST('/users/login', dummyUser).respond(200, dummyRes);
         });
 
         it('should return a good response for valid details', function() {
             var encodedDummy = {};
             encodedDummy.username = dummyUser.username;
             encodedDummy.password = window.btoa(dummyUser.password);
-            $httpBackend.expectPOST('/login', encodedDummy).respond({status: 'AUTH_OK'});
+            $httpBackend.expectPOST('/users/login', encodedDummy).respond({status: 'AUTH_OK'});
 
-            userSvc.checkLogin(dummyUser, function(data) {
-                expect(data.status).toBe('AUTH_OK');
+            userSvc.checkLogin(dummyUser).then(function(response) {
+                expect(response.data.status).toBe('AUTH_OK');
             }, function() { });
 
             $httpBackend.flush();
@@ -117,13 +117,16 @@ describe('userSvc', function() {
 
     describe('userSvc.getUserById', function() {
         it('should query the server for a user when an id is supplied', function() {
-            $httpBackend.whenGET('/user?id=1').respond(200, dummyRes);
-            userSvc.getUserById(1, function() {}, function() {});
+            $httpBackend.whenGET('/users/1').respond(200, dummyRes);
+            userSvc.getUserById(1).then(function() {}, function() {});
             $httpBackend.flush();
         });
 
         it('should return false if an id was not supplied', function() {
-            expect(userSvc.getUserById()).toBe(false);
+            userSvc.getUserById().then(function(result) {
+                expect(result).toBe(false); 
+            });
+            
         });
     });
 
