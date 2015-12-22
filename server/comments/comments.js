@@ -4,7 +4,8 @@ module.exports = function(db) {
     "use strict";
     var module = {};
 
-    var CommentModel = require('./commentModel');
+    var CommentModel = require('./commentModel'),
+        Promise = require('bluebird');
 
     var COLLECTION = "comments";
 

@@ -266,7 +266,7 @@ module.exports = function(app, db) {
 
     app.post('/comments', function(req, res) {
         comments.create(req.body.parentId, req.body.text, req.body.authorId).then(function(comment) {
-            db.findOneById('ideas', req.body.parentId).then(function(result) {
+            db.findOneById('ideas', req.body.parentId).then(function() {
                 var patchComments = { 
                     "operation": "append",
                     "path": "comments",
