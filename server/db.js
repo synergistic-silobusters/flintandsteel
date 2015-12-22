@@ -332,20 +332,21 @@ module.exports = function(dbName, cb) {
                 valueObj = JSON.parse(command.value);
 
                 if (collection === 'ideas') {
-                    // jshint newcap:false
                     if (command.path === 'backs' || command.path === 'updates' && valueObj.authorId) {
-                        valueObj.authorId = ObjectId(valueObj.authorId);
+                        valueObj.authorId = new ObjectId(valueObj.authorId);
                     }
                     else if (command.path === 'team' && valueObj.memberId) {
-                        valueObj.memberId = ObjectId(valueObj.memberId);
+                        valueObj.memberId = new ObjectId(valueObj.memberId);
                     }
                     else if (command.path === 'likes' && valueObj.userId) {
-                        valueObj.userId = ObjectId(valueObj.userId);
+                        valueObj.userId = new ObjectId(valueObj.userId);
                     }
                     else if (command.path === 'eventId') {
-                        valueObj = ObjectId(valueObj);
+                        valueObj = new ObjectId(valueObj);
                     }
-                    // jshint newcap:true
+                }
+                else if (collection === 'comments' && command.path === 'authorId' || command.path === 'parentId') {
+                    valueObj = new ObjectId(valueObj);
                 }
             }
                     

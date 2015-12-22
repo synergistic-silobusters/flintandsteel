@@ -267,13 +267,32 @@ module.exports = function(app, db) {
     app.post('/comments', function(req, res) {
         comments.create(req.body.parentId, req.body.text, req.body.authorId).then(function(comment) {
             db.findOneById('ideas', req.body.parentId).then(function(result) {
-                var patchComments = { "operation": "append", "path": "comments", "value": "{ \"commentId\": \"" + comment._id + "\"}"}
+                var patchComments = { 
+                    "operation": "append",
+                    "path": "comments",
+                    "value": "{ \"commentId\": \"" + new ObjectId(comment._id) + "\"}"
+                };
                 return db.patchObject('ideas', req.body.parentId, patchComments);
             }).then(function(result) {
                 res.status(201).json(result);
             }).catch(function(error) {
                 console.log(error);
             });
+        }).catch(function(error) {
+            console.log(error);
+            res.sendStatus(500);
+        });
+    });
+
+    app.patch('/comments/:id', function(req, res) {
+        var promises = [];
+
+        _.forEach(req.body, function(patchOp) {
+            promises.push(db.patchObject('comments', req.params.id, patchOp));
+        });
+
+        Promise.all(promises).then(function(results) {
+            res.status(200).json(results);
         }).catch(function(error) {
             console.log(error);
             res.sendStatus(500);
