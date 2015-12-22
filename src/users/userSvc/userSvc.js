@@ -17,7 +17,7 @@ angular.module('flintAndSteel')
                     $rootScope.account = response.data;
                     def.resolve(response);
                 },
-                function(error) {
+                function(response) {
                     def.reject(response);
                 });
 
