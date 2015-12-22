@@ -9,7 +9,7 @@ module.exports = function(db) {
 
     require('events').EventEmitter.prototype._maxListeners = 102;
 
-    var IdeaModel = require('./ideaModel')
+    var IdeaModel = require('./ideaModel'),
         chalk = require('chalk'),
         _ = require('lodash');
 
