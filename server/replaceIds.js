@@ -70,19 +70,16 @@ module.exports = function(db) {
         else {
             ideaComments = data.comments.map(function(comment) {
                 return new Promise(function(resolve, reject) {
-                    comments.get(comment.commentId, function(err, commentObj) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        }
-                        else {
-                            for (var attrName in commentObj) {
-                                if (commentObj.hasOwnProperty(attrName)) {
-                                    comment[attrName] = commentObj[attrName];
-                                }
+                    comments.get(comment.commentId).then(function(commentObj) {
+                        for (var attrName in commentObj) {
+                            if (commentObj.hasOwnProperty(attrName)) {
+                                comment[attrName] = commentObj[attrName];
                             }
-                            resolve(comment);
                         }
+                        resolve(comment);
+                    }).catch(function(err) {
+                        console.log(err);
+                        reject(err);
                     });
                 });
             });
