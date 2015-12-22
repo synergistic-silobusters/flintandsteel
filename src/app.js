@@ -13,8 +13,8 @@ angular.module('flintAndSteel', [
     ]
 )
 .config([
-    '$urlRouterProvider', '$stateProvider', '$mdIconProvider', '$mdThemingProvider',
-    function($urlRouterProvider, $stateProvider, $mdIconProvider, $mdThemingProvider) {
+    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider',
+    function($urlRouterProvider, $stateProvider, $mdThemingProvider) {
         "use strict";
 
         $stateProvider
@@ -61,24 +61,6 @@ angular.module('flintAndSteel', [
             });
 
         $urlRouterProvider.otherwise('/');
-
-        $mdIconProvider
-            .iconSet('action', './assets/icons/action-icons.svg', 24)
-            .iconSet('alert', './assets/icons/alert-icons.svg', 24)
-            .iconSet('av', './assets/icons/av-icons.svg', 24)
-            .iconSet('communication', './assets/icons/communication-icons.svg', 24)
-            .iconSet('content', './assets/icons/content-icons.svg', 24)
-            .iconSet('device', './assets/icons/device-icons.svg', 24)
-            .iconSet('editor', './assets/icons/editor-icons.svg', 24)
-            .iconSet('file', './assets/icons/file-icons.svg', 24)
-            .iconSet('hardware', './assets/icons/hardware-icons.svg', 24)
-            .iconSet('icons', './assets/icons/icons-icons.svg', 24)
-            .iconSet('image', './assets/icons/image-icons.svg', 24)
-            .iconSet('maps', './assets/icons/maps-icons.svg', 24)
-            .iconSet('navigation', './assets/icons/navigation-icons.svg', 24)
-            .iconSet('notification', './assets/icons/notification-icons.svg', 24)
-            .iconSet('social', './assets/icons/social-icons.svg', 24)
-            .iconSet('toggle', './assets/icons/toggle-icons.svg', 24);
 
         var rockstarterRedMap = $mdThemingProvider.extendPalette('red', {
             '900': 'bb1e32'
