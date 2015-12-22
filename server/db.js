@@ -89,23 +89,21 @@ module.exports = function(dbName, cb) {
         });
     };
 
-    module.findOneById = function findOneById(collection, id, cb) {
+    module.findOneById = function findOneById(collection, id) {
         var objId = new ObjectId(id);
-
-        db.collection(collection).findOne({_id: objId}, function(err, doc) {
-            if (err) {
-                console.error(chalk.bgRed(err));
-                cb(err);
-            }
-            else if (doc) {
-                // console.log(chalk.bgGreen('Document with id %s found in the ' + collection + ' collection.'), id);
-                cb(null, doc);
-            }
-            else {
-                var errNotFound = "Document " + id + " was not found in " + collection + " collection!";
-                console.error(chalk.bgRed(errNotFound));
-                cb(errNotFound);
-            }
+        return new Promise(function(resolve, reject) {
+            db.collection(collection).findOne({_id: objId}, function(err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                else if (doc) {
+                    resolve(doc);
+                }
+                else {
+                    var errNotFound = "Document " + id + " was not found in " + collection + " collection!";
+                    reject(errNotFound);
+                }
+            });
         });
     };
 

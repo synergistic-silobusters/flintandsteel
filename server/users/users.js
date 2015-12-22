@@ -78,23 +78,20 @@ module.exports = function(db) {
 
     module.get = function(id, getEntireObject) {
         return new Promise(function(resolve, reject) {
-            db.findOneById(COLLECTION, id, function(err, doc) {
-                if (err || doc === null) {
-                    reject(err || 'NO_USER');
+            db.findOneById(COLLECTION, id).then(function(doc) {
+                if (getEntireObject) {
+                    resolve(doc);
                 }
                 else {
-                    if (getEntireObject) {
-                        resolve(doc);
-                    }
-                    else {
-                        var responseObj = {
-                            name: doc.fullName,
-                            mail: doc.email,
-                            username: doc.username
-                        };
-                        resolve(responseObj);
-                    }
+                    var responseObj = {
+                        name: doc.fullName,
+                        mail: doc.email,
+                        username: doc.username
+                    };
+                    resolve(responseObj);
                 }
+            }).catch(function(error) {
+                reject(error);
             });
         });
     };

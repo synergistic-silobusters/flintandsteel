@@ -32,16 +32,7 @@ module.exports = function(db) {
     };
 
     module.get = function(id) {
-        return new Promise(function(resolve, reject) {
-            db.findOneById(COLLECTION, id, function(err, doc) {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(doc);
-                }
-            });
-        });
+        return db.findOneById(COLLECTION, id);
     };
 
     module.addInteraction = function(id, interactionType, interactionObject, cb) {
