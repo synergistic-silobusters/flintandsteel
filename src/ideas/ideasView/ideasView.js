@@ -224,9 +224,16 @@ angular.module('flintAndSteel')
                         text: ctrl.newBack,
                         authorId: userSvc.getProperty('_id'),
                         timeCreated: now,
-                        timeModified: '',
-                        types: $scope.selectedTypes
+                        timeModified: ''
                     };
+
+                    // This removes the stupid $$hashkey property from the selected types.
+                    // $ appended properties can't be stored in mongo.
+                    var backTypes = [];
+                    _.forEach($scope.selectedTypes, function(type) {
+                        backTypes.push({ name: type.name, _lowername: type._lowername });
+                    });
+                    obj.types = backTypes;
 
                     $scope.selectedTypes = [];
                     $scope.selectedType = undefined;
@@ -564,18 +571,26 @@ angular.module('flintAndSteel')
                             text: ctrl.editBackText,
                             authorId: back.authorId,
                             timeCreated: back.timeCreated,
-                            timeModified: back.timeModified,
-                            types: $scope.selectedTypes
+                            timeModified: back.timeModified
                         };
+                        var backTypes = [];
+                        _.forEach($scope.selectedTypes, function(type) {
+                            backTypes.push({ name: type.name, _lowername: type._lowername });
+                        });
+                        newBack.types = backTypes;
                     }
                     else {
                         newBack = {
                             text: ctrl.editBackText,
                             authorId: back.authorId,
                             timeCreated: back.timeCreated,
-                            timeModified: now,
-                            types: $scope.selectedTypes
+                            timeModified: now
                         };
+                        var backTypes = [];
+                        _.forEach($scope.selectedTypes, function(type) {
+                            backTypes.push({ name: type.name, _lowername: type._lowername });
+                        });
+                        newBack.types = backTypes;
                     }
                     ideaSvc.editBack($scope.idea._id, back._id, newBack).then(
                         function success() {
