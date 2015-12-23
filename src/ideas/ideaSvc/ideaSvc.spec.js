@@ -6,7 +6,7 @@
 /* global expect */
 /* global moment */
 
-fdescribe('ideaSvc', function() {
+describe('ideaSvc', function() {
     "use strict";
 
     var ideaSvc, $httpBackend, dummyIdea;
@@ -192,11 +192,11 @@ fdescribe('ideaSvc', function() {
 
         beforeEach(function() {
             commentId = 'dummy_comment';
-            updateCommentHandler = $httpBackend.whenDELETE('/comments/'+ commentId).respond(200, 'OK');
+            updateCommentHandler = $httpBackend.whenDELETE('/comments/' + commentId).respond(200, 'OK');
         });
 
         it('should delete the comment', function() {
-            $httpBackend.expectDELETE('/comments/'+ commentId);
+            $httpBackend.expectDELETE('/comments/' + commentId);
 
             ideaSvc.deleteComment(commentId).then(function() { }, function() { });
 
