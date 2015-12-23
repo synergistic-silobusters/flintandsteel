@@ -6,7 +6,7 @@
 /* global expect */
 /* global moment */
 
-describe('ideaSvc', function() {
+fdescribe('ideaSvc', function() {
     "use strict";
 
     var ideaSvc, $httpBackend, dummyIdea;
@@ -57,15 +57,14 @@ describe('ideaSvc', function() {
         var postIdeaHandler;
 
         beforeEach(function() {
-            postIdeaHandler = $httpBackend.whenPOST('/idea')
-                                .respond(201, 'Created');
+            postIdeaHandler = $httpBackend.whenPOST('/ideas').respond(201, 'Created');
         });
 
         it('should add a newly submitted idea', function() {
-            $httpBackend.expectPOST('/idea', dummyIdea);
+            $httpBackend.expectPOST('/ideas', dummyIdea);
 
-            ideaSvc.postIdea(dummyIdea, function(data) {
-                expect(data).toBe('Created');
+            ideaSvc.postIdea(dummyIdea).then(function(response) {
+                expect(response.data).toBe('Created');
             }, function() { });
 
             $httpBackend.flush();
@@ -76,14 +75,13 @@ describe('ideaSvc', function() {
         var getIdeaHandler;
 
         beforeEach(function() {
-            getIdeaHandler = $httpBackend.whenGET('/idea?id=9001')
-                                .respond(200, dummyIdea);
+            getIdeaHandler = $httpBackend.whenGET('/ideas/9001').respond(200, dummyIdea);
         });
 
         it('it should return an idea when provided an idea', function() {
-            $httpBackend.expectGET('/idea?id=9001');
+            $httpBackend.expectGET('/ideas/9001');
 
-            ideaSvc.getIdea(9001, function() { }, function() { });
+            ideaSvc.getIdea(9001).then(function() { }, function() { });
 
             $httpBackend.flush();
         });
@@ -102,35 +100,35 @@ describe('ideaSvc', function() {
                     likes: 23
                 }
             ];
-            getIdeaHeadersHandler = $httpBackend.whenGET('/ideaheaders')
-                                        .respond(200, dummyHeaders);
+            getIdeaHeadersHandler = $httpBackend.whenGET('/ideas').respond(200, dummyHeaders);
         });
 
         it('should return idea headers', function() {
-            $httpBackend.expectGET('/ideaheaders');
+            $httpBackend.expectGET('/ideas');
 
-            ideaSvc.getIdeaHeaders(function() { }, function() { });
+            ideaSvc.getIdeaHeaders().then(function() { }, function() { });
 
             $httpBackend.flush();
         });
     });
 
     describe('ideaSvc.updateIdea', function() {
-        var updateIdeaHandler, updatedIdea;
+        var updateIdeaHandler, patchOperation, ideaId;
 
         beforeEach(function() {
-            updatedIdea = {
-                id: 'dummy_idea',
-                property: 'likes',
-                value: 24
-            };
-            updateIdeaHandler = $httpBackend.whenPOST('/updateidea', updatedIdea).respond(200, 'OK');
+            ideaId = 'dummy_idea';
+            patchOperation = [{
+                operation: 'modify',
+                path: 'likes',
+                value: JSON.stringify(24)
+            }];
+            updateIdeaHandler = $httpBackend.whenPATCH('/ideas/' + ideaId, patchOperation).respond(200, 'OK');
         });
 
         it('should update the idea with new passed in information', function() {
-            $httpBackend.expectPOST('/updateidea', updatedIdea);
+            $httpBackend.expectPATCH('/ideas/' + ideaId, patchOperation);
 
-            ideaSvc.updateIdea('dummy_idea', 'likes', 24, function() { }, function() { });
+            ideaSvc.updateIdea('dummy_idea', 'likes', 24).then(function() { }, function() { });
 
             $httpBackend.flush();
         });
@@ -149,17 +147,15 @@ describe('ideaSvc', function() {
     });
 
     describe('ideaSvc.deleteIdea', function() {
-        var deletedIdea, updateIdeaHandler;
+        var ideaId, updateIdeaHandler;
 
         beforeEach(function() {
-            deletedIdea = {
-                id: 'dummy_idea'
-            };
-            updateIdeaHandler = $httpBackend.whenPOST('/deleteidea', deletedIdea).respond(200, 'OK');
+            ideaId = 'dummy_idea';
+            updateIdeaHandler = $httpBackend.whenDELETE('/ideas/' + ideaId).respond(204);
         });
 
         it('should delete the idea', function() {
-            $httpBackend.expectPOST('/deleteidea', deletedIdea);
+            $httpBackend.expectDELETE('/ideas/' + ideaId);
 
             ideaSvc.deleteIdea('dummy_idea', function() { }, function() { });
 
@@ -171,8 +167,7 @@ describe('ideaSvc', function() {
         var postCommentHandler, dummyComment;
 
         beforeEach(function() {
-            postCommentHandler = $httpBackend.whenPOST('/comment')
-                                .respond(201, 'Created');
+            postCommentHandler = $httpBackend.whenPOST('/comments').respond(201, 'Created');
 
             dummyComment = {
                 parentId: dummyIdea._id,
@@ -182,10 +177,10 @@ describe('ideaSvc', function() {
         });
 
         it('should add a newly submitted comment', function() {
-            $httpBackend.expectPOST('/comment', dummyComment);
+            $httpBackend.expectPOST('/comments', dummyComment);
 
-            ideaSvc.postComment(dummyComment.parentId, dummyComment.text, dummyComment.authorId, function(data) {
-                expect(data).toBe('Created');
+            ideaSvc.postComment(dummyComment.parentId, dummyComment.text, dummyComment.authorId).then(function(response) {
+                expect(response.data).toBe('Created');
             }, function() { });
 
             $httpBackend.flush();
@@ -193,43 +188,42 @@ describe('ideaSvc', function() {
     });
 
     describe('ideaSvc.deleteComment', function() {
-        var deletedComment, updateCommentHandler;
+        var commentId, updateCommentHandler;
 
         beforeEach(function() {
-            deletedComment = {
-                commentId: 'dummy_comment'
-            };
-            updateCommentHandler = $httpBackend.whenPOST('/deleteComment', deletedComment.id).respond(200, 'OK');
+            commentId = 'dummy_comment';
+            updateCommentHandler = $httpBackend.whenDELETE('/comments/'+ commentId).respond(200, 'OK');
         });
 
         it('should delete the comment', function() {
-            $httpBackend.expectPOST('/deleteComment', deletedComment.id);
+            $httpBackend.expectDELETE('/comments/'+ commentId);
 
-            ideaSvc.deleteComment(deletedComment.id, function() { }, function() { });
+            ideaSvc.deleteComment(commentId).then(function() { }, function() { });
 
             $httpBackend.flush();
         });
     });
 
     describe('ideaSvc.addInteraction', function() {
-        var addInteractionHandler, dummyInteraction;
+        var addInteractionHandler, patchOperation, ideaId, valueObj;
 
         beforeEach(function() {
-            addInteractionHandler = $httpBackend.whenPOST('/idea/addinteraction')
-                                .respond(201, 'Created');
+            addInteractionHandler = $httpBackend.whenPATCH('/ideas/' + ideaId, patchOperation).respond(200, 'OK');
 
-            dummyInteraction = {
-                id: dummyIdea._id,
-                interactionType: "likes",
-                interactionObject: {userId: 1}
-            };
+            ideaId = dummyIdea._id;
+            valueObj = { userId: 1 };
+            patchOperation = [{
+                operation: 'append',
+                path: 'likes',
+                value: JSON.stringify(valueObj)
+            }];
         });
 
         it('should add a new interaction', function() {
-            $httpBackend.expectPOST('/idea/addinteraction', dummyInteraction);
+            $httpBackend.expectPATCH('/ideas/' + ideaId, patchOperation).respond(200, 'OK');
 
-            ideaSvc.addInteraction(dummyIdea._id, dummyInteraction.interactionType, dummyInteraction.interactionObject, function(data) {
-                expect(data).toBe('Created');
+            ideaSvc.addInteraction(ideaId, patchOperation[0].path, valueObj).then(function(response) {
+                expect(response.data).toBe('OK');
             }, function() { });
 
             $httpBackend.flush();
@@ -237,24 +231,22 @@ describe('ideaSvc', function() {
     });
 
     describe('ideaSvc.removeInteraction', function() {
-        var removeInteractionHandler, dummyInteraction;
+        var removeInteractionHandler, patchOperation;
 
         beforeEach(function() {
-            removeInteractionHandler = $httpBackend.whenPOST('/idea/removeinteraction')
-                                .respond(200, 'OK');
+            removeInteractionHandler = $httpBackend.whenPATCH('/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
 
-            dummyInteraction = {
-                id: dummyIdea._id,
-                interactionType: "likes",
-                interactionObject: {userId: 1}
-            };
+            patchOperation = [{
+                operation: 'delete',
+                path: 'likes/dummy_like'
+            }];
         });
 
         it('should remove an existing interaction', function() {
-            $httpBackend.expectPOST('/idea/removeinteraction', dummyInteraction);
+            $httpBackend.expectPATCH('/ideas/' + dummyIdea._id, patchOperation);
 
-            ideaSvc.removeInteraction(dummyIdea._id, dummyInteraction.interactionType, dummyInteraction.interactionObject, function(data) {
-                expect(data).toBe('OK');
+            ideaSvc.removeInteraction(dummyIdea._id, 'likes', { _id: 'dummy_like' }).then(function(response) {
+                expect(response.data).toBe('OK');
             }, function() { });
 
             $httpBackend.flush();
@@ -262,31 +254,33 @@ describe('ideaSvc', function() {
     });
 
     describe('ideaSvc.editBack', function() {
-        var editBackHandler, dummyBack;
+        var editBackHandler, dummyBack, patchOperation;
 
         beforeEach(function() {
-            editBackHandler = $httpBackend.whenPOST('/idea/editback')
-                                .respond(200, 'OK');
+            editBackHandler = $httpBackend.whenPATCH('/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
 
             dummyBack = {
-                id: dummyIdea._id,
-                authorId: 1,
-                new: {
-                    text: 'Just Experience',
-                    name: 'Some Guy',
-                    time: moment().calendar(),
-                    types: [
-                        { name: 'Experience' }
-                    ]
-                }
+                _id: 'dummy_back',
+                text: 'Just Experience',
+                name: 'Some Guy',
+                time: moment().calendar(),
+                types: [
+                    { name: 'Experience' }
+                ]
             };
+
+            patchOperation = [{
+                operation: 'modify',
+                path: 'backs/dummy_back',
+                value: JSON.stringify(dummyBack)
+            }];
         });
 
         it('should edit an existing back', function() {
-            $httpBackend.expectPOST('/idea/editback', dummyBack);
+            $httpBackend.expectPATCH('/ideas/' + dummyIdea._id, patchOperation);
 
-            ideaSvc.editBack(dummyIdea._id, dummyBack.authorId, dummyBack.new, function(data) {
-                expect(data).toBe('OK');
+            ideaSvc.editBack(dummyIdea._id, dummyBack._id, dummyBack).then(function(response) {
+                expect(response.data).toBe('OK');
             }, function() { });
 
             $httpBackend.flush();
@@ -294,11 +288,10 @@ describe('ideaSvc', function() {
     });
 
     describe('ideaSvc.editIdea', function() {
-        var editIdeaHandler, smallDummyIdea;
+        var editIdeaHandler, smallDummyIdea, patchOperation;
 
         beforeEach(function() {
-            editIdeaHandler = $httpBackend.whenPOST('/editidea')
-                                .respond(200, 'OK');
+            editIdeaHandler = $httpBackend.whenPATCH('/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
             smallDummyIdea = {
                 id: dummyIdea._id,
                 title: dummyIdea.title,
@@ -306,13 +299,20 @@ describe('ideaSvc', function() {
                 tags: dummyIdea.tags,
                 rolesreq: dummyIdea.rolesreq
             };
+
+            patchOperation = [
+                { operation: 'modify', path: 'title', value: JSON.stringify(smallDummyIdea.title) },
+                { operation: 'modify', path: 'description', value: JSON.stringify(smallDummyIdea.description) },
+                { operation: 'modify', path: 'tags', value: JSON.stringify(smallDummyIdea.tags) },
+                { operation: 'modify', path: 'rolesreq', value: JSON.stringify(smallDummyIdea.rolesreq) }
+            ];
         });
 
         it('should edit an existing idea', function() {
-            $httpBackend.expectPOST('/editidea', smallDummyIdea);
+            $httpBackend.expectPATCH('/ideas/' + dummyIdea._id, patchOperation);
 
-            ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq, function(data) {
-                expect(data).toBe('OK');
+            ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq).then(function(response) {
+                expect(response.data).toBe('OK');
             }, function() { });
 
             $httpBackend.flush();
