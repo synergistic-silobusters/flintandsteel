@@ -133,7 +133,7 @@ module.exports = function(app, db) {
                 ideas.fetch()
             ]);
         }).then(function(ideaResults) {
-            IdeasInstance.updateidea(ideaResults[0]);
+            IdeasInstance.updateIdea(ideaResults[0]);
             IdeasInstance.updateHeaders(ideaResults[1]);
         }).catch(function(error) {
             console.log(error);
@@ -158,7 +158,7 @@ module.exports = function(app, db) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
         if (process.env.NODE_ENV !== 'production') {
-            if (req.body.password === 'test') {
+            if (new Buffer(req.body.password, "base64").toString() === 'test') {
                 users.findForLogin(req.body.username).then(function(responseObj) {  
                     res.status(200).json(responseObj);
                 }).catch(function(err) {
