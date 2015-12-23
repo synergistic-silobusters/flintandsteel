@@ -82,16 +82,16 @@ angular.module('flintAndSteel')
 
             // Function used to display feedback on login - OK, Error, or User Not Found
             $scope.loginUser = function(account) {
-                userSvc.checkLogin(account).then(function LoginSuccess(data) {
+                userSvc.checkLogin(account).then(function LoginSuccess(response) {
                     var content;
-                    if (data.status === 'AUTH_OK') {
-                        $scope.currentUser = data.name;
-                        content = data.name + ' has successfully signed in!';
+                    if (response.data.status === 'AUTH_OK') {
+                        $scope.currentUser = response.data.name;
+                        content = response.data.name + ' has successfully signed in!';
                     }
-                    else if (data.status === 'AUTH_ERROR') {
+                    else if (response.data.status === 'AUTH_ERROR') {
                         content = 'Your credentials don\'t match the stored ones :(';
                     }
-                    else if (data.status === 'USER_NOT_FOUND') {
+                    else if (response.data.status === 'USER_NOT_FOUND') {
                         content = 'The user was not found in the server!';
                     }
                     toastSvc.show(content);
