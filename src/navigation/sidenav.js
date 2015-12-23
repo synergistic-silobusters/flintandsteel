@@ -14,16 +14,16 @@ angular.module('flintAndSteel')
             }
 
             function refreshHeaders() {
-                ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                    $scope.topIdeas = data;
-                }, function getIdeaHeadersError(data, status) {
-                    console.log(status);
+                ideaSvc.getIdeaHeaders().then(function getIdeaHeadersSuccess(response) {
+                    $scope.topIdeas = response.data;
+                }, function getIdeaHeadersError(response) {
+                    console.log(response);
                 });
             }
 
             refreshHeaders();
 
-            sseSvc.create("newHeaders", "/ideaheaders/events", setIdeaHeaders);
+            sseSvc.create("newHeaders", "/sse/ideas", setIdeaHeaders);
 
             $scope.navTo = function navTo(state) {
                 if (state === 'addIdea') {

@@ -50,14 +50,14 @@ angular.module('flintAndSteel')
                 ideaToAdd.authorId = userSvc.getProperty('_id');
                 ideaToAdd.eventId = "";
                 ideaToAdd.rolesreq = [];
-                ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
-                    if (angular.isDefined(data.status) && data.status === 'Created') {
+                ideaSvc.postIdea($scope.idea).then(function postIdeaSuccess(response) {
+                    if (angular.isDefined(response.data.status) && response.data.status === 'Created') {
                         toastSvc.show('New idea created successfully!');
                         $scope.$emit('newIdeaAdded');
                         $state.go('idea', { ideaId: data._id });
                     }
-                }, function(data, status) {
-                    console.log(status);
+                }, function(response) {
+                    console.log(response);
                 });
             };
         }
