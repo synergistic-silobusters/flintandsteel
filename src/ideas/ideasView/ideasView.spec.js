@@ -53,7 +53,7 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('$scope.addNewInteraction()', function() {
-        var content, ideaLikes, commentsLength, backsLength, updatesLength, mockIdea;
+        var content, ideaLikes, commentsLength, backsLength, updatesLength;
 
         beforeEach(function() {
             content = '';

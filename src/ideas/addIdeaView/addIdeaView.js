@@ -54,7 +54,7 @@ angular.module('flintAndSteel')
                     if (angular.isDefined(response.data.status) && response.data.status === 'Created') {
                         toastSvc.show('New idea created successfully!');
                         $scope.$emit('newIdeaAdded');
-                        $state.go('idea', { ideaId: data._id });
+                        $state.go('idea', { ideaId: response.data._id });
                     }
                 }, function(response) {
                     console.log(response);

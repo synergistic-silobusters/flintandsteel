@@ -100,10 +100,10 @@ angular.module('flintAndSteel')
             };
 
             return {
-                postIdea: function postIdea(idea) {
+                postIdea: function postIdea() {
                     return $q.when({status: 'Created'});
                 },
-                getIdea: function getIdea(ideaId) {
+                getIdea: function getIdea() {
                     return $q.when({ data: mockIdea });
                 },
                 getIdeaHeaders: function getIdeaHeaders() {
@@ -167,7 +167,7 @@ angular.module('flintAndSteel')
                     mockIdea.timeModified = new Date().toISOString();
                     return $q.when('Edited');
                 },
-                deleteIdea: function deleteIdea(ideaId) {
+                deleteIdea: function deleteIdea() {
                     return $q.when('Deleted!');
                 },
                 getBackTypeChips: function getBackTypeChips() {
