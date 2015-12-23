@@ -213,7 +213,7 @@ angular.module('flintAndSteel')
                     ctrl.newComment = '';
                     return;
                 }
-                var obj;
+                var obj, backTypes;
                 if (type === 'likes') {
                     obj = {
                         userId: userSvc.getProperty('_id')
@@ -229,7 +229,7 @@ angular.module('flintAndSteel')
 
                     // This removes the stupid $$hashkey property from the selected types.
                     // $ appended properties can't be stored in mongo.
-                    var backTypes = [];
+                    backTypes = [];
                     _.forEach($scope.selectedTypes, function(type) {
                         backTypes.push({ name: type.name, _lowername: type._lowername });
                     });
@@ -565,7 +565,7 @@ angular.module('flintAndSteel')
             ctrl.editBack = function editBack(back) {
                 if (ctrl.isUserAuthorOfInteraction(back)) {
                     var now = new Date().toISOString();
-                    var newBack = {};
+                    var newBack = {}, backTypes;
                     if ($scope.status === 'You canceled the dialog.') {
                         newBack = {
                             text: ctrl.editBackText,
@@ -573,7 +573,7 @@ angular.module('flintAndSteel')
                             timeCreated: back.timeCreated,
                             timeModified: back.timeModified
                         };
-                        var backTypes = [];
+                        backTypes = [];
                         _.forEach($scope.selectedTypes, function(type) {
                             backTypes.push({ name: type.name, _lowername: type._lowername });
                         });
@@ -586,7 +586,7 @@ angular.module('flintAndSteel')
                             timeCreated: back.timeCreated,
                             timeModified: now
                         };
-                        var backTypes = [];
+                        backTypes = [];
                         _.forEach($scope.selectedTypes, function(type) {
                             backTypes.push({ name: type.name, _lowername: type._lowername });
                         });
