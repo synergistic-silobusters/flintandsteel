@@ -7,8 +7,8 @@
     </div>
     <div flex  layout-align="center center" >
         <div layout="column" style="width:100%" layout-align="center center">
-            <div class="homeview-login-button">
-                <md-button class="md-raised" >Log In</md-button>
+            <div class="homeview-login-button" ng-controller="ToolbarCtrl" ng-show="!isUserLoggedIn()">
+                <md-button class="md-raised" ng-click="showLogin($event)" >Log In</md-button>
             </div>
             <md-input-container class="homeview-search md-accent md-hue-1" flex>
                 <label>Search Ideas</label>
@@ -16,77 +16,15 @@
             </md-input-container>
         </div>
     </div>
-</div>
-    <div layout="column" layout-gt-sm="row" layout-align="center start" layout-margin ng-hide="searchText">
-        <md-card ng-mouseover="hoverInLeft()" ng-mouseleave="hoverOutLeft()" flex>
-            <md-card-content>
-                <div flex-gt-sm>
-                    <img class="center-img" src="assets/ic_wb_incandescent_black_24px.svg" width="13%" height="13%"/>
-                    <h2 class="center-text">Innovate</h2>
-                    <div  ng-show="hoverLeft">
-                        <p>Add an idea</p>
-                        <ol>
-                            <li>Log in</li>
-                            <li>Click the add idea button 
-                                <md-button class="md-fab fab-layout" aria-label="Add another idea"> 
-                                    <i class="material-icons icon-button-adjust">&#xE145;</i>
-                                </md-button>
-                                on the bottom of the sidebar.</li>
-                        </ol>  
-                    </div>
-                </div>
-            </md-card-content>
-        </md-card>
-        <md-card ng-mouseover="hoverInSupport()" ng-mouseleave="hoverOutSupport()" flex>
-            <md-card-content>
-                    <img class="center-img" src="assets/ic_grade_black_24px.svg" width="13%" height="13%" />
-                    <h2 class="center-text">Support</h2>
-                    <div ng-show="hoverSupport">
-                        <p>Support an Idea</p>
-                        <ol>
-                            <li>Select an idea that you want to contribute to</li>
-                            <li>Log in</li>
-                            <li>Select Backers tab and back the idea!</li>
-                        </ol> 
-                    </div>
-            </md-card-content>
-        </md-card>
+    <!--Begin Help Cards-->
+    <div layout="row" flex layout-wrap layout-align="center center" ng-hide="searchText">
+        <md-item ng-repeat="faq in faqCards" class="homeview-padding-faq-card">
+            <help-card  faq="faq"/>
+        </md-item>
     </div>
+    <!--End Help Cards-->
 </div>
-<div layout="column" layout-gt-sm="row" layout-align="center start" layout-margin ng-hide="searchText">
-        <md-card ng-mouseover="hoverInComment()" ng-mouseleave="hoverOutComment()" flex>
-            <md-card-content>
-                <div flex-gt-sm >
-                    <img class="center-img" src="assets/ic_group_black_24px.svg" width="13%" height="13%" />
-                    <h2 class="center-text">Comment</h2>
-                    <div ng-show="hoverComment">
-                        <p>Comment on an Idea</p>
-                        <ol>
-                            <li>Select an idea that you want to comment on</li>
-                            <li>Log in</li>
-                            <li>Select comments tab and type</li>
-                        </ol> 
-                    </div>
-                </div>
-            </md-card-content>
-        </md-card>
-            <md-card ng-mouseover="hoverInRight()" ng-mouseleave="hoverOutRight()" flex>
-                <md-card-content>
-                <div flex-gt-sm>
-                    <img class="center-img" src="assets/ic_group_black_24px.svg" width="13%" height="13%"/>
-                    <h2 class="center-text">Team</h2>
-                    <div ng-show="hoverRight">
-                    <p>Join a team</p>
-                    <ol>
-                        <li>Support an idea by listing your contributions on the backers tab</li>
-                        <li>Have the idea owner add you to the team</li>
-                    </ol> 
-                    </div>
-                </div>
-            </md-card-content>
-        </md-card>
-    </div>
-</div>
+<!-- Begin Idea Cards -->
 <div layout="row" layout-align="center center" ng-show="searchText">
         <div flex="10"></div>
         <div flex="80">
@@ -98,11 +36,12 @@
             </div>
         </div>
 </div>
+<!-- End Idea Cards -->
 <!-- Begin Timeline -->
 <div layout="row" layout-align="center center">
     <h2 class="homeview-padding-bottom">Event Schedule</h2>
 </div>
- <div class="container">
+<div class="container">
     <div class="row">
         <div class="timeline-centered">
             <article class="timeline-entry">
@@ -227,6 +166,7 @@
         </div>
     </div>
 </div>
+
 <div><h6><center><a ui-sref="about">About Us</a></center></h6></div>
 <div><h6><center><a ui-sref="innovationdisclosure">Innovation Disclosure Assistant</a></center></h6></div>
 
