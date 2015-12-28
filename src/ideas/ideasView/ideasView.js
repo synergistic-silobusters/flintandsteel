@@ -289,11 +289,7 @@ angular.module('flintAndSteel')
                         delete copyObj.author; // author object is not stored in database
                         delete copyObj.isInTeam;
                         var backObjs = {
-                            text: copyObj.text,
-                            authorId: copyObj.authorId,
-                            types: copyObj.types,
-                            timeCreated: copyObj.timeCreated,
-                            timeModified: copyObj.timeModified
+                            _id: copyObj._id
                         };
                         ideaSvc.removeInteraction($scope.idea._id, type, backObjs).then(
                             function success() {
