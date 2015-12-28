@@ -16,7 +16,9 @@ module.exports = function(db) {
     var IdeasSingleton;
 
     module.create = function(title, description, authorId, eventId, tags, rolesreq, cb) {
-        var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq);
+        var objAuthorId = new ObjectId(authorId);
+        var objEventId = eventId !== '' ? new ObjectId(eventId) : eventId;
+        var idea = IdeaModel.create(title, description, objAuthorId, objEventId, tags, rolesreq);
         db.insertOne(COLLECTION, idea, function(err, doc) {
             cb(err, doc);
         });
@@ -89,12 +91,13 @@ module.exports = function(db) {
         });
     };
 
-    module.edit = function(id, title, description, rolesreq, cb) {
+    module.edit = function(id, title, description, tags, rolesreq, cb) {
         var now = new Date().toISOString();
 
         var editObj = {};
         editObj.title = title;
         editObj.description = description;
+        editObj.tags = tags;
         editObj.rolesreq = rolesreq;
         editObj.timeModified = now;
 
@@ -117,7 +120,8 @@ module.exports = function(db) {
             likes: 1,
             backs: 1,
             team: 1,
-            updates: 1
+            updates: 1,
+            tags: 1
         };
 
         db.find(COLLECTION, projection, function(err, docs) {

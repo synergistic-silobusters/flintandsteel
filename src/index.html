@@ -20,6 +20,7 @@
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="lib/angular-mocks/angular-mocks.js"></script>
     <script src="lib/angular-material/angular-material.js"></script>
+    <script src="lib/angular-messages/angular-messages.js"></script>
     <script src="lib/angular-aria/angular-aria.js"></script>
     <script src="lib/angular-identicon/dist/angular-identicon.js"></script>
     <script src="lib/angular-identicon/src/md5.js"></script>
@@ -33,6 +34,9 @@
 
     <!-- inject:js -->
   <script src="app.js"></script>
+  <script src="utilities/startFromFilter.js"></script>
+  <script src="utilities/sseSvc.js"></script>
+  <script src="utilities/paginateSvc.js"></script>
   <script src="utilities/emailLink.js"></script>
   <script src="users/loginSvc/loginSvc.js"></script>
   <script src="users/accountView/accountView.js"></script>
@@ -47,6 +51,7 @@
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/addIdeaView/addIdeaView.js"></script>
   <script src="homeView/homeView.js"></script>
+  <script src="about/about.js"></script>
   <!-- endinject -->
 
 </head>
@@ -67,8 +72,9 @@
 
             <div class="md-padding">
                 <!-- Login Button -->
-                <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust">&#xE8A6;</i>
+                <md-button aria-label="Account" ng-click="showLogin($event)" ng-if="!isUserLoggedIn()">
+                    <i class="material-icons icon-button-adjust md-icon-button" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE8A6;</i>
+                    Login
                     <md-tooltip md-direction="left">Login</md-tooltip>
                 </md-button>
                 <!-- Profile button -->

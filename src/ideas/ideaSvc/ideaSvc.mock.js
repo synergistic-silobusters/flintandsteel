@@ -98,20 +98,21 @@ angular.module('flintAndSteel')
 
             return {
                 postIdea: function postIdea(idea, successCb) {
-                    successCb('Created');
+                    successCb({status: 'Created'});
                 },
                 getIdea: function getIdea(ideaId, successCb) {
                     successCb(mockIdea);
                 },
-                getIdeaHeaders: function getIdeaHeaders() {
-                    return [
+                getIdeaHeaders: function getIdeaHeaders(successCb) {
+                    successCb([
                         {
                             id: 'mock_idea',
                             title: 'The bestest Idea ever!',
                             author: 'Yash Kulshrestha',
+                            authorId: 1,
                             likes: 23
                         }
-                    ];
+                    ]);
                 },
                 postComment: function postComment(parentId, text, authorId, successCb) {
                     mockIdea.comments.push(
@@ -155,9 +156,10 @@ angular.module('flintAndSteel')
                         }
                     }
                 },
-                editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
+                editIdea: function editIdea(ideaId, title, description, tags, rolesreq, successCb) {
                     mockIdea.title = title;
                     mockIdea.description = description;
+                    mockIdea.tags = tags;
                     mockIdea.rolesreq = rolesreq;
                     mockIdea.timeModified = new Date().toISOString();
                     successCb('Edited');
@@ -179,7 +181,17 @@ angular.module('flintAndSteel')
                         type._lowername = type.name.toLowerCase().replace(/[ ]/g, '-').replace('?', '');
                         return type;
                     });
+                },
+                dialogRemoveFromTeamCtrl: function dialogRemoveFromTeamCtrl($scope, $mdDialog) {
+                    $scope.cancel = function() {
+                        $mdDialog.cancel();
+                    };
+
+                    $scope.submitDelete = function() {
+                        $mdDialog.hide(true);
+                    };
                 }
+
             };
         }
     ]
