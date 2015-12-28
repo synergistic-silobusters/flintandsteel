@@ -1,17 +1,18 @@
-
-<div  class="homeview-Image" >
-    <div layout="row" layout-align="center center" >
+<div layout="row" layout-align="center center" >
         <div>
             <h1>Innovation Challenge</h1>
         </div>
-    </div>
+</div>
+<div layout="row" layout-align="center end">
+</div>
+<div  class="homeview-Image">
     <div flex  layout-align="center center" >
         <div layout="column" style="width:100%" layout-align="center center">
             <div class="homeview-login-button" ng-controller="ToolbarCtrl" ng-show="!isUserLoggedIn()">
                 <md-button class="md-raised" ng-click="showLogin($event)" >Log In</md-button>
             </div>
-            <md-input-container class="homeview-search md-accent md-hue-1" flex>
-                <label>Search Ideas</label>
+            <md-input-container ng-focus="seachFocus()" class="homeview-search md-accent md-hue-1" flex>
+                <label class="search-text">Search Ideas</label>
                 <input name="search" ng-model="searchText">
             </md-input-container>
         </div>
@@ -50,7 +51,7 @@
             <article class="timeline-entry begin">
                 <div class="timeline-entry-inner">
                     <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
-                        <i class="entypo-flight"></i>
+                        <i class="entypo-flight"/>
                     </div>
                 </div>
             </article>
@@ -58,7 +59,6 @@
     </div>
 </div>
 <!-- End Timeline -->
-
 <div><h6><center><a ui-sref="about">About Us</a></center></h6></div>
 <div><h6><center><a ui-sref="innovationdisclosure">Innovation Disclosure Assistant</a></center></h6></div>
 

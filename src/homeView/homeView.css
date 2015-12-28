@@ -10,7 +10,7 @@
 
 }
 .homeview-search{
-    background:rgba(154,10,10,0.5);
+    background:rgba(255,255,255,0.5);
     width:50%;
 }
 .homeview-padding{
@@ -27,7 +27,9 @@
 .homeview-padding-bottom{
     padding-bottom:20px;
 }
-
+.search-text:focus{
+    color:white;
+}
 
 
 img
@@ -412,7 +414,9 @@ body{
      width:100%;
     height:100%;
     position:absolute;
-    background-color:#0090d9;
+    /*
+    background-color:#0090d9;*/
+    background:rgba(154,10,10,0.5);
     /* Animate the transitions */
     -webkit-transition:0.8s; text-align:center;
     -moz-transition:0.8s; text-align:center;
