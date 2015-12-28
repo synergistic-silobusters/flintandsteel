@@ -137,7 +137,7 @@ module.exports = function(app, db) {
             IdeasInstance.updateIdea(ideaResults[0]);
             IdeasInstance.newHeaders(ideaResults[1]);
         }).catch(function(error) {
-            console.log(error);
+            console.log(chalk.bgRed(error));
             res.sendStatus(500);
         });
     });
