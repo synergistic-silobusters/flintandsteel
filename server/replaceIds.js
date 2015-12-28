@@ -11,7 +11,7 @@ module.exports = function(db) {
         Promise = require('bluebird');
 
     module.idea = function idea(data) {
-        if (data === null) {
+        if (!data) {
             return new Promise(function(resolve) {
                 resolve();
             });

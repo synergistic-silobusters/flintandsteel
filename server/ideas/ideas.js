@@ -111,11 +111,11 @@ module.exports = function(db) {
     };
 
     var isEmittingUpdates = false;
-    var newestIdea = null;
+    var newestIdeas = [];
     Ideas.prototype.updateIdea = function(idea, oldKey) {
         var ideaProto = this;
 
-        newestIdea = idea;
+        
 
         var key;
         if (idea === null && oldKey === "undefined") {
@@ -125,13 +125,13 @@ module.exports = function(db) {
             key = idea._id;
         }
         else {
-            key = oldKey;
+            newestIdeas[key] = oldKey;
         }
 
         if (!isEmittingUpdates) {
             isEmittingUpdates = true;
             setTimeout(function() {
-                ideaProto.emit("updateIdea_" + key, newestIdea);
+                ideaProto.emit("updateIdea_" + key, newestIdeas[key]);
                 isEmittingUpdates = false;
             }, 500);
         }

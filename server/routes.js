@@ -111,7 +111,8 @@ module.exports = function(app, db) {
             res.sendStatus(204);
             return ideas.fetch();
         }).then(function(headers) {
-            IdeasInstance.updateHeaders(headers);
+            IdeasInstance.newHeaders(headers);
+            IdeasInstance.updateIdea(null, req.params.id);
         }).catch(function(error) {
             console.error(chalk.bgRed(error));
             res.sendStatus(500);
@@ -134,7 +135,7 @@ module.exports = function(app, db) {
             ]);
         }).then(function(ideaResults) {
             IdeasInstance.updateIdea(ideaResults[0]);
-            IdeasInstance.updateHeaders(ideaResults[1]);
+            IdeasInstance.newHeaders(ideaResults[1]);
         }).catch(function(error) {
             console.log(error);
             res.sendStatus(500);
@@ -385,8 +386,9 @@ module.exports = function(app, db) {
                 return;
             }
             replaceIds.idea(idea).then(function(ideaData) {
-                sse("updateIdea_" + req.params.id, ideaData, req.params.id);
+                sse("updateIdea_" + req.params.id, ideaData[0], req.params.id);
             }).catch(function(err) {
+                // TODO: This ends up running since ideaData[0] isn't defined here.
                 console.error(chalk.bgRed(err));
             });
         }

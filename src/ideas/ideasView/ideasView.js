@@ -261,9 +261,9 @@ angular.module('flintAndSteel')
 
             $scope.removeInteraction = function removeInteraction(type, obj) {
                 if (type === 'likes') {
-                    var likeObj = {
-                        userId: userSvc.getProperty('_id')
-                    };
+                    var likeObj = _.find($scope.idea.likes, function(like) {
+                        return like.userId === userSvc.getProperty('_id')
+                    });
                     ideaSvc.removeInteraction($scope.idea._id, type, likeObj).then(
                         function success() {
                             ctrl.refreshIdea();
