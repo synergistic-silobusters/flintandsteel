@@ -263,7 +263,7 @@ module.exports = function(dbName, cb) {
                     break;
                 case "modify":
                     toChange = {};
-                    if (/backs|team|updates|likes/.test(command.path)) {
+                    if (/backs|updates|likes/.test(command.path)) {
                         var toFind = {}, projection = {};
 
                         path = command.path.split('/')[0];
