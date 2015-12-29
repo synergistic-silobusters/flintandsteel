@@ -37,7 +37,7 @@ angular.module('flintAndSteel')
             $scope.searchFocus= function searchFocus(){
                 console.log("focus");
                 $scope.showIdeas=true;
-            }
+            };
 
 
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
