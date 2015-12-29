@@ -29,6 +29,6 @@
     "event-source-polyfill": "0.0.6",
     "identicon": "*",
     "angular-identicon": "0.1.17",
-    "angular-timeline": "~1.6.1"
+    "angular-timeline": "1.6.1"
   }
 }
