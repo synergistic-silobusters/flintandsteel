@@ -18,7 +18,6 @@ module.exports = function(config) {
             
             'src/lib/angular/angular.js',
             'src/lib/angular-timeline/dist/angular-timeline.js',
-            'src/lib/fmp-card-directive/fmpCardDirective.js',
             'src/lib/angular-mocks/angular-mocks.js',
             'src/lib/angular-ui-router/release/angular-ui-router.js',
             'src/lib/angular-animate/angular-animate.js',

@@ -277,3 +277,26 @@ img.grayscale:hover {
     text-overflow: ellipsis;
 }
 
+-.identicon-home {
+-    margin-right: 10px;
+-}
+-
+-.md-tab.md-active {
+-    background-color: #e0e0e0;
+-    border-radius: 5px 5px 0px 0px;
+-}
+-
+-.no-ideas-div {
+-    padding-top: 15px;
+-    padding-bottom: 15px;
+-    width: 100%;
+-}
+-
+-.small-padding-bottom{
+-    padding-bottom: 15px;
+-}
+-
+-.back-box {
+-    width: 600px;
+-}
+
