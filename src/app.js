@@ -8,7 +8,6 @@ angular.module('flintAndSteel', [
         'ngAnimate',
         'ui.router',
         'ngMaterial',
-        'fmp-card',
         'ngMessages',
         'ui.identicon'
     ]
