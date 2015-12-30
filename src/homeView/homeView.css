@@ -9,45 +9,41 @@
    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='image.jpg',sizingMethod='scale')";
 
 }
-.homeview-search{
+.homeview-search {
     background:rgba(255,255,255,0.5);
     width:50%;
 }
-.homeview-padding{
+.homeview-padding {
     padding-top:50px;
     padding-bottom:50px;
 }
-.homeview-text-ic{
+.homeview-text-ic {
     color:white;
 }
-.homeview-login-button{
+.homeview-login-button {
     padding-top:50px;
     padding-bottom:50px;
 }
-.homeview-padding-bottom{
+.homeview-padding-bottom {
     padding-bottom:20px;
 }
-.search-text:focus{
+.search-text:focus {
     color:white;
 }
 
 
-img
-{
+img {
     vertical-align: middle;
 }
-.img-responsive
-{
+.img-responsive {
     display: block;
     height: auto;
     max-width: 100%;
 }
-.img-rounded
-{
+.img-rounded {
     border-radius: 3px;
 }
-.img-thumbnail
-{
+.img-thumbnail {
     background-color: #fff;
     border: 1px solid #ededf0;
     border-radius: 3px;
@@ -61,8 +57,7 @@ img
     transition: all .2s ease-in-out;
     webkit-transition: all .2s ease-in-out;
 }
-.img-circle
-{
+.img-circle {
     border-radius: 50%;
 }
 .timeline-centered {
@@ -338,10 +333,10 @@ img
     width: 600px;
 }
 
-body{
+body {
     position: relative;
 }
-.cards{
+.cards {
     margin:30px;
     perspective: 500;
     -webkit-perspective: 500;
@@ -366,7 +361,7 @@ body{
     
 }
 
-.flip{
+.flip {
   transform:rotateY(180deg) scale(1,1);
   -webkit-transform:rotateY(180deg) scale(1,1);
   -moz-transform:rotateY(180deg);
@@ -376,7 +371,7 @@ body{
     
 }
 
-.containerCard{
+.container-card {
     /* How pronounced should the 3D effects be */
     perspective: 500;
     -webkit-perspective: 500;
@@ -397,7 +392,7 @@ body{
     cursor:pointer;
 }
 
-.box-front,.box-back{
+.box-front,.box-back {
     /* Enable 3D transforms */
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
@@ -431,7 +426,7 @@ body{
 
     }
 
-.box-back{
+.box-back {
     /* The back side is flipped 180 deg by default */
     transform:rotateY(180deg);
     -webkit-transform:rotateY(180deg);
@@ -442,7 +437,7 @@ body{
     text-align: left;
     }
 
-.containerCard:hover .box-front{
+.container-card:hover .box-front {
     /* When the container is hovered, flip the front side and hide it .. */
     transform:rotateY(180deg);
     -webkit-transform:rotateY(180deg);
@@ -451,7 +446,7 @@ body{
     -o-transform:rotateY(180deg);
     }
 
-.containerCard:hover .box-back{
+.container-card:hover .box-back {
     /* .. at the same time flip the back side into visibility */
     transform:rotateY(360deg);
     -webkit-transform:rotateY(360deg);
@@ -459,12 +454,12 @@ body{
     -ms-transform:rotateY(360deg);
     -o-transform:rotateY(360deg);
     }
-.homeview-padding-faq-card{
+.homeview-padding-faq-card {
     padding-bottom:5px;
     padding-top: 5px;
     padding-right:5px;
     padding-left:5px;
 }
-.containerCard-text-back{
+.containerCard-text-back {
     margin: 10px;
 }

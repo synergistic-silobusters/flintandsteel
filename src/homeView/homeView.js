@@ -35,7 +35,6 @@ angular.module('flintAndSteel')
             $scope.showIdeas= false;
 
             $scope.searchFocus= function searchFocus(){
-                console.log("focus");
                 $scope.showIdeas=true;
             };
 
