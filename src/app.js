@@ -13,8 +13,8 @@ angular.module('flintAndSteel', [
     ]
 )
 .config([
-    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider',
-    function($urlRouterProvider, $stateProvider, $mdThemingProvider) {
+    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider', '$httpProvider',
+    function($urlRouterProvider, $stateProvider, $mdThemingProvider, $httpProvider) {
         "use strict";
 
         $stateProvider
@@ -81,6 +81,16 @@ angular.module('flintAndSteel', [
             'hue-1': 'A700'
         })
         .warnPalette('red');
+
+        // Initialize get if not there
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};    
+        }
+
+        // Disable IE ajax request caching
+        $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get.Pragma = 'no-cache';
     }
 ]);
 
