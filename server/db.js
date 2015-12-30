@@ -100,8 +100,8 @@ module.exports = function(dbName, cb) {
                     resolve(doc);
                 }
                 else {
-                    var errNotFound = "NOT_FOUND";
-                    resolve(errNotFound);
+                    var errNotFound = 'NOT_FOUND';
+                    reject(new Error(errNotFound));
                 }
             });
         });

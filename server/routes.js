@@ -80,8 +80,13 @@ module.exports = function(app, db) {
                 res.status(200).json(result[0]);
             })
             .catch(function(error) {
-                console.error(chalk.bgRed(error));
-                res.status(200).send('IDEA_NOT_FOUND');
+                if (error.message === 'NOT_FOUND') {
+                    res.status(404).send('IDEA_NOT_FOUND');
+                }
+                else {
+                    console.error(chalk.bgRed(error));
+                    res.sendStatus(500);
+                }
             });
         }
     }, function(req, res) {
@@ -146,8 +151,8 @@ module.exports = function(app, db) {
         users.get(req.params.id, true).then(function(results) {
             res.status(200).json(results);
         }).catch(function(error) {
-            if (error === 'NO_USER') {
-                res.status(404).send('Can\'t find that user :(');
+            if (error.message === 'NOT_FOUND') {
+                res.status(404).send('USER_NOT_FOUND');
             }
             else {
                 res.sendStatus(500);
@@ -253,8 +258,13 @@ module.exports = function(app, db) {
         events.get(req.params.id).then(function(result) {
             res.status(200).json(result);
         }).catch(function(error) {
-            console.log(error);
-            res.sendStatus(500);
+            if (error.message === 'NOT_FOUND') {
+                res.status(404).send('EVENT_NOT_FOUND');
+            }
+            else {
+                console.error(chalk.bgRed(error));
+                res.sendStatus(500);
+            }
         });
     });
 
