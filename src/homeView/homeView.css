@@ -1,4 +1,4 @@
-.homeview-Image {
+.homeview-image {
  height:100%;
    width:100%;
    background-image:url(Collaboration.jpg);/*your background image*/  
@@ -377,7 +377,6 @@ body{
 }
 
 .containerCard{
-   
     /* How pronounced should the 3D effects be */
     perspective: 500;
     -webkit-perspective: 500;
@@ -440,9 +439,7 @@ body{
     -ms-transform:rotateY(180deg);
     -o-transform:rotateY(180deg);
     /*background-color:#f35958;*/
-
     text-align: left;
- 
     }
 
 .containerCard:hover .box-front{
