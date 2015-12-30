@@ -113,19 +113,19 @@ module.exports = function(db) {
     var isEmittingUpdates = false;
     var newestIdeas = [];
     Ideas.prototype.updateIdea = function(idea, oldKey) {
-        var ideaProto = this;
+        var ideaProto = this, key;
 
-        
-
-        var key;
-        if (idea === null && oldKey === "undefined") {
+        if (!idea && !oldKey || oldKey === 'undefined') {
             console.error(chalk.bgRed("No idea (arg1) with an _id or manual id (arg2)"));
         }
-        if (typeof oldKey === "undefined") {
+
+        if (!oldKey) {
             key = idea._id;
+            newestIdeas[key] = idea;
         }
         else {
-            newestIdeas[key] = oldKey;
+            key = oldKey;
+            newestIdeas[oldKey] = 'IDEA_NOT_FOUND';
         }
 
         if (!isEmittingUpdates) {
