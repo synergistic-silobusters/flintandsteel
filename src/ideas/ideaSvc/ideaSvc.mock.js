@@ -21,6 +21,7 @@ angular.module('flintAndSteel')
                     'bicycle carbon courier spook gang wristwatch katana sensory sign long-chain ' +
                     'hydrocarbons assault nano. ',
                 authorId: 1,
+                author: {name: 'Darth Vader'},
                 image: '../assets/defaultideahero.jpg',
                 likes: [
                     {userId: 1},
@@ -60,6 +61,14 @@ angular.module('flintAndSteel')
                 ],
                 backs: [
                     {
+                        authorId: 1,
+                        timeCreated: moment().subtract(6, 'days').calendar(),
+                        timeModified: moment().subtract(4, 'days').calendar(),
+                        types: [
+                            { name: 'Owner'} 
+                        ]
+                    },
+                    {
                         text: 'management experience',
                         authorId: 4,
                         time: moment().subtract(7, 'days').calendar(),
@@ -79,7 +88,8 @@ angular.module('flintAndSteel')
                 ],
                 team: [
                     {
-                        memberId: 1
+                        memberId: 1,
+                        member: { mail: 'dvader@gmail.com' }
                     }
                 ],
                 updates: [
@@ -93,6 +103,10 @@ angular.module('flintAndSteel')
                         authorId: 7,
                         time: moment().subtract(2, 'hours').calendar()
                     }
+                ],
+                tags: [
+                    "thisIsATag",
+                    "tagAllTheThings"
                 ]
             };
 

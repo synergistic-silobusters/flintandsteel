@@ -2,89 +2,6 @@
 /* global _ */
 /* global moment */
 
-// Dialog Controller used for controlling the behavior of the dialog
-//   used for backing.
-function DialogBackCtrl($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc) {
-    "use strict";
-
-    // Populate values based off current back info
-    $scope.types = ideaSvc.getBackTypeChips();
-    $scope.backText = backingObj.text;
-    $scope.tempTypes = backingObj.types;
-    $scope.selectTypes = []; // Variable used for scope issues
-
-    for (var k = 0; k < $scope.tempTypes.length; k++) {
-        $scope.tempTypes[k].checked = true;
-    }
-
-    this.isUserAuthor = function() {
-        if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === author) {
-            return true;
-        }
-        return false;
-    };
-
-    if (this.isUserAuthor()) {
-        $scope.selectTypes.push({name: "Owner", _lowername: "owner"});
-    }
-
-    // Precheck previous boxes for editting backs
-    for (var i = 0; i < $scope.types.length; i++) {
-        for (var j = 0; j < $scope.tempTypes.length; j++) {
-            if ($scope.types[i].name === $scope.tempTypes[j].name) {
-                $scope.types[i].checked = true;
-                $scope.selectTypes.push($scope.tempTypes[j]); //avoids parent scope issues
-                break;
-            }
-            else {
-                $scope.types[i].checked = false;
-            }
-        }
-    }
-
-    // what happens when you hit the cancel button
-    $scope.cancel = function() {
-        $mdDialog.cancel();
-    };
-
-    // what happens when you hit the back idea button
-    $scope.backIdea = function() {
-        $mdDialog.hide($scope.backObject());
-    };
-
-    // pass the account object to the dialog window
-    $scope.backObject = function() {
-        var obj = {
-            text: $scope.backText,
-            selectTypes: $scope.selectTypes
-        };
-
-        return obj;
-    };
-
-    // add checked types to list
-    $scope.toggle = function(item, i) {
-        var idx = -1;
-
-        for (var j = 0; j < $scope.selectTypes.length; j++) {
-            if ($scope.selectTypes[j].name === item.name) {
-                idx = j;
-                break;
-            }
-        }
-
-        // if already selected, remove from list, otherwise add to selected list
-        if (idx > -1) {
-            $scope.selectTypes.splice(idx, 1);
-            $scope.types[i].checked = false;
-        }
-        else {
-            $scope.selectTypes.push(item);
-            $scope.types[i].checked = true;
-        }
-    };
-}
-
 angular.module('flintAndSteel')
 .controller('IdeasViewCtrl',
     [
@@ -118,6 +35,7 @@ angular.module('flintAndSteel')
             ctrl.enableEdit = false;
             ctrl.newUpdate = '';
 
+            //??
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
                 return function filterFn(type) {
@@ -125,6 +43,8 @@ angular.module('flintAndSteel')
                 };
             }
 
+
+            // Why don't we store this information on the server side of things??
             ctrl.refreshTeam = function() {
                 // Quick and dirty optimization: if user can only back a single time:
                 // If team size is the same as back size we good
@@ -155,7 +75,7 @@ angular.module('flintAndSteel')
                         if (typeof $scope.idea.team === "undefined")	{
                             $scope.idea.team = [];
                         }
-                        ctrl.enableEdit = false;
+                        //ctrl.enableEdit = false;
                         ctrl.refreshTeam();
                     }
                 }, function getIdeaError(data, status) {
@@ -165,6 +85,7 @@ angular.module('flintAndSteel')
 
             ctrl.refreshIdea();
 
+            // get or delete idea?
             function eventUpdateIdea(idea) {
                 if (typeof idea !== 'undefined' && idea !== null) {
                     $scope.$apply(function() {
@@ -375,7 +296,7 @@ angular.module('flintAndSteel')
                 $scope.idea.team = [];
 
                 // Toggle Team Edit
-                ctrl.enableTeamEdit = false;
+                //ctrl.enableTeamEdit = false;
 
                 // Write to DB
                 $scope.idea.backs.forEach(function(back) {
@@ -429,7 +350,6 @@ angular.module('flintAndSteel')
                     $scope.idea = answer.idea;
                     ctrl.updateTeam();
                 }, function() {
-                    ctrl.refreshTeam();
                     $scope.status = 'You canceled the dialog.';
                 });
             };
@@ -486,9 +406,11 @@ angular.module('flintAndSteel')
             };
 
             ctrl.removeUserFromTeam = function(backOfTeamMember) {
-                backOfTeamMember.isInTeam = false;
+                if (ctrl.isUserMemberOfTeam && ctrl.isUserAuthorOfInteraction(backOfTeamMember)) {
+                    backOfTeamMember.isInTeam = false;
 
-                ctrl.updateTeam();
+                    ctrl.updateTeam();
+                }
             };
 
             ctrl.isUserAuthorOfInteraction = function(interactionObj) {
@@ -511,47 +433,49 @@ angular.module('flintAndSteel')
                 var template = '';
                 var backObj = '';
 
-                // Change data passed and template depending on if adding or editting
-                if (!$scope.hasUserBacked()) {
-                    template = 'ideas/ideasView/ideaBack/ideaAddBack.tpl.html';
-                    backObj = {
-                        text: '',
-                        types: ''
-                    };
-                }
-                else {
-                    template = 'ideas/ideasView/ideaBack/ideaEditBack.tpl.html';
-                    $scope.loadEditBack();
-                    backObj = $scope.userBack;
-                }
-
-                // Show Dialog
-                $mdDialog.show({
-                    controller: DialogBackCtrl,
-                    templateUrl: template,
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    locals: {
-                        backingObj: backObj,
-                        author: $scope.idea.authorId
-                    }
-                })
-                .then(function(answer) {
+                if(loginSvc.isUserLoggedIn()) {
+                    // Change data passed and template depending on if adding or editting
                     if (!$scope.hasUserBacked()) {
-                        ctrl.newBack = answer.text;
-                        $scope.selectedTypes = answer.selectTypes;
-                        $scope.addNewInteraction('backs');
+                        template = 'ideas/ideasView/ideaBack/ideaAddBack.tpl.html';
+                        backObj = {
+                            text: '',
+                            types: ''
+                        };
                     }
                     else {
-                        ctrl.editBackText = answer.text;
-                        $scope.selectedTypes = answer.selectTypes;
-                        ctrl.editBack(backObj);
+                        template = 'ideas/ideasView/ideaBack/ideaEditBack.tpl.html';
+                        $scope.loadEditBack();
+                        backObj = $scope.userBack;
                     }
-                    $scope.edittingBack = false;
-                }, function() {
-                    $scope.status = 'You canceled the dialog.';
-                });
+
+                    // Show Dialog
+                    $mdDialog.show({
+                        controller: 'DialogBackCtrl',
+                        templateUrl: template,
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose: true,
+                        locals: {
+                            backingObj: backObj,
+                            author: $scope.idea.authorId
+                        }
+                    })
+                    .then(function(answer) {
+                        if (!$scope.hasUserBacked()) {
+                            ctrl.newBack = answer.text;
+                            $scope.selectedTypes = answer.selectTypes;
+                            $scope.addNewInteraction('backs');
+                        }
+                        else {
+                            ctrl.editBackText = answer.text;
+                            $scope.selectedTypes = answer.selectTypes;
+                            ctrl.editBack(backObj);
+                        }
+                        $scope.edittingBack = false;
+                    }, function() {
+                        $scope.status = 'You canceled the dialog.';
+                    });
+                }
             };
 
             // Object used to update an editted back
@@ -647,19 +571,20 @@ angular.module('flintAndSteel')
 
             // Loads information from a previously made back by the current user
             $scope.loadEditBack = function loadEditBack(backObj) {
+                $scope.userBack = '';
                 if (typeof backObj === "undefined") {
                     var backs = $scope.idea.backs;
                     for (var i = 0; i < backs.length; i++) {
                         if (loginSvc.getProperty('_id') === backs[i].authorId) {
                             backObj = backs[i];
+                            $scope.userBack = backObj;
+                            ctrl.editBackText = backObj.text;
+                            $scope.selectedTypes = backObj.types.slice();
+                            $scope.showEditBackInput = true;
                             break;
                         }
                     }
                 }
-                $scope.userBack = backObj;
-                ctrl.editBackText = backObj.text;
-                $scope.selectedTypes = backObj.types.slice();
-                $scope.showEditBackInput = true;
             };
 
             ctrl.doesTagExist = function doesTagExist(tag) {
@@ -688,18 +613,23 @@ angular.module('flintAndSteel')
 
             ctrl.removeTag = function removeTag(tag) {
                 var index = $scope.idea.tags.indexOf(tag);
-                $scope.idea.tags.splice(index, 1);
+                if (index > -1) {
+                    $scope.idea.tags.splice(index, 1);
+                }
+
             };
 
             // Open up an email to team members
             ctrl.parseTeamEmail = function parseTeamEmail() {
-                var emailString = "mailto:";
-                $scope.idea.team.forEach(function(teamElement) {
-                    if (teamElement.member.mail !== 'undefined') {
-                        emailString += teamElement.member.mail + ';';
-                    }
-                });
-                $window.location = emailString;
+                if ($scope.idea.team.length) {
+                    $scope.emailString = "mailto:";
+                    $scope.idea.team.forEach(function(teamElement) {
+                        if (teamElement.member.mail !== 'undefined') {
+                            $scope.emailString += teamElement.member.mail + ';';
+                        }
+                    });
+                    $window.location = $scope.emailString;
+                }
             };
         }
     ]
