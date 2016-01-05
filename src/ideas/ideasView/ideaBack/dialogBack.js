@@ -1,3 +1,5 @@
+/* global angular */
+
 angular.module('flintAndSteel')
 .controller('DialogBackCtrl',
     [
