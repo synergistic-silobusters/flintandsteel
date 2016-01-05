@@ -9,7 +9,7 @@
 describe('IdeasViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc, sseSvcMock, $window;
+    var scope, ctrl, $stateParams, $mdDialog, ideaSvcMock, loginSvcMock, $state, toastSvc, sseSvcMock;
 
     var authorAccount = {
         id: 1,
@@ -59,7 +59,7 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('ctrl.refreshTeam()', function() {
-        var mockIdea, testTeam;
+        var mockIdea;
 
         beforeEach(function() {
             ideaSvcMock.getIdea(null, function(idea) {
@@ -68,14 +68,16 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should update back as in team if member added to team', function() {
+            loginSvcMock.checkLogin(authorAccount);
             ctrl.refreshTeam();
-            expect(scope.idea.backs.isInTeam).toBeTruthy;
+            expect(scope.idea.backs[0].isInTeam).toBe(true);
         });
 
         it('should remove team from back if member no longer in team', function() {
             scope.idea.team = [];
+
             ctrl.refreshTeam();
-            expect(scope.idea.backs.isInTeam).not.toBeTruthy;
+            expect(scope.idea.backs[0].isInTeam).not.toBe(true);
         });
     });
 
@@ -384,8 +386,8 @@ describe('IdeasViewCtrl', function() {
             loginSvcMock.checkLogin(authorAccount);
             ideaSvcMock.getIdea(null, function(idea) {
                 mockIdea = idea;
-            })
-        })
+            });
+        });
 
         it('should return true if idea has image', function() {
             hasImage = scope.ideaHasImage();
@@ -709,7 +711,7 @@ describe('IdeasViewCtrl', function() {
             mockIdea.backs[1].isInTeam = true;
             ctrl.updateTeam();
 
-            expect(mockIdea.team.length).toBe(numTeam+1);
+            expect(mockIdea.team.length).toBe(numTeam + 1);
             expect(mockIdea.team[numTeam].memberId).toBe(4);
             expect(ideaSvcMock.updateIdea).toHaveBeenCalled();
             expect(toastSvc.show).toHaveBeenCalled();
@@ -728,7 +730,6 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('ctrl.editTeam', function() {
-        var mockIdea;
 
         beforeEach(function() {
             loginSvcMock.checkLogin(authorAccount);
@@ -756,12 +757,12 @@ describe('IdeasViewCtrl', function() {
             ctrl.newBack = 'This is a test back!';
             scope.selectedTypes = [{ name: 'Experience' }, { name: 'Funding' }];
             scope.addNewInteraction('backs');
-            expect(scope.idea.backs.length).toBe(numBacks+1);
+            expect(scope.idea.backs.length).toBe(numBacks + 1);
 
             // Add to team
-            scope.idea.backs[scope.idea.backs.length-1].isInTeam = true;
+            scope.idea.backs[scope.idea.backs.length - 1].isInTeam = true;
             ctrl.updateTeam();
-            expect(scope.idea.team.length).toBe(numTeam+1);
+            expect(scope.idea.team.length).toBe(numTeam + 1);
 
             // Test remove from team
             ctrl.removeSelfFromTeam();
@@ -843,7 +844,7 @@ describe('IdeasViewCtrl', function() {
             //Test function
             ctrl.removeUserFromTeam(scope.userBack);
             expect(scope.userBack.isInTeam).toBe(false);
-            expect(scope.idea.team.length).toBe(numTeam-1);
+            expect(scope.idea.team.length).toBe(numTeam - 1);
         });
 
         it('should not remove user from team if user has not backed', function() {
@@ -983,11 +984,11 @@ describe('IdeasViewCtrl', function() {
 
             spyOn(ideaSvcMock, 'editBack').and.callThrough();
 
-            time = moment().subtract(3, 'days').calendar();
+            time = '2015-11-29T22:28:48.475Z';
             testBack = {
                 text: '',
                 authorId: 1,
-                timeCreated: moment().subtract(6, 'days').calendar(),
+                timeCreated: '2015-10-29T22:28:48.475Z',
                 timeModified: time,
                 types: [{ name: 'Time' }]
             };
@@ -1030,8 +1031,8 @@ describe('IdeasViewCtrl', function() {
             testBack = {
                 text: '',
                 authorId: 1,
-                timeCreated: moment().subtract(6, 'days').calendar(),
-                timeModified: moment().subtract(6, 'days').calendar(),
+                timeCreated: '2015-11-29T22:28:48.475Z',
+                timeModified: '2015-11-29T22:28:48.475Z',
                 types: [{ name: 'Time' }]
             };
 
@@ -1063,8 +1064,8 @@ describe('IdeasViewCtrl', function() {
             testBack = {
                 text: '',
                 authorId: 1,
-                timeCreated: moment().subtract(6, 'days').calendar(),
-                timeModified: moment().subtract(3, 'days').calendar(),
+                timeCreated: '2015-10-29T22:28:48.475Z',
+                timeModified: '2015-11-29T22:28:48.475Z',
                 types: [{ name: 'Time' }]
             };
 
@@ -1072,6 +1073,7 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should remove back if author and from team if member of team', function() {
+
             //Dialog is opened
             scope.removeBack();
             expect($mdDialog.show).toHaveBeenCalled();
@@ -1083,8 +1085,8 @@ describe('IdeasViewCtrl', function() {
             }
 
             //expect back and team to be removed
-            expect(scope.idea.backs.length).toBe(backLength-1);
-            expect(scope.idea.team.length).toBe(teamLength-1);
+            expect(scope.idea.backs.length).toBe(backLength - 1);
+            expect(scope.idea.team.length).toBe(teamLength - 1);
         });
 
         it('should not remove back if not author', function() {
@@ -1111,7 +1113,7 @@ describe('IdeasViewCtrl', function() {
             hasBacked = scope.hasUserBacked();
 
             expect(hasBacked).toBe(false);
-        })
+        });
     });
 
     describe('ctrl.hasBackBeenEdited', function() {
@@ -1210,22 +1212,24 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('ctrl.addTag', function() {
-        var tagLength;
+        var tagLength, expectLength;
 
         beforeEach(function() {
             tagLength = scope.idea.tags.length;
         });
 
         it('should increase the tag size if tag does not exist', function() {
+            expectLength = tagLength + 1;
             ctrl.addTag('this is a new tag');
-            expect(scope.idea.tags.length).toBe(tagLength+1);
+            expect(scope.idea.tags.length).toBe(expectLength);
         });
 
         it('should not increase the tag size if tag does exist', function() {
+            expectLength = tagLength + 1;
             ctrl.addTag('1');
-            expect(scope.idea.tags.length).toBe(tagLength+1);
+            expect(scope.idea.tags.length).toBe(expectLength);
             ctrl.addTag('1');
-            expect(scope.idea.tags.length).toBe(tagLength+1);
+            expect(scope.idea.tags.length).toBe(expectLength);
         });
 
         it('should not increase the tag size if there are already 5 tags', function() {
@@ -1244,7 +1248,7 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('ctrl.tagKeyEvent', function() {
-        var keyEvent, tagLength;
+        var keyEvent, tagLength, expectLength;
 
         beforeEach(function() {
             scope.tagInput = 'a tag';
@@ -1255,9 +1259,10 @@ describe('IdeasViewCtrl', function() {
         });
 
         it('should call add Tag if enter is pushed', function() {
+            expectLength = tagLength + 1;
             ctrl.tagKeyEvent(keyEvent);
             expect(scope.tagInput).toBe("");
-            expect(scope.idea.tags.length).toBe(tagLength+1);
+            expect(scope.idea.tags.length).toBe(expectLength);
         });
 
         it('should not call add Tag if a key other than enter is pushed', function() {
@@ -1269,15 +1274,17 @@ describe('IdeasViewCtrl', function() {
     });
 
     describe('ctrl.removeTag', function() {
-        var tagLength;
+        var tagLength, expectLength;
 
         beforeEach(function() {
             tagLength = scope.idea.tags.length;
+
         });
 
         it('should remove a tag if the tag exists', function() {
+            expectLength = tagLength - 1;
             ctrl.removeTag('thisIsATag');
-            expect(scope.idea.tags.length).toBe(tagLength-1);
+            expect(scope.idea.tags.length).toBe(expectLength);
         });
 
         it('should not remove a tag if the tag does not exist', function() {

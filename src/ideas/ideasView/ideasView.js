@@ -35,7 +35,7 @@ angular.module('flintAndSteel')
             ctrl.enableEdit = false;
             ctrl.newUpdate = '';
 
-            //??
+            //used for chips
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
                 return function filterFn(type) {
@@ -433,7 +433,7 @@ angular.module('flintAndSteel')
                 var template = '';
                 var backObj = '';
 
-                if(loginSvc.isUserLoggedIn()) {
+                if (loginSvc.isUserLoggedIn()) {
                     // Change data passed and template depending on if adding or editting
                     if (!$scope.hasUserBacked()) {
                         template = 'ideas/ideasView/ideaBack/ideaAddBack.tpl.html';

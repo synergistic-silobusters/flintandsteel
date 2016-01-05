@@ -17,7 +17,7 @@ angular.module('flintAndSteel')
                 _id: 2, 
                 username: 'SonOfDarth', 
                 name: 'Luke Skywalker'
-            }
+            };
 
             var loggedIn = false;
             var userLoggedIn = 1;

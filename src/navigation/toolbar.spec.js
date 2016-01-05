@@ -160,7 +160,7 @@ describe('ToolbarCtrl', function() {
         });
 
         it('should toast successful login', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb, errorCb) {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb) {
                 successCb({status: 'AUTH_OK', name: authorAccount.name});
             });
 
@@ -170,7 +170,7 @@ describe('ToolbarCtrl', function() {
         });
 
         it('should toast authentication error', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb, errorCb) {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb) {
                 successCb({status: 'AUTH_ERROR', name: authorAccount.name});
             });
 
@@ -180,7 +180,7 @@ describe('ToolbarCtrl', function() {
         });
 
         it('should toast user not found', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb, errorCb) {
+            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb) {
                 successCb({status: 'USER_NOT_FOUND', name: authorAccount.name});
             });
 
@@ -227,10 +227,12 @@ describe('ToolbarCtrl', function() {
 
         it('should go home if in add idea', function() {
             spyOn($state, 'includes').and.callFake(function(data) {
-                if (data === 'addidea')
+                if (data === 'addidea') {
                     return true;
-                else
+                }
+                else {
                     return false;
+                }
             });
 
             scope.logout();
