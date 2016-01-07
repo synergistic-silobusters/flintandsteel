@@ -30,5 +30,8 @@
     "identicon": "*",
     "angular-identicon": "0.1.17",
     "angular-timeline": "1.6.1"
+  },
+  "resolutions": {
+    "angular": "1.4.7"
   }
 }
