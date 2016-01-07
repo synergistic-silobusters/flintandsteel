@@ -391,7 +391,7 @@ module.exports = function(app, db) {
         var sse = startSees(res);
 
         function updateIdea(idea) {
-            if (idea === null) {
+            if (/NOT_FOUND/.test(idea)) {
                 sse("updateIdea_" + req.params.id, idea, req.params.id);
                 return;
             }

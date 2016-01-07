@@ -166,7 +166,7 @@ angular.module('flintAndSteel')
             ctrl.refreshIdea();
 
             function eventUpdateIdea(idea) {
-                if (typeof idea !== 'undefined' && idea !== null) {
+                if (idea !== 'IDEA_NOT_FOUND') {
                     $scope.$apply(function() {
                         $scope.idea = idea;
                         ctrl.refreshTeam();
