@@ -316,40 +316,40 @@ img.grayscale:hover {
 /*Conversation Bubbles*/
 /*----------------------------------------------------*/
 .triangle-isosceles {
-  position:relative;
-  padding:0px 5px 0px 5px;
-  margin:1em 0 3em;
-  color:#000;
-  background:#e0e0e0;
-  -webkit-border-radius:5px;
-  -moz-border-radius:5px;
-  border-radius:5px 5px 0px 0px;
+    position:relative;
+    padding:0px 5px 0px 5px;
+    margin:1em 0 3em;
+    color:#000;
+    background:#e0e0e0;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px 5px 0px 0px;
 }
 
 .triangle-isosceles.left {
-  margin:0px 0px 0px 15px;
-  background:#e0e0e0;
+    margin:0px 0px 0px 15px;
+    background:#e0e0e0;
 }
 
 .triangle-isosceles:after {
-  content:"";
-  position:absolute;
-  bottom:-15px; /* value = - border-top-width - border-bottom-width */
-  left:50px; /* controls horizontal position */
-  border-width:15px 15px 0; /* vary these values to change the angle of the vertex */
-  border-style:solid;
-  border-color:#e0e0e0 transparent;
-  /* reduce the damage in FF3.0 */
-  display:block;
-  width:0;
+    content:"";
+    position:absolute;
+    bottom:-15px; /* value = - border-top-width - border-bottom-width */
+    left:50px; /* controls horizontal position */
+    border-width:15px 15px 0; /* vary these values to change the angle of the vertex */
+    border-style:solid;
+    border-color:#e0e0e0 transparent;
+    /* reduce the damage in FF3.0 */
+    display:block;
+    width:0;
 }
 
 .triangle-isosceles.left:after {
-  top:16px; /* controls vertical position */
-  left:-10px; /* value = - border-left-width - border-right-width */
-  bottom:auto;
-  border-width:10px 10px 10px 0;
-  border-color:transparent #e0e0e0;
+    top:15px; /* controls vertical position */
+    left:-10px; /* value = - border-left-width - border-right-width */
+    bottom:auto;
+    border-width:10px 10px 10px 0;
+    border-color:transparent #e0e0e0;
 }
 
 
