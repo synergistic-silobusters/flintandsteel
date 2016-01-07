@@ -10,7 +10,7 @@
 
 }
 .homeview-search {
-    background:rgba(255,255,255,0.5);
+    background:rgba(255,255,255,0.65);
     width:50%;
 }
 .homeview-padding {
@@ -410,7 +410,7 @@ body {
     position:absolute;
     /*
     background-color:#0090d9;*/
-    background:rgba(154,10,10,0.5);
+    background:rgba(154,10,10,0.65);
     /* Animate the transitions */
     -webkit-transition:0.8s; text-align:center;
     -moz-transition:0.8s; text-align:center;
