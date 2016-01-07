@@ -75,7 +75,7 @@ angular.module('flintAndSteel')
                         if (typeof $scope.idea.team === "undefined")	{
                             $scope.idea.team = [];
                         }
-                        //ctrl.enableEdit = false;
+                        ctrl.enableEdit = false;
                         ctrl.refreshTeam();
                     }
                 }, function getIdeaError(data, status) {
@@ -296,7 +296,7 @@ angular.module('flintAndSteel')
                 $scope.idea.team = [];
 
                 // Toggle Team Edit
-                //ctrl.enableTeamEdit = false;
+                ctrl.enableTeamEdit = false;
 
                 // Write to DB
                 $scope.idea.backs.forEach(function(back) {
