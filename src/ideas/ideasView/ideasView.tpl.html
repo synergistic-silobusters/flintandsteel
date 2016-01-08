@@ -253,7 +253,7 @@
                                     <small class="extra-padding-sides-15" ng-bind="momentizeTime(update.timeCreated)"></small>
                                     <span ng-show="ideasView.isUserAuthorOfInteraction(update) || ideasView.isUserAuthor()">
                                         <md-button class="md-icon-button" aria-label="Delete Update" ng-click="removeInteraction('updates', update)">
-                                            <i class="material-icons icon-button-adjust">&#xE14C;</i>
+                                            <i class="material-icons icon-button-adjust">&#xE872;</i>
                                             <md-tooltip md-direction="bottom">Delete Update</md-tooltip>
                                         </md-button>
                                     </span>
@@ -304,7 +304,7 @@
                                     <small class="extra-padding-sides-15" ng-bind="momentizeTime(comment.timeCreated)"></small>
                                     <span ng-show="ideasView.isUserAuthorOfInteraction(comment) || ideasView.isUserAuthor()">
                                         <md-button class="md-icon-button" aria-label="Delete Comment" ng-click="removeInteraction('comments', comment)">
-                                            <i class="material-icons icon-button-adjust">&#xE14C;</i>
+                                            <i class="material-icons icon-button-adjust">&#xE872;</i>
                                             <md-tooltip md-direction="bottom">Delete Comment</md-tooltip>
                                         </md-button>
                                     </span>
@@ -331,7 +331,7 @@
                     </md-button>
                     <!-- Delete current backing -->
                     <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="removeBack($event)" ng-disabled="!hasUserBacked()">
-                        <i class="material-icons icon-button-adjust">&#xE5CD;</i>
+                        <i class="material-icons icon-button-adjust">&#xE872;</i>
                         <md-tooltip md-direction="bottom">Delete Back</md-tooltip>
                     </md-button>
                     <div ng-repeat="back in idea.backs" class="some-padding-bottom">
@@ -348,7 +348,7 @@
                                         <md-tooltip md-direction="bottom">Edit Contribution</md-tooltip>
                                     </md-button>
                                     <md-button class="md-icon-button small" ng-click="removeBack($event)">
-                                        <i class="material-icons icon-button-adjust">&#xE5CD;</i>
+                                        <i class="material-icons icon-button-adjust">&#xE872;</i>
                                         <md-tooltip md-direction="bottom">Delete Back</md-tooltip>
                                     </md-button>
                                 </span>
@@ -377,9 +377,7 @@
                             <p ng-show="!ideasView.isUserAuthor() && !ideasView.isUserMemberOfTeam() && isUserLoggedIn() && idea.team.length > 0 && ideasView.hasUserBacked()">You are currently not part of the team.</p>
                             <p ng-show="!ideasView.isUserAuthor() && ideasView.isUserMemberOfTeam() && isUserLoggedIn()">You are part of the team!</p>
                         </div>
-                        <div layout="row" layout-align="start center" class="convo-text-bubble top-bar word-wrap">
-                            <p>Team Members</p>
-                            <span flex></span>
+                        <div layout="row" layout-align="start center" class="convo-text-bubble word-wrap">
                             <md-button class="md-icon-button" aria-label="email group" ng-click="ideasView.parseTeamEmail()">
                                 <i class="material-icons icon-button-adjust">&#xE0BE;</i>
                                 <md-tooltip md-direction="bottom">Email Team</md-tooltip>
@@ -389,28 +387,28 @@
                                 <md-tooltip md-direction="bottom">Edit Team Members</md-tooltip>
                             </md-button>
                             <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="ideasView.removeSelfFromTeam($event)" ng-disabled="!ideasView.isUserMemberOfTeam() || !hasUserBacked()">
-                                <i class="material-icons icon-button-adjust">&#xE5CD;</i>
+                                <i class="material-icons icon-button-adjust">&#xE15A;</i>
                                 <md-tooltip md-direction="bottom">Leave Team</md-tooltip>
                             </md-button>
                         </div>
-                        <div class="convo-text-bubble text-area word-wrap">
-                            <div ng-repeat="back in idea.backs" ng-show="back.isInTeam" class="some-padding-bottom">
-                                <div layout-"column" flex>
-                                    <div layout="row" layout-align="start center">
-                                        <identicon username='back.author.username' size='30'></identicon>
-                                        <p>&nbsp;<email-link author-obj="back.author"></email-link></p>
-                                        <span ng-show="ideasView.isUserAuthorOfInteraction(back)">
-                                            <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="ideasView.removeSelfFromTeam($event)" ng-disabled="!ideasView.isUserMemberOfTeam() || !hasUserBacked()">
-                                                <i class="material-icons icon-button-adjust">&#xE5CD;</i>
-                                                <md-tooltip md-direction="bottom">Leave Team</md-tooltip>
-                                            </md-button>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span class="custom-chip-wrapper" ng-repeat="type in back.types">
-                                            <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
-                                        </span>
-                                    </div>
+                        <div ng-repeat="back in idea.backs" ng-show="back.isInTeam" class="some-padding-bottom">
+                            <div layout-"column" flex>
+                                <div layout="row" layout-align="start center" class="convo-text-bubble top-bar word-wrap">
+                                    <identicon username='back.author.username' size='30'></identicon>
+                                    <p>&nbsp;<email-link author-obj="back.author"></email-link></p>
+                                    <span flex></span>
+                                    <span ng-show="ideasView.isUserAuthorOfInteraction(back)">
+                                        <md-button class="md-icon-button" ng-if="isUserLoggedIn()" ng-click="ideasView.removeSelfFromTeam($event)" ng-disabled="!ideasView.isUserMemberOfTeam() || !hasUserBacked()">
+                                            <i class="material-icons icon-button-adjust">&#xE15A;</i>
+                                            <md-tooltip md-direction="bottom">Leave Team</md-tooltip>
+                                        </md-button>
+                                    </span>
+                                </div>
+                                <div class="convo-text-bubble text-area word-wrap">
+                                    <small>Contributions:</small>
+                                    <span class="custom-chip-wrapper" ng-repeat="type in back.types">
+                                        <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
+                                    </span>
                                 </div>
                             </div>
                         </div>
