@@ -9,17 +9,17 @@
 describe('AddIdeaViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, toastSvc, $state, ideaSvcMock, loginSvcMock;
+    var scope, ctrl, toastSvc, $state, ideaSvcMock, userSvcMock;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
 
-    beforeEach(inject(function($rootScope, $controller, _toastSvc_, _$state_, _ideaSvcMock_, _loginSvcMock_) {
+    beforeEach(inject(function($rootScope, $controller, _toastSvc_, _$state_, _ideaSvcMock_, _userSvcMock_) {
         scope = $rootScope.$new();
         toastSvc = _toastSvc_;
         $state = _$state_;
         ideaSvcMock = _ideaSvcMock_;
-        loginSvcMock = _loginSvcMock_;
+        userSvcMock = _userSvcMock_;
 
         spyOn($state, 'go');
         spyOn(ideaSvcMock, 'postIdea').and.callThrough();
@@ -29,7 +29,7 @@ describe('AddIdeaViewCtrl', function() {
             $state: $state,
             toastSvc: toastSvc,
             ideaSvc: ideaSvcMock,
-            loginSvc: loginSvcMock
+            userSvc: userSvcMock
         });
     }));
 

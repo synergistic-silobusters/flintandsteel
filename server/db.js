@@ -9,11 +9,35 @@ module.exports = function(dbName, cb) {
     var mongodb = require('mongodb'),
         ObjectId = mongodb.ObjectID,
         MongoClient = mongodb.MongoClient,
-        chalk = require('chalk');
+        chalk = require('chalk'),
+        _ = require('lodash'),
+        Promise = require('bluebird');
 
     var db;
 
-    if (typeof dbName !== "undefined") {
+    module.createCollections = function createCollection(names, db) {
+        var collectionPromises = [];
+        if (!_.isArray(names)) {
+            names = [names];
+        }
+        _.forEach(names, function(name) {
+            if (_.isString(name) && !_.isUndefined(db)) {
+                collectionPromises.push(new Promise(function(resolve, reject) {
+                    db.createCollection(name, function(error, collection) {
+                        if (error) {
+                            reject(error);
+                        }
+                        else {
+                            resolve(collection);
+                        }
+                    });
+                }));
+            }
+        });
+        return Promise.all(collectionPromises);
+    };
+
+    if (_.isString(dbName)) {
         MongoClient.connect("mongodb://localhost:27017/" + dbName, function(err, database) {
             console.log(chalk.yellow("Setting up db " + dbName));
             db = database;
@@ -22,37 +46,13 @@ module.exports = function(dbName, cb) {
                 process.exit(1);
                 return;
             }
-            db.createCollection('users', function(errUsers) {
-                if (errUsers) {
-                    console.error(errUsers);
+            module.createCollections(['users', 'ideas', 'comments', 'events'], database).then(function() {
+                console.log(chalk.green("Database collections created!"));
+                if (typeof cb !== 'undefined') {
+                    cb(null);
                 }
-                else {
-                    db.createCollection('events', function(errEvents) {
-                        if (errEvents) {
-                            console.error(errEvents);
-                        }
-                        else {
-                            db.createCollection('comments', function(errComments) {
-                                if (errComments) {
-                                    console.error(errComments);
-                                }
-                                else {
-                                    db.createCollection('ideas', function(errIdea) {
-                                        if (errIdea) {
-                                            console.error(errIdea);
-                                        }
-                                        else {
-                                            console.log(chalk.green("Database collections created!"));
-                                            if (typeof cb !== 'undefined') {
-                                                cb(null);
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
+            }).catch(function(error) {
+                console.log(chalk.red(error));
             });
         });
     }
@@ -89,23 +89,21 @@ module.exports = function(dbName, cb) {
         });
     };
 
-    module.findOneById = function findOneById(collection, id, cb) {
+    module.findOneById = function findOneById(collection, id) {
         var objId = new ObjectId(id);
-
-        db.collection(collection).findOne({_id: objId}, function(err, doc) {
-            if (err) {
-                console.error(chalk.bgRed(err));
-                cb(err);
-            }
-            else if (doc) {
-                // console.log(chalk.bgGreen('Document with id %s found in the ' + collection + ' collection.'), id);
-                cb(null, doc);
-            }
-            else {
-                var errNotFound = "Document " + id + " was not found in " + collection + " collection!";
-                console.error(chalk.bgRed(errNotFound));
-                cb(errNotFound);
-            }
+        return new Promise(function(resolve, reject) {
+            db.collection(collection).findOne({_id: objId}, function(err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                else if (doc) {
+                    resolve(doc);
+                }
+                else {
+                    var errNotFound = 'NOT_FOUND';
+                    reject(new Error(errNotFound));
+                }
+            });
         });
     };
 
@@ -152,129 +150,6 @@ module.exports = function(dbName, cb) {
         );
     };
 
-    module.updateOnePushArray = function updateOnePushArray(collection, id, property, value, cb) {
-
-        var objId = new ObjectId(id);
-
-        var update = {};
-        update[property] = value;
-
-        var push = {};
-        push.$push = update;
-
-        db.collection(collection).updateOne(
-            { _id: objId },
-            push,
-            { upsert: true },
-            function(err, results) {
-                if (err) {
-                    console.error(chalk.bgRed(err));
-                    cb(err);
-                }
-                else if (results.nMatched === 0) {
-                    console.error(chalk.yellow('No documents with id ' + id + ' were found.'));
-                    cb(null, results);
-                }
-                else {
-                    // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
-                    cb(null, results);
-                }
-            }
-        );
-    };
-
-    module.updateOneArrayElement = function updateArrayElement(collection, id, property, searchProperty, searchValue, newValue, cb) {
-        var objId = new ObjectId(id);
-
-        var query = {};
-        query._id = objId;
-        query[property + "." + searchProperty] = searchValue; // Find the old value
-
-        var update = {};
-        update.$set = {};
-        // '.$' Update first match of query (should be only match)
-        update.$set[property + ".$"] = newValue;
-
-        db.collection(collection).updateOne(
-            query,
-            update,
-            function(err, results) {
-                if (err) {
-                    console.error(chalk.bgRed(err));
-                    cb(err);
-                }
-                else if (results.nMatched === 0) {
-                    console.error(chalk.yellow('No documents matching the following query were found:'));
-                    console.log(query);
-                    cb(null, results);
-                }
-                else {
-                    // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
-                    cb(null, results);
-                }
-            }
-        );
-    };
-
-    module.updateOnePullArray = function updateOnePushArray(collection, id, property, value, cb) {
-
-        var objId = new ObjectId(id);
-
-        var update = {};
-        update[property] = value;
-
-        var pull = {};
-        pull.$pull = update;
-
-        db.collection(collection).updateOne(
-            { _id: objId },
-            pull,
-            function(err, results) {
-                if (err) {
-                    console.error(chalk.bgRed(err));
-                    cb(err);
-                }
-                else if (results.nMatched === 0) {
-                    console.error(chalk.yellow('No documents with id ' + id + ' were found.'));
-                    cb(null, results);
-                }
-                else {
-                    // console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), id);
-                    cb(null, results);
-                }
-            }
-        );
-    };
-
-    module.findAndPullArray = function findAndPullArray(collection, property, value, cb) {
-        var find = {};
-        find[property] = value;
-
-        var pull = {};
-        pull.$pull = find;
-
-        db.collection(collection).findAndModify(
-          find,
-          [],
-          pull,
-          function(err, results) {
-              if (err) {
-                  console.error(chalk.bgRed(err));
-                  cb(err);
-              }
-              else if (results.nMatched === 0) {
-                  console.error(chalk.yellow('No documents matching the following query were found:'));
-                  console.log(find);
-                  cb(null, results.value._id);
-              }
-              else {
-                  //   console.log(chalk.bgGreen('Document with id %s updated in the ' + collection + ' collection.'), results.value._id);
-                  cb(null, results.value._id);
-              }
-          }
-        );
-    };
-
     module.findByPropertyAndSet = function findByPropertyAndSet(collection, obj, property, cb) {
         var find = {};
         find[property] = obj[property];
@@ -305,21 +180,137 @@ module.exports = function(dbName, cb) {
         );
     };
 
-    module.deleteOne = function deleteOne(collection, id, cb) {
+    module.deleteOne = function deleteOne(collection, id) {
         var objId = new ObjectId(id);
 
-        db.collection(collection).deleteOne({ _id: objId },function(err, results) {
+        return new Promise(function(resolve, reject) {
+            db.collection(collection).deleteOne({ _id: objId },function(err, results) {
             if (err) {
-                console.error(chalk.bgRed(err));
-                cb(err);
-            }
-            else if (results.nMatched === 0) {
-                console.error(chalk.yellow('No documents with id ' + id + ' were found.'));
-                cb(null, results);
+                reject(err);
             }
             else {
-                // console.log(chalk.bgGreen('Document with id %s removed from the ' + collection + ' collection.'), id);
-                cb(null, results);
+                resolve(results);
+            }
+        });
+        });
+    };
+
+    module.patchObject = function patchObject(collection, id, command) {
+        return new Promise(function(resolve, reject) {
+            var updateConfig = {},
+                valueObj = {},
+                toChange = {},
+                idToChange = '',
+                path = '',
+                runUpdate = true;
+            
+            
+            if (/append|create|modify/.test(command.operation)) {
+                valueObj = JSON.parse(command.value);
+
+                if (collection === 'ideas') {
+                    if (command.path === 'backs' || command.path === 'updates' && valueObj.authorId) {
+                        valueObj.authorId = new ObjectId(valueObj.authorId);
+                    }
+                    else if (command.path === 'team' && valueObj.memberId) {
+                        valueObj.memberId = new ObjectId(valueObj.memberId);
+                    }
+                    else if (command.path === 'likes' && valueObj.userId) {
+                        valueObj.userId = new ObjectId(valueObj.userId);
+                    }
+                    else if (command.path === 'comments' && valueObj.commentId) {
+                        valueObj.commentId = new ObjectId(valueObj.commentId);
+                    }
+                    else if (command.path === 'eventId') {
+                        valueObj = new ObjectId(valueObj);
+                    }
+                }
+                else if (collection === 'comments' && command.path === 'authorId' || command.path === 'parentId') {
+                    valueObj = new ObjectId(valueObj);
+                }
+            }
+                    
+            switch (command.operation) {
+                case "append":
+                    toChange = {};
+                    valueObj._id = new ObjectId();
+                    toChange[command.path] = valueObj;
+                    updateConfig = { $push: toChange };
+                    break;
+                case "create":
+                    toChange = {};
+                    toChange[command.path] = valueObj;
+                    updateConfig = { $set: toChange };
+                    break;
+                case "delete":
+                    toChange = {};
+                    if (/backs|team|updates|likes|comments/.test(command.path)) {
+                        path = command.path.split('/')[0];
+                        idToChange = command.path.split('/')[1];
+
+                        if (/comments/.test(command.path)) {
+                            toChange[path] = { commentId: new ObjectId(idToChange) };
+                        }
+                        else {
+                            toChange[path] = { _id: new ObjectId(idToChange) };
+                        }
+                        updateConfig = { $pull: toChange };
+                    }
+                    else {
+                        toChange[command.path] = '';
+                        updateConfig = { $unset: toChange };
+                    }
+                    break;
+                case "modify":
+                    toChange = {};
+                    if (/backs|updates|likes/.test(command.path)) {
+                        var toFind = {}, projection = {};
+
+                        path = command.path.split('/')[0];
+                        idToChange = command.path.split('/')[1];
+
+                        toFind[path + '._id'] = new ObjectId(idToChange);
+                        projection[path] = 1;
+                        runUpdate = false;
+
+                        for (var prop in valueObj) {
+                            if (valueObj.hasOwnProperty(prop)) {
+                                toChange[path + '.$.' + prop] = valueObj[prop];
+                            }
+                        }
+
+                        db.collection(collection).update(toFind, { $set: toChange }, function(err, result) {
+                            if (err) {
+                                reject(err);
+                            }
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else {
+                        toChange[command.path] = valueObj;
+                        updateConfig = { $set: toChange };
+                    }
+                    break;
+                default:
+                    resolve('operation ' + command.operation + ' not understood by the server :/');
+                    runUpdate = false;
+                    break;
+            }
+            if (runUpdate) {
+                db.collection(collection).update(
+                    { _id: new ObjectId(id) },
+                    updateConfig,
+                    function(err, results) {
+                        if (err) {
+                            reject(err);
+                        }
+                        else {
+                            resolve(results);
+                        }
+                    }
+                );
             }
         });
     };
