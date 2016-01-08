@@ -277,26 +277,104 @@ img.grayscale:hover {
     text-overflow: ellipsis;
 }
 
--.identicon-home {
--    margin-right: 10px;
--}
--
--.md-tab.md-active {
--    background-color: #e0e0e0;
--    border-radius: 5px 5px 0px 0px;
--}
--
--.no-ideas-div {
--    padding-top: 15px;
--    padding-bottom: 15px;
--    width: 100%;
--}
--
--.small-padding-bottom{
--    padding-bottom: 15px;
--}
--
--.back-box {
--    width: 600px;
--}
+.word-wrap {
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
 
+.identicon-home {
+    margin-right: 10px;
+}
+
+.md-tab.md-active {
+    background-color: #e0e0e0;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.no-ideas-div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.small-padding-bottom {
+    padding-bottom: 15px;
+}
+
+.back-box {
+    width: 600px;
+}
+
+/*Conversation Bubbles*/
+/*----------------------------------------------------*/
+.triangle-isosceles {
+    position:relative;
+    padding:0px 5px 0px 5px;
+    margin:1em 0 3em;
+    color:#000;
+    background:#e0e0e0;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px 5px 0px 0px;
+}
+
+.triangle-isosceles.left {
+    margin:0px 0px 0px 15px;
+    background:#e0e0e0;
+}
+
+.triangle-isosceles:after {
+    content:"";
+    position:absolute;
+    bottom:-15px; /* value = - border-top-width - border-bottom-width */
+    left:50px; /* controls horizontal position */
+    border-width:15px 15px 0; /* vary these values to change the angle of the vertex */
+    border-style:solid;
+    border-color:#e0e0e0 transparent;
+    /* reduce the damage in FF3.0 */
+    display:block;
+    width:0;
+}
+
+.triangle-isosceles.left:after {
+    top:15px; /* controls vertical position */
+    left:-10px; /* value = - border-left-width - border-right-width */
+    bottom:auto;
+    border-width:10px 10px 10px 0;
+    border-color:transparent #e0e0e0;
+}
+
+
+.convo-text-bubble.text-area {
+    background-color: #FFFFFF;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 0px 0px 5px 5px;
+    margin:0px;
+    padding: 10px;
+}
+
+.convo-text-bubble.text-area.left {
+    margin:0px 0px 0px 15px;
+    padding: 10px;
+}
+
+.convo-text-bubble.top-bar {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px 5px 0px 0px;
+    margin:0px;
+    padding: 0px 10px 0px 10px;
+}
+/*----------------------------------------------------*/
+/*End Conversation Bubbles*/

@@ -4,6 +4,7 @@
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Edit Team</h2>
+                <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close" type="button">
                     <i class="material-icons icon-button-adjust">&#xE5CD;</i>
                 </md-button>
@@ -12,20 +13,19 @@
         <md-dialog-content>
             <!-- Tag Types -->
             <md-input-container flex>
-                <md-list-item class="md-2-line" ng-repeat="back in currIdea.backs">
-                    <!--<div class="md-list-item-text">-->
+                <div class="md-padding" layout="row" layout-align="start center" ng-repeat="back in currIdea.backs">
                     <md-switch ng-model="back.isInTeam" aria-label="select team" class="md-warn"> <!-- Be careful when editing backs because of this -->
                     </md-switch>
-                    <span flex> 
+                    <span flex>
                         <div> {{back.author.name}} </div>
                         <div class="custom-chip-wrapper" ng-repeat="type in back.types">
                             <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
                         </div>
                     </span>
-                </md-list-item>
-                <md-list-item ng-if="currIdea.backs.length < 1">
+                </div>
+                <p ng-if="currIdea.backs.length < 1">
                     No one has backed this idea.
-                </md-list-item>
+                </p>
             </md-input-container>
             <!-- Submitting -->
             <md-dialog-actions flex layout="column">
