@@ -258,30 +258,6 @@ img.grayscale:hover {
 .identicon {
     vertical-align: middle;
 }
-
-.identicon-home {
-    margin-right: 10px;
-}
-
-.md-tab.md-active {
-    background-color: #e0e0e0;
-    border-radius: 5px 5px 0px 0px;
-}
-
-.no-ideas-div {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    width: 100%;
-}
-
-.small-padding-bottom{
-    padding-bottom: 15px;
-}
-
-.back-box {
-    width: 600px;
-}
-
 .idea-tag-delete-icon {
     width: 18px;
     height: 18px;
@@ -311,6 +287,29 @@ img.grayscale:hover {
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
     hyphens: auto;
+}
+
+.identicon-home {
+    margin-right: 10px;
+}
+
+.md-tab.md-active {
+    background-color: #e0e0e0;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.no-ideas-div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.small-padding-bottom {
+    padding-bottom: 15px;
+}
+
+.back-box {
+    width: 600px;
 }
 
 /*Conversation Bubbles*/
