@@ -22,6 +22,8 @@ We use the forking methodology for contributions. This enables us to keep the co
 
 We use [Trello](https://trello.com/) to track our development. If you would like to become a regular contributor to this project, please let the team know and we can discuss further. 
 
+**NOTE**: PRs larger than 500 lines of code changed will be rejected and asked to be broken down into smaller PRs. 
+
 Contribute to our project by following these steps
 
 1. Fork flintandsteel and clone it locally
