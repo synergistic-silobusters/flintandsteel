@@ -16,7 +16,10 @@ angular.module('flintAndSteel')
                     var normalizedSearch = searchTerm.replace(re,"").toLowerCase();
                     var normalizedTitle = item.title.replace(re,"").toLowerCase();
                     var normalizedAuthor = item.author.name.replace(re,"").toLowerCase();
-                    var normalizedEvent = item.event.name.replace(re,"").toLowerCase();
+                    var normalizedEvent = "";
+                    if (angular.isDefined(item.event)) {
+                        normalizedEvent = item.event.name.replace(re,"").toLowerCase();
+                    }
                     var normalizedAbstract = item.abstract.replace(re,"").toLowerCase();
                     var normalizedTags = item.tags;
                     if (normalizedTitle.indexOf(normalizedSearch) >= 0) {
