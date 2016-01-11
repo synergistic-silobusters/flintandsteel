@@ -225,7 +225,7 @@ module.exports = function(db) {
                 return Promise.all([
                     ideaAuthor,
                     ideaEvent
-                ])
+                ]);
             });
         }
 
