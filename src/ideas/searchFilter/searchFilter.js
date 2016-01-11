@@ -12,16 +12,20 @@ angular.module('flintAndSteel')
                 }
                 var retArray = [];
                 var re = /[ .,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
-                items.map(function(item) {
+                items.forEach(function(item) {
                     var normalizedSearch = searchTerm.replace(re,"").toLowerCase();
                     var normalizedTitle = item.title.replace(re,"").toLowerCase();
                     var normalizedAuthor = item.author.name.replace(re,"").toLowerCase();
+                    var normalizedEvent = item.event.name.replace(re,"").toLowerCase();
                     var normalizedAbstract = item.abstract.replace(re,"").toLowerCase();
                     var normalizedTags = item.tags;
                     if (normalizedTitle.indexOf(normalizedSearch) >= 0) {
                         retArray.push(item);
                     }
                     else if (normalizedAuthor.indexOf(normalizedSearch) >= 0) {
+                        retArray.push(item);
+                    }
+                    else if (normalizedEvent.indexOf(normalizedSearch) >= 0) {
                         retArray.push(item);
                     }
                     else if (normalizedAbstract.indexOf(normalizedSearch) >= 0) {
@@ -34,7 +38,7 @@ angular.module('flintAndSteel')
                                 retArray.push(item);
                             }
                         });
-                    }                    
+                    }
                 });
                 return retArray;
             };
