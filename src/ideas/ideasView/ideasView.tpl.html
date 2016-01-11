@@ -1,33 +1,52 @@
 <md-card>
     <img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
-    <md-card-content>
+    <md-card-content class="no-padding-all">
         <div ng-if="!ideasView.enableEdit">
-            <div>
-                <h1 layout="row">{{idea.title}}
-                    <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
-                        <i class="material-icons icon-button-adjust">&#xE0BE;</i>
-                        <md-tooltip md-direction="top">Email Team</md-tooltip>
-                    </md-button>
-                </h1>
-            </div>
-            <div layout="row">
-                <div layout="row" layout-align="center center">
-                    <identicon username='idea.author.username' size='30'></identicon>
+            <div layout="row" layout-align="space-between center" class="top-bar extra-padding-sides-15">
+                <div>
+                    <h1 class="no-margins" layout="row">{{idea.title}}</h1>
                 </div>
-                <h3>&nbsp;
-                    <md-tooltip md-direction="right">Email User</md-tooltip>
-                    <email-link author-obj="idea.author"></email-link>
-                </h3>
+                <div>
+                    <small><span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>{{momentizeTime(idea.timeModified)}}</small>
+                    <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
+                        <md-tooltip md-direction="top">Email Team</md-tooltip>
+                        <i class="material-icons icon-button-adjust">&#xE0BE;</i>
+                    </md-button>
+                    <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
+                        <md-tooltip md-direction="top">Edit Idea</md-tooltip>
+                        <i class="material-icons icon-button-adjust">&#xE254;</i>
+                    </md-button>
+                    <md-button aria-label="delete" class="md-icon-button" ng-click="ideasView.confirmDeleteIdea($event);" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
+                        <md-tooltip md-direction="top">Delete Idea</md-tooltip>
+                        <i class="material-icons icon-button-adjust">&#xE872;</i>
+                    </md-button>
+                </div>
             </div>
-            <p class="word-wrap">{{idea.description}}</p>
-            <div layout="row" flex layout-wrap>
+            <div layout="row" layout-align="space-between center" class="extra-padding-sides-15">
+                <div layout="row">
+                    <div layout="row" layout-align="center center">
+                        <identicon username='idea.author.username' size='30'></identicon>
+                    </div>
+                    <h3>&nbsp;
+                        <md-tooltip md-direction="right">Email User</md-tooltip>
+                        <email-link author-obj="idea.author"></email-link>
+                    </h3>
+                </div>
+                <div layout="row" layout-wrap>
+                    <span class="custom-chip-wrapper">
+                        <small class="custom-chip">{{idea.event.name}}</small>
+                    </span>
+                </div>
+            </div>
+            <p class="word-wrap extra-padding-sides-15">{{idea.description}}</p>
+            <div layout="row" flex layout-wrap class="extra-padding-sides-15">
                 <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
                     <small class="custom-chip">#{{tag}}</small>
                 </span>
             </div>
         </div>
         <form ng-if="ideasView.enableEdit" name="editIdeaForm">
-            <div layout="column">
+            <div layout="column" class="extra-padding-sides-15">
                 <md-input-container>
                     <label>Title</label>
                     <input ng-model="idea.title"
@@ -83,34 +102,9 @@
             </div>
         </form>
     </md-card-content>
+    <!-- Used to display Likes/Backs/Team and to Like/Back/Join an idea -->
     <md-card-footer>
-        <md-fab-speed-dial md-direction="right" class="md-fling" md-open="isOpen" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
-        <md-fab-trigger class="align-with-text">
-            <md-button aria-label="menu" class="md-fab md-primary">
-                <i class="material-icons icon-button-adjust">&#xE5D2;</i>
-            </md-button>
-        </md-fab-trigger>
-        <md-fab-actions>
-            <div>
-                <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;">
-                    <md-tooltip md-direction="top">Edit Idea</md-tooltip>
-                    <i class="material-icons icon-button-adjust">&#xE254;</i>
-                </md-button>
-            </div>
-            <div>
-                <md-button aria-label="delete" class="md-icon-button" ng-click="ideasView.confirmDeleteIdea($event);">
-                    <md-tooltip md-direction="top">Delete Idea</md-tooltip>
-                    <i class="material-icons icon-button-adjust">&#xE872;</i>
-                </md-button>
-            </div>
-        </md-fab-actions>
-        </md-fab-speed-dial>
-            <i ng-show="idea.timeModified !== idea.timeCreated && !ideasView.enableEdit">Edited {{momentizeTime(idea.timeModified)}}</i>
-    </md-card-footer>
-</md-card>
-<!-- Card used to display Likes/Backs/Team and to Like/Back/Join an idea -->
-<md-card>
-    <md-card-content>
+        <md-divider></md-divider>
         <span flex ng-if="!isUserLoggedIn()">
             <md-button class="md-icon-button" aria-label="Like">
                 {{idea.likes.length}}
@@ -205,8 +199,9 @@
                 </md-tooltip>
             </span>
         </span>
-    </md-card-content>
+    </md-card-footer>
 </md-card>
+
 <md-card>
     <md-card-content>
         <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">

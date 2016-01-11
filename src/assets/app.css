@@ -65,8 +65,27 @@ img.grayscale:hover {
     overflow: scroll;
 }
 
+h1.no-margins {
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+
+.top-bar {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px 5px 0px 0px;
+    margin:0px;
+    padding: 0px 10px 0px 10px;
+}
+
 .extra-space-left {
     padding-left: 20px;
+}
+
+.no-padding-all {
+    padding: 0px;
 }
 
 .no-padding-bottom {
