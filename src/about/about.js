@@ -2,7 +2,8 @@
 
 angular.module('flintAndSteel')
 .controller('AboutCtrl',
-    [ 'paginateSvc',
+    [
+        'paginateSvc',
         function(paginateSvc) {
             "use strict";
 

@@ -1,22 +1,27 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.factory('loginSvc',
+.factory('userSvc',
     [
-        '$http', '$rootScope',
-        function($http, $rootScope) {
+        '$http', '$rootScope', '$q',
+        function($http, $rootScope, $q) {
             "use strict";
 
-            this.checkLogin = function checkLogin(account, successCb, errorCb) {
-                var encodedAccount = {};
+            this.checkLogin = function checkLogin(account) {
+                var encodedAccount = {}, def = $q.defer();
+
                 encodedAccount.username = account.username;
                 encodedAccount.password = window.btoa(account.password);
-                $http.post('/login', encodedAccount)
-                    .success(function(data, status, headers, config) {
-                        $rootScope.account = data;
-                        successCb(data, status, headers, config);
-                    })
-                    .error(errorCb);
+
+                $http.post('/users/login', encodedAccount).then(function(response) {
+                    $rootScope.account = response.data;
+                    def.resolve(response);
+                },
+                function(response) {
+                    def.reject(response);
+                });
+
+                return def.promise;
             };
 
             this.isUserLoggedIn = function isUserLoggedIn() {
@@ -34,14 +39,12 @@ angular.module('flintAndSteel')
                 return $rootScope.account[propertyName];
             };
 
-            this.getUserById = function getUserById(userId, successCb, errorCb) {
+            this.getUserById = function getUserById(userId) {
                 if (userId) {
-                    $http.get('/user?id=' + userId)
-                        .success(successCb)
-                        .error(errorCb);
+                    return $http.get('/users/' + userId);
                 }
                 else {
-                    return false;
+                    return $q.when(false);
                 }
             };
 
