@@ -4,7 +4,8 @@
 angular.module('flintAndSteel')
 .factory('ideaSvcMock',
     [
-        function() {
+        '$q',
+        function($q) {
             "use strict";
 
             var mockIdea = {
@@ -65,7 +66,7 @@ angular.module('flintAndSteel')
                         timeCreated: moment().subtract(6, 'days').calendar(),
                         timeModified: moment().subtract(4, 'days').calendar(),
                         types: [
-                            { name: 'Owner'} 
+                            { name: 'Owner'}
                         ]
                     },
                     {
@@ -78,6 +79,7 @@ angular.module('flintAndSteel')
                         ]
                     },
                     {
+                        _id: 11,
                         text: 'TEN MILLION DOLLARS',
                         authorId: 5,
                         time: moment().subtract(84, 'hours').calendar(),
@@ -111,14 +113,14 @@ angular.module('flintAndSteel')
             };
 
             return {
-                postIdea: function postIdea(idea, successCb) {
-                    successCb({status: 'Created'});
+                postIdea: function postIdea() {
+                    return $q.when({status: 'Created'});
                 },
-                getIdea: function getIdea(ideaId, successCb) {
-                    successCb(mockIdea);
+                getIdea: function getIdea() {
+                    return $q.when({ data: mockIdea });
                 },
-                getIdeaHeaders: function getIdeaHeaders(successCb) {
-                    successCb([
+                getIdeaHeaders: function getIdeaHeaders() {
+                    return $q.when([
                         {
                             id: 'mock_idea',
                             title: 'The bestest Idea ever!',
@@ -128,7 +130,7 @@ angular.module('flintAndSteel')
                         }
                     ]);
                 },
-                postComment: function postComment(parentId, text, authorId, successCb) {
+                postComment: function postComment(parentId, text, authorId) {
                     mockIdea.comments.push(
                         {
                             commentId: 4,
@@ -139,47 +141,47 @@ angular.module('flintAndSteel')
                             timeModified: new Date().toISOString()
                         }
                     );
-                    successCb('Posted');
+                    return $q.when('Posted');
                 },
-                deleteComment: function deleteComment(commentId, successCb) {
+                deleteComment: function deleteComment(commentId) {
                     for (var i = 0; i < mockIdea.comments.length; i++) {
                         if (mockIdea.comments[i].commentId === commentId) {
                             mockIdea.comments.splice(i, 1);
                             break;
                         }
                     }
-                    successCb('Deleted');
+                    return $q.when('Deleted');
                 },
-                updateIdea: function updateIdea(ideaId, property, data, successCb) {
+                updateIdea: function updateIdea(ideaId, property, data) {
                     mockIdea[property] = data;
-                    successCb('OK');
+                    return $q.when('OK');
                 },
-                addInteraction: function addInteraction(ideaId, type, object, successCb) {
+                addInteraction: function addInteraction(ideaId, type, object) {
                     mockIdea[type].push(object);
-                    successCb('OK');
+                    return $q.when('OK');
                 },
-                removeInteraction: function removeInteraction(ideaId, type, object, successCb) {
+                removeInteraction: function removeInteraction(ideaId, type, object) {
                     mockIdea[type].splice(mockIdea[type].indexOf(object), 1);
-                    successCb('OK');
+                    return $q.when('OK');
                 },
-                editBack: function editBack(ideaId, backAuthorId, newBack, successCb) {
+                editBack: function editBack(ideaId, backId, newBack) {
                     for (var i = 0; i < mockIdea.backs.length; i++) {
-                        if (mockIdea.backs[i].authorId === backAuthorId) {
+                        if (mockIdea.backs[i]._id === backId) {
                             mockIdea.backs.splice(i, 1, newBack);
-                            successCb('OK');
+                            return $q.when('OK');
                         }
                     }
                 },
-                editIdea: function editIdea(ideaId, title, description, tags, rolesreq, successCb) {
+                editIdea: function editIdea(ideaId, title, description, tags, rolesreq) {
                     mockIdea.title = title;
                     mockIdea.description = description;
                     mockIdea.tags = tags;
                     mockIdea.rolesreq = rolesreq;
                     mockIdea.timeModified = new Date().toISOString();
-                    successCb('Edited');
+                    return $q.when('Edited');
                 },
-                deleteIdea: function deleteIdea(ideaId, successCb) {
-                    successCb('Deleted!');
+                deleteIdea: function deleteIdea() {
+                    return $q.when('Deleted!');
                 },
                 getBackTypeChips: function getBackTypeChips() {
                     var types = [
@@ -204,8 +206,8 @@ angular.module('flintAndSteel')
                     $scope.submitDelete = function() {
                         $mdDialog.hide(true);
                     };
-                }
-
+                },
+                mockData: mockIdea
             };
         }
     ]

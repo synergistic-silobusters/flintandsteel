@@ -9,7 +9,7 @@
 describe('ToolbarCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $state, $stateParams, $mdSidenav, loginSvcMock, $mdDialog, toastSvc;
+    var scope, ctrl, $state, $stateParams, $mdSidenav, userSvcMock, $mdDialog, toastSvc, $q;
 
     var authorAccount = {
         id: 1,
@@ -26,12 +26,13 @@ describe('ToolbarCtrl', function() {
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
 
-    beforeEach(inject(function($rootScope, $controller, _$state_, _$stateParams_, _$mdSidenav_, _loginSvcMock_, _$mdDialog_, _toastSvc_) {
+    beforeEach(inject(function($rootScope, _$q_, $controller, _$state_, _$stateParams_, _$mdSidenav_, _userSvcMock_, _$mdDialog_, _toastSvc_) {
         scope = $rootScope.$new();
+        $q = _$q_;
         $state = _$state_;
         $stateParams = _$stateParams_;
         $mdSidenav = _$mdSidenav_;
-        loginSvcMock = _loginSvcMock_;
+        userSvcMock = _userSvcMock_;
         $mdDialog = _$mdDialog_;
         toastSvc = _toastSvc_;
 
@@ -39,8 +40,7 @@ describe('ToolbarCtrl', function() {
             $scope: scope,
             $state: $state,
             $stateParams: $stateParams,
-            $mdSidenav: $mdSidenav,
-            loginSvc: loginSvcMock,
+            userSvc: userSvcMock,
             $mdDialog: $mdDialog,
             toastSvc: toastSvc
         });
@@ -63,24 +63,24 @@ describe('ToolbarCtrl', function() {
         });
 
         it('should navigate to login if no user is logged in', function() {
-            spyOn(loginSvcMock, 'isUserLoggedIn').and.callFake(function() {
+            spyOn(userSvcMock, 'isUserLoggedIn').and.callFake(function() {
                 return false;
             });
 
             scope.accountClick();
 
-            expect(loginSvcMock.isUserLoggedIn).toHaveBeenCalled();
+            expect(userSvcMock.isUserLoggedIn).toHaveBeenCalled();
             expect($state.go).toHaveBeenCalledWith('home');
         });
 
         it('should navigate to account if user is logged in', function() {
-            spyOn(loginSvcMock, 'isUserLoggedIn').and.callFake(function() {
+            spyOn(userSvcMock, 'isUserLoggedIn').and.callFake(function() {
                 return true;
             });
 
             scope.accountClick();
 
-            expect(loginSvcMock.isUserLoggedIn).toHaveBeenCalled();
+            expect(userSvcMock.isUserLoggedIn).toHaveBeenCalled();
             expect($state.go).toHaveBeenCalledWith('account');
         });
     });
@@ -111,14 +111,14 @@ describe('ToolbarCtrl', function() {
         var userLogged;
 
         it('checks with real login', function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             userLogged = scope.isUserLoggedIn();
 
             expect(userLogged).toBe(true);
         });
 
         it('checks with bad login', function() {
-            loginSvcMock.checkLogin(nonAuthorAccount);
+            userSvcMock.checkLogin(nonAuthorAccount);
             userLogged = scope.isUserLoggedIn();
 
             expect(userLogged).toBe(false);
@@ -129,14 +129,14 @@ describe('ToolbarCtrl', function() {
         var username;
 
         it('should get the username if user is logged in', function() {
-            loginSvcMock.checkLogin(authorAccount);
+            userSvcMock.checkLogin(authorAccount);
             username = scope.getUsername();
             expect(username).toBe('MainManDarth');
         });
 
         it('should not get the username if user is logged out', function() {
-            loginSvcMock.logout();
-            expect(loginSvcMock.isUserLoggedIn()).toBe(false);
+            userSvcMock.logout();
+            expect(userSvcMock.isUserLoggedIn()).toBe(false);
             username = scope.getUsername();
             expect(username).toBe(null);
 
@@ -155,48 +155,75 @@ describe('ToolbarCtrl', function() {
     });
 
     describe('$scope.loginUser', function() {
+        var account;
+
         beforeEach(function() {
             spyOn(toastSvc, 'show').and.callThrough();
         });
 
         it('should toast successful login', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb) {
-                successCb({status: 'AUTH_OK', name: authorAccount.name});
-            });
+            spyOn(userSvcMock, 'checkLogin').and.callThrough();
 
+            userSvcMock.switchLogin(1);
             scope.loginUser(authorAccount);
-            expect(loginSvcMock.checkLogin).toHaveBeenCalled();
-            expect(toastSvc.show).toHaveBeenCalled();
+            userSvcMock.checkLogin(authorAccount).then(function() {
+                expect(toastSvc.show).toHaveBeenCalled();
+            });
+            scope.$digest();
         });
 
         it('should toast authentication error', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb) {
-                successCb({status: 'AUTH_ERROR', name: authorAccount.name});
-            });
+            account = {
+                _id: 10,
+                username: 'LostInJakku',
+                name: 'BB8'
+            };
 
-            scope.loginUser(authorAccount);
-            expect(loginSvcMock.checkLogin).toHaveBeenCalled();
-            expect(toastSvc.show).toHaveBeenCalled();
+            spyOn(userSvcMock, 'checkLogin').and.callThrough();
+
+            userSvcMock.switchLogin(2);
+            scope.loginUser(account);
+            userSvcMock.checkLogin(authorAccount).then(function() {
+                expect(toastSvc.show).toHaveBeenCalled();
+            });
+            scope.$digest();
         });
 
         it('should toast user not found', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb) {
-                successCb({status: 'USER_NOT_FOUND', name: authorAccount.name});
-            });
+            account = {
+                _id: 10,
+                username: 'LostInJakku',
+                name: 'BB8'
+            };
 
-            scope.loginUser(authorAccount);
-            expect(loginSvcMock.checkLogin).toHaveBeenCalled();
-            expect(toastSvc.show).toHaveBeenCalled();
+            spyOn(userSvcMock, 'checkLogin').and.callThrough();
+
+            userSvcMock.switchLogin(1);
+            scope.loginUser(account);
+            userSvcMock.checkLogin(authorAccount).then(function() {
+                expect(toastSvc.show).toHaveBeenCalled();
+            });
+            scope.$digest();
         });
 
+        /*I'm not sure this is working properly*/
         it('should console log for error', function() {
-            spyOn(loginSvcMock, 'checkLogin').and.callFake(function checkLogin(account, successCb, errorCb) {
-                errorCb('NOPE');
+            //setup
+            account = {
+                _id: 10,
+                username: 'LostInJakku',
+                name: 'BB8'
+            };
+            spyOn(userSvcMock, 'checkLogin').and.callFake(function() {
+                return $q.reject();
             });
             spyOn(console, 'log').and.callThrough();
 
-            scope.loginUser(authorAccount);
-            expect(loginSvcMock.checkLogin).toHaveBeenCalled();
+            //function call
+            scope.loginUser(account);
+            scope.$digest();
+            //looking for console.log
+            expect(userSvcMock.checkLogin).toHaveBeenCalled();
             expect(console.log).toHaveBeenCalled();
         });
     });
@@ -207,12 +234,12 @@ describe('ToolbarCtrl', function() {
             spyOn($state, 'reload').and.callFake(function() {
                 return;
             });
-            spyOn(loginSvcMock, 'logout').and.callThrough();
+            spyOn(userSvcMock, 'logout').and.callThrough();
         });
 
         it('should logout user', function() {
             scope.logout();
-            expect(loginSvcMock.logout).toHaveBeenCalled();
+            expect(userSvcMock.logout).toHaveBeenCalled();
         });
 
         it('should reload if in idea', function() {

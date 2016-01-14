@@ -4,11 +4,11 @@
 angular.module('flintAndSteel')
 .controller('AddIdeaViewCtrl',
     [
-        '$scope', '$state', 'toastSvc', 'ideaSvc', 'loginSvc',
-        function($scope, $state, toastSvc, ideaSvc, loginSvc) {
+        '$scope', '$state', 'toastSvc', 'ideaSvc', 'userSvc',
+        function($scope, $state, toastSvc, ideaSvc, userSvc) {
             "use strict";
 
-            if (!loginSvc.isUserLoggedIn()) {
+            if (!userSvc.isUserLoggedIn()) {
                 $state.go('home');
                 toastSvc.show('You need to be logged into to create an idea!');
             }
@@ -47,17 +47,17 @@ angular.module('flintAndSteel')
             };
 
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
-                ideaToAdd.authorId = loginSvc.getProperty('_id');
+                ideaToAdd.authorId = userSvc.getProperty('_id');
                 ideaToAdd.eventId = "";
                 ideaToAdd.rolesreq = [];
-                ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
-                    if (angular.isDefined(data.status) && data.status === 'Created') {
+                ideaSvc.postIdea($scope.idea).then(function postIdeaSuccess(response) {
+                    if (angular.isDefined(response.data.status) && response.data.status === 'Created') {
                         toastSvc.show('New idea created successfully!');
                         $scope.$emit('newIdeaAdded');
-                        $state.go('idea', { ideaId: data._id });
+                        $state.go('idea', { ideaId: response.data._id });
                     }
-                }, function(data, status) {
-                    console.log(status);
+                }, function(response) {
+                    console.log(response);
                 });
             };
         }

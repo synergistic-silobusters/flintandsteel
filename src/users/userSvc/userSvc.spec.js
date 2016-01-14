@@ -5,17 +5,18 @@
 /* global it */
 /* global expect */
 
-describe('loginSvc', function() {
+describe('userSvc', function() {
     "use strict";
 
-    var loginSvc, $httpBackend, $rootScope, dummyUser, dummyRes;
+    var userSvc, $httpBackend, $rootScope, $q, dummyUser, dummyRes;
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function(_loginSvc_, _$httpBackend_, _$rootScope_) {
-        loginSvc = _loginSvc_;
+    beforeEach(inject(function(_userSvc_, _$httpBackend_, _$rootScope_, _$q_) {
+        userSvc = _userSvc_;
         $httpBackend = _$httpBackend_;
         $rootScope = _$rootScope_;
+        $q = _$q_;
 
         dummyUser = {
             id: 'dummy_user',
@@ -27,11 +28,11 @@ describe('loginSvc', function() {
 
         dummyRes = dummyUser;
         dummyRes.password = undefined;
-        dummyRes.status = 'AUTH_OKAY';
+        dummyRes.status = 'AUTH_OK';
     }));
 
     it('should exist', function() {
-        expect(loginSvc).toBeDefined();
+        expect(userSvc).toBeDefined();
     });
 
     afterEach(function() {
@@ -39,32 +40,31 @@ describe('loginSvc', function() {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe('loginSvc.checkLogin', function() {
+    describe('userSvc.checkLogin', function() {
         var checkLoginHandler;
 
         beforeEach(function() {
-            checkLoginHandler = $httpBackend.whenPOST('/login', dummyUser)
-                                    .respond(200, dummyRes);
+            checkLoginHandler = $httpBackend.whenPOST('/users/login', dummyUser).respond(200, dummyRes);
         });
 
         it('should return a good response for valid details', function() {
             var encodedDummy = {};
             encodedDummy.username = dummyUser.username;
             encodedDummy.password = window.btoa(dummyUser.password);
-            $httpBackend.expectPOST('/login', encodedDummy).respond({status: 'AUTH_OK'});
+            $httpBackend.expectPOST('/users/login', encodedDummy).respond({status: 'AUTH_OK'});
 
-            loginSvc.checkLogin(dummyUser, function(data) {
-                expect(data.status).toBe('AUTH_OK');
+            userSvc.checkLogin(dummyUser).then(function(response) {
+                expect(response.data.status).toBe('AUTH_OK');
             }, function() { });
 
             $httpBackend.flush();
         });
     });
 
-    describe('loginSvc.isUserLoggedIn', function() {
+    describe('userSvc.isUserLoggedIn', function() {
 
         it('should return false for no logged in user', function() {
-            expect(loginSvc.isUserLoggedIn()).not.toBeTruthy();
+            expect(userSvc.isUserLoggedIn()).not.toBeTruthy();
         });
 
         it('should return true for a logged in user', function() {
@@ -72,7 +72,7 @@ describe('loginSvc', function() {
                 status: 'AUTH_OK'
             };
 
-            expect(loginSvc.isUserLoggedIn()).toBeTruthy();
+            expect(userSvc.isUserLoggedIn()).toBeTruthy();
         });
 
         it('should return false in the case of login complications', function() {
@@ -80,11 +80,11 @@ describe('loginSvc', function() {
                 status: 'AUTH_ERROR'
             };
 
-            expect(loginSvc.isUserLoggedIn()).not.toBeTruthy();
+            expect(userSvc.isUserLoggedIn()).not.toBeTruthy();
         });
     });
 
-    describe('loginSvc.logout', function() {
+    describe('userSvc.logout', function() {
 
         beforeEach(function() {
             $rootScope.account = {
@@ -94,36 +94,39 @@ describe('loginSvc', function() {
         });
 
         it('should log the user out', function() {
-            loginSvc.logout();
+            userSvc.logout();
 
             expect($rootScope.account).not.toBeDefined();
         });
     });
 
-    describe('loginSvc.getProperty', function() {
+    describe('userSvc.getProperty', function() {
 
         beforeEach(function() {
             $rootScope.account = dummyUser;
         });
 
         it('should return a value for a defined property', function() {
-            expect(loginSvc.getProperty('username')).toBe(dummyUser.username);
+            expect(userSvc.getProperty('username')).toBe(dummyUser.username);
         });
 
         it('should return nothing for an undefined property', function() {
-            expect(loginSvc.getProperty('password')).not.toBeDefined();
+            expect(userSvc.getProperty('password')).not.toBeDefined();
         });
     });
 
-    describe('loginSvc.getUserById', function() {
+    describe('userSvc.getUserById', function() {
         it('should query the server for a user when an id is supplied', function() {
-            $httpBackend.whenGET('/user?id=1').respond(200, dummyRes);
-            loginSvc.getUserById(1, function() {}, function() {});
+            $httpBackend.whenGET('/users/1').respond(200, dummyRes);
+            userSvc.getUserById(1).then(function() {}, function() {});
             $httpBackend.flush();
         });
 
         it('should return false if an id was not supplied', function() {
-            expect(loginSvc.getUserById()).toBe(false);
+            userSvc.getUserById().then(function(result) {
+                expect(result).toBe(false); 
+            });
+            
         });
     });
 
