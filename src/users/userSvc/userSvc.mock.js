@@ -36,9 +36,13 @@ angular.module('flintAndSteel')
                         loggedIn = true;
                         response.data.status = 'AUTH_OK';
                     }
-                    else {
+                    else if (userLoggedIn === 2 && account.user !== mockUserAccount2.username) {
                         loggedIn = false;
                         response.data.status = 'AUTH_ERROR';
+                    }
+                    else {
+                        loggedIn = false;
+                        response.data.status = 'USER_NOT_FOUND';
                     }
                     return $q.when(response);
                 },

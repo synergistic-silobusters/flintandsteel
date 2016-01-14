@@ -436,7 +436,7 @@ angular.module('flintAndSteel')
                 var template = '';
                 var backObj = '';
 
-                if (loginSvc.isUserLoggedIn()) {
+                if (userSvc.isUserLoggedIn()) {
                     // Change data passed and template depending on if adding or editting
                     if (!$scope.hasUserBacked()) {
                         template = 'ideas/ideasView/ideaBack/ideaAddBack.tpl.html';
@@ -627,7 +627,6 @@ angular.module('flintAndSteel')
                 if (index > -1) {
                     $scope.idea.tags.splice(index, 1);
                 }
-
             };
 
             // Open up an email to team members
