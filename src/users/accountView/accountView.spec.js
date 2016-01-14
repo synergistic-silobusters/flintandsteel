@@ -9,21 +9,21 @@
 describe('AccountViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $state, toastSvc, loginSvcMock, ideaSvcMock;
+    var scope, ctrl, $state, toastSvc, userSvcMock, ideaSvcMock;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
 
     describe('visiting when not logged in', function() {
-        beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _loginSvcMock_, _ideaSvcMock_) {
+        beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _userSvcMock_, _ideaSvcMock_) {
             scope = $rootScope.$new();
             $state = _$state_;
             toastSvc = _toastSvc_;
-            loginSvcMock = _loginSvcMock_;
+            userSvcMock = _userSvcMock_;
             ideaSvcMock = _ideaSvcMock_;
 
             spyOn($state, 'go');
-            spyOn(loginSvcMock, 'isUserLoggedIn').and.callFake(function() {
+            spyOn(userSvcMock, 'isUserLoggedIn').and.callFake(function() {
                 return false;
             });
 
@@ -31,7 +31,7 @@ describe('AccountViewCtrl', function() {
                 $scope: scope,
                 $state: $state,
                 toastSvc: toastSvc,
-                loginSvc: loginSvcMock,
+                userSvc: userSvcMock,
                 ideaSvc: ideaSvcMock
             });
         }));
@@ -46,15 +46,15 @@ describe('AccountViewCtrl', function() {
     });
 
     describe('visiting when logged in', function() {
-        beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _loginSvcMock_, _ideaSvcMock_) {
+        beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _userSvcMock_, _ideaSvcMock_) {
             scope = $rootScope.$new();
             $state = _$state_;
             toastSvc = _toastSvc_;
-            loginSvcMock = _loginSvcMock_;
+            userSvcMock = _userSvcMock_;
             ideaSvcMock = _ideaSvcMock_;
 
             spyOn($state, 'go');
-            spyOn(loginSvcMock, 'isUserLoggedIn').and.callFake(function() {
+            spyOn(userSvcMock, 'isUserLoggedIn').and.callFake(function() {
                 return true;
             });
 
@@ -62,7 +62,7 @@ describe('AccountViewCtrl', function() {
                 $scope: scope,
                 $state: $state,
                 toastSvc: toastSvc,
-                loginSvc: loginSvcMock,
+                userSvc: userSvcMock,
                 ideaSvc: ideaSvcMock
             });
         }));
@@ -78,14 +78,14 @@ describe('AccountViewCtrl', function() {
         describe('$scope.logout', function() {
 
             beforeEach(function() {
-                spyOn(loginSvcMock, 'logout').and.callFake(function() { });
+                spyOn(userSvcMock, 'logout').and.callFake(function() { });
                 spyOn(toastSvc, 'show');
             });
 
             it('should log out the user', function() {
                 scope.logout();
 
-                expect(loginSvcMock.logout).toHaveBeenCalled();
+                expect(userSvcMock.logout).toHaveBeenCalled();
                 expect(toastSvc.show).toHaveBeenCalled();
                 expect($state.go).toHaveBeenCalledWith('home');
             });

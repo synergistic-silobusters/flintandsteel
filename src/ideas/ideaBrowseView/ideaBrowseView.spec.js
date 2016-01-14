@@ -28,6 +28,10 @@ describe('IdeaBrowseViewCtrl', function() {
         });
     }));
 
+    beforeEach(function() {
+        scope.$digest();
+    });
+
     it('should exist', function() {
         expect(ctrl).toBeDefined();
     });

@@ -13,13 +13,13 @@ angular.module('flintAndSteel')
                 });
             }
 
-            ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                $scope.topIdeas = data;
-            }, function getIdeaHeadersError(data, status) {
-                console.log(status);
+            ideaSvc.getIdeaHeaders().then(function getIdeaHeadersSuccess(response) {
+                $scope.topIdeas = response.data;
+            }, function getIdeaHeadersError(response) {
+                console.log(response);
             });
 
-            sseSvc.create("newHeaders", "/ideaheaders/events", setIdeaHeaders);
+            sseSvc.create("newHeaders", "/sse/ideas", setIdeaHeaders);
 
             $scope.$on('$stateChangeStart', function() {
                 sseSvc.destroy();

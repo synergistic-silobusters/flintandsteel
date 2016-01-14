@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('SidenavCtrl',
     [
-        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'loginSvc', 'sseSvc',
-        function($scope, $state, $mdSidenav, ideaSvc, loginSvc, sseSvc) {
+        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'userSvc', 'sseSvc',
+        function($scope, $state, $mdSidenav, ideaSvc, userSvc, sseSvc) {
             "use strict";
 
             function setIdeaHeaders(data) {
@@ -14,20 +14,20 @@ angular.module('flintAndSteel')
             }
 
             function refreshHeaders() {
-                ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                    $scope.topIdeas = data;
-                }, function getIdeaHeadersError(data, status) {
-                    console.log(status);
+                ideaSvc.getIdeaHeaders().then(function getIdeaHeadersSuccess(response) {
+                    $scope.topIdeas = response.data;
+                }, function getIdeaHeadersError(response) {
+                    console.log(response);
                 });
             }
 
             refreshHeaders();
 
-            sseSvc.create("newHeaders", "/ideaheaders/events", setIdeaHeaders);
+            sseSvc.create("newHeaders", "/sse/ideas", setIdeaHeaders);
 
             $scope.navTo = function navTo(state) {
                 if (state === 'addIdea') {
-                    if (loginSvc.isUserLoggedIn()) {
+                    if (userSvc.isUserLoggedIn()) {
                         $state.go(state);
                     }
                     else {
@@ -45,7 +45,7 @@ angular.module('flintAndSteel')
                 }
             };
 
-            $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+            $scope.isUserLoggedIn = userSvc.isUserLoggedIn;
 
             $scope.$root.$on('newIdeaAdded', refreshHeaders);
         }
