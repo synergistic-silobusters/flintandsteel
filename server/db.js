@@ -235,11 +235,19 @@ module.exports = function(dbName, cb) {
                     toChange = {};
                     valueObj._id = new ObjectId();
                     toChange[command.path] = valueObj;
-                    updateConfig = { $push: toChange };
+                    updateConfig = { 
+                        $push: toChange,
+                    };
+                    if (collection === 'ideas') {
+                        updateConfig.$set = { "timeModified": new Date().toISOString() };
+                    }
                     break;
                 case "create":
                     toChange = {};
                     toChange[command.path] = valueObj;
+                    if (collection === 'ideas') {
+                        toChange.timeModified = new Date().toISOString();
+                    }
                     updateConfig = { $set: toChange };
                     break;
                 case "delete":
@@ -255,10 +263,16 @@ module.exports = function(dbName, cb) {
                             toChange[path] = { _id: new ObjectId(idToChange) };
                         }
                         updateConfig = { $pull: toChange };
+                        if (collection === 'ideas') {
+                            updateConfig.$set = { "timeModified": new Date().toISOString() };
+                        }
                     }
                     else {
                         toChange[command.path] = '';
                         updateConfig = { $unset: toChange };
+                        if (collection === 'ideas') {
+                            updateConfig.$set = { "timeModified": new Date().toISOString() };
+                        }
                     }
                     break;
                 case "modify":
@@ -278,6 +292,9 @@ module.exports = function(dbName, cb) {
                                 toChange[path + '.$.' + prop] = valueObj[prop];
                             }
                         }
+                        if (collection === 'ideas') {
+                            toChange.timeModified = new Date().toISOString();
+                        }
 
                         db.collection(collection).update(toFind, { $set: toChange }, function(err, result) {
                             if (err) {
@@ -290,6 +307,9 @@ module.exports = function(dbName, cb) {
                     }
                     else {
                         toChange[command.path] = valueObj;
+                        if (collection === 'ideas') {
+                            toChange.timeModified = new Date().toISOString();
+                        }
                         updateConfig = { $set: toChange };
                     }
                     break;
