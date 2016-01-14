@@ -236,7 +236,7 @@ module.exports = function(dbName, cb) {
                     valueObj._id = new ObjectId();
                     toChange[command.path] = valueObj;
                     updateConfig = { 
-                        $push: toChange,
+                        $push: toChange
                     };
                     if (collection === 'ideas') {
                         updateConfig.$set = { "timeModified": new Date().toISOString() };
