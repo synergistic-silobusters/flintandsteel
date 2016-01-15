@@ -193,12 +193,12 @@ module.exports = function(db) {
 
         if (data.length === 0) {
             ideaHeaders.push(new Promise(function(resolve) {
-                resolve(null);
+                resolve();
             }));
         }
         else {
             ideaHeaders = data.map(function(header) {
-                return new Promise(function(resolve, reject) {
+                var ideaAuthor = new Promise(function(resolve, reject) {
                     users.get(header.authorId).then(function(headerObj) {
                         header.author = headerObj;
                         resolve(header);
@@ -207,6 +207,25 @@ module.exports = function(db) {
                         reject(error);
                     });
                 });
+
+                var ideaEvent = new Promise(function(resolve, reject) {
+                    if (header.eventId === "") {
+                        resolve();
+                        return;
+                    }
+                    events.get(header.eventId).then(function(ideaEventObj) {
+                        header.event = ideaEventObj;
+                        resolve(header);
+                    }).catch(function(err) {
+                        console.log(err);
+                        reject(err);
+                    });
+                });
+
+                return Promise.all([
+                    ideaAuthor,
+                    ideaEvent
+                ]);
             });
         }
 
