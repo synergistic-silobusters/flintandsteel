@@ -1319,7 +1319,7 @@ describe('IdeasViewCtrl', function() {
         beforeEach(function() {
             mockIdea = ideaSvcMock.getIdea();
             scope.idea = mockIdea.$$state.value.data;
-            scope.tagInput = 'a tag';
+            ctrl.tagInput = 'a tag';
             keyEvent = {
                 keyCode: 13
             };
@@ -1329,14 +1329,14 @@ describe('IdeasViewCtrl', function() {
         it('should call add Tag if enter is pushed', function() {
             expectLength = tagLength + 1;
             ctrl.tagKeyEvent(keyEvent);
-            expect(scope.tagInput).toBe("");
+            expect(ctrl.tagInput).toBe("");
             expect(scope.idea.tags.length).toBe(expectLength);
         });
 
         it('should not call add Tag if a key other than enter is pushed', function() {
             keyEvent.keyCode = 14;
             ctrl.tagKeyEvent(keyEvent);
-            expect(scope.tagInput).toBe('a tag');
+            expect(ctrl.tagInput).toBe('a tag');
             expect(scope.idea.tags.length).toBe(tagLength);
         });
     });
