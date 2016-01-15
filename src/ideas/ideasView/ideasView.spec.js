@@ -119,7 +119,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'getIdea').and.callFake(function getIdea() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             ctrl.refreshIdea();
             scope.$digest();
@@ -184,7 +184,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'postComment').and.callFake(function postComment() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             scope.addNewInteraction('comments');
             scope.$digest();
@@ -238,7 +238,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'addInteraction').and.callFake(function addInteraction() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             scope.addNewInteraction('updates');
             scope.$digest();
@@ -310,7 +310,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'removeInteraction').and.callFake(function removeInteraction() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             scope.removeInteraction('likes');
             scope.$digest();
@@ -321,7 +321,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'deleteComment').and.callFake(function deleteComment() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             scope.removeInteraction('comments', scope.idea.comments[commentsLength]);
             scope.$digest();
@@ -332,7 +332,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'removeInteraction').and.callFake(function removeInteraction() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             scope.removeInteraction('backs', scope.idea.backs[backsLength]);
             scope.$digest();
@@ -448,7 +448,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'editIdea').and.callFake(function editIdea() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             ctrl.editIdea(mockIdea.title, mockIdea.description, mockIdea.tags);
             scope.$digest();
@@ -665,7 +665,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'deleteIdea').and.callFake(function deleteIdea() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             ctrl.deleteIdea();
             scope.$digest();
@@ -752,7 +752,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'updateIdea').and.callFake(function updateIdea() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             ctrl.updateTeam();
             scope.$digest();
@@ -1075,7 +1075,7 @@ describe('IdeasViewCtrl', function() {
             spyOn(ideaSvcMock, 'editBack').and.callFake(function editBack() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
         });
 
         it('should throw a console log if errored', function() {
