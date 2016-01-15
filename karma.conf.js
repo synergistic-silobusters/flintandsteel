@@ -15,7 +15,9 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
+            
             'src/lib/angular/angular.js',
+            'src/lib/angular-timeline/dist/angular-timeline.js',
             'src/lib/angular-mocks/angular-mocks.js',
             'src/lib/angular-ui-router/release/angular-ui-router.js',
             'src/lib/angular-animate/angular-animate.js',
@@ -32,7 +34,7 @@ module.exports = function(config) {
             'src/app.js',
             'src/about/about.js',
             'src/ideas/ideaSvc/ideaSvc.mock.js',
-            'src/users/loginSvc/loginSvc.mock.js',
+            'src/users/userSvc/userSvc.mock.js',
             'src/toastSvc/toastSvc.js',
             'src/homeView/homeView.js',
             'src/ideas/**/*.js',

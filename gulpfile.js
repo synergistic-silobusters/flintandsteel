@@ -285,57 +285,13 @@ gulp.task('clean:modules', function() {
 
 gulp.task('clean:db-dev', function(cb) {
     "use strict";
+
     var command = "mongo flintandsteel-dev --eval db.dropDatabase()";
     runCommand(command, "Drop database", cb);
-
-    // var mongodb = require('mongodb');
-    //
-    // var DB = new mongodb.Db('flintandsteel-dev', new mongodb.Server('localhost', 27017));
-    //
-    // DB.open(function(err, db) {
-    //     db.collection('users').drop(function(errUsers) {
-    //         if (errUsers) {
-    //             console.log(errUsers);
-    //         }
-    //         db.collection('events').drop(function(errEvents) {
-    //             if (errEvents) {
-    //                 console.log(errEvents);
-    //             }
-    //             db.collection('comments').drop(function(errComments) {
-    //                 if (errComments) {
-    //                     console.log(errComments);
-    //                 }
-    //                 db.collection('ideas').drop(function(errIdea) {
-    //                     if (errIdea) {
-    //                         console.log(errIdea);
-    //                     }
-    //                     console.log(chalk.green("Database collections dropped!"));
-    //                     if (typeof cb !== 'undefined') {
-    //                         db.close();
-    //                         cb();
-    //                     }
-    //                 });
-    //             });
-    //         });
-    //     });
-    // });
 });
 
-gulp.task('initialize:db-dev', ['clean:db-dev'], function(cb) {
+gulp.task('generate:data', ['clean:db-dev'], function(cb) {
     "use strict";
 
-    // Create the needed collections
-    var db = require('./server/db.js')('flintandsteel-dev', function(err) {
-        db.getDb().close();
-        cb(err);
-    });
+    runCommand('mongo generateData.js', 'Generate data', cb);
 });
-
-gulp.task('generate:data', ['initialize:db-dev'], function(cb) {
-    "use strict";
-    var genData = require('./generateData');
-    genData.generateAll(cb);
-});
-
-// A shorter call for generating colon data
-gulp.task('poop', ['generate:data']);
