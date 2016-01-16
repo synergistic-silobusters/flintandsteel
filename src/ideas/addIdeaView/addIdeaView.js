@@ -28,7 +28,7 @@ angular.module('flintAndSteel')
                 var reNonAlpha = /[.,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
                 tag = tag.replace(reNonAlpha, " ");
                 tag = _.capitalize(_.camelCase(tag));
-                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {                    
+                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {
                     $scope.idea.tags.push(tag);
                 }
             };
@@ -43,7 +43,9 @@ angular.module('flintAndSteel')
 
             $scope.removeTag = function removeTag(tag) {
                 var index = $scope.idea.tags.indexOf(tag);
-                $scope.idea.tags.splice(index, 1);
+                if (index >= 0) {
+                    $scope.idea.tags.splice(index, 1);
+                }
             };
 
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
