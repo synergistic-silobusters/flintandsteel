@@ -3,11 +3,13 @@
 /* global beforeEach */
 /* global inject */
 /* global it */
+/* global expect */
 
 describe('eventSvc', function() {
     "use strict";
 
     var eventSvc, $httpBackend, dummyEvents;
+    var now = new Date();
 
     beforeEach(module('flintAndSteel'));
 
@@ -51,7 +53,7 @@ describe('eventSvc', function() {
         it('it should return all the events', function() {
             $httpBackend.expectGET('/events');
 
-            ideaSvc.getEvents().then(function() { }, function() { });
+            eventSvc.getEvents().then(function() { }, function() { });
 
             $httpBackend.flush();
         });
