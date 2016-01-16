@@ -32,7 +32,7 @@
                         <email-link author-obj="idea.author"></email-link>
                     </h3>
                 </div>
-                <div layout="row" layout-wrap>
+                <div ng-show="idea.eventId !== ''" layout="row" layout-wrap>
                     <span class="custom-chip-wrapper">
                         <small class="custom-chip">{{idea.event.name}}</small>
                     </span>
