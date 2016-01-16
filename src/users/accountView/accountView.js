@@ -29,7 +29,7 @@ angular.module('flintAndSteel')
                 if (userSvc.isUserLoggedIn()) {
                     var userId = userSvc.getProperty('_id');
                     $scope.userIdeas = response.data.filter(function(idea) {
-                        return  userId === idea.authorId;
+                        return userId === idea.authorId;
                     });
                 }
 

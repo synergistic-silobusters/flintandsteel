@@ -120,7 +120,7 @@ angular.module('flintAndSteel')
                     return $q.when({ data: mockIdea });
                 },
                 getIdeaHeaders: function getIdeaHeaders() {
-                    return $q.when({ data:[
+                    return $q.when({ data: [
                         {
                             id: 'mock_idea',
                             title: 'The bestest Idea ever!',

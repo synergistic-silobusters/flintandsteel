@@ -161,7 +161,7 @@ describe('IdeasViewCtrl', function() {
 
         afterEach(function() {
             scope.$digest();
-        })
+        });
 
         it('should add a new like when the heart outline is clicked', function() {
 
@@ -271,7 +271,7 @@ describe('IdeasViewCtrl', function() {
 
         afterEach(function() {
             scope.$digest();
-        })
+        });
 
         it('should remove a new like when the solid heart is clicked', function() {
             scope.removeInteraction('likes');

@@ -41,7 +41,7 @@ describe('AccountViewCtrl', function() {
 
         afterEach(function() {
             rootScope.$digest();
-        })
+        });
 
         it('should exist', function() {
             expect(ctrl).toBeDefined();
