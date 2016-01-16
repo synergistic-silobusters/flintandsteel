@@ -26,7 +26,7 @@ angular.module('flintAndSteel')
             ];
             return {
                 getEvents: function() {
-                    return $q.when(events);
+                    return $q.when({ data: events });
                 }
             };
         }
