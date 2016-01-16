@@ -159,13 +159,16 @@ describe('IdeasViewCtrl', function() {
             updatesLength = scope.idea.updates.length;
         });
 
+        afterEach(function() {
+            scope.$digest();
+        })
+
         it('should add a new like when the heart outline is clicked', function() {
 
             scope.addNewInteraction('likes');
             ideaSvcMock.getIdea().then(function(response) {
                 expect(response.data.likes.length).toBe(ideaLikes + 1);
             });
-            scope.$digest();
         });
 
         it('should add a new comment when comment is selected', function() {
@@ -177,7 +180,6 @@ describe('IdeasViewCtrl', function() {
                 expect(response.data.comments.length).toBe(commentsLength + 1);
                 expect(response.data.comments[commentsLength].text).toBe('This is a test comment!');
             });
-            scope.$digest();
         });
 
         it('should give a console error if a problem adding comment', function() {
@@ -189,7 +191,6 @@ describe('IdeasViewCtrl', function() {
             scope.addNewInteraction('comments');
             scope.$digest();
             expect(console.log).toHaveBeenCalled();
-            scope.$digest();
         });
 
         it('should add a new back with no tags', function() {
@@ -203,7 +204,6 @@ describe('IdeasViewCtrl', function() {
                 expect(response.data.backs[backsLength].text).toBe('This is a test back!');
                 expect(response.data.backs[backsLength].types.length).toBe(0);
             });
-            scope.$digest();
         });
 
         it('should add a new back with two tags', function() {
@@ -219,7 +219,6 @@ describe('IdeasViewCtrl', function() {
                 expect(response.data.backs[backsLength].types[0].name).toBe('Experience');
                 expect(response.data.backs[backsLength].types[1].name).toBe('Funding');
             });
-            scope.$digest();
         });
 
         it('should add a new update when update is selected', function() {
@@ -231,7 +230,6 @@ describe('IdeasViewCtrl', function() {
                 expect(response.data.updates.length).toBe(updatesLength + 1);
                 expect(response.data.updates[updatesLength].text).toBe('This is a test update!');
             });
-            scope.$digest();
         });
 
         it('should output a console log if problem adding update', function() {
@@ -271,13 +269,16 @@ describe('IdeasViewCtrl', function() {
             updatesLength = scope.idea.updates.length - 1;
         });
 
+        afterEach(function() {
+            scope.$digest();
+        })
+
         it('should remove a new like when the solid heart is clicked', function() {
             scope.removeInteraction('likes');
 
             ideaSvcMock.getIdea().then(function(response) {
                 expect(response.data.likes.length).toBe(ideaLikes);
             });
-            scope.$digest();
         });
 
         it('should remove a specific comment the author posted', function() {
@@ -286,7 +287,6 @@ describe('IdeasViewCtrl', function() {
             ideaSvcMock.getIdea().then(function(response) {
                 expect(response.data.comments.length).toBe(commentsLength);
             });
-            scope.$digest();
         });
 
         it('should remove a specific back the author posted', function() {
@@ -295,7 +295,6 @@ describe('IdeasViewCtrl', function() {
             ideaSvcMock.getIdea().then(function(response) {
                 expect(response.data.backs.length).toBe(backsLength);
             });
-            scope.$digest();
         });
 
         it('should remove a specific update the author posted', function() {
@@ -303,7 +302,6 @@ describe('IdeasViewCtrl', function() {
             ideaSvcMock.getIdea().then(function(response) {
                 expect(response.data.updates.length).toBe(updatesLength);
             });
-            scope.$digest();
         });
 
         it('should output a console log if problem removing like', function() {
