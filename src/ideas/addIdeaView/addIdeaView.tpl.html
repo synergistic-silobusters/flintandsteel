@@ -18,6 +18,12 @@
                     </div>
                 </md-input-container>
                 <md-input-container>
+                    <label>Event</label>
+                    <md-select placeholder="Select an Event" ng-model="idea.eventId">
+                        <md-option ng-value="event.id" ng-repeat="event in events">{{event.name}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
                     <label>Description</label>
                     <textarea ng-model="idea.description"
                               name="desc"
