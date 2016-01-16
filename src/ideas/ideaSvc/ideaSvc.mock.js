@@ -114,7 +114,7 @@ angular.module('flintAndSteel')
 
             return {
                 postIdea: function postIdea() {
-                    return $q.when({status: 'Created'});
+                    return $q.when({data: {status: 'Created'}});
                 },
                 getIdea: function getIdea() {
                     return $q.when({ data: mockIdea });
