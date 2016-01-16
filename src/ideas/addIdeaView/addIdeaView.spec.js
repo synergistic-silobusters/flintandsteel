@@ -9,14 +9,14 @@
 describe('AddIdeaViewCtrl', function() {
     "use strict";
 
-    var scope, rootScope, $q, ctrl, toastSvc, $state, ideaSvcMock, userSvcMock;
+    var scope, rootScope, $q, ctrl, toastSvc, $state, ideaSvcMock, userSvcMock, eventSvcMock;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
     // needed because $state takes us to home by default
     beforeEach(module('homeView/homeView.tpl.html'));
 
-    beforeEach(inject(function($rootScope, _$q_, $controller, _toastSvc_, _$state_, _ideaSvcMock_, _userSvcMock_) {
+    beforeEach(inject(function($rootScope, _$q_, $controller, _toastSvc_, _$state_, _ideaSvcMock_, _userSvcMock_, _eventSvcMock_) {
         rootScope = $rootScope;
         scope = $rootScope.$new();
         $q = _$q_;
@@ -24,6 +24,7 @@ describe('AddIdeaViewCtrl', function() {
         $state = _$state_;
         ideaSvcMock = _ideaSvcMock_;
         userSvcMock = _userSvcMock_;
+        eventSvcMock = _eventSvcMock_;
 
         spyOn($state, 'go');
 
@@ -32,14 +33,16 @@ describe('AddIdeaViewCtrl', function() {
             $state: $state,
             toastSvc: toastSvc,
             ideaSvc: ideaSvcMock,
-            userSvc: userSvcMock
+            userSvc: userSvcMock,
+            eventSvc: eventSvcMock
         });
 
         scope.idea = {
             title: 'Test Title',
+            eventId: 0,
             description: 'This is a test idea.',
             tags: ['TestTag1', 'TestTag2']
-        }
+        };
     }));
 
     afterEach(function() {
@@ -50,6 +53,39 @@ describe('AddIdeaViewCtrl', function() {
         expect(ctrl).toBeDefined();
     });
 
+    describe('scope.loadEvents', function() {
+        it('should populate the events', function() {
+            scope.loadEvents();
+            rootScope.$digest();
+
+            expect(scope.events.length).not.toBe(0);
+        });
+
+        it('should append "none" to the list of events', function() {
+            var numEvents;
+            eventSvcMock.getEvents().then(function(response) {
+                numEvents = response.data.length;
+            });
+            scope.loadEvents();
+            rootScope.$digest();
+
+            expect(scope.events.length).toBe(numEvents + 1); // appended "None"
+        });
+
+        it('should set events to an empty array if there was an error', function() {
+            spyOn(eventSvcMock, 'getEvents').and.callFake(function() {
+                return $q.reject('FAIL');
+            });
+            spyOn(console, 'log').and.callFake(function() {});
+
+            scope.loadEvents();
+            rootScope.$digest();
+
+            expect(scope.events.length).toBe(0);
+            expect(console.log).toHaveBeenCalledWith('FAIL');
+        });
+    });
+
     describe('scope.addNewIdea', function() {
 
         it('should add a new idea', function() {
@@ -58,12 +94,11 @@ describe('AddIdeaViewCtrl', function() {
             scope.addNewIdea(scope.idea);
 
             expect(ideaSvcMock.postIdea).toHaveBeenCalled();
-            expect(scope.idea.eventId).toBe("");
             expect(scope.idea.rolesreq.length).toBe(0);
         });
 
         it('should use the user\'s _id as the authorId', function() {
-            scope.idea.authorId= 3;
+            scope.idea.authorId = 3;
 
             scope.addNewIdea(scope.idea);
 
@@ -83,11 +118,11 @@ describe('AddIdeaViewCtrl', function() {
 
             expect(ideaSvcMock.postIdea).toHaveBeenCalled();
             expect(console.log).toHaveBeenCalledWith('FAIL');
-        })
+        });
     });
 
     describe('scope.tagKeyEvent', function() {
-        var keyEvent, tagLength, expectLength, mockIdea;
+        var keyEvent, tagLength, expectLength;
 
         beforeEach(function() {
             scope.tagInput = 'a tag';
