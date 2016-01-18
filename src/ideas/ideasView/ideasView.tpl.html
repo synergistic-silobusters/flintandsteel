@@ -45,62 +45,7 @@
                 </span>
             </div>
         </div>
-        <form ng-if="ideasView.enableEdit" name="editIdeaForm">
-            <div layout="column" class="extra-padding-sides-15">
-                <md-input-container>
-                    <label>Title</label>
-                    <input ng-model="idea.title"
-                           name="title"
-                           ng-minlength="4"
-                           ng-maxlength="30"
-                           md-maxlength="30"
-                           required />
-                    <div ng-messages="editIdeaForm.title.$error" role="alert">
-                        <div ng-message="required">Required</div>
-                        <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
-                        <div ng-message="maxlength">Your title is too long</div>
-                    </div>
-                </md-input-container>
-                <md-input-container>
-                    <label>Description</label>
-                    <textarea ng-model="idea.description"
-                              name="desc"
-                              type="text"
-                              ng-minlength="15"
-                              ng-maxlength="1000"
-                              md-maxlength="1000"
-                              required></textarea>
-                    <div ng-messages="editIdeaForm.desc.$error" role="alert">
-                        <div ng-message="required">Required</div>
-                        <div ng-message="minlength">Your description is too short. Must be at least 15 characters</div>
-                        <div ng-message="maxlength">Your description is too long</div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="idea-tags-input-container">
-                    <label>Tags</label>
-                    <input name="tags"
-                           ng-model="ideasView.tagInput"
-                           ng-keypress="ideasView.tagKeyEvent($event)"
-                           type="text"
-                           maxLength="50"
-                           ng-disabled="idea.tags.length === 5"></input>
-                </md-input-container>
-                <small class="tag-message" ng-show="idea.tags.length < 5">Press Enter to Add Tag - Limit 5</small>
-                <small class="tag-message" ng-show="idea.tags.length === 5">Tag Limit of 5 Reached</small>
-                <div layout="row" flex layout-wrap>
-                    <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
-                        <small class="custom-chip tag">
-                            #{{tag}}
-                            <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="ideasView.removeTag(tag)" aria-hidden="true"></md-icon>
-                        </small>
-                    </span>
-                </div>
-                <div layout="row" layout-align="end center" class="extra-padding-lg">
-                    <md-button class="md-raised md-primary" type="button" ng-click="ideasView.editIdea(idea.title, idea.description, idea.tags)" ng-disabled="editIdeaForm.$invalid">Submit</md-button>
-                    <md-button class="md-raised md-primary" type="button" ng-click="ideasView.refreshIdea()">Cancel</md-button>
-                </div>
-            </div>
-        </form>
+        <idea-input ng-if="ideasView.enableEdit" idea="idea" submit-fn="ideasView.editIdea(idea)" submit-btn-text="Submit" cancel-fn="ideasView.refreshIdea()" cancel-btn-text="Cancel"></idea-input>
     </md-card-content>
     <!-- Used to display Likes/Backs/Team and to Like/Back/Join an idea -->
     <md-card-footer>
