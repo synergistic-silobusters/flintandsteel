@@ -63,8 +63,7 @@ angular.module('flintAndSteel')
 
             $scope.loadEvents = function() {
                 eventSvc.getEvents().then(function getEventsSuccess(response) {
-                    $scope.events = [nullEvent];
-                    $scope.events = $scope.events.concat(response.data);
+                    $scope.events = [nullEvent].concat(response.data);
                 }, function getEventsError(response) {
                     $scope.events = [];
                     console.log(response);
