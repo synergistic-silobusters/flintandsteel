@@ -46,7 +46,7 @@ describe('AddIdeaViewCtrl', function() {
     }));
 
     afterEach(function() {
-        rootScope.$digest();
+        scope.$digest();
     });
 
     it('should exist', function() {
@@ -56,7 +56,7 @@ describe('AddIdeaViewCtrl', function() {
     describe('scope.loadEvents', function() {
         it('should populate the events', function() {
             scope.loadEvents();
-            rootScope.$digest();
+            scope.$digest();
 
             expect(scope.events.length).not.toBe(0);
         });
@@ -67,7 +67,7 @@ describe('AddIdeaViewCtrl', function() {
                 numEvents = response.data.length;
             });
             scope.loadEvents();
-            rootScope.$digest();
+            scope.$digest();
 
             expect(scope.events.length).toBe(numEvents + 1); // appended "None"
         });
@@ -79,7 +79,7 @@ describe('AddIdeaViewCtrl', function() {
             spyOn(console, 'log').and.callFake(function() {});
 
             scope.loadEvents();
-            rootScope.$digest();
+            scope.$digest();
 
             expect(scope.events.length).toBe(0);
             expect(console.log).toHaveBeenCalledWith('FAIL');
@@ -114,7 +114,7 @@ describe('AddIdeaViewCtrl', function() {
 
             scope.addNewIdea(scope.idea);
 
-            rootScope.$digest();
+            scope.$digest();
 
             expect(ideaSvcMock.postIdea).toHaveBeenCalled();
             expect(console.log).toHaveBeenCalledWith('FAIL');

@@ -40,7 +40,7 @@ describe('AccountViewCtrl', function() {
         }));
 
         afterEach(function() {
-            rootScope.$digest();
+            scope.$digest();
         });
 
         it('should exist', function() {
@@ -74,7 +74,7 @@ describe('AccountViewCtrl', function() {
                 ideaSvc: ideaSvcMock
             });
 
-            rootScope.$digest();
+            scope.$digest();
         }));
 
         it('should exist', function() {
