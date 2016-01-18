@@ -314,7 +314,8 @@ describe('ideaSvc', function() {
         it('should edit an existing idea', function() {
             $httpBackend.expectPATCH('/ideas/' + dummyIdea._id, patchOperation);
 
-            ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq, dummyIdea.eventId).then(function(response) {
+            ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq, dummyIdea.eventId)
+            .then(function(response) {
                 expect(response.data).toBe('OK');
             }, function() { });
 

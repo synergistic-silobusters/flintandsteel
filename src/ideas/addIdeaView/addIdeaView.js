@@ -1,11 +1,10 @@
 /* global angular */
-/* global _ */
 
 angular.module('flintAndSteel')
 .controller('AddIdeaViewCtrl',
     [
-        '$scope', '$state', 'toastSvc', 'ideaSvc', 'userSvc', 'eventSvc',
-        function($scope, $state, toastSvc, ideaSvc, userSvc, eventSvc) {
+        '$scope', '$state', 'toastSvc', 'ideaSvc', 'userSvc',
+        function($scope, $state, toastSvc, ideaSvc, userSvc) {
             "use strict";
 
             if (!userSvc.isUserLoggedIn()) {
