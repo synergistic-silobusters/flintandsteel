@@ -36,6 +36,9 @@ angular.module('flintAndSteel')
                     }
                     else if (typeof normalizedTags !== 'undefined') {
                         normalizedTags.forEach(function(tag) {
+                            if (retArray.indexOf(item) !== -1) {
+                                return;
+                            }
                             tag = tag.replace(re,"").toLowerCase();
                             if (tag.indexOf(normalizedSearch) >= 0) {
                                 retArray.push(item);
