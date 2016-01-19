@@ -1,13 +1,17 @@
-.homeview-image {
+/*.homeview-image {
  height:100%;
    width:100%;
    background-image:url(Collaboration.jpg);/*your background image*/  
    background-repeat:no-repeat;/*we want to have one single image not a repeated one*/  
    background-size:cover;/*this sets the image to fullscreen covering the whole screen*/  
    /*css hack for ie*/     
-   filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.Collaboration.jpg',sizingMethod='scale');
+   /*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.Collaboration.jpg',sizingMethod='scale');
    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='image.jpg',sizingMethod='scale')";
 
+}*/
+.cloud-container-padding {
+    padding-top: 20px;
+    padding-bottom: 40px;
 }
 .homeview-search {
     background:rgba(255,255,255,0.65);
@@ -410,7 +414,8 @@ body {
     position:absolute;
     /*
     background-color:#0090d9;*/
-    background:rgba(154,10,10,0.65);
+    /*background:rgba(154,10,10,1);*/
+    background:#650100;
     /* Animate the transitions */
     -webkit-transition:0.8s; text-align:center;
     -moz-transition:0.8s; text-align:center;
@@ -462,4 +467,94 @@ body {
 }
 .containerCard-text-back {
     margin: 10px;
+}
+/*body {
+    background: #eee;
+    font-family: Helvetica, Arial, sans-serif;
+}*/
+#wordcloud {
+    margin: 10px;
+
+    height: 720px;
+    border: none;
+}
+#wordcloud span.w10, #wordcloud span.w9, #wordcloud span.w8, #wordcloud span.w7 {
+    text-shadow: 0px 1px 1px #ccc;
+}
+#wordcloud span.w3, #wordcloud span.w2, #wordcloud span.w1 {
+    text-shadow: 0px 1px 1px #fff;
+}
+#footer {
+    font-size: 13px;
+    color: #aaa;
+    text-align: center;
+    width: 100%;
+    margin: 30px auto;
+    padding: 0.5em;
+    text-shadow: 0px 1px 1px #fff;
+    border-top: 1px dotted #ddd;
+}
+#footer a {
+    color: #0af;
+    text-decoration: none;
+}
+
+div#wordcloud {
+  font-family: "Helvetica", "Arial", sans-serif;
+  color: #09f;
+  overflow: hidden;
+  position: relative;
+}
+div#wordcloud a {
+  color: inherit;
+  text-decoration: none;
+}
+div#wordcloud a:hover {
+  color: #0df;
+}
+div#wordcloud a:hover {
+  color: #0cf;
+}
+div#wordcloud span {
+  padding: 0;
+}
+div#wordcloud span.w10 {
+  font-size: 54px;
+  color: #0cf;
+}
+div#wordcloud span.w9 {
+  font-size: 50px;
+  color: #0cf;
+}
+div#wordcloud span.w8 {
+  font-size: 44px;
+  color: #0cf;
+}
+div#wordcloud span.w7 {
+  font-size: 40px;
+  color: #39d;
+}
+div#wordcloud span.w6 {
+  font-size: 34px;
+  color: #90c5f0;
+}
+div#wordcloud span.w5 {
+  font-size: 30px;
+  color: #90a0dd;
+}
+div#wordcloud span.w4 {
+  font-size: 24px;
+  color: #90c5f0;
+}
+div#wordcloud span.w3 {
+  font-size: 20px;
+  color: #a0ddff;
+}
+div#wordcloud span.w2 {
+  font-size: 14px;
+  color: #99ccee;
+}
+div#wordcloud span.w1 {
+  font-size: 10px;
+  color: #aab5f0;
 }

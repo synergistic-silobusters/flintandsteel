@@ -1,20 +1,29 @@
+<md-content layout="row" class="cloud-container-padding">
+    <md-content flex="5"></md-content>
+    <div id="wordcloud" flex="90"></div>
+    <md-content flex="5"></md-content>
+</md-content>
 <div layout="row" layout-align="center center" >
-        <div>
-            <h1>Innovation Challenge</h1>
-        </div>
-</div>
-<div layout="row" layout-align="center end">
-</div>
-<div  class="homeview-image">
-    <div flex  layout-align="center center" >
-        <div layout="column" style="width:100%" layout-align="center center">
-            <div class="homeview-login-button" ng-controller="ToolbarCtrl" ng-show="!isUserLoggedIn()">
-                <md-button class="md-raised" ng-click="showLogin($event)" >Log In</md-button>
-            </div>
-            <md-input-container ng-focus="seachFocus()" class="homeview-search md-accent md-hue-1" flex>
+        <!-- <div>
+            <h1>Innovate</h1>
+        </div> -->
+      <md-input-container ng-focus="seachFocus()" class="homeview-search md-accent md-hue-1" flex>
                 <label class="search-text">Search Ideas</label>
                 <input name="search" ng-model="searchText">
-            </md-input-container>
+            </md-input-container> 
+</div>
+
+<div>
+
+    <div flex  layout-align="center center" >
+        <div layout="column" style="width:100%" layout-align="center center">
+            <!--<div class="homeview-login-button" ng-controller="ToolbarCtrl" ng-show="!isUserLoggedIn()">
+                <md-button class="md-raised" ng-click="showLogin($event)" >Log In</md-button>
+            </div>-->
+            <!-- <md-input-container ng-focus="seachFocus()" class="homeview-search md-accent md-hue-1" flex>
+                <label class="search-text">Search Ideas</label>
+                <input name="search" ng-model="searchText">
+            </md-input-container> -->
         </div>
     </div>
     <!--Begin Help Cards-->
@@ -58,6 +67,7 @@
         </div>
     </div>
 </div>
+<jqcloud words="words" width="500" height="350" steps="7"></jqcloud>
 <!-- End Timeline -->
 <div><h6><center><a ui-sref="about">About Us</a></center></h6></div>
 <div><h6><center><a ui-sref="innovationdisclosure">Innovation Disclosure Assistant</a></center></h6></div>
