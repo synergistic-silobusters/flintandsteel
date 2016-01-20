@@ -27,7 +27,7 @@ angular.module('flintAndSteel')
             $scope.searchText = undefined;
             $scope.showEditBackInput = false;
             $scope.userBackIndex = '';
-            $scope.tagInput = "";
+            ctrl.tagInput = "";
             ctrl.enableTeamEdit = false;
             ctrl.editBackText = '';
             ctrl.newComment = '';
@@ -617,8 +617,8 @@ angular.module('flintAndSteel')
             ctrl.tagKeyEvent = function tagKeyEvent(keyEvent) {
                 // Enter
                 if (keyEvent.keyCode === 13) {
-                    ctrl.addTag($scope.tagInput);
-                    $scope.tagInput = "";
+                    ctrl.addTag(ctrl.tagInput);
+                    ctrl.tagInput = "";
                 }
             };
 

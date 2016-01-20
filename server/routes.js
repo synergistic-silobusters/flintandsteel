@@ -44,7 +44,10 @@ module.exports = function(app, db) {
         ideas.fetch().then(function(headers) {
             return replaceIds.headers(headers);
         }).then(function(replacedHeaders) {
-            res.status(200).json(replacedHeaders);
+            var headersToSend = replacedHeaders.map(function(singleHeader) {
+                return singleHeader[0];
+            });
+            res.status(200).json(headersToSend);
         })
         .catch(function(error) {
             res.status(500).json(error);
@@ -165,7 +168,7 @@ module.exports = function(app, db) {
 
         if (process.env.NODE_ENV !== 'production') {
             if (new Buffer(req.body.password, "base64").toString() === 'test') {
-                users.findForLogin(req.body.username).then(function(responseObj) {  
+                users.findForLogin(req.body.username).then(function(responseObj) {
                     res.status(200).json(responseObj);
                 }).catch(function(err) {
                     console.error(chalk.bgRed(err));
@@ -307,7 +310,7 @@ module.exports = function(app, db) {
             comments.create(req.body.parentId, req.body.text, req.body.authorId)
         ]).then(function(results) {
             if (results[0] !== 'NOT_FOUND') {
-                var patchComments = { 
+                var patchComments = {
                     "operation": "append",
                     "path": "comments",
                     "value": "{ \"commentId\": \"" + new ObjectId(results[1]._id) + "\"}"
@@ -347,7 +350,7 @@ module.exports = function(app, db) {
             return ideas.get(commentToDelete.parentId);
         }).then(function(idea) {
             if (idea !== 'NOT_FOUND') {
-                var patchComments = { 
+                var patchComments = {
                     "operation": "delete",
                     "path": "comments" + "/" + req.params.id
                 };
@@ -357,7 +360,7 @@ module.exports = function(app, db) {
                 return new Promise(function(resolve) {
                     resolve();
                 });
-            }    
+            }
         }).then(function() {
             res.sendStatus(204);
             return comments.delete(req.params.id);
@@ -374,7 +377,10 @@ module.exports = function(app, db) {
 
         function updateHeaders(headers) {
             replaceIds.headers(headers).then(function(headersData) {
-                sse("newHeaders", headersData);
+                var headersToSend = headersData.map(function(singleHeader) {
+                    return singleHeader[0];
+                });
+                sse("newHeaders", headersToSend);
             }).catch(function(err) {
                 console.error(chalk.bgRed(err));
             });
