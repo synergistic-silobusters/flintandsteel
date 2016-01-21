@@ -22,7 +22,7 @@ angular.module('flintAndSteel')
             var ctrl = this;
 
             ctrl.isUserAuthor = function() {
-                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === $scope.idea.authorId) {
+                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === 1) {
                     return true;
                 }
                 return false;
