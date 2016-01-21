@@ -20,7 +20,7 @@ angular.module('flintAndSteel')
             var ctrl = this;
 
             ctrl.isUserAuthor = function() {
-                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === 1) {
+                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === author) {
                     return true;
                 }
                 return false;
