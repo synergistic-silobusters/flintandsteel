@@ -32,6 +32,8 @@ if (process.env.NODE_ENV === 'test') {
     port = 7357;
 }
 
+var logStream = fs.createWriteStream(__dirname + '/server.log', { flags: 'a' });
+
 var app = express();
 
 app.use(express.static(path.join(__dirname + '/../src')));
@@ -39,14 +41,22 @@ app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    app.use(morgan(':remote-addr - ' +
+
+    app.use(morgan('PROD :remote-addr - ' +
         chalk.cyan('[:date] ') +
         chalk.green('":method :url ') +
         chalk.gray('HTTP/:http-version" ') +
         chalk.yellow(':status ') +
         ':res[content-length] ' +
         chalk.gray('":referrer" ":user-agent" ') +
-        'time=:response-time ms'
+        'time=:response-time ms',
+        {
+            stream: logStream,
+            skip: function(req) {
+                "use strict";
+                return !/api\/v1\/|sse\//.test(req.originalUrl);
+            }
+        }
     ));
 
     app.use(passport.initialize());
@@ -81,6 +91,12 @@ if (process.env.NODE_ENV === 'production') {
             done("No user provided!");
         }
     });
+}
+else if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('DEV  :method :url :status ' +
+        ':response-time ms - :res[content-length]',
+        { stream: logStream }
+    ));
 }
 
 // routes =============================================================
