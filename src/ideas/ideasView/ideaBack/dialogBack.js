@@ -1,4 +1,6 @@
 /* global angular */
+/* global _ */
+/* global moment */
 
 angular.module('flintAndSteel')
 .controller('DialogBackCtrl',
@@ -20,7 +22,7 @@ angular.module('flintAndSteel')
             var ctrl = this;
 
             ctrl.isUserAuthor = function() {
-                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === author) {
+                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === $scope.idea.authorId) {
                     return true;
                 }
                 return false;
