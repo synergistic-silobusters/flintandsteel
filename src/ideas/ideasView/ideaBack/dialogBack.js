@@ -1,6 +1,4 @@
 /* global angular */
-/* global _ */
-/* global moment */
 
 angular.module('flintAndSteel')
 .controller('DialogBackCtrl',
