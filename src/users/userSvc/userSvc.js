@@ -13,7 +13,7 @@ angular.module('flintAndSteel')
                 encodedAccount.username = account.username;
                 encodedAccount.password = window.btoa(account.password);
 
-                $http.post('/users/login', encodedAccount).then(function(response) {
+                $http.post('/api/v1/users/login', encodedAccount).then(function(response) {
                     $rootScope.account = response.data;
                     def.resolve(response);
                 },
@@ -41,7 +41,7 @@ angular.module('flintAndSteel')
 
             this.getUserById = function getUserById(userId) {
                 if (userId) {
-                    return $http.get('/users/' + userId);
+                    return $http.get('/api/v1/users/' + userId);
                 }
                 else {
                     return $q.when(false);
