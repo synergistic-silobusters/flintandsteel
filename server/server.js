@@ -54,9 +54,7 @@ if (process.env.NODE_ENV === 'production') {
             stream: logStream,
             skip: function(req) {
                 "use strict";
-                // TODO - Once the API change goes through, this will
-                // become return !/api\/v1\/|sse\//.test(req.originalUrl);
-                return !/ideas|users|events|comments/.test(req.originalUrl);
+                return !/api\/v1\/|sse\//.test(req.originalUrl);
             }
         }
     ));
