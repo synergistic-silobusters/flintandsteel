@@ -22,6 +22,23 @@ The following applications need to be installed:
 
 Make sure that the directories containing `node`, `npm`, `mongod` and `mongo` are added to the path making them accessible from the terminal.
 
+**For Linux Users (Commands are likely CentOS specific):**
+
+* Install bzip2 to extract the contents of phantomjs (`sudo yum install bzip2`)
+* Install phantomjs globally (`npm install -g phantomjs`)
+* Add the phantomjs bin to your env vars:
+  * `export PHANTOMJS_BIN=/usr/local/lib/node_modules/phantomjs/lib/phantom/bin/phantomjs`
+  * More permanently, add that line to the .bash_profile file in your $HOME directory.
+* Install libfontconfig:
+  * `sudo yum install freetype`
+  * `sudo yum install fontconfig`
+* Add the port you'll be hosting to the firwall rules (`sudo firewall-cmd --permanent --add-port=8080/tcp`)
+  * If you are going to be running production, Add these two instead:
+    * `sudo firewall-cmd --permanent --add-service=http`
+    * `sudo firewall-cmd --permanent --add-service=https`
+  * For both dev and prod you must run this command next:
+    * `sudo systemctl reload firewalld`
+
 ### Get the code
 
 After cloning the git repository run `npm install` from a terminal window. If this process fails complaining about bower, you will need to run `npm install bower -g`, then run `npm install` again. If you receive another error involving Git, then you will need to ensure that Git is installed and the `*\Git\bin` directory is added to your PATH.
