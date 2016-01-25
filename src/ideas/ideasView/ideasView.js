@@ -72,9 +72,6 @@ angular.module('flintAndSteel')
                     }
                     else {
                         $scope.idea = response.data;
-                        if (typeof $scope.idea.team === "undefined")	{
-                            $scope.idea.team = [];
-                        }
                         ctrl.enableEdit = false;
                         ctrl.refreshTeam();
                     }
