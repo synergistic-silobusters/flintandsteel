@@ -174,7 +174,7 @@
                                         <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
                                     </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid || !ideasView.newUpdate">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
@@ -225,7 +225,7 @@
                                         <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
                                     </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newCommentForm.$invalid">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newCommentForm.$invalid || !ideasView.newComment">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>

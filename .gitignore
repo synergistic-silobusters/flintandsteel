@@ -78,3 +78,6 @@ server/secrets
 
 # Code Coverage
 coverage
+
+# Logs
+server/*.log
