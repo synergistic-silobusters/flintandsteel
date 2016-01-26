@@ -71,6 +71,9 @@ h1.no-margins {
     -webkit-margin-after: 0;
     -webkit-margin-before: 0;
 }
+
+h2.no-bottom-margin {
+    -webkit-margin-after: 0;
 }
 
 .top-bar {
