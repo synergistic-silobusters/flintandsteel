@@ -1,11 +1,9 @@
 /* global angular */
-/* global _ */
 
 angular.module('flintAndSteel')
 .directive('ideaInput',
     [
-        'eventSvc',
-        function(eventSvc) {
+        function() {
             "use strict";
 
             return {

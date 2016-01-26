@@ -1,10 +1,13 @@
 /* global angular */
+/* global _ */
 
 angular.module('flintAndSteel')
 .controller('ideaInputView',
     [
         '$scope', 'eventSvc',
         function($scope, eventSvc) {
+            "use strict";
+
             var nullEvent = {
                 _id: "",
                 name: "No Event"
@@ -61,4 +64,4 @@ angular.module('flintAndSteel')
             };
         }
     ]
-)
+);

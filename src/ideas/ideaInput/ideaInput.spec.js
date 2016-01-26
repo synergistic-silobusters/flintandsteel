@@ -44,7 +44,9 @@ describe('ideaInput', function() {
     describe('without a cancel option', function() {
 
         beforeEach(function() {
-            element = getCompiledElement('<' + DIRECTIVE_NAME + ' submit-fn="testSubmit(idea)" submit-btn-text="Submit Idea"></' + DIRECTIVE_NAME + '>');
+            element = getCompiledElement('<' + DIRECTIVE_NAME +
+                ' submit-fn="testSubmit(idea)" submit-btn-text="Submit Idea"></' +
+                DIRECTIVE_NAME + '>');
         });
 
         it('should only have one button', function() {
@@ -60,7 +62,9 @@ describe('ideaInput', function() {
     describe('with a cancel option', function() {
 
         beforeEach(function() {
-            element = getCompiledElement('<' + DIRECTIVE_NAME + ' submit-fn="testSubmit(idea)" submit-btn-text="Submit Idea" cancel-fn="testCancel()" cancel-btn-text="Cancel"></' + DIRECTIVE_NAME + '>');
+            element = getCompiledElement('<' + DIRECTIVE_NAME +
+                ' submit-fn="testSubmit(idea)" submit-btn-text="Submit Idea" cancel-fn="testCancel()" cancel-btn-text="Cancel"></' +
+                DIRECTIVE_NAME + '>');
         });
 
         it('should have two buttons', function() {
