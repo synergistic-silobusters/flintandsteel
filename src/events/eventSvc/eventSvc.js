@@ -8,7 +8,7 @@ angular.module('flintAndSteel')
             "use strict";
 
             this.getEvents = function getEvents() {
-                return $http.get('/events');
+                return $http.get('/api/v1/events');
             };
 
             return {
