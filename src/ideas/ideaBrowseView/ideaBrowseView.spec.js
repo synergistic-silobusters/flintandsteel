@@ -40,7 +40,7 @@ describe('IdeaBrowseViewCtrl', function() {
 
         it('should set $scope.topIdeas to data from event', function() {
             expect(scope.topIdeas).not.toBe(null);
-            sseSvcMock.simulate();
+            sseSvcMock.simulate(null);
             expect(scope.topIdeas).toBe(null);
         });
     });

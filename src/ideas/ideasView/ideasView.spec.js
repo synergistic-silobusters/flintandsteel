@@ -30,6 +30,8 @@ describe('IdeasViewCtrl', function() {
     };
 
     beforeEach(module('flintAndSteel'));
+    // needed because $state takes us to home by default
+    beforeEach(module('homeView/homeView.tpl.html'));
 
     beforeEach(inject(function(_$rootScope_, _$q_, $controller, _$stateParams_, _$mdDialog_, _ideaSvcMock_, _userSvcMock_, _$state_, _toastSvc_, _sseSvcMock_) {
         $rootScope = _$rootScope_;
@@ -109,6 +111,7 @@ describe('IdeasViewCtrl', function() {
             });
 
             ctrl.refreshIdea();
+            scope.$digest();
             ideaSvcMock.getIdea().then(function() {
                 expect(toastSvc.show).toHaveBeenCalled();
                 expect($state.go).toHaveBeenCalled();
@@ -1168,6 +1171,77 @@ describe('IdeasViewCtrl', function() {
 
             ctrl.parseTeamEmail();
             expect(scope.emailString).toBe('mailto:dvader@gmail.com;');
+        });
+    });
+
+    describe('sse behavior', function() {
+        it('should have created the sse handler', function() {
+            expect(sseSvcMock.isActive()).toBe(true);
+        });
+
+        describe('sse trigger with idea', function() {
+            var tempIdea;
+            beforeEach(function() {
+                tempIdea = {
+                    _id: 1337,
+                    title: "Idea Event",
+                    description: "I'm just going to be here a minute."
+                };
+
+                spyOn(ctrl, 'refreshTeam').and.callFake(function() {});
+            });
+
+            it('should call refreshTeam', function() {
+                sseSvcMock.simulate(tempIdea);
+                expect(ctrl.refreshTeam).toHaveBeenCalled();
+            });
+        });
+
+        describe('sse trigger with IDEA_NOT_FOUND', function() {
+            var tempIdea;
+            beforeEach(function() {
+                tempIdea = 'IDEA_NOT_FOUND';
+
+                spyOn($state, 'go').and.callThrough();
+                spyOn(toastSvc, 'show').and.callThrough();
+                spyOn(ctrl, 'refreshTeam').and.callFake(function() {});
+            });
+
+            it('should not call refreshTeam', function() {
+                sseSvcMock.simulate(tempIdea);
+                expect(ctrl.refreshTeam).not.toHaveBeenCalled();
+            });
+
+            it('should return to the home state', function() {
+                sseSvcMock.simulate(tempIdea);
+                expect($state.go).toHaveBeenCalledWith('home');
+            });
+
+            describe('user is the author', function() {
+                beforeEach(function() {
+                    spyOn(ctrl, 'isUserAuthor').and.callFake(function() {
+                        return true;
+                    });
+                });
+
+                it('should show a succesfully deleted toast', function() {
+                    sseSvcMock.simulate(tempIdea);
+                    expect(toastSvc.show).toHaveBeenCalledWith('Your idea was successfully deleted.');
+                });
+            });
+
+            describe('user is not the author', function() {
+                beforeEach(function() {
+                    spyOn(ctrl, 'isUserAuthor').and.callFake(function() {
+                        return false;
+                    });
+                });
+
+                it('should show a surprise deleted post', function() {
+                    sseSvcMock.simulate(tempIdea);
+                    expect(toastSvc.show).toHaveBeenCalledWith('Oh no! The author just deleted that idea.');
+                });
+            });
         });
     });
 });
