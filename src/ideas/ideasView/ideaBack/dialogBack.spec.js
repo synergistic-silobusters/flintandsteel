@@ -111,7 +111,7 @@ describe('DialogBackCtrl', function() {
             scope.selectTypes = [];
 
             scope.toggle(testObj, 0);
-            expect(scope.selectTypes).toBe([testObj]);
+            expect(scope.selectTypes).toEqual([testObj]);
             expect(scope.types[0].checked).toBe(true);
         });
 
@@ -119,7 +119,7 @@ describe('DialogBackCtrl', function() {
             scope.selectTypes = [testObj];
 
             scope.toggle(testObj, 0);
-            expect(scope.selectTypes).toBe([]);
+            expect(scope.selectTypes).toEqual([]);
             expect(scope.types[0].checked).toBe(false);
         });
     });
