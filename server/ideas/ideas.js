@@ -48,7 +48,7 @@ module.exports = function(db) {
             backs: 1,
             tags: 1,
             team: 1,
-            wantedBacks: 1
+            rolesreq: 1
         };
 
         return new Promise(function(resolve, reject) {
@@ -70,7 +70,8 @@ module.exports = function(db) {
                             abstract: _.take(_.words(doc.description), 20).join(' '),
                             likes: doc.likes.length,
                             backs: doc.backs.length,
-                            team: doc.team.length
+                            team: doc.team.length,
+                            rolesreq: doc.rolesreq.length
                         });
                     });
                     resolve(headers);

@@ -15,7 +15,7 @@ angular.module('flintAndSteel')
 
             $scope.idea = {};
             $scope.idea.tags = [];
-            $scope.idea.wantedBacks = [];
+            $scope.idea.rolesreq = [];
             $scope.idea.eventId = "";
             $scope.tagInput = "";
             $scope.wantedBacks = ideaSvc.getBackTypeChips();
@@ -79,11 +79,10 @@ angular.module('flintAndSteel')
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
                 $scope.wantedBacks.forEach(function(back) {
                     if (back.checked) {
-                        $scope.idea.wantedBacks.push(back);
+                        $scope.idea.rolesreq.push(back);
                     }
                 })
                 ideaToAdd.authorId = userSvc.getProperty('_id');
-                ideaToAdd.rolesreq = [];
                 ideaSvc.postIdea($scope.idea).then(function postIdeaSuccess(response) {
                     if (angular.isDefined(response.data.status) && response.data.status === 'Created') {
                         toastSvc.show('New idea created successfully!');
