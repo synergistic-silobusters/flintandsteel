@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('DialogBackCtrl',
     [
-        '$scope', '$mdDialog', 'ideaSvc', 'backingObj', 'author', 'loginSvc',
-        function($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc) {
+        '$scope', '$mdDialog', 'ideaSvc', 'backingObj', 'author', 'userSvc',
+        function($scope, $mdDialog, ideaSvc, backingObj, author, userSvc) {
             "use strict";
 
             // Populate values based off current back info
@@ -20,7 +20,7 @@ angular.module('flintAndSteel')
             var ctrl = this;
 
             ctrl.isUserAuthor = function() {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === author) {
+                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === author) {
                     return true;
                 }
                 return false;
