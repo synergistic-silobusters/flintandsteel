@@ -1,14 +1,4 @@
-/*.homeview-image {
- height:100%;
-   width:100%;
-   background-image:url(Collaboration.jpg);/*your background image*/
-   background-repeat:no-repeat;/*we want to have one single image not a repeated one*/
-   background-size:cover;/*this sets the image to fullscreen covering the whole screen*/
-   /*css hack for ie*/
-   /*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.Collaboration.jpg',sizingMethod='scale');
-   -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='image.jpg',sizingMethod='scale')";
 
-}*/
 .cloud-container-padding {
     padding-top: 20px;
     padding-bottom: 40px;
@@ -468,13 +458,9 @@ body {
 .containerCard-text-back {
     margin: 10px;
 }
-/*body {
-    background: #eee;
-    font-family: Helvetica, Arial, sans-serif;
-}*/
+
 #wordcloud {
     margin: 10px;
-
     height: 720px;
     border: none;
 }
@@ -499,22 +485,9 @@ body {
     text-decoration: none;
 }
 
-div#wordcloud {
+div #wordcloud {
   font-family: "Helvetica", "Arial", sans-serif;
   color: #09f;
   overflow: hidden;
   position: relative;
-}
-div#wordcloud a {
-  color: inherit;
-  text-decoration: none;
-}
-div#wordcloud a:hover {
-  color: #0df;
-}
-div#wordcloud a:hover {
-  color: #0cf;
-}
-div#wordcloud span {
-  padding: 0;
 }
