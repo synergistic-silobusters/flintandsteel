@@ -32,6 +32,12 @@
                         <div ng-message="maxlength">Your description is too long</div>
                     </div>
                 </md-input-container>
+                <md-input-container>
+                    <label>Event</label>
+                    <md-select placeholder="Select an Event" md-on-open="loadEvents()" ng-model="idea.eventId">
+                        <md-option ng-value="event._id" ng-repeat="event in events">{{event.name}}</md-option>
+                    </md-select>
+                </md-input-container>
                 <md-input-container class="idea-tags-input-container">
                     <label>Tags</label>
                     <input name="tags"
