@@ -3,8 +3,11 @@
     <h3>Development Team</h3>
     <div layout="column" layout-gt-md="row">
         <div ng-repeat="column in about.columns" class="extra-padding-sides-15" layout="column" layout-align="start center" layout-align-gt-md="start start">
-            <a ng-repeat="teamMember in about.devTeam | startFrom:column.start | limitTo:column.length" ng-href="mailto:{{teamMember.email}}" class="mailto-format" ng-bind="teamMember.name"></a>
+            <a ng-repeat="teamMember in about.devTeam | startFrom:column.start | limitTo:column.length" ng-bind="teamMember.name"></a>
         </div>
+    </div>    
+    <div>
+        <a href="mailto:rpanderson@ra.rockwell.com;bcbrenne@ra.rockwell.com;algirard@ra.rockwell.com;akulshr@ra.rockwell.com;djparis1@ra.rockwell.com;DDThomps@ra.rockwell.com;mvanminnen@ra.rockwell.com;mwadsworth@ra.rockwell.com" class="mailto-format"> <h5>Email the Developers</h5></a>
     </div>
     <h3 class="about-padding-top">Technologies</h3>
     <div layout="column" layout-gt-md="row" layout-align="space-around center" class="md-whiteframe-8dp gray-bg margin-bottom-md">

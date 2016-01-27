@@ -58,6 +58,11 @@ angular.module('flintAndSteel', [
                 url: '/innovationdisclosure',
                 templateUrl: 'innovationDisclosureView/innovationDisclosureView.tpl.html',
                 controller: ''
+            })
+            .state('futurefeature', {
+                url: '/futurefeature',
+                templateUrl: 'futureFeatureView/futureFeatureView.tpl.html',
+                controller: ''
             });
 
         $urlRouterProvider.otherwise('/');
