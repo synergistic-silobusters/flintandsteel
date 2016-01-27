@@ -47,11 +47,11 @@ describe('eventSvc', function() {
         var getEventsHandler;
 
         beforeEach(function() {
-            getEventsHandler = $httpBackend.whenGET('/events').respond(200, dummyEvents);
+            getEventsHandler = $httpBackend.whenGET('/api/v1/events').respond(200, dummyEvents);
         });
 
         it('it should return all the events', function() {
-            $httpBackend.expectGET('/events');
+            $httpBackend.expectGET('/api/v1/events');
 
             eventSvc.getEvents().then(function() { }, function() { });
 

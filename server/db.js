@@ -222,7 +222,10 @@ module.exports = function(dbName, cb) {
                         valueObj.commentId = new ObjectId(valueObj.commentId);
                     }
                     else if (command.path === 'eventId') {
-                        valueObj = new ObjectId(valueObj);
+                        // We could have no event tagged for the idea
+                        if (valueObj !== '') {
+                            valueObj = new ObjectId(valueObj);
+                        }
                     }
                 }
                 else if (collection === 'comments' && command.path === 'authorId' || command.path === 'parentId') {

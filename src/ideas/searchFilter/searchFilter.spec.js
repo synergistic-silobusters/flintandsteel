@@ -22,7 +22,7 @@ describe('SearchFilter', function() {
             },
             abstract: "This is an abstract",
             likes: 8,
-            tags: ["TestTag1", "TestTag4"]
+            tags: ["TestTag1", "TestTag14"]
         },
         {
             id: 1,
@@ -123,6 +123,9 @@ describe('SearchFilter', function() {
         var query = "TestTag1";
         expect(search(testList, query).length).toEqual(2);
 
+        query = "TestTag14";
+        expect(search(testList, query).length).toEqual(1);
+
         query = "TestTag2";
         expect(search(testList, query).length).toEqual(1);
 
@@ -130,7 +133,7 @@ describe('SearchFilter', function() {
         expect(search(testList, query).length).toEqual(1);
 
         query = "TestTag4";
-        expect(search(testList, query).length).toEqual(2);
+        expect(search(testList, query).length).toEqual(1);
     });
 
     it('should search the event tag if it exists', function() {
@@ -145,5 +148,10 @@ describe('SearchFilter', function() {
 
         query = "Super Bowl 50";
         expect(search(testList, query).length).toEqual(1);
+    });
+
+    it('should only have an idea in the results once', function() {
+        var query = "TestTag";
+        expect(search(testList, query).length).toEqual(4);
     });
 });
