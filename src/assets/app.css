@@ -298,16 +298,15 @@ h2.no-bottom-margin {
 }
 
 .ellipsis-overflow {
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .word-wrap {
-    -ms-word-break: normal;
-    word-break: normal;
-    word-break: normal;
-    overflow-wrap: normal;
-    word-wrap: normal;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
     -ms-hyphens: auto;
     -moz-hyphens: auto;
     -webkit-hyphens: auto;

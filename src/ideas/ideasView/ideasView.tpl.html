@@ -3,9 +3,10 @@
     <md-card-content class="no-padding-all">
         <div ng-if="!ideasView.enableEdit">
             <div layout="row" layout-align="space-between center" class="top-bar extra-padding-sides-15">
-                <div>
-                    <h1 class="no-margins" layout="row">{{idea.title}}</h1>
+                <div flex=75>
+                    <h1 class="no-margins word-wrap" layout="row">{{idea.title}}</h1>
                 </div>
+                <span flex></span>
                 <div>
                     <small><span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>{{momentizeTime(idea.timeModified)}}</small>
                     <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
