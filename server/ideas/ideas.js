@@ -47,7 +47,8 @@ module.exports = function(db) {
             likes: 1,
             backs: 1,
             tags: 1,
-            team: 1
+            team: 1,
+            wantedBacks: 1
         };
 
         return new Promise(function(resolve, reject) {

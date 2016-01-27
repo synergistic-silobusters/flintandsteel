@@ -123,7 +123,8 @@ insertResult = db.ideas.insert(
                 time: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
-            team: [{ _id: new ObjectId(), memberId: userIds[0] }]
+            team: [{ _id: new ObjectId(), memberId: userIds[0] }],
+            wantedBacks: []
         },
         {
             title: 'Rick\'s Test Idea',
@@ -144,7 +145,8 @@ insertResult = db.ideas.insert(
                 time: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
-            team: [{ _id: new ObjectId(), memberId: userIds[1] }]
+            team: [{ _id: new ObjectId(), memberId: userIds[1] }],
+            wantedBacks: []
         },
         {
             title: 'Dick\'s Test Idea',
@@ -165,7 +167,8 @@ insertResult = db.ideas.insert(
                 time: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
-            team: [{ _id: new ObjectId(), memberId: userIds[2] }]
+            team: [{ _id: new ObjectId(), memberId: userIds[2] }],
+            wantedBacks: []
         }
     ]
 );

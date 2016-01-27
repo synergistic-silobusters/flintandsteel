@@ -15,7 +15,9 @@ angular.module('flintAndSteel')
 
             $scope.idea = {};
             $scope.idea.tags = [];
+            $scope.idea.wantedBacks = [];
             $scope.tagInput = "";
+            $scope.wantedBacks = ideaSvc.getBackTypeChips();
 
             $scope.doesTagExist = function doesTagExist(tag) {
                 if ($scope.idea.tags.indexOf(tag) === -1) {
@@ -28,7 +30,7 @@ angular.module('flintAndSteel')
                 var reNonAlpha = /[.,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
                 tag = tag.replace(reNonAlpha, " ");
                 tag = _.capitalize(_.camelCase(tag));
-                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {                    
+                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {
                     $scope.idea.tags.push(tag);
                 }
             };
@@ -47,6 +49,11 @@ angular.module('flintAndSteel')
             };
 
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
+                $scope.wantedBacks.forEach(function(back) {
+                    if (back.checked) {
+                        $scope.idea.wantedBacks.push(back);
+                    }
+                })
                 ideaToAdd.authorId = userSvc.getProperty('_id');
                 ideaToAdd.eventId = "";
                 ideaToAdd.rolesreq = [];
@@ -59,6 +66,15 @@ angular.module('flintAndSteel')
                 }, function(response) {
                     console.log(response);
                 });
+            };
+
+            // add checked types to list
+            $scope.toggle = function(item, i) {
+                if ($scope.wantedBacks[i].checked) {
+                    $scope.wantedBacks[i].checked = false;
+                } else {
+                    $scope.wantedBacks[i].checked = true;
+                }
             };
         }
     ]
