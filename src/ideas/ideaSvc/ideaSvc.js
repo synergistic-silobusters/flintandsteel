@@ -8,19 +8,19 @@ angular.module('flintAndSteel')
             "use strict";
 
             this.postIdea = function postIdea(idea) {
-                return $http.post('/ideas', idea);
+                return $http.post('/api/v1/ideas', idea);
             };
 
             this.getIdea = function getIdea(ideaId) {
-                return $http.get('/ideas/' + ideaId);
+                return $http.get('/api/v1/ideas/' + ideaId);
             };
 
             this.getIdeaHeaders = function getIdeaHeaders() {
-                return $http.get('/ideas');
+                return $http.get('/api/v1/ideas');
             };
 
             this.postComment = function postComment(parentId, text, authorId) {
-                return $http.post('/comments',
+                return $http.post('/api/v1/comments',
                     {
                         parentId: parentId,
                         text: text,
@@ -30,12 +30,12 @@ angular.module('flintAndSteel')
             };
 
             this.deleteComment = function deleteComment(commentId) {
-                return $http.delete('/comments/' + commentId);
+                return $http.delete('/api/v1/comments/' + commentId);
             };
 
             this.updateIdea = function updateIdea(ideaId, property, data) {
                 if (ideaId !== 'mock_idea') {
-                    return $http.patch('/ideas/' + ideaId,
+                    return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'modify', path: property, value: JSON.stringify(data) }
                         ]
@@ -45,7 +45,7 @@ angular.module('flintAndSteel')
 
             this.addInteraction = function addInteraction(ideaId, type, object) {
                 if (ideaId !== 'mock_idea') {
-                    return $http.patch('/ideas/' + ideaId,
+                    return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'append', path: type, value: JSON.stringify(object) }
                         ]
@@ -55,7 +55,7 @@ angular.module('flintAndSteel')
 
             this.removeInteraction = function removeInteraction(ideaId, type, object) {
                 if (ideaId !== 'mock_idea') {
-                    return $http.patch('/ideas/' + ideaId,
+                    return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'delete', path: type + '/' + object._id }
                         ]
@@ -65,7 +65,7 @@ angular.module('flintAndSteel')
 
             this.editBack = function editBack(ideaId, backId, newBack) {
                 if (ideaId !== 'mock_idea') {
-                    return $http.patch('/ideas/' + ideaId,
+                    return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'modify', path: 'backs/' + backId, value: JSON.stringify(newBack) }
                         ]
@@ -75,7 +75,7 @@ angular.module('flintAndSteel')
 
             this.editIdea = function editIdea(ideaId, title, description, tags, rolesreq) {
                 if (ideaId !== 'mock_idea') {
-                    return $http.patch('/ideas/' + ideaId,
+                    return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'modify', path: 'title', value: JSON.stringify(title) },
                             { operation: 'modify', path: 'description', value: JSON.stringify(description) },
@@ -88,7 +88,7 @@ angular.module('flintAndSteel')
 
             this.deleteIdea = function deleteIdea(ideaId) {
                 if (ideaId !== 'mock_idea') {
-                    return $http.delete('/ideas/' + ideaId);
+                    return $http.delete('/api/v1/ideas/' + ideaId);
                 }
             };
 

@@ -40,7 +40,7 @@ module.exports = function(app, db) {
         };
     }
 
-    app.get('/ideas', function(req, res) {
+    app.get('/api/v1/ideas', function(req, res) {
         ideas.fetch().then(function(headers) {
             return replaceIds.headers(headers);
         }).then(function(replacedHeaders) {
@@ -53,7 +53,7 @@ module.exports = function(app, db) {
             res.status(500).json(error);
         });
     });
-    app.post('/ideas', function(req, res) {
+    app.post('/api/v1/ideas', function(req, res) {
         ideas.create(
             req.body.title,
             req.body.description,
@@ -72,7 +72,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.get('/ideas/:id', function(req, res, next) {
+    app.get('/api/v1/ideas/:id', function(req, res, next) {
         if (req.params.id === 'search') {
             next();
         }
@@ -114,7 +114,7 @@ module.exports = function(app, db) {
         }
     });
 
-    app.delete('/ideas/:id', function(req, res) {
+    app.delete('/api/v1/ideas/:id', function(req, res) {
         ideas.delete(req.params.id).then(function() {
             res.sendStatus(204);
             return ideas.fetch();
@@ -127,7 +127,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/ideas/:id', function(req, res) {
+    app.patch('/api/v1/ideas/:id', function(req, res) {
         // console.log(req.body);
         var promises = [];
 
@@ -150,7 +150,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.get('/users/:id', function(req, res) {
+    app.get('/api/v1/users/:id', function(req, res) {
         users.get(req.params.id, true).then(function(results) {
             res.status(200).json(results);
         }).catch(function(error) {
@@ -163,7 +163,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/users/login', function(req, res, next) {
+    app.post('/api/v1/users/login', function(req, res, next) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
         if (process.env.NODE_ENV !== 'production') {
@@ -210,7 +210,7 @@ module.exports = function(app, db) {
         }
     });
 
-    app.delete('/users/:id', function(req, res) {
+    app.delete('/api/v1/users/:id', function(req, res) {
         var promises = [], patchDelete = [
             { "operation": "modify", "path": "firstName", "value": "\"Deleted\"" },
             { "operation": "modify", "path": "lastName", "value": "\"User\"" },
@@ -233,7 +233,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/users/:id', function(req, res) {
+    app.patch('/api/v1/users/:id', function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -248,7 +248,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.get('/events', function(req, res) {
+    app.get('/api/v1/events', function(req, res) {
         events.getAll().then(function(results) {
             res.status(200).json(results);
         }).catch(function(error) {
@@ -257,7 +257,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.get('/events/:id', function(req, res) {
+    app.get('/api/v1/events/:id', function(req, res) {
         events.get(req.params.id).then(function(result) {
             res.status(200).json(result);
         }).catch(function(error) {
@@ -271,7 +271,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/events', function(req, res) {
+    app.post('/api/v1/events', function(req, res) {
         events.create(req.body.name, req.body.location, req.body.startDate, req.body.endDate).then(function(result) {
             res.status(201).json(result);
         }).catch(function(error) {
@@ -280,7 +280,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.delete('/events/:id', function(req, res) {
+    app.delete('/api/v1/events/:id', function(req, res) {
         db.deleteOne('events', req.params.id).then(function() {
             res.sendStatus(204);
         }).catch(function(error) {
@@ -289,7 +289,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/events/:id', function(req, res) {
+    app.patch('/api/v1/events/:id', function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -304,7 +304,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/comments', function(req, res) {
+    app.post('/api/v1/comments', function(req, res) {
         Promise.all([
             ideas.get(req.body.parentId),
             comments.create(req.body.parentId, req.body.text, req.body.authorId)
@@ -330,7 +330,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/comments/:id', function(req, res) {
+    app.patch('/api/v1/comments/:id', function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -345,7 +345,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.delete('/comments/:id', function(req, res) {
+    app.delete('/api/v1/comments/:id', function(req, res) {
         comments.get(req.params.id).then(function(commentToDelete) {
             return ideas.get(commentToDelete.parentId);
         }).then(function(idea) {
