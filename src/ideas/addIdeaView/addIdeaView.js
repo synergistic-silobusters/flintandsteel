@@ -4,8 +4,8 @@
 angular.module('flintAndSteel')
 .controller('AddIdeaViewCtrl',
     [
-        '$scope', '$state', 'toastSvc', 'ideaSvc', 'userSvc',
-        function($scope, $state, toastSvc, ideaSvc, userSvc) {
+        '$scope', '$state', 'toastSvc', 'ideaSvc', 'userSvc', 'eventSvc',
+        function($scope, $state, toastSvc, ideaSvc, userSvc, eventSvc) {
             "use strict";
 
             if (!userSvc.isUserLoggedIn()) {
@@ -15,8 +15,17 @@ angular.module('flintAndSteel')
 
             $scope.idea = {};
             $scope.idea.tags = [];
+            $scope.idea.eventId = "";
             $scope.tagInput = "";
 
+            var nullEvent = {
+                _id: "",
+                name: "No Event"
+            };
+
+            ///////////////////
+            // TAG FUNCTIONS //
+            ///////////////////
             $scope.doesTagExist = function doesTagExist(tag) {
                 if ($scope.idea.tags.indexOf(tag) === -1) {
                     return false;
@@ -28,7 +37,7 @@ angular.module('flintAndSteel')
                 var reNonAlpha = /[.,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
                 tag = tag.replace(reNonAlpha, " ");
                 tag = _.capitalize(_.camelCase(tag));
-                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {                    
+                if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {
                     $scope.idea.tags.push(tag);
                 }
             };
@@ -43,12 +52,30 @@ angular.module('flintAndSteel')
 
             $scope.removeTag = function removeTag(tag) {
                 var index = $scope.idea.tags.indexOf(tag);
-                $scope.idea.tags.splice(index, 1);
+                if (index >= 0) {
+                    $scope.idea.tags.splice(index, 1);
+                }
             };
+
+            /////////////////////
+            // EVENT FUNCTIONS //
+            /////////////////////
+
+            $scope.loadEvents = function() {
+                eventSvc.getEvents().then(function getEventsSuccess(response) {
+                    $scope.events = [nullEvent].concat(response.data);
+                }, function getEventsError(response) {
+                    $scope.events = [];
+                    console.log(response);
+                });
+            };
+
+            ////////////////////
+            // IDEA FUNCTIONS //
+            ////////////////////
 
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
                 ideaToAdd.authorId = userSvc.getProperty('_id');
-                ideaToAdd.eventId = "";
                 ideaToAdd.rolesreq = [];
                 ideaSvc.postIdea($scope.idea).then(function postIdeaSuccess(response) {
                     if (angular.isDefined(response.data.status) && response.data.status === 'Created') {

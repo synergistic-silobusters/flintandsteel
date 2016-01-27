@@ -44,14 +44,14 @@ describe('userSvc', function() {
         var checkLoginHandler;
 
         beforeEach(function() {
-            checkLoginHandler = $httpBackend.whenPOST('/users/login', dummyUser).respond(200, dummyRes);
+            checkLoginHandler = $httpBackend.whenPOST('/api/v1/users/login', dummyUser).respond(200, dummyRes);
         });
 
         it('should return a good response for valid details', function() {
             var encodedDummy = {};
             encodedDummy.username = dummyUser.username;
             encodedDummy.password = window.btoa(dummyUser.password);
-            $httpBackend.expectPOST('/users/login', encodedDummy).respond({status: 'AUTH_OK'});
+            $httpBackend.expectPOST('/api/v1/users/login', encodedDummy).respond({status: 'AUTH_OK'});
 
             userSvc.checkLogin(dummyUser).then(function(response) {
                 expect(response.data.status).toBe('AUTH_OK');
@@ -117,16 +117,16 @@ describe('userSvc', function() {
 
     describe('userSvc.getUserById', function() {
         it('should query the server for a user when an id is supplied', function() {
-            $httpBackend.whenGET('/users/1').respond(200, dummyRes);
+            $httpBackend.whenGET('/api/v1/users/1').respond(200, dummyRes);
             userSvc.getUserById(1).then(function() {}, function() {});
             $httpBackend.flush();
         });
 
         it('should return false if an id was not supplied', function() {
             userSvc.getUserById().then(function(result) {
-                expect(result).toBe(false); 
+                expect(result).toBe(false);
             });
-            
+
         });
     });
 

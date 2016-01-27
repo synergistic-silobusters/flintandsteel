@@ -9,13 +9,16 @@
 describe('AccountViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $state, toastSvc, userSvcMock, ideaSvcMock;
+    var rootScope, scope, ctrl, $state, toastSvc, userSvcMock, ideaSvcMock;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
+    // needed because $state takes us to home by default
+    beforeEach(module('homeView/homeView.tpl.html'));
 
     describe('visiting when not logged in', function() {
         beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _userSvcMock_, _ideaSvcMock_) {
+            rootScope = $rootScope;
             scope = $rootScope.$new();
             $state = _$state_;
             toastSvc = _toastSvc_;
@@ -36,6 +39,10 @@ describe('AccountViewCtrl', function() {
             });
         }));
 
+        afterEach(function() {
+            scope.$digest();
+        });
+
         it('should exist', function() {
             expect(ctrl).toBeDefined();
         });
@@ -47,6 +54,7 @@ describe('AccountViewCtrl', function() {
 
     describe('visiting when logged in', function() {
         beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _userSvcMock_, _ideaSvcMock_) {
+            rootScope = $rootScope;
             scope = $rootScope.$new();
             $state = _$state_;
             toastSvc = _toastSvc_;
@@ -65,6 +73,8 @@ describe('AccountViewCtrl', function() {
                 userSvc: userSvcMock,
                 ideaSvc: ideaSvcMock
             });
+
+            scope.$digest();
         }));
 
         it('should exist', function() {
@@ -73,6 +83,10 @@ describe('AccountViewCtrl', function() {
 
         it('should populate user data if a user is logged in', function() {
             expect(scope.user).toBeDefined();
+        });
+
+        it('should populate user ideas', function() {
+            expect(scope.userIdeas.length).toBe(1);
         });
 
         describe('$scope.logout', function() {
