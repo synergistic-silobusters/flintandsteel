@@ -217,7 +217,7 @@ describe('ToolbarCtrl', function() {
             spyOn(userSvcMock, 'checkLogin').and.callFake(function() {
                 return $q.reject();
             });
-            spyOn(console, 'log').and.callThrough();
+            spyOn(console, 'log').and.callFake(function() {});
 
             //function call
             scope.loginUser(account);

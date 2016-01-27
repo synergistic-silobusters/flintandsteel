@@ -114,13 +114,13 @@ angular.module('flintAndSteel')
 
             return {
                 postIdea: function postIdea() {
-                    return $q.when({status: 'Created'});
+                    return $q.when({data: {status: 'Created'}});
                 },
                 getIdea: function getIdea() {
                     return $q.when({ data: mockIdea });
                 },
                 getIdeaHeaders: function getIdeaHeaders() {
-                    return $q.when([
+                    return $q.when({ data: [
                         {
                             id: 'mock_idea',
                             title: 'The bestest Idea ever!',
@@ -128,7 +128,7 @@ angular.module('flintAndSteel')
                             authorId: 1,
                             likes: 23
                         }
-                    ]);
+                    ]});
                 },
                 postComment: function postComment(parentId, text, authorId) {
                     mockIdea.comments.push(

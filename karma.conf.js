@@ -14,8 +14,7 @@ module.exports = function(config) {
 
 
         // list of files / patterns to load in the browser
-        files: [
-            
+        files: [           
 
             'src/lib/jquery/dist/jquery.min.js',
             'src/lib/angular/angular.js',
@@ -36,10 +35,12 @@ module.exports = function(config) {
             'src/lib/jqcloud2/dist/jqcloud.min.js',
             'src/app.js',
             'src/about/about.js',
+            'src/events/eventSvc/eventSvc.mock.js',
             'src/ideas/ideaSvc/ideaSvc.mock.js',
             'src/users/userSvc/userSvc.mock.js',
             'src/toastSvc/toastSvc.js',
             'src/homeView/homeView.js',
+            'src/events/**/*.js',
             'src/ideas/**/*.js',
             'src/navigation/**/*.js',
             'src/users/**/*.js',
