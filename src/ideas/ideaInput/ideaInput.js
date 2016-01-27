@@ -16,7 +16,7 @@ angular.module('flintAndSteel')
                     cancelBtnText: '@'
                 },
                 templateUrl: 'ideas/ideaInput/ideaInput.tpl.html',
-                controller: 'ideaInputView'
+                controller: 'IdeaInputCtrl'
             };
         }
     ]

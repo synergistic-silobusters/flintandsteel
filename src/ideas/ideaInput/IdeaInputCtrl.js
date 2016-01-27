@@ -2,7 +2,7 @@
 /* global _ */
 
 angular.module('flintAndSteel')
-.controller('ideaInputView',
+.controller('IdeaInputCtrl',
     [
         '$scope', 'eventSvc',
         function($scope, eventSvc) {

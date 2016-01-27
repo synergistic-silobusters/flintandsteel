@@ -6,7 +6,7 @@
 /* global expect */
 /* global spyOn */
 
-describe('ideaInputView', function() {
+describe('IdeaInputCtrl', function() {
     "use strict";
 
     var $rootScope, $q, scope, eventSvcMock, ctrl;
@@ -18,7 +18,7 @@ describe('ideaInputView', function() {
         scope = $rootScope.$new();
         eventSvcMock = _eventSvcMock_;
 
-        ctrl = $controller('ideaInputView', {
+        ctrl = $controller('IdeaInputCtrl', {
             $scope: scope,
             eventSvc: eventSvcMock
         });
