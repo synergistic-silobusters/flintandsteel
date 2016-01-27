@@ -11,8 +11,8 @@ angular.module('flintAndSteel')
             var cb;
 
             svc.isActive = false;
-            svc.simulate = function simulate() {
-                cb(null);
+            svc.simulate = function simulate(idea) {
+                cb(idea);
             };
 
             svc.create = function create(eventName, eventLoc, callback) {

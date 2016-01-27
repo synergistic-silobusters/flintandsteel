@@ -1,116 +1,55 @@
 <md-card>
     <img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
-    <md-card-content>
+    <md-card-content class="no-padding-all">
         <div ng-if="!ideasView.enableEdit">
-            <div>
-                <h1 layout="row">{{idea.title}}
-                    <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
-                        <i class="material-icons icon-button-adjust">&#xE0BE;</i>
-                        <md-tooltip md-direction="top">Email Team</md-tooltip>
-                    </md-button>
-                </h1>
-            </div>
-            <div layout="row">
-                <div layout="row" layout-align="center center">
-                    <identicon username='idea.author.username' size='30'></identicon>
+            <div layout="row" layout-align="space-between center" class="top-bar extra-padding-sides-15">
+                <div>
+                    <h1 class="no-margins" layout="row">{{idea.title}}</h1>
                 </div>
-                <h3>&nbsp;
-                    <md-tooltip md-direction="right">Email User</md-tooltip>
-                    <email-link author-obj="idea.author"></email-link>
-                </h3>
+                <div>
+                    <small><span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>{{momentizeTime(idea.timeModified)}}</small>
+                    <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
+                        <md-tooltip md-direction="top">Email Team</md-tooltip>
+                        <i class="material-icons icon-button-adjust">&#xE0BE;</i>
+                    </md-button>
+                    <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
+                        <md-tooltip md-direction="top">Edit Idea</md-tooltip>
+                        <i class="material-icons icon-button-adjust">&#xE254;</i>
+                    </md-button>
+                    <md-button aria-label="delete" class="md-icon-button" ng-click="ideasView.confirmDeleteIdea($event);" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
+                        <md-tooltip md-direction="top">Delete Idea</md-tooltip>
+                        <i class="material-icons icon-button-adjust">&#xE872;</i>
+                    </md-button>
+                </div>
             </div>
-            <p class="word-wrap">{{idea.description}}</p>
-            <div layout="row" flex layout-wrap>
+            <div layout="row" layout-align="space-between center" class="extra-padding-sides-15">
+                <div layout="row">
+                    <div layout="row" layout-align="center center">
+                        <identicon username='idea.author.username' size='30'></identicon>
+                    </div>
+                    <h3>&nbsp;
+                        <md-tooltip md-direction="right">Email User</md-tooltip>
+                        <email-link author-obj="idea.author"></email-link>
+                    </h3>
+                </div>
+                <div ng-show="idea.eventId !== ''" layout="row" layout-wrap>
+                    <span class="custom-chip-wrapper">
+                        <small class="custom-chip">{{idea.event.name}}</small>
+                    </span>
+                </div>
+            </div>
+            <p class="word-wrap extra-padding-sides-15">{{idea.description}}</p>
+            <div layout="row" flex layout-wrap class="extra-padding-sides-15">
                 <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
                     <small class="custom-chip">#{{tag}}</small>
                 </span>
             </div>
         </div>
-        <form ng-if="ideasView.enableEdit" name="editIdeaForm">
-            <div layout="column">
-                <md-input-container>
-                    <label>Title</label>
-                    <input ng-model="idea.title"
-                           name="title"
-                           ng-minlength="4"
-                           ng-maxlength="30"
-                           md-maxlength="30"
-                           required />
-                    <div ng-messages="editIdeaForm.title.$error" role="alert">
-                        <div ng-message="required">Required</div>
-                        <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
-                        <div ng-message="maxlength">Your title is too long</div>
-                    </div>
-                </md-input-container>
-                <md-input-container>
-                    <label>Description</label>
-                    <textarea ng-model="idea.description"
-                              name="desc"
-                              type="text"
-                              ng-minlength="15"
-                              ng-maxlength="1000"
-                              md-maxlength="1000"
-                              required></textarea>
-                    <div ng-messages="editIdeaForm.desc.$error" role="alert">
-                        <div ng-message="required">Required</div>
-                        <div ng-message="minlength">Your description is too short. Must be at least 15 characters</div>
-                        <div ng-message="maxlength">Your description is too long</div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="idea-tags-input-container">
-                    <label>Tags</label>
-                    <input name="tags"
-                           ng-model="tagInput"
-                           ng-keypress="ideasView.tagKeyEvent($event)"
-                           type="text"
-                           maxLength="50"
-                           ng-disabled="idea.tags.length === 5"></input>
-                </md-input-container>
-                <small class="tag-message" ng-show="idea.tags.length < 5">Press Enter to Add Tag - Limit 5</small>
-                <small class="tag-message" ng-show="idea.tags.length === 5">Tag Limit of 5 Reached</small>
-                <div layout="row" flex layout-wrap>
-                    <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
-                        <small class="custom-chip tag">
-                            #{{tag}}
-                            <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="ideasView.removeTag(tag)" aria-hidden="true"></md-icon>
-                        </small>
-                    </span>
-                </div>
-                <div layout="row" layout-align="end center" class="extra-padding-lg">
-                    <md-button class="md-raised md-primary" type="button" ng-click="ideasView.editIdea(idea.title, idea.description, idea.tags)" ng-disabled="editIdeaForm.$invalid">Submit</md-button>
-                    <md-button class="md-raised md-primary" type="button" ng-click="ideasView.refreshIdea()">Cancel</md-button>
-                </div>
-            </div>
-        </form>
+        <idea-input ng-if="ideasView.enableEdit" idea="idea" submit-fn="ideasView.editIdea(idea)" submit-btn-text="Submit" cancel-fn="ideasView.refreshIdea()" cancel-btn-text="Cancel"></idea-input>
     </md-card-content>
+    <!-- Used to display Likes/Backs/Team and to Like/Back/Join an idea -->
     <md-card-footer>
-        <md-fab-speed-dial md-direction="right" class="md-fling" md-open="isOpen" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
-        <md-fab-trigger class="align-with-text">
-            <md-button aria-label="menu" class="md-fab md-primary">
-                <i class="material-icons icon-button-adjust">&#xE5D2;</i>
-            </md-button>
-        </md-fab-trigger>
-        <md-fab-actions>
-            <div>
-                <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;">
-                    <md-tooltip md-direction="top">Edit Idea</md-tooltip>
-                    <i class="material-icons icon-button-adjust">&#xE254;</i>
-                </md-button>
-            </div>
-            <div>
-                <md-button aria-label="delete" class="md-icon-button" ng-click="ideasView.confirmDeleteIdea($event);">
-                    <md-tooltip md-direction="top">Delete Idea</md-tooltip>
-                    <i class="material-icons icon-button-adjust">&#xE872;</i>
-                </md-button>
-            </div>
-        </md-fab-actions>
-        </md-fab-speed-dial>
-            <i ng-show="idea.timeModified !== idea.timeCreated && !ideasView.enableEdit">Edited {{momentizeTime(idea.timeModified)}}</i>
-    </md-card-footer>
-</md-card>
-<!-- Card used to display Likes/Backs/Team and to Like/Back/Join an idea -->
-<md-card>
-    <md-card-content>
+        <md-divider></md-divider>
         <span flex ng-if="!isUserLoggedIn()">
             <md-button class="md-icon-button" aria-label="Like">
                 {{idea.likes.length}}
@@ -205,8 +144,9 @@
                 </md-tooltip>
             </span>
         </span>
-    </md-card-content>
+    </md-card-footer>
 </md-card>
+
 <md-card>
     <md-card-content>
         <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">
@@ -234,7 +174,7 @@
                                         <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
                                     </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid || !ideasView.newUpdate">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
@@ -285,7 +225,7 @@
                                         <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
                                     </div>
                                 </md-input-container>
-                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newCommentForm.$invalid">
+                                <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newCommentForm.$invalid || !ideasView.newComment">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>

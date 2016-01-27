@@ -65,8 +65,33 @@ img.grayscale:hover {
     overflow: scroll;
 }
 
+h1.no-margins {
+    margin-block-end: 0;
+    margin-block-start: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-before: 0;
+}
+
+h2.no-bottom-margin {
+    -webkit-margin-after: 0;
+}
+
+.top-bar {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px 5px 0px 0px;
+    margin:0px;
+    padding: 0px 10px 0px 10px;
+}
+
 .extra-space-left {
     padding-left: 20px;
+}
+
+.no-padding-all {
+    padding: 0px;
 }
 
 .no-padding-bottom {
@@ -278,11 +303,11 @@ img.grayscale:hover {
 }
 
 .word-wrap {
-    -ms-word-break: break-all;
-    word-break: break-all;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+    -ms-word-break: normal;
+    word-break: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    word-wrap: normal;
     -ms-hyphens: auto;
     -moz-hyphens: auto;
     -webkit-hyphens: auto;

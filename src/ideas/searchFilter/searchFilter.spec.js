@@ -17,15 +17,21 @@ describe('SearchFilter', function() {
             author: {
                 name: "Test User 1"
             },
+            event: {
+                name: "Test Event 1"
+            },
             abstract: "This is an abstract",
             likes: 8,
-            tags: ["TestTag1", "TestTag4"]
+            tags: ["TestTag1", "TestTag14"]
         },
         {
             id: 1,
             title: "Idea Dos",
             author: {
                 name: "Karl"
+            },
+            event: {
+                name: "Test Event 2"
             },
             abstract: "OMG abstract",
             likes: 200,
@@ -37,6 +43,9 @@ describe('SearchFilter', function() {
             author: {
                 name: "Aaron Rodgers"
             },
+            event: {
+                name: "Super Bowl 50"
+            },
             abstract: "Relax",
             likes: 13,
             tags: ["TestTag2", "TestTag4"]
@@ -47,6 +56,7 @@ describe('SearchFilter', function() {
             author: {
                 name: "Please*Fix&My%Keyboard$#@!()\'\"{}[]|\\/`~"
             },
+            // no event on purpose
             abstract: "K()000*l",
             likes: 1,
             tags: ["TestTag3"]
@@ -113,6 +123,9 @@ describe('SearchFilter', function() {
         var query = "TestTag1";
         expect(search(testList, query).length).toEqual(2);
 
+        query = "TestTag14";
+        expect(search(testList, query).length).toEqual(1);
+
         query = "TestTag2";
         expect(search(testList, query).length).toEqual(1);
 
@@ -120,6 +133,25 @@ describe('SearchFilter', function() {
         expect(search(testList, query).length).toEqual(1);
 
         query = "TestTag4";
+        expect(search(testList, query).length).toEqual(1);
+    });
+
+    it('should search the event tag if it exists', function() {
+        var query = "Test Event 1";
+        expect(search(testList, query).length).toEqual(1);
+
+        query = "Test Event";
         expect(search(testList, query).length).toEqual(2);
+
+        query = "Test Event 2";
+        expect(search(testList, query).length).toEqual(1);
+
+        query = "Super Bowl 50";
+        expect(search(testList, query).length).toEqual(1);
+    });
+
+    it('should only have an idea in the results once', function() {
+        var query = "TestTag";
+        expect(search(testList, query).length).toEqual(4);
     });
 });
