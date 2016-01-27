@@ -22,6 +22,7 @@ describe('ideaSvc', function() {
             title: 'Test title',
             author: 'Guybrush Threepwood',
             description: 'Test description',
+            eventId: 1,
             likes: 45,
             comments: [
                 {
@@ -297,21 +298,24 @@ describe('ideaSvc', function() {
                 title: dummyIdea.title,
                 description: dummyIdea.description,
                 tags: dummyIdea.tags,
-                rolesreq: dummyIdea.rolesreq
+                rolesreq: dummyIdea.rolesreq,
+                eventId: 1
             };
 
             patchOperation = [
                 { operation: 'modify', path: 'title', value: JSON.stringify(smallDummyIdea.title) },
                 { operation: 'modify', path: 'description', value: JSON.stringify(smallDummyIdea.description) },
                 { operation: 'modify', path: 'tags', value: JSON.stringify(smallDummyIdea.tags) },
-                { operation: 'modify', path: 'rolesreq', value: JSON.stringify(smallDummyIdea.rolesreq) }
+                { operation: 'modify', path: 'rolesreq', value: JSON.stringify(smallDummyIdea.rolesreq) },
+                { operation: 'modify', path: 'eventId', value: JSON.stringify(smallDummyIdea.eventId) }
             ];
         });
 
         it('should edit an existing idea', function() {
             $httpBackend.expectPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation);
 
-            ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq).then(function(response) {
+            ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq, dummyIdea.eventId)
+            .then(function(response) {
                 expect(response.data).toBe('OK');
             }, function() { });
 
