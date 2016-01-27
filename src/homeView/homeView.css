@@ -1,10 +1,10 @@
 /*.homeview-image {
  height:100%;
    width:100%;
-   background-image:url(Collaboration.jpg);/*your background image*/  
-   background-repeat:no-repeat;/*we want to have one single image not a repeated one*/  
-   background-size:cover;/*this sets the image to fullscreen covering the whole screen*/  
-   /*css hack for ie*/     
+   background-image:url(Collaboration.jpg);/*your background image*/
+   background-repeat:no-repeat;/*we want to have one single image not a repeated one*/
+   background-size:cover;/*this sets the image to fullscreen covering the whole screen*/
+   /*css hack for ie*/
    /*filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.Collaboration.jpg',sizingMethod='scale');
    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='image.jpg',sizingMethod='scale')";
 
@@ -362,7 +362,7 @@ body {
     -ms-transition:0.8s; text-align:center;
     -o-transition:0.8s; text-align:center;
     transition:0.8s; text-align:center;
-    
+
 }
 
 .flip {
@@ -372,7 +372,7 @@ body {
   -o-transform:rotateY(180deg);
   -ms-transform:rotateY(180deg);
   background-color:#FF5959;
-    
+
 }
 
 .container-card {
@@ -391,7 +391,7 @@ body {
     -moz-border-radius:6px;
     -ms-border-radius:6px;
     -o-border-radius:6px;
-   
+
     vertical-align:middle;
     cursor:pointer;
 }
@@ -517,44 +517,4 @@ div#wordcloud a:hover {
 }
 div#wordcloud span {
   padding: 0;
-}
-div#wordcloud span.w10 {
-  font-size: 54px;
-  color: #0cf;
-}
-div#wordcloud span.w9 {
-  font-size: 50px;
-  color: #0cf;
-}
-div#wordcloud span.w8 {
-  font-size: 44px;
-  color: #0cf;
-}
-div#wordcloud span.w7 {
-  font-size: 40px;
-  color: #39d;
-}
-div#wordcloud span.w6 {
-  font-size: 34px;
-  color: #90c5f0;
-}
-div#wordcloud span.w5 {
-  font-size: 30px;
-  color: #90a0dd;
-}
-div#wordcloud span.w4 {
-  font-size: 24px;
-  color: #90c5f0;
-}
-div#wordcloud span.w3 {
-  font-size: 20px;
-  color: #a0ddff;
-}
-div#wordcloud span.w2 {
-  font-size: 14px;
-  color: #99ccee;
-}
-div#wordcloud span.w1 {
-  font-size: 10px;
-  color: #aab5f0;
 }

@@ -10,6 +10,11 @@ angular.module('flintAndSteel')
 
             var word_list = new Array();
 
+            $scope.IW1 = "Innovation Action Process Change Method Idea Product Effective Solutions Catalyst Revolutionize Performance Positive Research Organizational ";
+            $scope.IW2 = "Perform Individual Employee Opportunity Future Success Nurture Technology Engineering Accomplishment Creativity Contribution Individual";
+            $scope.IW3 = "Startup Communication Lean SAFe Integration Global Benefit Platform Exchange Collaborate Inspire Goal Progress Integration Embedded Review Invest ";
+            $scope.IW4 = "Streamline Perspective Cluture Events Patent Organize Workshop Training Cultivate Design Tool Activity Challenge Portfolio Brainstorm Wordcloud Amazing yeee"
+            $scope.InnovativeWords = $scope.IW1 + $scope.IW2 + $scope.IW3 + $scope.IW4;
 
             $scope.Innovate = {Name: "Ideas",
     						description: "Ideas are the foundation of the Innovation Challenge.  You must log in to create one. \nBrowse ideas by clicking 'All Ideas'."};
@@ -57,30 +62,31 @@ angular.module('flintAndSteel')
                 $state.go('ideabrowse');
             };
 
-            $scope.showIdeas = false;
-
-            $scope.searchFocus = function searchFocus() {
-                $scope.showIdeas = true;
-            };
-
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
                 $scope.topIdeas = data;
+                console.log(data);
             }, function getIdeaHeadersError(data, status) {
                 console.log(status);
             });
 
             $scope.generateWords = function generateWords() {
 
-                for (var i = 0; i < $scope.faqCards.length; i++) {
-                        word_list.push({ text: $scope.faqCards[i].Name, weight: 9, link: "http://www.lucaongaro.eu/" })
-                    }
-                    //Click handler overrides the link, link is just there as a temp fix to make the word light up on mouse over 
+                //Click handler overrides the link, link is just there as a temp fix to make the word light up on mouse over
                 word_list.push({text: "Get Started", weight: 10, link: "www.innovate.com", handlers:{click: function(){$scope.navToBrowse()}}});
                 word_list.push({text: "All Ideas", weight: 10, link: "www.innovate.com", handlers:{click: function(){$scope.navToBrowse()}}});
 
+                for (var i = 0; i < $scope.faqCards.length; i++) {
+                        word_list.push({ text: $scope.faqCards[i].Name, weight: 7})
+                    }
 
                 for (var i = 0; i < $scope.Events.length; i++) {
-                        word_list.push({text: $scope.Events[i].name, weight: 8})
+                        word_list.push({text: $scope.Events[i].name, weight: 3})
+                    }
+
+                var fillerWordsArr = $scope.InnovativeWords.split(" ");
+
+                for (var i = 0; i < fillerWordsArr.length; i++) {
+                        word_list.push({text: fillerWordsArr[i], weight: 2})
                     }
 
             };
@@ -91,14 +97,14 @@ angular.module('flintAndSteel')
                 var width = angular.element(document.getElementById('wordcloud'))[0].clientWidth,
                     height = angular.element(document.getElementById('wordcloud'))[0].clientHeight;
 
-                // console.log('Passed in: ', width, ', ', height);
-
-
                 angular.element("#wordcloud").jQCloud(word_list, {
                     classPattern: null,
                     delay: 50,
-                    colors: ["#900100", "#7f7f7f", "#d0d0d0"],
-                    fontSize: ["500%", "300%", "150%"],
+                    colors: ["#900100", "#7f7f7f","#7f7f7f", "#7f7f7f", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0"],
+                    fontSize: {
+    from: 0.05,
+    to: 0.01
+},
                     shape: 'cloud',
                     width: width,
                     height: height,
