@@ -149,4 +149,9 @@ describe('SearchFilter', function() {
         query = "Super Bowl 50";
         expect(search(testList, query).length).toEqual(1);
     });
+
+    it('should only have an idea in the results once', function() {
+        var query = "TestTag";
+        expect(search(testList, query).length).toEqual(4);
+    });
 });
