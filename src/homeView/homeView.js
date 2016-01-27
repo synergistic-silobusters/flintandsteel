@@ -6,135 +6,9 @@ angular.module('flintAndSteel')
         '$document', '$scope', '$timeout', '$state','$mdSidenav', 'ideaSvc',
         function($document, $scope, $timeout, $state, $mdSidenav, ideaSvc) {
             "use strict";
-                
-                
-            var word_list = new Array(
-            
-                {text: "Sit", weight: 8},
-                {text: "Amet", weight: 6.2},
-                {text: "Consectetur", weight: 5},
-                {text: "Adipiscing", weight: 5},
-                {text: "Elit", weight: 5},
-                {text: "Nam et", weight: 5},
-                {text: "Leo", weight: 4},
-                {text: "Sapien", weight: 4, link: "http://www.lucaongaro.eu/"},
-                {text: "Pellentesque", weight: 3},
-                {text: "habitant", weight: 3},
-                {text: "morbi", weight: 3},
-                {text: "tristisque", weight: 3},
-                {text: "senectus", weight: 3},
-                {text: "et netus", weight: 3},
-                {text: "et malesuada", weight: 3},
-                {text: "fames", weight: 2},
-                {text: "ac turpis", weight: 2},
-                {text: "egestas", weight: 2},
-                {text: "Aenean", weight: 2},
-                {text: "vestibulum", weight: 2},
-                {text: "elit", weight: 2},
-                {text: "sit amet", weight: 2},
-                {text: "metus", weight: 2},
-                {text: "adipiscing", weight: 2},
-                {text: "ut ultrices", weight: 2},
-                {text: "justo", weight: 1},
-                {text: "dictum", weight: 1},
-                {text: "Ut et leo", weight: 1},
-                {text: "metus", weight: 1},
-                {text: "at molestie", weight: 1},
-                {text: "purus", weight: 1},
-                {text: "Curabitur", weight: 1},
-                {text: "diam", weight: 1},
-                {text: "dui", weight: 1},
-                {text: "ullamcorper", weight: 1},
-                {text: "id vuluptate ut", weight: 1},
-                {text: "mattis", weight: 1},
-                {text: "et nulla", weight: 1},
-                {text: "Sed", weight: 1},
-                {text: "Sit", weight: 8},
-                {text: "Amet", weight: 6.2},
-                {text: "Consectetur", weight: 5},
-                {text: "Adipiscing", weight: 5},
-                {text: "Elit", weight: 5},
-                {text: "Nam et", weight: 5},
-                {text: "Leo", weight: 4},
-                {text: "Sapien", weight: 4, link: "http://www.lucaongaro.eu/"},
-                {text: "Pellentesque", weight: 3},
-                {text: "habitant", weight: 3},
-                {text: "morbi", weight: 3},
-                {text: "tristisque", weight: 3},
-                {text: "senectus", weight: 3},
-                {text: "et netus", weight: 3},
-                {text: "et malesuada", weight: 3},
-                {text: "fames", weight: 2},
-                {text: "ac turpis", weight: 2},
-                {text: "egestas", weight: 2},
-                {text: "Aenean", weight: 2},
-                {text: "vestibulum", weight: 2},
-                {text: "elit", weight: 2},
-                {text: "sit amet", weight: 2},
-                {text: "metus", weight: 2},
-                {text: "adipiscing", weight: 2},
-                {text: "ut ultrices", weight: 2},
-                {text: "justo", weight: 1},
-                {text: "dictum", weight: 1},
-                {text: "Ut et leo", weight: 1},
-                {text: "metus", weight: 1},
-                {text: "at molestie", weight: 1},
-                {text: "purus", weight: 1},
-                {text: "Curabitur", weight: 1},
-                {text: "diam", weight: 1},
-                {text: "dui", weight: 1},
-                {text: "ullamcorper", weight: 1},
-                {text: "id vuluptate ut", weight: 1},
-                {text: "mattis", weight: 1},
-                {text: "et nulla", weight: 1},
-                {text: "Sed", weight: 1},
-                {text: "Sit", weight: 8},
-                {text: "Amet", weight: 6.2},
-                {text: "Consectetur", weight: 5},
-                {text: "Adipiscing", weight: 5},
-                {text: "Elit", weight: 5},
-                {text: "Nam et", weight: 5},
-                {text: "Leo", weight: 4},
-                {text: "Sapien", weight: 4, link: "http://www.lucaongaro.eu/"},
-                {text: "Pellentesque", weight: 3},
-                {text: "habitant", weight: 3},
-                {text: "morbi", weight: 3},
-                {text: "tristisque", weight: 3},
-                {text: "senectus", weight: 3},
-                {text: "et netus", weight: 3},
-                {text: "et malesuada", weight: 3},
-                {text: "fames", weight: 2},
-                {text: "ac turpis", weight: 2},
-                {text: "egestas", weight: 2},
-                {text: "Aenean", weight: 2},
-                {text: "vestibulum", weight: 2},
-                {text: "elit", weight: 2},
-                {text: "sit amet", weight: 2},
-                {text: "metus", weight: 2},
-                {text: "adipiscing", weight: 2},
-                {text: "ut ultrices", weight: 2},
-                {text: "justo", weight: 1},
-                {text: "dictum", weight: 1},
-                {text: "Ut et leo", weight: 1},
-                {text: "metus", weight: 1},
-                {text: "at molestie", weight: 1},
-                {text: "purus", weight: 1},
-                {text: "Curabitur", weight: 1},
-                {text: "diam", weight: 1},
-                {text: "dui", weight: 1},
-                {text: "ullamcorper", weight: 1},
-                {text: "id vuluptate ut", weight: 1},
-                {text: "mattis", weight: 1},
-                {text: "et nulla", weight: 1},
-                {text: "Sed", weight: 1},
-                {text: "Sit", weight: 8},
-                {text: "Amet", weight: 6.2},
-                {text: "Consectetur", weight: 5},
-                {text: "Adipiscing", weight: 5},
-                {text: "Elit", weight: 5},
-                {text: "Nam et", weight: 5},
-                {text: "Leo", weight: 4}
-            );
+
+
+            var word_list = new Array();
 
 
             $scope.Innovate = {Name: "Ideas",
@@ -176,8 +50,8 @@ angular.module('flintAndSteel')
             $scope.Event7 = {type: "bg-info", alignment: "left-aligned", date: "June",
                             location: "Global", time: "", name: "Innovation Challenge Final Readout",
     						description: "You made it past Fluffy and the Devil's snare.  Those were easy compared to this."};
-            
-            $scope.Events = [$scope.Event1,$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];           
+
+            $scope.Events = [$scope.Event1,$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];
 
             $scope.navToBrowse = function navToBrowse() {
                 $state.go('ideabrowse');
@@ -197,12 +71,12 @@ angular.module('flintAndSteel')
 
             $scope.generateWords = function generateWords() {
 
-                for (var i = 0; i < $scope.faqCards.length; i++) { 
+                for (var i = 0; i < $scope.faqCards.length; i++) {
                         word_list.push({ text: $scope.faqCards[i].Name, weight: 9, link: "http://www.lucaongaro.eu/" })
                     }
-
-                word_list.push({text: "Get Started", weight: 10, link: "https://github.com/lucaong/jQCloud"});
-                word_list.push({text: "All Ideas", weight: 10, link: "http://jquery.com/"});
+                    //Click handler overrides the link, link is just there as a temp fix to make the word light up on mouse over 
+                word_list.push({text: "Get Started", weight: 10, link: "www.innovate.com", handlers:{click: function(){$scope.navToBrowse()}}});
+                word_list.push({text: "All Ideas", weight: 10, link: "www.innovate.com", handlers:{click: function(){$scope.navToBrowse()}}});
 
 
                 for (var i = 0; i < $scope.Events.length; i++) {
@@ -219,7 +93,7 @@ angular.module('flintAndSteel')
 
                 // console.log('Passed in: ', width, ', ', height);
 
-                                        
+
                 angular.element("#wordcloud").jQCloud(word_list, {
                     classPattern: null,
                     delay: 50,
@@ -234,4 +108,3 @@ angular.module('flintAndSteel')
         }
     ]
 );
-
