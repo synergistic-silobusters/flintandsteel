@@ -73,13 +73,12 @@ angular.module('flintAndSteel')
                 // Precheck previous boxes for editting backs
                 for (var i = 0; i < $scope.availableBacks.length; i++) {
                     for (var j = 0; j < $scope.idea.rolesreq.length; j++) {
-                        if ($scope.availableBacks[i].name === $scope.rolesreq[j].name) {
+                        if ($scope.availableBacks[i].name === $scope.idea.rolesreq[j].name) {
                             $scope.availableBacks[i].checked = true;
-                            //$scope.rolesreq.push($scope.rolesreq[j]);
                             break;
                         }
                         else {
-                            $scope.types[i].checked = false;
+                            $scope.availableBacks[i].checked = false;
                         }
                     }
                 }

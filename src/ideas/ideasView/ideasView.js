@@ -238,6 +238,11 @@ angular.module('flintAndSteel')
 
             ctrl.editIdea = function(idea) {
                 if (ctrl.isUserAuthor()) {
+                    var temp = [];
+                    _.forEach($scope.idea.rolesreq, function(roles) {
+                        temp.push({name: roles.name, _lowername: roles._lowername});
+                    });
+                    $scope.idea.rolesreq = temp;
                     ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId).then(function() {
                         ctrl.refreshIdea();
                     },
