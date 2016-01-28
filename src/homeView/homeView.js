@@ -58,8 +58,8 @@ angular.module('flintAndSteel')
             $scope.generateWords = function generateWords() {
 
                 //Click handler overrides the link, link is just there as a temp fix to make the word light up on mouse over
-                WordList.push({ text: "Get Started", weight: 10, link: "www.innovate.com", handlers: { click: function() { $scope.navToBrowse();}}});
-                WordList.push({ text: "All Ideas", weight: 10, link: "www.innovate.com", handlers: { click: function() { $scope.navToBrowse();}}});
+                WordList.push({ text: "Get Started", weight: 10, link: "#", handlers: { click: function() { $scope.navToBrowse();}}});
+                WordList.push({ text: "All Ideas", weight: 10, link: "#", handlers: { click: function() { $scope.navToBrowse();}}});
 
                 var actionsArray = $scope.Actions.split(" ");
                 var i = 0;
