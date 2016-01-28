@@ -486,8 +486,8 @@ body {
 }
 
 div #wordcloud {
-  font-family: "Helvetica", "Arial", sans-serif;
-  color: #09f;
-  overflow: hidden;
-  position: relative;
+    font-family: "Helvetica", "Arial", sans-serif;
+    color: #09f;
+    overflow: hidden;
+    position: relative;
 }
