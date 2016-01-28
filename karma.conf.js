@@ -14,8 +14,9 @@ module.exports = function(config) {
 
 
         // list of files / patterns to load in the browser
-        files: [
+        files: [           
 
+            'src/lib/jquery/dist/jquery.min.js',
             'src/lib/angular/angular.js',
             'src/lib/angular-timeline/dist/angular-timeline.js',
             'src/lib/angular-mocks/angular-mocks.js',
@@ -31,6 +32,7 @@ module.exports = function(config) {
             'src/lib/identicon/pnglib.js',
             'src/lib/moment/moment.js',
             'src/lib/lodash/lodash.js',
+            'src/lib/jqcloud2/dist/jqcloud.min.js',
             'src/app.js',
             'src/about/about.js',
             'src/events/eventSvc/eventSvc.mock.js',
