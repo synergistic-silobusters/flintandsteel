@@ -298,20 +298,14 @@ h2.no-bottom-margin {
 }
 
 .ellipsis-overflow {
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .word-wrap {
-    -ms-word-break: normal;
-    word-break: normal;
-    word-break: normal;
-    overflow-wrap: normal;
-    word-wrap: normal;
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    hyphens: auto;
+    word-break: break-word;
+    word-wrap: break-word;
 }
 
 .identicon-home {

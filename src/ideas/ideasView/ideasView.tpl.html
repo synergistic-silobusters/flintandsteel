@@ -3,9 +3,10 @@
     <md-card-content class="no-padding-all">
         <div ng-if="!ideasView.enableEdit">
             <div layout="row" layout-align="space-between center" class="top-bar extra-padding-sides-15">
-                <div>
-                    <h1 class="no-margins" layout="row">{{idea.title}}</h1>
+                <div flex=75>
+                    <h1 class="no-margins word-wrap">{{idea.title}}</h1>
                 </div>
+                <span flex></span>
                 <div>
                     <small><span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>{{momentizeTime(idea.timeModified)}}</small>
                     <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
@@ -186,8 +187,8 @@
                     <div ng-repeat="update in idea.updates | orderBy: '-timeCreated'" ng-show="idea.updates" class="some-padding-bottom">
                         <div layout="row" layout-align="start start">
                             <identicon username='update.author.username' size='50'></identicon>
-                            <div layout-"column" flex>
-                                <div layout="row" layout-align="start center"class="triangle-isosceles left">
+                            <div layout="column" flex>
+                                <div layout="row" layout-align="start center" class="triangle-isosceles left">
                                     <p>&nbsp;<email-link author-obj="update.author"></email-link></p>
                                     <span flex></span>
                                     <small class="extra-padding-sides-15" ng-bind="momentizeTime(update.timeCreated)"></small>
@@ -202,7 +203,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </md-content>
             </md-tab>
             <!-- Tab used to show comments made on the idea by logged in users -->
             <md-tab label="Comments">
