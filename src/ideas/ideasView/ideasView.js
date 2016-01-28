@@ -27,7 +27,6 @@ angular.module('flintAndSteel')
             $scope.searchText = undefined;
             $scope.showEditBackInput = false;
             $scope.userBackIndex = '';
-            ctrl.tagInput = "";
             ctrl.enableTeamEdit = false;
             ctrl.editBackText = '';
             ctrl.newComment = '';
@@ -237,9 +236,9 @@ angular.module('flintAndSteel')
                 return typeof $scope.idea.image !== 'undefined';
             };
 
-            ctrl.editIdea = function(title, description, tags) {
+            ctrl.editIdea = function(idea) {
                 if (ctrl.isUserAuthor()) {
-                    ideaSvc.editIdea($scope.idea._id, title, description, tags, []).then(function() {
+                    ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId).then(function() {
                         ctrl.refreshIdea();
                     },
                     function() {
@@ -592,37 +591,6 @@ angular.module('flintAndSteel')
                             break;
                         }
                     }
-                }
-            };
-
-            ctrl.doesTagExist = function doesTagExist(tag) {
-                if ($scope.idea.tags.indexOf(tag) === -1) {
-                    return false;
-                }
-                return true;
-            };
-
-            ctrl.addTag = function addTag(tag) {
-                var reNonAlpha = /[.,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
-                tag = tag.replace(reNonAlpha, " ");
-                tag = _.capitalize(_.camelCase(tag));
-                if ($scope.idea.tags.length !== 5 && !ctrl.doesTagExist(tag) && tag !== '') {
-                    $scope.idea.tags.push(tag);
-                }
-            };
-
-            ctrl.tagKeyEvent = function tagKeyEvent(keyEvent) {
-                // Enter
-                if (keyEvent.keyCode === 13) {
-                    ctrl.addTag(ctrl.tagInput);
-                    ctrl.tagInput = "";
-                }
-            };
-
-            ctrl.removeTag = function removeTag(tag) {
-                var index = $scope.idea.tags.indexOf(tag);
-                if (index > -1) {
-                    $scope.idea.tags.splice(index, 1);
                 }
             };
 
