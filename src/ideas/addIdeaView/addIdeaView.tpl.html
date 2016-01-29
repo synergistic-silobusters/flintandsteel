@@ -1,66 +1,6 @@
 <md-card>
-    <md-card-content>
-        <h2>New Idea</h2>
-        <form name="newIdeaForm" novalidate>
-            <div layout="column">
-                <md-input-container>
-                    <label>Title</label>
-                    <input ng-model="idea.title"
-                           name="title"
-                           ng-minlength="4"
-                           ng-maxlength="30"
-                           md-maxlength="30"
-                           required/>
-                    <div ng-messages="newIdeaForm.title.$error" role="alert">
-                        <div ng-message="required">Required</div>
-                        <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
-                        <div ng-message="maxlength">Your title is too long</div>
-                    </div>
-                </md-input-container>
-                <md-input-container>
-                    <label>Description</label>
-                    <textarea ng-model="idea.description"
-                              name="desc"
-                              columns="1"
-                              ng-minlength="15"
-                              ng-maxlength="1000"
-                              md-maxlength="1000"
-                              required></textarea>
-                    <div ng-messages="newIdeaForm.desc.$error" role="alert">
-                        <div ng-message="required">Required</div>
-                        <div ng-message="minlength">Your description is too short. Must be at least 15 characters</div>
-                        <div ng-message="maxlength">Your description is too long</div>
-                    </div>
-                </md-input-container>
-                <md-input-container>
-                    <label>Event</label>
-                    <md-select placeholder="Select an Event" md-on-open="loadEvents()" ng-model="idea.eventId">
-                        <md-option ng-value="event._id" ng-repeat="event in events">{{event.name}}</md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container class="idea-tags-input-container">
-                    <label>Tags</label>
-                    <input name="tags"
-                           ng-model="tagInput"
-                           ng-keypress="tagKeyEvent($event)"
-                           maxLength="50"
-                           type="text"
-                           ng-disabled="idea.tags.length === 5"></input>
-                </md-input-container>
-                <small class="tag-message" ng-show="idea.tags.length < 5">Press Enter to Add Tag - Limit 5</small>
-                <small class="tag-message" ng-show="idea.tags.length === 5">Tag Limit of 5 Reached</small>
-                <div layout="row" flex layout-wrap>
-                    <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
-                        <small class="custom-chip tag">
-                            #{{tag}}
-                            <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="removeTag(tag)" aria-hidden="true"></md-icon>
-                        </small>
-                    </span>
-                </div>
-                <div layout="row" layout-align="end center" class="extra-padding-lg">
-                    <md-button class="md-raised md-primary" type="button" ng-click="addNewIdea(idea)" ng-disabled="newIdeaForm.$invalid">Submit idea</md-button>
-                </div>
-            </div>
-        </form>
+    <md-card-content class="no-padding-all">
+        <h2 class="no-bottom-margin extra-padding-sides-15">New Idea</h2>
+        <idea-input idea="idea" submit-fn="addNewIdea(idea)" submit-btn-text="Submit idea"></idea-input>
     </md-card-content>
 </md-card>

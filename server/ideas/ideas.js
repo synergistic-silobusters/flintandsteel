@@ -69,6 +69,7 @@ module.exports = function(db) {
                             abstract: _.take(_.words(doc.description), 20).join(' '),
                             likes: doc.likes.length,
                             backs: doc.backs.length,
+                            tags: doc.tags,
                             team: doc.team.length
                         });
                     });

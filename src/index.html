@@ -14,8 +14,10 @@
     <link rel="stylesheet" type="text/css" href="assets/app.css">
     <link rel="stylesheet" type="text/css" href="homeView/homeView.css">
     <link rel="stylesheet" href="lib/angular-timeline/dist/angular-timeline.css"/>
+    <link rel="stylesheet" href="lib/jqcloud2/dist/jqcloud.min.css"/>
 
     
+    <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-animate/angular-animate.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
@@ -31,6 +33,8 @@
     <script src="lib/moment/moment.js"></script>
     <script src="lib/event-source-polyfill/eventsource.js"></script>
     <script src="lib/angular-timeline/dist/angular-timeline.js"></script>
+    <script src="lib/jqcloud2/dist/jqcloud.min.js"></script>
+    
 
 
     <!-- inject:js -->
@@ -50,6 +54,8 @@
   <script src="ideas/ideaSvc/ideaSvc.js"></script>
   <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
   <script src="ideas/ideaItem/ideaItem.js"></script>
+  <script src="ideas/ideaInput/IdeaInputCtrl.js"></script>
+  <script src="ideas/ideaInput/ideaInput.js"></script>
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/addIdeaView/addIdeaView.js"></script>
   <script src="homeView/timelineEvent/timelineEvent.js"></script>
@@ -72,7 +78,7 @@
                 <img ui-sref="home" class="center-img nav-bar-pointer" src="assets/Innovation_Challenge_Bulb.png" width="25"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span></h2>
-            <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">All Ideas</span>
+            <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">Innovate</span>
             <span flex></span>
 
             <div class="md-padding">
