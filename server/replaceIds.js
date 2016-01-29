@@ -157,26 +157,6 @@ module.exports = function(db) {
             });
         }
 
-        var ideaWantedBacks = [];
-        if(data.wantedBacks.length === 0) {
-            ideaWantedBacks.push(new Promise(function(resolve) {
-                resolve();
-            }));
-        }
-        else {
-            ideaWantedBacks = data.wantedBacks.map(function(update) {
-                return new Promise(function(resolve, reject) {
-                    users.get(wantedBack.authorId).then(function(wantedBackObj) {
-                        wantedBack.author = wantedBackObj;
-                        resolve(wantedBack);
-                    }).catch(function(err) {
-                        console.log(err);
-                        reject(err);
-                    });
-                });
-            });
-        }
-
         var ideaUpdates = [];
         if (data.updates.length === 0) {
             ideaUpdates.push(new Promise(function(resolve) {
@@ -204,8 +184,7 @@ module.exports = function(db) {
             Promise.all(ideaCommentAuthors),
             Promise.all(ideaBacks),
             Promise.all(ideaTeam),
-            Promise.all(ideaUpdates),
-            Promise.all(ideaWantedBacks)
+            Promise.all(ideaUpdates)
         ]);
     };
 

@@ -59,16 +59,6 @@
                 "memberId": "idea.authorId"
             },
             "set of objects with user._id"
-        ],
-        "wantedBacks": [
-            {
-                "_id": "mongo_generated",
-                "text": "",
-                "authorId": "one user._id",
-                "types": "",
-                "timeCreated": "",
-                "timeModified": ""
-            }            
         ]
     },
     "comment": {

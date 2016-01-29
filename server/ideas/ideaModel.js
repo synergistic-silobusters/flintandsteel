@@ -24,7 +24,6 @@ function Idea(title, description, authorId, eventId, tags, rolesreq) {
         types: [{name: "Owner", _lowername: "owner"}]
     }];
     this.team = [{memberId: this.authorId}];
-    this.wantedBacks = [];
 
     return this;
 }
