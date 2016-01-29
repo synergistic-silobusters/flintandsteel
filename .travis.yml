@@ -19,5 +19,5 @@ script:
   - gulp jscs
   - gulp test:client
 
-after-script:
+after_script:
   - codeclimate-test-reporter < ./coverage/report-lcov/lcov.info
