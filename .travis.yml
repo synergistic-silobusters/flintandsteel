@@ -1,15 +1,23 @@
 language: node_js
 node_js:
   - "4.2.2"
-  
+
+#TODO- Yash: replace CODECLIMATE_REPO_TOKEN or add it as a Travis ENV var.
+addons:
+  code_climate:
+    repo_token: CODECLIMATE_REPO_TOKEN
+
 before_install:
   - npm install -g npm
   - npm install -g bower
-  
+
 before_script:
   - npm install -g gulp
-  
-script: 
+
+script:
   - gulp jshint
   - gulp jscs
   - gulp test:client
+
+after-script:
+  - codeclimate-test-reporter < ./coverage/report-lcov/lcov.info
