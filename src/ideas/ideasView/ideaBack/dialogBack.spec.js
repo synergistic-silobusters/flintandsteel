@@ -1,3 +1,11 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('DialogBackCtrl', function() {
     "use strict";
 
@@ -29,7 +37,7 @@ describe('DialogBackCtrl', function() {
         userSvcMock = _userSvcMock_;
     }));
 
-    beforeEach( function() {
+    beforeEach(function() {
         ctrl = $controller('DialogBackCtrl', {
             $scope: scope,
             $mdDialog: $mdDialog,
