@@ -21,6 +21,7 @@ angular.module('flintAndSteel')
             var ctrl = this;
 
             $scope.idea = {};
+            $scope.idea.rolesreq = [];
             $scope.typeChips = ideaSvc.getBackTypeChips();
             $scope.selectedTypes = [];
             $scope.selectedType = undefined;
