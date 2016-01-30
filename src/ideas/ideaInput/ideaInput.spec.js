@@ -37,6 +37,10 @@ describe('ideaInput', function() {
             eventSvcMock = _eventSvcMock_;
             compile = $compile;
         });
+
+        var undef;
+
+        element = undef;
     });
 
     it('should exist', function() {

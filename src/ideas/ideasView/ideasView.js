@@ -239,11 +239,11 @@ angular.module('flintAndSteel')
 
             ctrl.editIdea = function(idea) {
                 if (ctrl.isUserAuthor()) {
-                    var temp = [];
+                    //removes $$hashKey and checked because they can't be stored in backend
                     _.forEach($scope.idea.rolesreq, function(roles) {
-                        temp.push({name: roles.name, _lowername: roles._lowername});
+                        delete roles.$$hashKey;
+                        delete roles.checked;
                     });
-                    $scope.idea.rolesreq = temp;
                     ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId).then(function() {
                         ctrl.refreshIdea();
                     },
