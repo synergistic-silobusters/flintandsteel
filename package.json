@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "bench-rest": "1.1.1",
+    "codeclimate-test-reporter": "0.3.0",
     "del": "1.2.0",
     "gulp": "3.9.0",
     "gulp-angular-filesort": "1.1.1",
