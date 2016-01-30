@@ -53,7 +53,7 @@ describe('DialogBackCtrl', function() {
     });
 
     describe('$scope.cancel', function() {
-        it('should cancel', function() {
+        it('should cancel the dialog', function() {
             spyOn($mdDialog, 'cancel').and.callThrough();
             scope.cancel();
             expect($mdDialog.cancel).toHaveBeenCalled();
