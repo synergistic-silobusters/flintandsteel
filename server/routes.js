@@ -18,7 +18,8 @@ module.exports = function(app, db) {
         mongo = require('mongodb'),
         Promise = require('bluebird'),
         ObjectId = mongo.ObjectID,
-        passport = require('passport');
+        passport = require('passport'),
+        sha256 = require('sha.js')('sha256');
 
     var IdeasInstance = ideas.getInstance();
 
@@ -218,7 +219,8 @@ module.exports = function(app, db) {
             { "operation": "modify", "path": "username", "value": "\"deleted_user\"" },
             { "operation": "modify", "path": "email", "value": "\"deleted@deleted.com\"" },
             { "operation": "delete", "path": "nickname" },
-            { "operation": "delete", "path": "title" }
+            { "operation": "delete", "path": "title" },
+            { "operation": "delete", "path": "token" }
         ];
 
         _.forEach(patchDelete, function(patchOp) {
@@ -234,18 +236,30 @@ module.exports = function(app, db) {
     });
 
     app.patch('/api/v1/users/:id', function(req, res) {
-        var promises = [];
+        if (!_.isUndefined(req.body.length) || req.body.length === 0) {
 
-        _.forEach(req.body, function(patchOp) {
-            promises.push(db.patchObject('users', req.params.id, patchOp));
-        });
+            db.findOneById('users', req.params.id).then(function(user) {
+                var promises = [];
+                var userCard = user._id + user.email;
+                var userHash = sha256.update(userCard).digest('hex');
 
-        Promise.all(promises).then(function(results) {
-            res.status(200).json(results);
-        }).catch(function(error) {
-            console.log(error);
-            res.sendStatus(500);
-        });
+                req.body.push({ "operation": "modify", "path": "token", "value": JSON.stringify(userHash) });
+
+                _.forEach(req.body, function(patchOp) {
+                    promises.push(db.patchObject('users', req.params.id, patchOp));
+                });
+
+                return promises;
+            }).then(function(result) {
+                res.status(200).json(result);
+            }).catch(function(error) {
+                console.log(error);
+                res.sendStatus(500);
+            });
+        }
+        else {
+            res.status(200).json('No patch operations run.');
+        }
     });
 
     app.get('/api/v1/events', function(req, res) {
