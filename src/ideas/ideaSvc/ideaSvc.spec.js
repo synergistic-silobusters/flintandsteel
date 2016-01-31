@@ -28,14 +28,14 @@ describe('ideaSvc', function() {
                 {
                     text: 'Yeah, mhm.',
                     name: 'Dude',
-                    time: moment().subtract(4, 'days').calendar()
+                    timeCreated: moment().subtract(4, 'days').calendar()
                 }
             ],
             backs: [
                 {
                     text: 'Some resources',
                     name: 'Some Guy',
-                    time: moment().calendar(),
+                    timeCreated: moment().calendar(),
                     types: [
                         { name: 'Experience' },
                         { name: 'Knowledge' }
@@ -264,7 +264,7 @@ describe('ideaSvc', function() {
                 _id: 'dummy_back',
                 text: 'Just Experience',
                 name: 'Some Guy',
-                time: moment().calendar(),
+                timeCreated: moment().calendar(),
                 types: [
                     { name: 'Experience' }
                 ]
