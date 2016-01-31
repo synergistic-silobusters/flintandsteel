@@ -23,7 +23,6 @@ angular.module('flintAndSteel')
 
             $scope.addNewIdea = function addNewIdea(ideaToAdd) {
                 ideaToAdd.authorId = userSvc.getProperty('_id');
-                //ideaToAdd.rolesreq = [];
                 ideaSvc.postIdea($scope.idea).then(function postIdeaSuccess(response) {
                     if (angular.isDefined(response.data.status) && response.data.status === 'Created') {
                         toastSvc.show('New idea created successfully!');
