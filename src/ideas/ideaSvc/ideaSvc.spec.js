@@ -41,6 +41,12 @@ describe('ideaSvc', function() {
                         { name: 'Knowledge' }
                     ]
                 }
+            ],
+            rolesreq: [
+                {
+                    name: 'Experience',
+                    _lowername: 'experience'
+                }
             ]
         };
     }));

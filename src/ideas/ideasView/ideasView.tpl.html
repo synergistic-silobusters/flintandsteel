@@ -45,6 +45,16 @@
                     <small class="custom-chip">#{{tag}}</small>
                 </span>
             </div>
+            <div layout="row" flex layout-wrap class="extra-padding-sides-15" ng-show="idea.rolesreq.length > 0">
+                <div class="text-area word-wrap extra-padding-top-md">
+                    <small>Skills needed:</small>
+                    <div>
+                        <span class="custom-chip-wrapper" ng-repeat="type in idea.rolesreq">
+                            <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
         <idea-input ng-if="ideasView.enableEdit" idea="idea" submit-fn="ideasView.editIdea(idea)" submit-btn-text="Submit" cancel-fn="ideasView.refreshIdea()" cancel-btn-text="Cancel"></idea-input>
     </md-card-content>

@@ -70,7 +70,8 @@ module.exports = function(db) {
                             likes: doc.likes.length,
                             backs: doc.backs.length,
                             tags: doc.tags,
-                            team: doc.team.length
+                            team: doc.team.length,
+                            rolesreq: doc.rolesreq.length
                         });
                     });
                     resolve(headers);

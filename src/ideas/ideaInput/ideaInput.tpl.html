@@ -55,6 +55,18 @@
                 </small>
             </span>
         </div>
+        <div layout="row" flex layout-wrap>
+            <md-input-container flex>
+                <p><b>Choose what types of skills your team is looking for:</b></p>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="type in availableBacks" flex="50" ng-click="toggle(type, $index)">
+                        <md-checkbox ng-checked="type.checked">
+                            {{type.name}}
+                        </md-checkbox>
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
         <div layout="row" layout-align="end center" class="extra-padding-lg">
             <md-button class="md-raised md-primary" type="button" ng-click="submitFn({idea: idea})" ng-disabled="newIdeaForm.$invalid" ng-bind="submitBtnText" aria-label="Submit"></md-button>
             <md-button ng-if="cancelFn !== null && cancelBtnText !== null" class="md-raised md-primary" type="button" ng-click="cancelFn()" ng-bind="cancelBtnText" aria-label="Cancel"></md-button>

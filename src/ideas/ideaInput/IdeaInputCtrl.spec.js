@@ -9,20 +9,72 @@
 describe('IdeaInputCtrl', function() {
     "use strict";
 
-    var $rootScope, $q, scope, eventSvcMock, ctrl;
+    var $rootScope, $q, scope, eventSvcMock, ctrl, ideaSvcMock;
 
     beforeEach(module('flintAndSteel'));
-    beforeEach(inject(function(_$rootScope_, _$q_, $controller, _eventSvcMock_) {
+    beforeEach(inject(function(_$rootScope_, _$q_, $controller, _eventSvcMock_, _ideaSvcMock_) {
         $rootScope = _$rootScope_;
         $q = _$q_;
         scope = $rootScope.$new();
         eventSvcMock = _eventSvcMock_;
+        ideaSvcMock = _ideaSvcMock_;
+
+        scope.idea = {
+            rolesreq: []
+        };
 
         ctrl = $controller('IdeaInputCtrl', {
             $scope: scope,
-            eventSvc: eventSvcMock
+            eventSvc: eventSvcMock,
+            ideaSvc: ideaSvcMock
         });
     }));
+
+    describe('scope.initialize', function() {
+        beforeEach(function() {
+            scope.availableBacks = ideaSvcMock.getBackTypeChips();
+            scope.idea.rolesreq = [
+                {name: 'Time', _lowername: 'time'},
+                {name: 'Materials', _lowername: 'materials'}
+            ];
+        });
+
+        it('should set backs as checked if in rolesreq', function() {
+            scope.initialize();
+            expect(scope.availableBacks[0].checked).toBe(false); //Experience
+            expect(scope.availableBacks[1].checked).toBe(false); //Funding
+            expect(scope.availableBacks[2].checked).toBe(true);  //Time
+            expect(scope.availableBacks[3].checked).toBe(false); //Knowledge
+            expect(scope.availableBacks[4].checked).toBe(false); //Social Network
+            expect(scope.availableBacks[5].checked).toBe(true);  //Materials
+            expect(scope.availableBacks[6].checked).toBe(false); //How Can I Help?
+        });
+    });
+
+    describe('scope.toggle', function() {
+        var rolesLength;
+
+        beforeEach(function() {
+            scope.idea.rolesreq = [{name: 'Experience', _lowername: 'experience'}];
+            rolesLength = scope.idea.rolesreq.length;
+        });
+
+        it('if unchecked should toggle back type', function() {
+            scope.toggle({name: 'Time', _lowername: 'time'}, 2);
+            expect(scope.idea.rolesreq[rolesLength].name).toBe('Time');
+            expect(scope.availableBacks[2].checked).toBe(true);
+        });
+
+        it('if checked should toggle back type false', function() {
+            scope.toggle({name: 'Time', _lowername: 'time'}, 2);
+            expect(scope.availableBacks[2].checked).toBe(true);
+            expect(scope.idea.rolesreq.length).toBe(2);
+
+            scope.toggle({name: 'Time', _lowername: 'time'}, 2);
+            expect(scope.availableBacks[2].checked).toBe(false);
+            expect(scope.idea.rolesreq.length).toBe(1);
+        });
+    });
 
     describe('scope.loadEvents', function() {
 
@@ -65,7 +117,8 @@ describe('IdeaInputCtrl', function() {
                 title: 'Test Title',
                 eventId: 0,
                 description: 'This is a test idea.',
-                tags: ['TestTag1', 'TestTag2']
+                tags: ['TestTag1', 'TestTag2'],
+                rolesreq: [{name: 'Time', _lowername: 'time'}]
             };
         });
 
