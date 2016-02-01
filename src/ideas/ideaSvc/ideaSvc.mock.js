@@ -72,7 +72,7 @@ angular.module('flintAndSteel')
                     {
                         text: 'management experience',
                         authorId: 4,
-                        time: moment().subtract(7, 'days').calendar(),
+                        timeCreated: moment().subtract(7, 'days').calendar(),
                         types: [
                             { name: 'Experience' },
                             { name: 'Knowledge' }
@@ -82,7 +82,7 @@ angular.module('flintAndSteel')
                         _id: 11,
                         text: 'TEN MILLION DOLLARS',
                         authorId: 5,
-                        time: moment().subtract(84, 'hours').calendar(),
+                        timeCreated: moment().subtract(84, 'hours').calendar(),
                         types: [
                             { name: 'Funding' }
                         ]
@@ -98,12 +98,12 @@ angular.module('flintAndSteel')
                     {
                         text: 'The project started',
                         authorId: 6,
-                        time: moment().calendar()
+                        timeCreated: moment().calendar()
                     },
                     {
                         text: 'The project made some progress',
                         authorId: 7,
-                        time: moment().subtract(2, 'hours').calendar()
+                        timeCreated: moment().subtract(2, 'hours').calendar()
                     }
                 ],
                 tags: [
