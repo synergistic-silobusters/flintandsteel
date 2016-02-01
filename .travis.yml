@@ -1,15 +1,18 @@
 language: node_js
 node_js:
   - "4.2.2"
-  
+
 before_install:
   - npm install -g npm
   - npm install -g bower
-  
+
 before_script:
   - npm install -g gulp
-  
-script: 
+
+script:
   - gulp jshint
   - gulp jscs
   - gulp test:client
+
+after_script:
+  - codeclimate-test-reporter < ./coverage/report-lcov/lcov.info

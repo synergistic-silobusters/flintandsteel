@@ -2,12 +2,13 @@
     <div layout="column">
         <md-input-container>
             <label>Title</label>
-            <input ng-model="idea.title"
+            <textarea ng-model="idea.title"
                    name="title"
+                   columns="1"
                    ng-minlength="4"
-                   ng-maxlength="30"
-                   md-maxlength="30"
-                   required/>
+                   ng-maxlength="150"
+                   md-maxlength="150"
+                   required></textarea>
             <div ng-messages="newIdeaForm.title.$error" role="alert">
                 <div ng-message="required">Required</div>
                 <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
@@ -53,6 +54,18 @@
                     <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="removeTag(tag)" aria-hidden="true"></md-icon>
                 </small>
             </span>
+        </div>
+        <div layout="row" flex layout-wrap>
+            <md-input-container flex>
+                <p><b>Choose what types of skills your team is looking for:</b></p>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="type in availableBacks" flex="50" ng-click="toggle(type, $index)">
+                        <md-checkbox ng-checked="type.checked">
+                            {{type.name}}
+                        </md-checkbox>
+                    </div>
+                </div>
+            </md-input-container>
         </div>
         <div layout="row" layout-align="end center" class="extra-padding-lg">
             <md-button class="md-raised md-primary" type="button" ng-click="submitFn({idea: idea})" ng-disabled="newIdeaForm.$invalid" ng-bind="submitBtnText" aria-label="Submit"></md-button>

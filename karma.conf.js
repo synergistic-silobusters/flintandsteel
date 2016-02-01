@@ -14,7 +14,7 @@ module.exports = function(config) {
 
 
         // list of files / patterns to load in the browser
-        files: [           
+        files: [
 
             'src/lib/jquery/dist/jquery.min.js',
             'src/lib/angular/angular.js',
@@ -80,6 +80,15 @@ module.exports = function(config) {
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
         reporters: ['progress', 'coverage'],
 
+        coverageReporter: {
+            dir: './coverage',
+            reporters: [
+                {type: 'html', subdir: 'report-html'},
+                {type: 'lcov', subdir: 'report-lcov'},
+                {type: 'text', subdir: 'report-text'},
+                {type: 'text-summary', subdir: 'report-text-summary'}
+            ]
+        },
 
         // web server port
         port: 9876,
