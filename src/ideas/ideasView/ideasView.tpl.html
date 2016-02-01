@@ -2,17 +2,16 @@
     <img ng-if="ideaHasImage()" ng-src="{{idea.image}}" class="md-card-image">
     <md-card-content class="no-padding-all">
         <div ng-if="!ideasView.enableEdit">
-            <div layout="row" layout-align="space-between center" class="top-bar extra-padding-sides-15">
+            <div layout="column" layout-align="space-between center" class="top-bar extra-padding-sides-15 center-text">
                 <div flex=75>
-                    <h1 class="no-margins word-wrap">{{idea.title}}</h1>
+                    <h1 class="no-margins word-wrap center-text">{{idea.title}}</h1>
+                    <small>
+                        <span class="center-stuff" ng-show="idea.timeModified === idea.timeCreated">Created&nbsp</span>
+                        <span class="center-stuff" ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>
+                        {{momentizeTime(idea.timeModified)}}
+                    </small>
                 </div>
-                <span flex></span>
                 <div>
-                    <small><span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>{{momentizeTime(idea.timeModified)}}</small>
-                    <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
-                        <md-tooltip md-direction="top">Email Team</md-tooltip>
-                        <i class="material-icons icon-button-adjust">&#xE0BE;</i>
-                    </md-button>
                     <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
                         <md-tooltip md-direction="top">Edit Idea</md-tooltip>
                         <i class="material-icons icon-button-adjust">&#xE254;</i>
@@ -20,6 +19,10 @@
                     <md-button aria-label="delete" class="md-icon-button" ng-click="ideasView.confirmDeleteIdea($event);" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
                         <md-tooltip md-direction="top">Delete Idea</md-tooltip>
                         <i class="material-icons icon-button-adjust">&#xE872;</i>
+                    </md-button>
+                    <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
+                        <md-tooltip md-direction="top">Email Team</md-tooltip>
+                        <i class="material-icons icon-button-adjust">&#xE0BE;</i>
                     </md-button>
                 </div>
             </div>
