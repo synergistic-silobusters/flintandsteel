@@ -126,7 +126,7 @@
                             <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!topIdeas.length">
                                 <h3><i>No ideas</i></h3>
                             </div>
-                            <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:5">
+                            <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:10">
                                 <idea-item idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item>
                             </md-item>
                         </md-list>
