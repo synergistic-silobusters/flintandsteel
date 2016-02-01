@@ -9,7 +9,8 @@ angular.module('flintAndSteel', [
         'ui.router',
         'ngMaterial',
         'ngMessages',
-        'ui.identicon'
+        'ui.identicon',
+        'hc.marked'
     ]
 )
 .config([
