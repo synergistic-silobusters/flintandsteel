@@ -21,6 +21,7 @@ angular.module('flintAndSteel')
             var ctrl = this;
 
             $scope.idea = {};
+            $scope.idea.rolesreq = [];
             $scope.typeChips = ideaSvc.getBackTypeChips();
             $scope.selectedTypes = [];
             $scope.selectedType = undefined;
@@ -238,7 +239,12 @@ angular.module('flintAndSteel')
 
             ctrl.editIdea = function(idea) {
                 if (ctrl.isUserAuthor()) {
-                    ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, [], idea.eventId).then(function() {
+                    //removes $$hashKey and checked because they can't be stored in backend
+                    _.forEach($scope.idea.rolesreq, function(roles) {
+                        delete roles.$$hashKey;
+                        delete roles.checked;
+                    });
+                    ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId).then(function() {
                         ctrl.refreshIdea();
                     },
                     function() {

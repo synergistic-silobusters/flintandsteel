@@ -21,7 +21,14 @@ describe('ideaInput', function() {
     }
 
     beforeEach(function() {
-        module('flintAndSteel');
+        module('flintAndSteel', function($controllerProvider) {
+            // Only care about the portions of controller that are pertinent
+            // to the test. So we'll mock those in.
+            $controllerProvider.register('IdeaInputCtrl', function($scope) {
+                $scope.cancelFn = $scope.cancelFn || null;
+                $scope.cancelBtnText = $scope.cancelBtnText || null;
+            });
+        });
         module('ui.identicon');
         module('ideas/ideaInput/ideaInput.tpl.html');
 
