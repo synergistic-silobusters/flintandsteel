@@ -11,11 +11,11 @@ angular.module('flintAndSteel')
             var WordList = new Array({ text: "Innovate", weight: 2.5});
 
             $scope.IW1 = "Innovation Action Process Change Method Idea Product Effective Solutions Catalyst Revolutionize  ";
-            $scope.IW2 = "Future Success Nurture Technology Engineering Accomplishment Creativity Contribution Individual";
+            $scope.IW2 = "Future Success Nurture Technology Engineering Accomplishment Creativity Contribution Individual ";
             $scope.IW3 = "Inspire Goal Progress Integration Embedded Review Invest ";
-            $scope.IW4 = "Patent Organize Workshop Training Cultivate  Activity Challenge Portfolio Brainstorm Wordcloud Amazing yeee";
-            $scope.IW5 = "Performance Positive Research Organizational Streamline Perspective Cluture Events Startup Lean SAFe Integration Global";
-            $scope.IW6 = "Benefit Platform Exchange Collaborate Perform Individual Employee Opportunity Design Tool Communication";
+            $scope.IW4 = "Patent Organize Workshop Training Cultivate  Activity Challenge Portfolio Brainstorm Wordcloud Amazing yeee ";
+            $scope.IW5 = "Performance Positive Research Organizational Streamline Perspective Cluture Events Startup Lean SAFe Integration Global ";
+            $scope.IW6 = "Benefit Platform Exchange Collaborate Perform Individual Employee Opportunity Design Tool Communication ";
             $scope.InnovativeWords = $scope.IW1 + $scope.IW2 + $scope.IW3 + $scope.IW4 + $scope.IW5 + $scope.IW6;
 
             $scope.Actions = "Ideas Comments Backs Team Likes";
@@ -58,8 +58,8 @@ angular.module('flintAndSteel')
             $scope.generateWords = function generateWords() {
 
                 //Click handler overrides the link, link is just there as a temp fix to make the word light up on mouse over
-                WordList.push({ text: "Get Started", weight: 10, link: "www.innovate.com", handlers: { click: function() { $scope.navToBrowse();}}});
-                WordList.push({ text: "All Ideas", weight: 10, link: "www.innovate.com", handlers: { click: function() { $scope.navToBrowse();}}});
+                WordList.push({ text: "Get Started", weight: 10, link: "#", handlers: { click: function() { $scope.navToBrowse();}}});
+                WordList.push({ text: "All Ideas", weight: 10, link: "#", handlers: { click: function() { $scope.navToBrowse();}}});
 
                 var actionsArray = $scope.Actions.split(" ");
                 var i = 0;
