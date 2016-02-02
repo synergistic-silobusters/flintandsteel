@@ -1,0 +1,10 @@
+<span ng-repeat="star in stars" ng-class="{filled: star.filled}" ng-click="toggle($index)">
+    <!--Empty Star-->
+    <md-icon class="star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
+
+    <!--Half Star-->
+    <i ng-show="false" class="material-icons">&#xE839;</i>
+
+    <!--Filled Star-->
+    <md-icon class="star" ng-show="star.filled" class="material-icons">&#xE838;</md-icon>
+</span>

@@ -42,6 +42,10 @@
                     </span>
                 </div>
             </div>
+            <div class="extra-padding-sides-15">
+                Value: <star-rating ng-model="idea.ratings.value.stars"></star-rating>
+                Complexity: <star-rating ng-model="idea.ratings.complexity.stars"></star-rating>
+            </div>
             <p class="word-wrap extra-padding-sides-15">{{idea.description}}</p>
             <div layout="row" flex layout-wrap class="extra-padding-sides-15">
                 <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
