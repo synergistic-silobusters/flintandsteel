@@ -14,9 +14,12 @@ angular.module('flintAndSteel', [
     ]
 )
 .config([
-    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider', '$httpProvider',
-    function($urlRouterProvider, $stateProvider, $mdThemingProvider, $httpProvider) {
+    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider', '$httpProvider', 'markedProvider',
+    function($urlRouterProvider, $stateProvider, $mdThemingProvider, $httpProvider, markedProvider) {
         "use strict";
+
+        // Use GitHub Flavored Markdown ("gfm")
+        markedProvider.setOptions({gfm: true});
 
         $stateProvider
             .state('home', {
