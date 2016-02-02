@@ -18,7 +18,7 @@ function Idea(title, description, authorId, eventId, tags, rolesreq) {
     this.comments = [];
     this.backs = [{
         text: "Idea Owner",
-        authorId: this.authorId,
+        authorId: new require('mongodb').ObjectId(this.authorId),
         timeCreated: new Date().toISOString(),
         timeModified: '',
         types: [{name: "Owner", _lowername: "owner"}]
