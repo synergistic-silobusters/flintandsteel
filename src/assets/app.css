@@ -36,6 +36,21 @@ img.grayscale:hover {
     max-height: 40px;
 }
 
+.markdown-supported {
+    text-decoration: none;
+    font-size: 10px;
+    color: gray;
+}
+
+.markdown-supported svg {
+    vertical-align: bottom;
+    margin-right: 2px;
+}
+
+.markdown-supported:hover {
+    color: rgb(0, 148, 156);
+}
+
 .md-icon-button {
     margin-right: 10px;
 }
@@ -83,7 +98,7 @@ h2.no-bottom-margin {
     border-width: thin;
     border-radius: 5px 5px 0px 0px;
     margin:0px;
-    padding: 0px 10px 0px 10px;
+    padding: 10px;
 }
 
 .extra-space-left {
@@ -233,6 +248,11 @@ h2.no-bottom-margin {
     text-align: center;
 }
 
+.center-stuff {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .center-img {
     display: block;
     margin-left: auto;
@@ -240,6 +260,7 @@ h2.no-bottom-margin {
 }
 .img-padding{
     padding-top: 15px;
+    max-width: 100%;
 }
 
 .padding-left-20{

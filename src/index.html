@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-    <title>Rok-Starter</title>
+    <title>Innovate</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,13 +16,14 @@
     <link rel="stylesheet" href="lib/angular-timeline/dist/angular-timeline.css"/>
     <link rel="stylesheet" href="lib/jqcloud2/dist/jqcloud.min.css"/>
 
-    
+
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-animate/angular-animate.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="lib/angular-mocks/angular-mocks.js"></script>
     <script src="lib/angular-material/angular-material.js"></script>
+    <script src="lib/angular-marked/dist/angular-marked.js"></script>
     <script src="lib/angular-messages/angular-messages.js"></script>
     <script src="lib/angular-aria/angular-aria.js"></script>
     <script src="lib/angular-identicon/dist/angular-identicon.js"></script>
@@ -30,11 +31,12 @@
     <script src="lib/identicon/identicon.js"></script>
     <script src="lib/identicon/pnglib.js"></script>
     <script src="lib/lodash/lodash.js"></script>
+    <script src="lib/marked/lib/marked.js"></script>
     <script src="lib/moment/moment.js"></script>
     <script src="lib/event-source-polyfill/eventsource.js"></script>
     <script src="lib/angular-timeline/dist/angular-timeline.js"></script>
     <script src="lib/jqcloud2/dist/jqcloud.min.js"></script>
-    
+
 
 
     <!-- inject:js -->
@@ -122,11 +124,11 @@
                 <div layout="column" flex>
                     <div flex>
                         <md-list class="top-ideas-list">
-                            <md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
+                            <md-subheader class="md-accent md-hue-1">Trending Ideas</md-subheader>
                             <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!topIdeas.length">
                                 <h3><i>No ideas</i></h3>
                             </div>
-                            <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:5">
+                            <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:10">
                                 <idea-item idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item>
                             </md-item>
                         </md-list>
