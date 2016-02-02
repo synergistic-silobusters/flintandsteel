@@ -36,6 +36,21 @@ img.grayscale:hover {
     max-height: 40px;
 }
 
+.markdown-supported {
+    text-decoration: none;
+    font-size: 10px;
+    color: gray;
+}
+
+.markdown-supported svg {
+    vertical-align: bottom;
+    margin-right: 2px;
+}
+
+.markdown-supported:hover {
+    color: rgb(0, 148, 156);
+}
+
 .md-icon-button {
     margin-right: 10px;
 }
