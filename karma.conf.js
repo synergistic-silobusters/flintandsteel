@@ -15,7 +15,8 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            
+
+            'src/lib/jquery/dist/jquery.min.js',
             'src/lib/angular/angular.js',
             'src/lib/angular-timeline/dist/angular-timeline.js',
             'src/lib/angular-mocks/angular-mocks.js',
@@ -23,20 +24,25 @@ module.exports = function(config) {
             'src/lib/angular-animate/angular-animate.js',
             'src/lib/angular-aria/angular-aria.js',
             'src/lib/angular-material/angular-material.js',
+            'src/lib/angular-marked/dist/angular-marked.js',
             'src/lib/angular-material/angular-material-mocks.js',
             'src/lib/angular-messages/angular-messages.js',
             'src/lib/angular-identicon/src/identiconDirective.js',
             'src/lib/angular-identicon/src/md5.js',
             'src/lib/identicon/identicon.js',
             'src/lib/identicon/pnglib.js',
+            'src/lib/marked/lib/marked.js',
             'src/lib/moment/moment.js',
             'src/lib/lodash/lodash.js',
+            'src/lib/jqcloud2/dist/jqcloud.min.js',
             'src/app.js',
             'src/about/about.js',
+            'src/events/eventSvc/eventSvc.mock.js',
             'src/ideas/ideaSvc/ideaSvc.mock.js',
             'src/users/userSvc/userSvc.mock.js',
             'src/toastSvc/toastSvc.js',
             'src/homeView/homeView.js',
+            'src/events/**/*.js',
             'src/ideas/**/*.js',
             'src/navigation/**/*.js',
             'src/users/**/*.js',
@@ -76,6 +82,15 @@ module.exports = function(config) {
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
         reporters: ['progress', 'coverage'],
 
+        coverageReporter: {
+            dir: './coverage',
+            reporters: [
+                {type: 'html', subdir: 'report-html'},
+                {type: 'lcov', subdir: 'report-lcov'},
+                {type: 'text', subdir: 'report-text'},
+                {type: 'text-summary', subdir: 'report-text-summary'}
+            ]
+        },
 
         // web server port
         port: 9876,

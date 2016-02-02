@@ -21,14 +21,16 @@ angular.module('flintAndSteel')
                 };
             }
 
+            $scope.userIdeas = [];
+
             ideaSvc.getIdeaHeaders().then(function getIdeaHeadersSuccess(response) {
-                $scope.userIdeas = [];
 
                 // Find all User Ideas
-                for (var i = 0; i < response.data.length; i++) {  // was let
-                    if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === response.data[i].authorId) {
-                        $scope.userIdeas.push(response.data[i]);
-                    }
+                if (userSvc.isUserLoggedIn()) {
+                    var userId = userSvc.getProperty('_id');
+                    $scope.userIdeas = response.data.filter(function(idea) {
+                        return userId === idea.authorId;
+                    });
                 }
 
             }, function getIdeaHeadersError(response) {

@@ -1,7 +1,8 @@
-[![Build Status](https://travis-ci.org/YashdalfTheGray/flintandsteel.svg?branch=master)](https://travis-ci.org/YashdalfTheGray/flintandsteel)
-[![Dependency Status](https://gemnasium.com/YashdalfTheGray/flintandsteel.svg)](https://gemnasium.com/YashdalfTheGray/flintandsteel)
-[![Issue Stats](http://issuestats.com/github/yashdalfthegray/flintandsteel/badge/pr?style=flat)](http://issuestats.com/github/yashdalfthegray/flintandsteel)
-[![Issue Stats](http://issuestats.com/github/yashdalfthegray/flintandsteel/badge/issue?style=flat)](http://issuestats.com/github/yashdalfthegray/flintandsteel)
+[![Build Status](https://travis-ci.org/synergistic-silobusters/flintandsteel.svg?branch=master)](https://travis-ci.org/synergistic-silobusters/flintandsteel)
+[![Code Climate](https://codeclimate.com/github/synergistic-silobusters/flintandsteel/badges/gpa.svg)](https://codeclimate.com/github/synergistic-silobusters/flintandsteel)
+[![Dependency Status](https://gemnasium.com/synergistic-silobusters/flintandsteel.svg)](https://gemnasium.com/synergistic-silobusters/flintandsteel)
+[![Issue Stats](http://issuestats.com/github/synergistic-silobusters/flintandsteel/badge/pr?style=flat)](http://issuestats.com/github/synergistic-silobusters/flintandsteel)
+[![Issue Stats](http://issuestats.com/github/synergistic-silobusters/flintandsteel/badge/issue?style=flat)](http://issuestats.com/github/synergistic-silobusters/flintandsteel)
 
 # flintandsteel
 
@@ -21,6 +22,23 @@ The following applications need to be installed:
 **NOTE**: [Make sure your node version is compliant!](https://github.com/YashdalfTheGray/flintandsteel/wiki#checking-for-the-right-version-of-node-and-npm)
 
 Make sure that the directories containing `node`, `npm`, `mongod` and `mongo` are added to the path making them accessible from the terminal.
+
+**For Linux Users (Commands are likely CentOS specific):**
+
+* Install bzip2 to extract the contents of phantomjs (`sudo yum install bzip2`)
+* Install phantomjs globally (`npm install -g phantomjs`)
+* Add the phantomjs bin to your env vars:
+  * `export PHANTOMJS_BIN=/usr/local/lib/node_modules/phantomjs/lib/phantom/bin/phantomjs`
+  * More permanently, add that line to the .bash_profile file in your $HOME directory.
+* Install libfontconfig:
+  * `sudo yum install freetype`
+  * `sudo yum install fontconfig`
+* Add the port you'll be hosting to the firwall rules (`sudo firewall-cmd --permanent --add-port=8080/tcp`)
+  * If you are going to be running production, Add these two instead:
+    * `sudo firewall-cmd --permanent --add-service=http`
+    * `sudo firewall-cmd --permanent --add-service=https`
+  * For both dev and prod you must run this command next:
+    * `sudo systemctl reload firewalld`
 
 ### Get the code
 

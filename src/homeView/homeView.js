@@ -3,74 +3,98 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$scope', '$state','$mdSidenav', 'ideaSvc',
-        function($scope, $state, $mdSidenav, ideaSvc) {
+        '$document', '$scope', '$timeout', '$state','$mdSidenav', 'ideaSvc',
+        function($document, $scope, $timeout, $state, $mdSidenav, ideaSvc) {
             "use strict";
 
 
-            $scope.Innovate = {Name: "Ideas",
-							description: "Ideas are the foundation of the Innovation Challenge.  You must log in to create one. \nBrowse ideas by clicking 'All Ideas'."};
-            $scope.Comment = {Name: "Comments",
-							description: "Comment on ideas by logging in, clicking on an idea, and going to the comment tab"};
-            $scope.Back = {Name: "Backs",
-							description: "Backing is the term used for showing how you can contribute to an idea.  Click on an idea and go to the Back tab to contribute."};
-            $scope.Team = {Name: "Team",
-							description: "Teams are formed from anyone who has backed an idea.  The owner of the idea forms the team by selecting members in the team tab."};
-            $scope.Browse = {Name: "Browse Ideas",
-							description: "Browse Ideas by clicking 'All Ideas' or by starting to type search text in the bar"};
-            $scope.Top = {Name: "Top Ideas",
-							description: "The top ideas bar is on the left hand side of the page.  These ideas are ranked by the most amount of likes."};
-            $scope.Like = {Name: "Likes",
-							description: "A like is a simple way to show your support for an idea.  This gives the owner a little reinforcement to keep going!"};
-            $scope.Blank = {Name: "",
-							description: ""};
-            $scope.faqCards = [$scope.Innovate, $scope.Comment, $scope.Back, $scope.Team, $scope.Browse,$scope.Top,$scope.Like];
+            var WordList = new Array({ text: "Innovate", weight: 2.5});
+
+            $scope.IW1 = "Innovation Action Process Change Method Idea Product Effective Solutions Catalyst Revolutionize  ";
+            $scope.IW2 = "Future Success Nurture Technology Engineering Accomplishment Creativity Contribution Individual ";
+            $scope.IW3 = "Inspire Goal Progress Integration Embedded Review Invest ";
+            $scope.IW4 = "Patent Organize Workshop Training Cultivate  Activity Challenge Portfolio Brainstorm Wordcloud Amazing yeee ";
+            $scope.IW5 = "Performance Positive Research Organizational Streamline Perspective Cluture Events Startup Lean SAFe Integration Global ";
+            $scope.IW6 = "Benefit Platform Exchange Collaborate Perform Individual Employee Opportunity Design Tool Communication ";
+            $scope.InnovativeWords = $scope.IW1 + $scope.IW2 + $scope.IW3 + $scope.IW4 + $scope.IW5 + $scope.IW6;
+
+            $scope.Actions = "Ideas Comments Backs Team Likes";
 
             $scope.Event1 = {type: "bg-success", alignment: "left-aligned", date: "January 24",
                             location: "Cleveland", time: "12: 00 PM", name: "Monthly Innovation Event",
-							description: "This is the text about the monthly innovation event.  "};
+                            description: "This is the text about the monthly innovation event.  "};
             $scope.Event2 = {type: "bg-info", date: "February 22",
                             location: "Global", time: "12: 00 PM", name: "E-Week Kickoff",
-							description: "We're kicking off E-week with this fun and exciting event.  Someone type some more things here"};
+                            description: "We're kicking off E-week with this fun and exciting event.  Someone type some more things here"};
             $scope.Event3 = {type: "bg-info", alignment: "left-aligned", date: "February 25",
                             location: "Global", time: "12: 00 PM", name: "E-Week Wrap-up",
-							description: "Here's where we're going to close E-week.  We're going to have some bosses there to present awards and win some prizes.  "};
+                            description: "Here's where we're going to close E-week. We're going to have some bosses there to present awards and win prizes."};
             $scope.Event4 = {type: "bg-warning", date: "March 10",
                             location: "Cleveland", time: "5: 00 PM", name: "Innovation Challenge Kickoff",
-							description: "We're going to kick off the Cleveland innovation challenge on this day.  We'll do some fun things, have food and drink."};
+                            description: "We're going to kick off the Cleveland innovation challenge on this day. We'll do some fun things, have food."};
             $scope.Event5 = {type: "bg-warning", alignment: "left-aligned", date: "April",
                             location: "Cleveland", time: "", name: "Innovation Challenge Mid-Point Readout",
-							description: "Scared of presentations?  Welp you're up a creek then.  Take your idea and present to everybody."};
+                            description: "Scared of presentations?  Welp you're up a creek then.  Take your idea and present to everybody."};
             $scope.Event6 = {type: "bg-warning", alignment: "", date: "June",
                             location: "Cleveland", time: "", name: "Innovation Challenge Final Readout",
-							description: "Mid point readout didn't go well?  Get ready for a grilling from upper management."};
+                            description: "Mid point readout didn't go well?  Get ready for a grilling from upper management."};
             $scope.Event7 = {type: "bg-info", alignment: "left-aligned", date: "June",
                             location: "Global", time: "", name: "Innovation Challenge Final Readout",
-							description: "You made it past Fluffy and the Devil's snare.  Those were easy compared to this."};
-            
-            $scope.Events = [$scope.Event1,$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];           
+                            description: "You made it past Fluffy and the Devil's snare.  Those were easy compared to this."};
+
+            $scope.Events = [$scope.Event1,$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];
 
             $scope.navToBrowse = function navToBrowse() {
                 $state.go('ideabrowse');
             };
 
-            $scope.showIdeas = false;
-
-            $scope.searchFocus = function searchFocus() {
-                $scope.showIdeas = true;
-            };
-
-
             ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
                 $scope.topIdeas = data;
+                console.log(data);
             }, function getIdeaHeadersError(data, status) {
                 console.log(status);
             });
 
+            $scope.generateWords = function generateWords() {
 
-            
+                //Click handler overrides the link, link is just there as a temp fix to make the word light up on mouse over
+                WordList.push({ text: "Get Started", weight: 10, link: "#", handlers: { click: function() { $scope.navToBrowse();}}});
+                WordList.push({ text: "All Ideas", weight: 10, link: "#", handlers: { click: function() { $scope.navToBrowse();}}});
 
+                var actionsArray = $scope.Actions.split(" ");
+                var i = 0;
+                for (i = 0; i < actionsArray.length; i++) {
+                    WordList.push({ text: actionsArray[i], weight: 7});
+                }
+
+                for (i = 0; i < $scope.Events.length; i++) {
+                    WordList.push({text: $scope.Events[i].name, weight: 3.5});
+                }
+                var fillerWordsArr = $scope.InnovativeWords.split(" ");
+
+                for (i = 0; i < fillerWordsArr.length; i++) {
+                    WordList.push({text: fillerWordsArr[i], weight: 2.5});
+                }
+
+            };
+
+            $scope.generateWords();
+
+            $timeout(function() {
+                var width = angular.element(document.getElementById('wordcloud'))[0].clientWidth,
+                    height = angular.element(document.getElementById('wordcloud'))[0].clientHeight;
+
+                angular.element("#wordcloud").jQCloud(WordList, {
+                    classPattern: null,
+                    delay: 50,
+                    colors: ["#900100", "#7f7f7f","#7f7f7f", "#7f7f7f", "#7f7f7f", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0"],
+                    fontSize: { from: 0.05, to: 0.01 },
+                    shape: 'cloud',
+                    width: width,
+                    height: height,
+                    autoResize: true
+                });
+            });
         }
     ]
 );
-

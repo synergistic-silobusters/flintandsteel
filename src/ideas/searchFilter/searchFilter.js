@@ -35,12 +35,13 @@ angular.module('flintAndSteel')
                         retArray.push(item);
                     }
                     else if (typeof normalizedTags !== 'undefined') {
-                        normalizedTags.forEach(function(tag) {
-                            tag = tag.replace(re,"").toLowerCase();
+                        for (var i = 0; i < normalizedTags.length; ++i) {
+                            var tag = normalizedTags[i].replace(re,"").toLowerCase();
                             if (tag.indexOf(normalizedSearch) >= 0) {
                                 retArray.push(item);
-                            }
-                        });
+                                break;
+                            }                            
+                        }
                     }
                 });
                 return retArray;

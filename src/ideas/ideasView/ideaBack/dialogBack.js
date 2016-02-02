@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('DialogBackCtrl',
     [
-        '$scope', '$mdDialog', 'ideaSvc', 'backingObj', 'author', 'loginSvc',
-        function($scope, $mdDialog, ideaSvc, backingObj, author, loginSvc) {
+        '$scope', '$mdDialog', 'ideaSvc', 'backingObj', 'author', 'userSvc',
+        function($scope, $mdDialog, ideaSvc, backingObj, author, userSvc) {
             "use strict";
 
             // Populate values based off current back info
@@ -20,29 +20,33 @@ angular.module('flintAndSteel')
             var ctrl = this;
 
             ctrl.isUserAuthor = function() {
-                if (loginSvc.isUserLoggedIn() && loginSvc.getProperty('_id') === author) {
+                if (userSvc.isUserLoggedIn() && userSvc.getProperty('_id') === author) {
                     return true;
                 }
                 return false;
             };
 
-            if (this.isUserAuthor()) {
-                $scope.selectTypes.push({name: "Owner", _lowername: "owner"});
-            }
+            ctrl.initialize = function() {
+                if (ctrl.isUserAuthor()) {
+                    $scope.selectTypes.push({name: "Owner", _lowername: "owner"});
+                }
 
-            // Precheck previous boxes for editting backs
-            for (var i = 0; i < $scope.types.length; i++) {
-                for (var j = 0; j < $scope.tempTypes.length; j++) {
-                    if ($scope.types[i].name === $scope.tempTypes[j].name) {
-                        $scope.types[i].checked = true;
-                        $scope.selectTypes.push($scope.tempTypes[j]); //avoids parent scope issues
-                        break;
-                    }
-                    else {
-                        $scope.types[i].checked = false;
+                // Precheck previous boxes for editting backs
+                for (var i = 0; i < $scope.types.length; i++) {
+                    for (var j = 0; j < $scope.tempTypes.length; j++) {
+                        if ($scope.types[i].name === $scope.tempTypes[j].name) {
+                            $scope.types[i].checked = true;
+                            $scope.selectTypes.push($scope.tempTypes[j]); //avoids parent scope issues
+                            break;
+                        }
+                        else {
+                            $scope.types[i].checked = false;
+                        }
                     }
                 }
-            }
+            };
+
+            ctrl.initialize();
 
             // what happens when you hit the cancel button
             $scope.cancel = function() {
