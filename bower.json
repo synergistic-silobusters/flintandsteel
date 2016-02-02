@@ -31,7 +31,7 @@
     "identicon": "*",
     "jqcloud2": "2.0.1",
     "jquery": "2.2.0",
-    "lodash": "3.10.0",
+    "lodash": "4.1.0",
     "moment": "2.10.3"
   },
   "resolutions": {
