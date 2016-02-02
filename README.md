@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/synergistic-silobusters/flintandsteel.svg?branch=master)](https://travis-ci.org/synergistic-silobusters/flintandsteel)
+[![Code Climate](https://codeclimate.com/github/synergistic-silobusters/flintandsteel/badges/gpa.svg)](https://codeclimate.com/github/synergistic-silobusters/flintandsteel)
 [![Dependency Status](https://gemnasium.com/synergistic-silobusters/flintandsteel.svg)](https://gemnasium.com/synergistic-silobusters/flintandsteel)
 [![Issue Stats](http://issuestats.com/github/synergistic-silobusters/flintandsteel/badge/pr?style=flat)](http://issuestats.com/github/synergistic-silobusters/flintandsteel)
 [![Issue Stats](http://issuestats.com/github/synergistic-silobusters/flintandsteel/badge/issue?style=flat)](http://issuestats.com/github/synergistic-silobusters/flintandsteel)
