@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/YashdalfTheGray/flintandsteel.svg?branch=master)](https://travis-ci.org/YashdalfTheGray/flintandsteel)
-[![Dependency Status](https://gemnasium.com/YashdalfTheGray/flintandsteel.svg)](https://gemnasium.com/YashdalfTheGray/flintandsteel)
-[![Issue Stats](http://issuestats.com/github/yashdalfthegray/flintandsteel/badge/pr?style=flat)](http://issuestats.com/github/yashdalfthegray/flintandsteel)
-[![Issue Stats](http://issuestats.com/github/yashdalfthegray/flintandsteel/badge/issue?style=flat)](http://issuestats.com/github/yashdalfthegray/flintandsteel)
+[![Build Status](https://travis-ci.org/synergistic-silobusters/flintandsteel.svg?branch=master)](https://travis-ci.org/synergistic-silobusters/flintandsteel)
+[![Dependency Status](https://gemnasium.com/synergistic-silobusters/flintandsteel.svg)](https://gemnasium.com/synergistic-silobusters/flintandsteel)
+[![Issue Stats](http://issuestats.com/github/synergistic-silobusters/flintandsteel/badge/pr?style=flat)](http://issuestats.com/github/synergistic-silobusters/flintandsteel)
+[![Issue Stats](http://issuestats.com/github/synergistic-silobusters/flintandsteel/badge/issue?style=flat)](http://issuestats.com/github/synergistic-silobusters/flintandsteel)
 
 # flintandsteel
 
