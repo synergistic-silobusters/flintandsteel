@@ -7,39 +7,10 @@ angular.module('flintAndSteel')
         function($document, $scope, $timeout, $state, $mdSidenav, ideaSvc) {
             "use strict";
 
-            function getInternetExplorerVersion() {
-                var rv = -1;
-                var ua = navigator.userAgent;
-                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                if (navigator.appName === 'Microsoft Internet Explorer') {
-                    ua = navigator.userAgent;
-                    re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                    if (re.exec(ua) !== null) {
-                        rv = parseFloat(RegExp.$1);
-                    }
-                }
-                else if (navigator.appName === 'Netscape') {
-                    ua = navigator.userAgent;
-                    re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
-                    if (re.exec(ua) !== null) {
-                        rv = parseFloat(RegExp.$1);
-                    }
-                }
-                return rv;
-            }
-            $scope.ieMessage = function() {
-                var v = parseInt(getInternetExplorerVersion());
-                console.log(v);
-                if (v > 0) {
-                    return "Some pages may not render properly in this Browser.  For best experience, please use Google Chrome.";
-                }
-                else {
-                    return "";
-                }
-            };
 
-            $scope.internetExplorerMessage = $scope.ieMessage();
+            $scope.internetExplorerMessage = "Some pages may not render properly in this Browser.  For best experience, please use Google Chrome."
 
+            $scope.browserVersion = parseInt(getInternetExplorerVersion());
 
             var WordList = new Array({ text: "Innovate", weight: 2.5});
 
@@ -76,6 +47,27 @@ angular.module('flintAndSteel')
                             description: "You made it past Fluffy and the Devil's snare.  Those were easy compared to this."};
 
             $scope.Events = [$scope.Event1,$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];
+
+            function getInternetExplorerVersion() {
+                var rv = -1;
+                var ua = navigator.userAgent;
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (navigator.appName === 'Microsoft Internet Explorer') {
+                    ua = navigator.userAgent;
+                    re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                    if (re.exec(ua) !== null) {
+                        rv = parseFloat(RegExp.$1);
+                    }
+                }
+                else if (navigator.appName === 'Netscape') {
+                    ua = navigator.userAgent;
+                    re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+                    if (re.exec(ua) !== null) {
+                        rv = parseFloat(RegExp.$1);
+                    }
+                }
+                return rv;
+            }
 
             $scope.navToBrowse = function navToBrowse() {
                 $state.go('ideabrowse');
