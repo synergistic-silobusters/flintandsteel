@@ -4,7 +4,6 @@ function Idea(title, description, authorId, eventId, tags, rolesreq) {
     "use strict";
 
     var now = new Date().toISOString();
-    var ObjectId = require('mongodb').ObjectId;
 
     this.title = title;
     this.description = description;
@@ -19,7 +18,7 @@ function Idea(title, description, authorId, eventId, tags, rolesreq) {
     this.comments = [];
     this.backs = [{
         text: "Idea Owner",
-        authorId: new ObjectId(this.authorId),
+        authorId: this.authorId,
         timeCreated: new Date().toISOString(),
         timeModified: '',
         types: [{name: "Owner", _lowername: "owner"}]
