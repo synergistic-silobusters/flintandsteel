@@ -27,7 +27,7 @@ angular.module('flintAndSteel')
                 }
                 return rv;
             }
-            $scope.IEMessage = function() {
+            $scope.ieMessage = function() {
                 var v = parseInt(getInternetExplorerVersion());
                 console.log(v);
                 if (v > 0) {
@@ -38,7 +38,7 @@ angular.module('flintAndSteel')
                 }
             };
 
-            $scope.InternetExplorerMessage = $scope.IEMessage();
+            $scope.internetExplorerMessage = $scope.ieMessage();
 
 
             var WordList = new Array({ text: "Innovate", weight: 2.5});
