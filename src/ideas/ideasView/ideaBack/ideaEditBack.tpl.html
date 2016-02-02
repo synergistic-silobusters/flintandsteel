@@ -1,0 +1,49 @@
+<md-dialog class="back-box" aria-label="edit idea">
+    <form name="editBack">
+        <!-- Dialog Header -->
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Edit Back</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close" type="button">
+                    <i class="material-icons icon-button-adjust">&#xE5CD;</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <!-- Edit your contribution type -->
+            <md-input-container flex>
+                <p>Edit your contribution type (choose at least one)</p>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="type in types" flex="50" ng-model="test" ng-click="toggle(type, $index)">
+                        <md-checkbox ng-checked="type.checked">
+                            {{type.name}}
+                        </md-checkbox>
+                    </div>
+                </div>
+            </md-input-container>
+            <!-- Edit your contribution -->
+            <md-input-container flex>
+                <label>Edit details...</label>
+                <textarea id="back-box"
+                          name="backBox"
+                          ng-model="backText"
+                          type="text"
+                          ng-minlength="4"
+                          ng-maxlength="500"
+                          md-maxlength="500"></textarea>
+                <div ng-messages="editBack.backBox.$error">
+                    <div ng-message="minlength">Your details are too short. Must be at least 4 characters</div>
+                    <div ng-message="maxlength">Your details are too long. Must be under 500 characters</div>
+                </div>
+            </md-input-container>
+            <br></br>
+            <md-dialog-actions flex layout="column">
+                <md-button class="md-raised md-primary" ng-click="backIdea()" ng-disabled="selectTypes.length < 1 || editBack.backBox.$invalid">
+                    Confirm Edit
+                </md-button>
+            </md-dialog-actions>
+            <p></p>
+        </md-dialog-content>
+    </form>
+</md-dialog>

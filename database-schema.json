@@ -24,31 +24,40 @@
             "types of backs the author is requesting"
         ],
         "likes": [
-            {"userId": "user._id"},
+            {
+                "_id": "mongo_generated",
+                "userId": "user._id"
+            },
             "set of objects with user._id"
         ],
         "updates": [
             {
+                "_id": "mongo_generated",
                 "text": "",
+                "authorId": "one user._id",
                 "timeCreated": "",
                 "timeModified": ""
             }
         ],
         "comments": [
-            {"commentId": "comment._id"},
+            { "commentId": "comment._id" },
             "set of objects with comment._id"
         ],
         "backs": [
             {
+                "_id": "mongo_generated",
                 "text": "",
                 "authorId": "one user._id",
-                "type": "",
+                "types": "",
                 "timeCreated": "",
                 "timeModified": ""
             }
         ],
         "team": [
-            {"memberId": "idea.authorId"},
+            {
+                "_id": "mongo_generated",
+                "memberId": "idea.authorId"
+            },
             "set of objects with user._id"
         ]
     },

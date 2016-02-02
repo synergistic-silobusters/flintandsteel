@@ -4,7 +4,8 @@
 angular.module('flintAndSteel')
 .factory('ideaSvcMock',
     [
-        function() {
+        '$q',
+        function($q) {
             "use strict";
 
             var mockIdea = {
@@ -21,23 +22,16 @@ angular.module('flintAndSteel')
                     'bicycle carbon courier spook gang wristwatch katana sensory sign long-chain ' +
                     'hydrocarbons assault nano. ',
                 authorId: 1,
+                author: {name: 'Darth Vader'},
                 image: '../assets/defaultideahero.jpg',
                 likes: [
-                    'cottageclaw',
-                    'vbfond',
-                    'curvechange',
-                    'bothdesigned',
-                    'gymnastfinance',
-                    'aberrantcollagen',
-                    'kuwaitiinspiring',
-                    'basteglyderau',
-                    'adoptionpanting',
-                    'tokenslagoon',
-                    'welshwood',
-                    'kumquatslant',
-                    'anaerobedigits',
-                    'chouxthames',
-                    'pizzago'
+                    {userId: 1},
+                    {userId: 2},
+                    {userId: 3},
+                    {userId: 4},
+                    {userId: 5},
+                    {userId: 6},
+                    {userId: 7}
                 ],
                 managerLikes: 6,
                 comments: [
@@ -68,6 +62,14 @@ angular.module('flintAndSteel')
                 ],
                 backs: [
                     {
+                        authorId: 1,
+                        timeCreated: moment().subtract(6, 'days').calendar(),
+                        timeModified: moment().subtract(4, 'days').calendar(),
+                        types: [
+                            { name: 'Owner'}
+                        ]
+                    },
+                    {
                         text: 'management experience',
                         authorId: 4,
                         time: moment().subtract(7, 'days').calendar(),
@@ -77,6 +79,7 @@ angular.module('flintAndSteel')
                         ]
                     },
                     {
+                        _id: 11,
                         text: 'TEN MILLION DOLLARS',
                         authorId: 5,
                         time: moment().subtract(84, 'hours').calendar(),
@@ -86,38 +89,48 @@ angular.module('flintAndSteel')
                     }
                 ],
                 team: [
-                  {
-                      memberId: 1
-                  }
+                    {
+                        memberId: 1,
+                        member: { mail: 'dvader@gmail.com' }
+                    }
+                ],
+                updates: [
+                    {
+                        text: 'The project started',
+                        authorId: 6,
+                        time: moment().calendar()
+                    },
+                    {
+                        text: 'The project made some progress',
+                        authorId: 7,
+                        time: moment().subtract(2, 'hours').calendar()
+                    }
+                ],
+                tags: [
+                    "thisIsATag",
+                    "tagAllTheThings"
                 ]
             };
 
-            function NotImplementedException(call) {
-                this.name = 'NotImplementedException';
-                this.message = 'Method ' + call + ' has not been implemented!';
-                this.toString = function() {
-                    return this.name + ': ' + this.message;
-                };
-            }
-
             return {
-                postIdea: function postIdea(idea, successCb) {
-                    successCb('Created');
+                postIdea: function postIdea() {
+                    return $q.when({status: 'Created'});
                 },
-                getIdea: function getIdea(ideaId, successCb) {
-                    successCb(mockIdea);
+                getIdea: function getIdea() {
+                    return $q.when({ data: mockIdea });
                 },
                 getIdeaHeaders: function getIdeaHeaders() {
-                    return [
+                    return $q.when([
                         {
                             id: 'mock_idea',
                             title: 'The bestest Idea ever!',
                             author: 'Yash Kulshrestha',
+                            authorId: 1,
                             likes: 23
                         }
-                    ];
+                    ]);
                 },
-                postComment: function postComment(parentId, text, authorId, successCb) {
+                postComment: function postComment(parentId, text, authorId) {
                     mockIdea.comments.push(
                         {
                             commentId: 4,
@@ -128,33 +141,47 @@ angular.module('flintAndSteel')
                             timeModified: new Date().toISOString()
                         }
                     );
-                    successCb('Posted');
+                    return $q.when('Posted');
                 },
-                deleteComment: function deleteComment(commentId, successCb) {
+                deleteComment: function deleteComment(commentId) {
                     for (var i = 0; i < mockIdea.comments.length; i++) {
                         if (mockIdea.comments[i].commentId === commentId) {
                             mockIdea.comments.splice(i, 1);
                             break;
                         }
                     }
-                    successCb('Deleted');
+                    return $q.when('Deleted');
                 },
-                getUniqueId: function getUniqueId() {
-                    throw new NotImplementedException('getUniqueId');
-                },
-                updateIdea: function updateIdea(ideaId, property, data, successCb) {
+                updateIdea: function updateIdea(ideaId, property, data) {
                     mockIdea[property] = data;
-                    successCb('OK');
+                    return $q.when('OK');
                 },
-                editIdea: function editIdea(ideaId, title, description, rolesreq, successCb) {
+                addInteraction: function addInteraction(ideaId, type, object) {
+                    mockIdea[type].push(object);
+                    return $q.when('OK');
+                },
+                removeInteraction: function removeInteraction(ideaId, type, object) {
+                    mockIdea[type].splice(mockIdea[type].indexOf(object), 1);
+                    return $q.when('OK');
+                },
+                editBack: function editBack(ideaId, backId, newBack) {
+                    for (var i = 0; i < mockIdea.backs.length; i++) {
+                        if (mockIdea.backs[i]._id === backId) {
+                            mockIdea.backs.splice(i, 1, newBack);
+                            return $q.when('OK');
+                        }
+                    }
+                },
+                editIdea: function editIdea(ideaId, title, description, tags, rolesreq) {
                     mockIdea.title = title;
                     mockIdea.description = description;
+                    mockIdea.tags = tags;
                     mockIdea.rolesreq = rolesreq;
                     mockIdea.timeModified = new Date().toISOString();
-                    successCb('Edited');
+                    return $q.when('Edited');
                 },
-                deleteIdea: function deleteIdea(ideaId, successCb) {
-                    successCb('Deleted!');
+                deleteIdea: function deleteIdea() {
+                    return $q.when('Deleted!');
                 },
                 getBackTypeChips: function getBackTypeChips() {
                     var types = [
@@ -167,10 +194,20 @@ angular.module('flintAndSteel')
                         { name: 'Test Chip'}
                     ];
                     return types.map(function(type) {
-                        type._lowername = type.name.toLowerCase();
+                        type._lowername = type.name.toLowerCase().replace(/[ ]/g, '-').replace('?', '');
                         return type;
                     });
-                }
+                },
+                dialogRemoveFromTeamCtrl: function dialogRemoveFromTeamCtrl($scope, $mdDialog) {
+                    $scope.cancel = function() {
+                        $mdDialog.cancel();
+                    };
+
+                    $scope.submitDelete = function() {
+                        $mdDialog.hide(true);
+                    };
+                },
+                mockData: mockIdea
             };
         }
     ]

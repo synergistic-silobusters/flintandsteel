@@ -7,82 +7,88 @@ angular.module('flintAndSteel')
         function($http) {
             "use strict";
 
-            this.postIdea = function postIdea(idea, successCb, errorCb) {
-                $http.post('/idea', idea)
-                    .success(successCb)
-                    .error(errorCb);
+            this.postIdea = function postIdea(idea) {
+                return $http.post('/ideas', idea);
             };
 
-            this.getIdea = function getIdea(ideaId, successCb, errorCb) {
-                $http.get('/idea?id=' + ideaId)
-                    .success(successCb)
-                    .error(errorCb);
+            this.getIdea = function getIdea(ideaId) {
+                return $http.get('/ideas/' + ideaId);
             };
 
-            this.getIdeaHeaders = function getIdeaHeaders(successCb, errorCb) {
-                $http.get('/ideaheaders')
-                    .success(successCb)
-                    .error(errorCb);
+            this.getIdeaHeaders = function getIdeaHeaders() {
+                return $http.get('/ideas');
             };
 
-            this.postComment = function postComment(parentId, text, authorId, successCb, errorCb) {
-                $http.post('/comment',
-                        {
-                            parentId: parentId,
-                            text: text,
-                            authorId: authorId
-                        }
-                    )
-                    .success(successCb)
-                    .error(errorCb);
+            this.postComment = function postComment(parentId, text, authorId) {
+                return $http.post('/comments',
+                    {
+                        parentId: parentId,
+                        text: text,
+                        authorId: authorId
+                    }
+                );
             };
 
-            this.deleteComment = function deleteComment(commentId, successCb, errorCb) {
-                $http.post('/deleteComment',
-                      {
-                          commentId: commentId
-                      }
-                  )
-                  .success(successCb)
-                  .error(errorCb);
+            this.deleteComment = function deleteComment(commentId) {
+                return $http.delete('/comments/' + commentId);
             };
 
-            this.updateIdea = function updateIdea(ideaId, property, data, successCb, errorCb) {
+            this.updateIdea = function updateIdea(ideaId, property, data) {
                 if (ideaId !== 'mock_idea') {
-                    $http.post('/updateidea',
-                            {
-                                id: ideaId,
-                                property: property,
-                                value: data
-                            }
-                        )
-                        .success(successCb)
-                        .error(errorCb);
+                    return $http.patch('/ideas/' + ideaId,
+                        [
+                            { operation: 'modify', path: property, value: JSON.stringify(data) }
+                        ]
+                    );
                 }
             };
 
-            this.editIdea = function editIdea(ideaId, title, description, rolesreq, successCb, errorCb) {
+            this.addInteraction = function addInteraction(ideaId, type, object) {
                 if (ideaId !== 'mock_idea') {
-                    $http.post('/editidea',
-                            {
-                                id: ideaId,
-                                title: title,
-                                description: description,
-                                rolesreq: rolesreq
-                            }
-                        )
-                        .success(successCb)
-                        .error(errorCb);
+                    return $http.patch('/ideas/' + ideaId,
+                        [
+                            { operation: 'append', path: type, value: JSON.stringify(object) }
+                        ]
+                    );
                 }
             };
 
-            this.deleteIdea = function deleteIdea(ideaId, successCb, errorCb) {
+            this.removeInteraction = function removeInteraction(ideaId, type, object) {
                 if (ideaId !== 'mock_idea') {
-                    $http.post('/deleteidea',
-                            { id: ideaId }
-                        )
-                        .success(successCb)
-                        .error(errorCb);
+                    return $http.patch('/ideas/' + ideaId,
+                        [
+                            { operation: 'delete', path: type + '/' + object._id }
+                        ]
+                    );
+                }
+            };
+
+            this.editBack = function editBack(ideaId, backId, newBack) {
+                if (ideaId !== 'mock_idea') {
+                    return $http.patch('/ideas/' + ideaId,
+                        [
+                            { operation: 'modify', path: 'backs/' + backId, value: JSON.stringify(newBack) }
+                        ]
+                    );
+                }
+            };
+
+            this.editIdea = function editIdea(ideaId, title, description, tags, rolesreq) {
+                if (ideaId !== 'mock_idea') {
+                    return $http.patch('/ideas/' + ideaId,
+                        [
+                            { operation: 'modify', path: 'title', value: JSON.stringify(title) },
+                            { operation: 'modify', path: 'description', value: JSON.stringify(description) },
+                            { operation: 'modify', path: 'tags', value: JSON.stringify(tags) },
+                            { operation: 'modify', path: 'rolesreq', value: JSON.stringify(rolesreq) }
+                        ]
+                    );
+                }
+            };
+
+            this.deleteIdea = function deleteIdea(ideaId) {
+                if (ideaId !== 'mock_idea') {
+                    return $http.delete('/ideas/' + ideaId);
                 }
             };
 
@@ -109,8 +115,10 @@ angular.module('flintAndSteel')
                 getIdeaHeaders: this.getIdeaHeaders,
                 postComment: this.postComment,
                 deleteComment: this.deleteComment,
-                getUniqueId: this.getUniqueId,
                 updateIdea: this.updateIdea,
+                addInteraction: this.addInteraction,
+                removeInteraction: this.removeInteraction,
+                editBack: this.editBack,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
                 getBackTypeChips: this.getBackTypeChips

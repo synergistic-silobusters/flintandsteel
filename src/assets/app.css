@@ -9,6 +9,28 @@ body {
     color: #666;
 }
 
+.gray-bg {
+    background-color: rgba(181, 181, 181, 0.6);
+    width: 100%;
+}
+
+img.grayscale {
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 3.5+ */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(100%); /* Chrome 19+ & Safari 6+ */
+  -webkit-transition: all .6s ease; /* Fade to color for Chrome and Safari */
+}
+
+img.grayscale:hover {
+  filter: none;
+  -webkit-filter: grayscale(0%);
+}
+
+.img-block {
+    display: inline-block;
+    padding: 10px 0 10px;
+}
+
 .add-idea {
     min-height: 40px;
     max-height: 40px;
@@ -26,6 +48,15 @@ body {
     margin-right: 10px;
 }
 
+.sign-in-tip {
+    font-size: 12px;
+    padding-top: 10px;
+    width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .signup-button {
     margin-left: 10px;
 }
@@ -34,12 +65,35 @@ body {
     overflow: scroll;
 }
 
+h1.no-margins {
+    margin-block-end: 0;
+    margin-block-start: 0;
+}
+
+.top-bar {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px 5px 0px 0px;
+    margin:0px;
+    padding: 0px 10px 0px 10px;
+}
+
 .extra-space-left {
     padding-left: 20px;
 }
 
+.no-padding-all {
+    padding: 0px;
+}
+
 .no-padding-bottom {
     padding-bottom: 0px;
+}
+
+.some-padding-bottom {
+    padding-bottom: 15px;
 }
 
 .fab-layout {
@@ -104,6 +158,10 @@ body {
     color: #FFFFFF;
 }
 
+.custom-chip.tag {
+    padding-right: 6px;
+}
+
 .idea-pointer {
     cursor: pointer;
 }
@@ -120,8 +178,33 @@ body {
     padding-left: 10px;
 }
 
+.extra-padding-top-md {
+    padding-top: 10px;
+}
+
+.extra-padding-top-lg {
+    padding-top: 30px;
+}
+
+.extra-padding-15 {
+    padding: 15px;
+}
+
+.extra-padding-sides-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.extra-padding-lg {
+    padding: 30px;
+}
+
 .accent-text {
     color: #650100;
+}
+
+.author-accent {
+    font-size: 13px;
 }
 
 .idea-likes-click {
@@ -156,6 +239,22 @@ body {
 .padding-left-20{
     padding-left: 20px;
 }
+.padding-sides-20 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.margin-top {
+    margin-top: 30px;
+}
+
+.margin-bottom-md {
+    margin-bottom: 15px;
+}
+
+*:focus {
+    outline: 0;
+}
 
 .about-technologies{
     padding: 15px;
@@ -178,8 +277,123 @@ body {
 .identicon {
     vertical-align: middle;
 }
+.idea-tag-delete-icon {
+    width: 18px;
+    height: 18px;
+    outline: none;
+}
+
+.idea-tags-input-container {
+    padding-bottom: 8px;
+}
+
+.tag-message {
+    color: black !important;
+}
+
+.ellipsis-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.word-wrap {
+    -ms-word-break: normal;
+    word-break: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    word-wrap: normal;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.identicon-home {
+    margin-right: 10px;
+}
 
 .md-tab.md-active {
     background-color: #e0e0e0;
     border-radius: 5px 5px 0px 0px;
 }
+
+.no-ideas-div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.small-padding-bottom {
+    padding-bottom: 15px;
+}
+
+.back-box {
+    width: 600px;
+}
+
+/*Conversation Bubbles*/
+/*----------------------------------------------------*/
+.triangle-isosceles {
+    position:relative;
+    padding:0px 5px 0px 5px;
+    margin:1em 0 3em;
+    color:#000;
+    background:#e0e0e0;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px 5px 0px 0px;
+}
+
+.triangle-isosceles.left {
+    margin:0px 0px 0px 15px;
+    background:#e0e0e0;
+}
+
+.triangle-isosceles:after {
+    content:"";
+    position:absolute;
+    bottom:-15px; /* value = - border-top-width - border-bottom-width */
+    left:50px; /* controls horizontal position */
+    border-width:15px 15px 0; /* vary these values to change the angle of the vertex */
+    border-style:solid;
+    border-color:#e0e0e0 transparent;
+    /* reduce the damage in FF3.0 */
+    display:block;
+    width:0;
+}
+
+.triangle-isosceles.left:after {
+    top:15px; /* controls vertical position */
+    left:-10px; /* value = - border-left-width - border-right-width */
+    bottom:auto;
+    border-width:10px 10px 10px 0;
+    border-color:transparent #e0e0e0;
+}
+
+
+.convo-text-bubble.text-area {
+    background-color: #FFFFFF;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 0px 0px 5px 5px;
+    margin:0px;
+    padding: 10px;
+}
+
+.convo-text-bubble.text-area.left {
+    margin:0px 0px 0px 15px;
+    padding: 10px;
+}
+
+.convo-text-bubble.top-bar {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px 5px 0px 0px;
+    margin:0px;
+    padding: 0px 10px 0px 10px;
+}
+/*----------------------------------------------------*/
+/*End Conversation Bubbles*/

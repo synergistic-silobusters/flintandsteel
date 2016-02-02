@@ -1,8 +1,14 @@
 <md-card>
     <md-card-content layout="row">
     <div flex="85" layout="column">
-        <div><strong>{{idea.title}}</strong></div>
-        <div class="accent-text">{{idea.author.name}}</div>
+        <div class="ellipsis-overflow"><strong>{{idea.title}}</strong></div>
+        <div layout="row">
+            <div layout="row" layout-align="center center">
+                <identicon username='idea.author.username' size='14'></identicon>
+            </div>
+            <span>&nbsp;</span>
+            <div class="accent-text author-accent">{{idea.author.name}}</div>
+        </div>
     </div>
     <div flex layout="row" layout-align="center center" class="extra-padding-left-md">
         {{idea.likes}}

@@ -12,12 +12,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="./lib/angular-material/angular-material.css"/>
     <link rel="stylesheet" type="text/css" href="assets/app.css">
+    <link rel="stylesheet" type="text/css" href="homeView/homeView.css">
+    <link rel="stylesheet" href="lib/angular-timeline/dist/angular-timeline.css"/>
 
+    
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-animate/angular-animate.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="lib/angular-mocks/angular-mocks.js"></script>
     <script src="lib/angular-material/angular-material.js"></script>
+    <script src="lib/angular-messages/angular-messages.js"></script>
     <script src="lib/angular-aria/angular-aria.js"></script>
     <script src="lib/angular-identicon/dist/angular-identicon.js"></script>
     <script src="lib/angular-identicon/src/md5.js"></script>
@@ -26,22 +30,31 @@
     <script src="lib/lodash/lodash.js"></script>
     <script src="lib/moment/moment.js"></script>
     <script src="lib/event-source-polyfill/eventsource.js"></script>
+    <script src="lib/angular-timeline/dist/angular-timeline.js"></script>
+
 
     <!-- inject:js -->
   <script src="app.js"></script>
-  <script src="users/loginSvc/loginSvc.js"></script>
+  <script src="utilities/startFromFilter.js"></script>
+  <script src="utilities/sseSvc.js"></script>
+  <script src="utilities/paginateSvc.js"></script>
+  <script src="utilities/emailLink.js"></script>
+  <script src="users/userSvc/userSvc.js"></script>
   <script src="users/accountView/accountView.js"></script>
   <script src="toastSvc/toastSvc.js"></script>
   <script src="navigation/toolbar.js"></script>
   <script src="navigation/sidenav.js"></script>
   <script src="ideas/searchFilter/searchFilter.js"></script>
   <script src="ideas/ideasView/ideasView.js"></script>
+  <script src="ideas/ideasView/ideaBack/dialogBack.js"></script>
   <script src="ideas/ideaSvc/ideaSvc.js"></script>
   <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
   <script src="ideas/ideaItem/ideaItem.js"></script>
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/addIdeaView/addIdeaView.js"></script>
+  <script src="homeView/timelineEvent/timelineEvent.js"></script>
   <script src="homeView/homeView.js"></script>
+  <script src="homeView/helpCard/helpCard.js"></script>
   <script src="about/about.js"></script>
   <!-- endinject -->
 
@@ -54,22 +67,27 @@
             <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
                 <i class="material-icons icon-button-adjust">&#xE5D2;</i>
             </md-button>
-            <h2><span><img ui-sref="home" class="center-img nav-bar-pointer" src="assets/Innovation_Challenge_Bulb.png" width="25"/></span></h2>
+            <h2><span>
+                <img ui-sref="home" class="center-img nav-bar-pointer" src="assets/Innovation_Challenge_Bulb.png" width="25"/>
+                <md-tooltip md-direction="bottom">Home</md-tooltip>
+            </span></h2>
             <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">All Ideas</span>
             <span flex></span>
 
             <div class="md-padding">
                 <!-- Login Button -->
-                <md-button class="md-icon-button" aria-label="Account" ng-click="showLogin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto" ng-if="!isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust">&#xE8A6;</i>
+                <md-button aria-label="Account" ng-click="showLogin($event)" ng-if="!isUserLoggedIn()">
+                    <i class="material-icons icon-button-adjust md-icon-button" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE8A6;</i>
+                    Login
+                    <md-tooltip md-direction="left">Login</md-tooltip>
                 </md-button>
-
                 <!-- Profile button -->
                 <div ng-show="isUserLoggedIn()" style="font-size:14px">
-                    {{currentUser}}
-                    <md-menu md-offset="0 50">
-                        <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <identicon md-menu-origin="" username='getUsername()' size='30' class="identicon"></identicon>
+                    <md-menu md-offset="0 60">
+                        <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+                            <identicon md-menu-origin="" username='getUsername()' size='30' class="identicon identicon-home"></identicon>
+                            {{currentUser}}
+                            <i class="material-icons icon-button-adjust md-icon-button">&#xE5CF;</i>
                         </md-button>
                         <md-menu-content width="4">
                             <md-menu-item>
@@ -82,6 +100,7 @@
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
+                    <md-tooltip md-direction="left">User Menu</md-tooltip>
                 </div>
             </div>
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
@@ -97,19 +116,21 @@
                     <div flex>
                         <md-list class="top-ideas-list">
                             <md-subheader class="md-accent md-hue-1">Top Ideas</md-subheader>
+                            <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!topIdeas.length">
+                                <h3><i>No ideas</i></h3>
+                            </div>
                             <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:5">
                                 <idea-item idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item>
                             </md-item>
                         </md-list>
                         <md-divider></md-divider>
-                        <!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('home')" flex>Home</md-button></div> -->
-                        <!-- <div layout="row"><md-button class="md-primary" ng-click="navTo('idea')" flex>Idea (Test only)</md-button></div> -->
                     </div>
                 </div>
             </md-content>
             <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
-                <md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-show="isUserLoggedIn()">
+                <md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-if="isUserLoggedIn()">
                     <i class="material-icons icon-button-adjust">&#xE145;</i>
+                    <md-tooltip md-direction="left">Add Idea</md-tooltip>
                 </md-button>
             </div>
         </md-sidenav>

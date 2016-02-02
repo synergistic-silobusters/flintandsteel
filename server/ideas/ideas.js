@@ -1,5 +1,7 @@
 /* global module */
 
+var Promise = require('bluebird');
+
 module.exports = function(db) {
     "use strict";
 
@@ -8,105 +10,71 @@ module.exports = function(db) {
     require('events').EventEmitter.prototype._maxListeners = 102;
 
     var IdeaModel = require('./ideaModel'),
-        ObjectId = require('mongodb').ObjectID,
         chalk = require('chalk'),
         _ = require('lodash');
 
     var COLLECTION = "ideas";
     var IdeasSingleton;
 
-    module.create = function(title, description, authorId, eventId, tags, rolesreq, cb) {
+    module.create = function(title, description, authorId, eventId, tags, rolesreq) {
         var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq);
-        db.insertOne(COLLECTION, idea, function(err, doc) {
-            cb(err, doc);
+        return new Promise(function(resolve, reject) {
+            db.insertOne(COLLECTION, idea, function(err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(doc);
+                }
+            });
         });
     };
 
-    module.get = function(id, cb) {
-        db.findOneById(COLLECTION, id, function(err, doc) {
-            cb(err, doc);
-        });
+    module.get = function(id) {
+        return db.findOneById(COLLECTION, id);
     };
 
-    module.update = function(id, property, value, cb) {
-        var updateObj = {};
-        updateObj[property] = value;
-
-        db.updateOne(COLLECTION, id, updateObj, function(err, results) {
-            cb(err, results);
-        });
+    module.delete = function(id) {
+        return db.deleteOne(COLLECTION, id);
     };
 
-    module.addComment = function(id, objectId, cb) {
-        var obj = {
-            commentId: objectId
-        };
-
-        db.updateOnePushArray(COLLECTION, id, "comments", obj, function(err, results) {
-            cb(err, results);
-        });
-    };
-
-    module.removeComment = function(commentId, cb) {
-        var objId = new ObjectId(commentId);
-
-        var obj = {
-            commentId: objId
-        };
-
-        db.findAndPullArray(COLLECTION, "comments", obj, function(err, results) {
-            cb(err, results);
-        });
-    };
-
-    module.edit = function(id, title, description, rolesreq, cb) {
-        var now = new Date().toISOString();
-
-        var editObj = {};
-        editObj.title = title;
-        editObj.description = description;
-        editObj.rolesreq = rolesreq;
-        editObj.timeModified = now;
-
-        db.updateOne(COLLECTION, id, editObj, function(err, results) {
-            cb(err, results);
-        });
-    };
-
-    module.delete = function(id, cb) {
-        db.deleteOne(COLLECTION, id, function(err, results) {
-            cb(err, results);
-        });
-    };
-
-    function getHeaders(cb) {
+    function getHeaders() {
         var projection = {
             title: 1,
             description: 1,
             authorId: 1,
+            eventId: 1,
             likes: 1,
             backs: 1,
+            tags: 1,
             team: 1
         };
 
-        db.find(COLLECTION, projection, function(err, docs) {
-            if (err) {
-                cb(err);
-            }
-            else if (docs.length === 0) {
-                cb(null, docs);
-            }
-            else {
-                var headers = [];
-                docs.forEach(function(doc) {
-                    doc.abstract = _.take(_.words(doc.description), 20).join(' ');
-                    doc.likes = doc.likes.length;
-                    doc.backs = doc.backs.length;
-                    doc.team = doc.team.length;
-                    headers.push(doc);
-                });
-                cb(null, headers);
-            }
+        return new Promise(function(resolve, reject) {
+            db.find(COLLECTION, projection, function(err, docs) {
+                if (err) {
+                    reject(err);
+                }
+                else if (docs.length === 0) {
+                    resolve();
+                }
+                else {
+                    var headers = [];
+                    docs.forEach(function(doc) {
+                        headers.push({
+                            _id: doc._id,
+                            title: doc.title,
+                            authorId: doc.authorId,
+                            eventId: doc.eventId,
+                            abstract: _.take(_.words(doc.description), 20).join(' '),
+                            likes: doc.likes.length,
+                            backs: doc.backs.length,
+                            team: doc.team.length
+                        });
+                    });
+                    resolve(headers);
+                }
+            });
         });
     }
 
@@ -145,27 +113,27 @@ module.exports = function(db) {
     };
 
     var isEmittingUpdates = false;
-    var newestIdea = null;
+    var newestIdeas = [];
     Ideas.prototype.updateIdea = function(idea, oldKey) {
-        var ideaProto = this;
+        var ideaProto = this, key;
 
-        newestIdea = idea;
-
-        var key;
-        if (idea === null && oldKey === "undefined") {
+        if (!idea && !oldKey || oldKey === 'undefined') {
             console.error(chalk.bgRed("No idea (arg1) with an _id or manual id (arg2)"));
         }
-        if (typeof oldKey === "undefined") {
+
+        if (!oldKey) {
             key = idea._id;
+            newestIdeas[key] = idea;
         }
         else {
             key = oldKey;
+            newestIdeas[oldKey] = 'IDEA_NOT_FOUND';
         }
 
         if (!isEmittingUpdates) {
             isEmittingUpdates = true;
             setTimeout(function() {
-                ideaProto.emit("updateIdea_" + key, idea);
+                ideaProto.emit("updateIdea_" + key, newestIdeas[key]);
                 isEmittingUpdates = false;
             }, 500);
         }

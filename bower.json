@@ -22,11 +22,16 @@
     "angular-mocks": "1.4.7",
     "angular-animate": "1.4.7",
     "angular-material": "0.11.2",
+    "angular-messages": "1.4.7",
     "angular-ui-router": "0.2.15",
     "lodash": "3.10.0",
     "moment": "2.10.3",
     "event-source-polyfill": "0.0.6",
     "identicon": "*",
-    "angular-identicon": "0.1.17"
+    "angular-identicon": "0.1.17",
+    "angular-timeline": "1.6.1"
+  },
+  "resolutions": {
+    "angular": "1.4.7"
   }
 }

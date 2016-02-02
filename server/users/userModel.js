@@ -11,7 +11,6 @@ function User(firstName, lastName, fullName, username, email, nickname, title) {
     this.email = email;
     this.nickname = nickname;
     this.title = title;
-    this.likedIdeas = [];
 
     return this;
 }
@@ -32,7 +31,6 @@ function UserLDAP(ldapObj) {
     this.email = ldapJson.mail;
     this.nickname = ldapJson.cn;
     this.title = ldapJson.title;
-    this.likedIdeas = [];
 
     return this;
 }

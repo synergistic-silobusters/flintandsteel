@@ -1,25 +1,65 @@
-<div>
-    <img class="center-img img-padding" src="assets/InnovationChallengeLogo.png" width="40%" height="28%" >
-    <h3 class="center-text">A strategy that enables collaboration and development by providing visibility to innovative ideas.</h3>
-    <div layout="column" layout-gt-sm="row" layout-align="center start" layout-margin>
-        <div flex-gt-sm>
-            <img class="center-img" src="assets/ic_wb_incandescent_black_24px.svg" width="13%" height="13%"/>
-            <h2 class="center-text">Innovate</h2>
-            <p class="center-text">Create an innovative idea and post it to Rok-Starter.  This idea will be visible to other innovators around the world.</p>
+<div layout="row" layout-align="center center" >
+        <div>
+            <h1>Innovation Challenge</h1>
         </div>
-        <div flex-gt-sm ng-click="navToBrowse()">
-            <img class="center-img" src="assets/ic_group_black_24px.svg" width="13%" height="13%" />
-            <h2 class="center-text">Collaborate</h2>
-            <p class="center-text">Browse through posted innovations and give support to ones that are viable.  Share ideas with others who may be interested in supporting it.  Post comments to an innovator to help mold their vision.</p>
-        </div>
-        <div flex-gt-sm>
-            <img class="center-img" src="assets/ic_grade_black_24px.svg" width="13%" height="13%"/>
-            <h2 class="center-text">Achieve</h2>
-            <p class="center-text">Sharing innovations allows all departments to reap the benefits of a single idea.  Together we can grow our ideas to make a better company.</p>
+</div>
+<div layout="row" layout-align="center end">
+</div>
+<div  class="homeview-image">
+    <div flex  layout-align="center center" >
+        <div layout="column" style="width:100%" layout-align="center center">
+            <div class="homeview-login-button" ng-controller="ToolbarCtrl" ng-show="!isUserLoggedIn()">
+                <md-button class="md-raised" ng-click="showLogin($event)" >Log In</md-button>
+            </div>
+            <md-input-container ng-focus="seachFocus()" class="homeview-search md-accent md-hue-1" flex>
+                <label class="search-text">Search Ideas</label>
+                <input name="search" ng-model="searchText">
+            </md-input-container>
         </div>
     </div>
-
+    <!--Begin Help Cards-->
+    <div layout="row" flex layout-wrap layout-align="center center" ng-hide="searchText">
+        <md-item ng-repeat="faq in faqCards" class="homeview-padding-faq-card">
+            <help-card  faq="faq"/>
+        </md-item>
+    </div>
+    <!--End Help Cards-->
 </div>
+<!-- Begin Idea Cards -->
+<div layout="row" layout-align="center center" ng-show="searchText">
+        <div flex="10"></div>
+        <div flex="80">
+            <div layout="row" flex layout-wrap>
+                    <md-item ng-repeat="idea in topIdeas | search:searchText">
+                        <idea-item-browse idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item-browse>
+                    </md-item>
+                <md-divider></md-divider>
+            </div>
+        </div>
+</div>
+<!-- End Idea Cards -->
+<!-- Begin Timeline -->
+<div layout="row" layout-align="center center" ng-hide="searchText">
+    <h2 class="homeview-padding-bottom">Event Schedule</h2>
+</div>
+<div class="container" ng-hide="searchText">
+    <div class="row">
+        <div class="timeline-centered">
+            <md-item ng-repeat="Event in Events">
+            <timeline-event  event="Event"/>
+            </md-item>
+            <article class="timeline-entry begin">
+                <div class="timeline-entry-inner">
+                    <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
+                        <i class="entypo-flight"/>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+<!-- End Timeline -->
 <div><h6><center><a ui-sref="about">About Us</a></center></h6></div>
+<div><h6><center><a ui-sref="innovationdisclosure">Innovation Disclosure Assistant</a></center></h6></div>
 
 

@@ -1,15 +1,55 @@
 <md-card>
-    <md-tooltip md-visible="demo.showTooltip" layout-wrap>
-    {{idea.abstract}}
-    </md-tooltip>
     <md-card-content>
     <div flex="85">
         <div><strong>{{idea.title}}</strong></div>
-        <div class="accent-text">{{idea.author.name}}</div>
+        <div layout="row">
+            <div layout="row" layout-align="center center">
+                <identicon username='idea.author.username' size='14'></identicon>
+            </div>
+            <span>&nbsp;</span>
+            <div class="accent-text author-accent">{{idea.author.name}}</div>
+        </div>
     </div>
     <div flex layout="row">
         <div layout="row">
-            <span>{{idea.likes}} <a class = "idea-likes-click" ng-click="openLikes($event,idea.Likes)">Likes</a> {{idea.backs}} Backs and {{idea.team}} People</span>
+            <span>
+                <md-button class="md-icon-button" aria-label="Like">
+                    {{idea.likes}}
+                    <i class="material-icons icon-button-adjust">&#xE87E;</i>
+                    <!--<i class="material-icons icon-button-adjust" ng-show="isUserLiked()">&#xE87D;</i>-->
+                    <md-tooltip md-direction="bottom">
+                        <ng-pluralize count="idea.likes" 
+                             when="{'0': 'Likes',
+                                    'one': 'Like',
+                                    'other': 'Likes'}">
+                        </ng-pluralize>
+                    </md-tooltip>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Back">
+                    {{idea.backs}}
+                    <i class="material-icons icon-button-adjust">&#xE893;</i>
+                    <!--<i class="material-icons icon-button-adjust" ng-show="hasUserBacked()">&#xE892;</i>-->
+                    <md-tooltip md-direction="bottom">
+                        <ng-pluralize count="idea.backs"
+                            when="{'0': 'Backs',
+                                   'one': 'Back',
+                                   'other': 'Backs'}">
+                        </ng-pluralize>
+                    </md-tooltip>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Back">
+                    {{idea.team}}
+                    <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                    <!--<i class="material-icons icon-button-adjust" ng-show="hasUserBacked()">&#xE7FB;</i>-->
+                    <md-tooltip md-direction="bottom">
+                        <ng-pluralize count={{idea.team}} 
+                             when="{'0': 'Team Members',
+                                    'one': 'Team Member',
+                                    'other': 'Team Members'}">
+                        </ng-pluralize>
+                    </md-tooltip>
+                </md-button>
+            </span>
         </div>
     </div>
     </md-card-content>

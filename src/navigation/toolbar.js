@@ -31,15 +31,15 @@ function DialogController($scope, $mdDialog) {
 angular.module('flintAndSteel')
 .controller('ToolbarCtrl',
     [
-        '$scope', '$state', '$stateParams', '$mdSidenav', 'loginSvc', '$mdDialog', 'toastSvc',
-        function($scope, $state, $stateParams, $mdSidenav, loginSvc, $mdDialog, toastSvc) {
+        '$scope', '$state', '$stateParams', '$mdSidenav', 'userSvc', '$mdDialog', 'toastSvc',
+        function($scope, $state, $stateParams, $mdSidenav, userSvc, $mdDialog, toastSvc) {
             "use strict";
 
             $scope.displayOverflow = false;
 
             $scope.accountClick = function accountClick() {
 
-                if (loginSvc.isUserLoggedIn()) {
+                if (userSvc.isUserLoggedIn()) {
                     $state.go('account');
                 }
                 else {
@@ -55,11 +55,11 @@ angular.module('flintAndSteel')
                 $mdSidenav('left').toggle();
             };
 
-            $scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+            $scope.isUserLoggedIn = userSvc.isUserLoggedIn;
 
             $scope.getUsername = function getUsername() {
                 if ($scope.isUserLoggedIn()) {
-                    return loginSvc.getProperty('username');
+                    return userSvc.getProperty('username');
                 }
                 return null;
             };
@@ -82,16 +82,16 @@ angular.module('flintAndSteel')
 
             // Function used to display feedback on login - OK, Error, or User Not Found
             $scope.loginUser = function(account) {
-                loginSvc.checkLogin(account, function LoginSuccess(data) {
+                userSvc.checkLogin(account).then(function LoginSuccess(response) {
                     var content;
-                    if (data.status === 'AUTH_OK') {
-                        $scope.currentUser = data.name;
-                        content = data.name + ' has successfully signed in!';
+                    if (response.data.status === 'AUTH_OK') {
+                        $scope.currentUser = response.data.name;
+                        content = response.data.name + ' has successfully signed in!';
                     }
-                    else if (data.status === 'AUTH_ERROR') {
+                    else if (response.data.status === 'AUTH_ERROR') {
                         content = 'Your credentials don\'t match the stored ones :(';
                     }
-                    else if (data.status === 'USER_NOT_FOUND') {
+                    else if (response.data.status === 'USER_NOT_FOUND') {
                         content = 'The user was not found in the server!';
                     }
                     toastSvc.show(content);
@@ -103,10 +103,17 @@ angular.module('flintAndSteel')
 
             // Logout from menu
             $scope.logout = function logout() {
-                var accountName = loginSvc.getProperty('name');
-                loginSvc.logout();
+                var accountName = userSvc.getProperty('name');
+                userSvc.logout();
                 toastSvc.show(accountName + ' has been logged out!');
-                $state.go('home');
+
+                // Reload if editing data to clear partial content
+                if ($state.includes('idea')) {
+                    $state.reload('idea');
+                }
+                else if ($state.includes('addidea')) {
+                    $state.go('home');
+                }
             };
 
             // Re-route to account page from menu

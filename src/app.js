@@ -8,12 +8,13 @@ angular.module('flintAndSteel', [
         'ngAnimate',
         'ui.router',
         'ngMaterial',
+        'ngMessages',
         'ui.identicon'
     ]
 )
 .config([
-    '$urlRouterProvider', '$stateProvider', '$mdIconProvider', '$mdThemingProvider',
-    function($urlRouterProvider, $stateProvider, $mdIconProvider, $mdThemingProvider) {
+    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider', '$httpProvider',
+    function($urlRouterProvider, $stateProvider, $mdThemingProvider, $httpProvider) {
         "use strict";
 
         $stateProvider
@@ -52,27 +53,14 @@ angular.module('flintAndSteel', [
                 url: '/about',
                 templateUrl: 'about/about.tpl.html',
                 controller: ''
+            })
+            .state('innovationdisclosure', {
+                url: '/innovationdisclosure',
+                templateUrl: 'innovationDisclosureView/innovationDisclosureView.tpl.html',
+                controller: ''
             });
 
         $urlRouterProvider.otherwise('/');
-
-        $mdIconProvider
-            .iconSet('action', './assets/icons/action-icons.svg', 24)
-            .iconSet('alert', './assets/icons/alert-icons.svg', 24)
-            .iconSet('av', './assets/icons/av-icons.svg', 24)
-            .iconSet('communication', './assets/icons/communication-icons.svg', 24)
-            .iconSet('content', './assets/icons/content-icons.svg', 24)
-            .iconSet('device', './assets/icons/device-icons.svg', 24)
-            .iconSet('editor', './assets/icons/editor-icons.svg', 24)
-            .iconSet('file', './assets/icons/file-icons.svg', 24)
-            .iconSet('hardware', './assets/icons/hardware-icons.svg', 24)
-            .iconSet('icons', './assets/icons/icons-icons.svg', 24)
-            .iconSet('image', './assets/icons/image-icons.svg', 24)
-            .iconSet('maps', './assets/icons/maps-icons.svg', 24)
-            .iconSet('navigation', './assets/icons/navigation-icons.svg', 24)
-            .iconSet('notification', './assets/icons/notification-icons.svg', 24)
-            .iconSet('social', './assets/icons/social-icons.svg', 24)
-            .iconSet('toggle', './assets/icons/toggle-icons.svg', 24);
 
         var rockstarterRedMap = $mdThemingProvider.extendPalette('red', {
             '900': 'bb1e32'
@@ -93,6 +81,16 @@ angular.module('flintAndSteel', [
             'hue-1': 'A700'
         })
         .warnPalette('red');
+
+        // Initialize get if not there
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};    
+        }
+
+        // Disable IE ajax request caching
+        $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get.Pragma = 'no-cache';
     }
 ]);
 
