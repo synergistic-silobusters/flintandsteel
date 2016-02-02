@@ -31,7 +31,7 @@
     "express": "4.13.0",
     "external-ip": "0.2.3",
     "ip": "0.3.3",
-    "lodash": "3.10.0",
+    "lodash": "4.1.0",
     "morgan": "1.6.1"
   },
   "devDependencies": {
