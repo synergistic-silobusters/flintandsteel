@@ -171,8 +171,8 @@
                                            ng-maxlength="500"
                                            md-maxlength="500"></textarea>
                                     <div ng-messages="newUpdateForm.updateBox.$error">
-                                        <div ng-message="minlength">Your comment is too short. Must be at least 4 characters</div>
-                                        <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                                        <div ng-message="minlength">Your update is too short. Must be at least 4 characters</div>
+                                        <div ng-message="maxlength">Your update is too long. Must be under 500 characters</div>
                                     </div>
                                 </md-input-container>
                                 <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid || !ideasView.newUpdate">
@@ -199,7 +199,7 @@
                                         </md-button>
                                     </span>
                                 </div>
-                                <p class="convo-text-bubble text-area left word-wrap">{{update.text}}</p>
+                                <div class="convo-text-bubble text-area left" marked="update.text"></div>
                             </div>
                         </div>
                     </div>
