@@ -9,7 +9,7 @@ angular.module('flintAndSteel')
             return {
                 restrict: 'E',
                 scope: {
-                    idea: '=',
+                    ratingArray: '=',
                     ratingValue: '=ngModel'
                 },
                 templateUrl: 'starRating/starRating.tpl.html',

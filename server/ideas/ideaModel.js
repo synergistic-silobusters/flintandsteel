@@ -1,6 +1,6 @@
 /* global exports */
 
-function Idea(title, description, authorId, eventId, tags, rolesreq) {
+function Idea(title, description, authorId, eventId, tags, rolesreq, ratings) {
     "use strict";
 
     var now = new Date().toISOString();
@@ -24,12 +24,20 @@ function Idea(title, description, authorId, eventId, tags, rolesreq) {
         types: [{name: "Owner", _lowername: "owner"}]
     }];
     this.team = [{memberId: this.authorId}];
+    this.value = [{
+        stars:4,
+        authorId: this.authorId
+    }],
+    this.complexity = [{
+        stars:2,
+        authorId: this.authorId
+    }];
 
     return this;
 }
 
-exports.create = function(title, description, authorId, eventId, tags, rolesreq) {
+exports.create = function(title, description, authorId, eventId, tags, rolesreq, ratings) {
     "use strict";
 
-    return new Idea(title, description, authorId, eventId, tags, rolesreq);
+    return new Idea(title, description, authorId, eventId, tags, rolesreq, ratings);
 };

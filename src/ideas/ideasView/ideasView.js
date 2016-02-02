@@ -74,6 +74,10 @@ angular.module('flintAndSteel')
                         $scope.idea = response.data;
                         ctrl.enableEdit = false;
                         ctrl.refreshTeam();
+                        /*if (hasUserRatedValue()) {
+                            $scope.idea.value.
+                        }*/
+                        ctrl.updateStars($scope.idea.value[0]);
                     }
                 }, function getIdeaError(response) {
                     console.log(response);
@@ -610,6 +614,68 @@ angular.module('flintAndSteel')
                         }
                     });
                     $window.location = $scope.emailString;
+                }
+            };
+
+            ////////////////////////
+            // RATING FUNCTIONS   //
+            ////////////////////////
+
+            var maxStars = 5;
+
+            ctrl.editIdeaRating = function(idea) {
+                if ($scope.isUserLoggedIn()) {
+                    ideaSvc.editIdeaRating($scope.idea._id, idea.value, idea.complexity).then(function() {
+                        //ctrl.refreshIdea();
+                    },
+                    function() {
+                        console.log("ERR: Could not update idea.");
+                    });
+                }
+            };
+
+            ctrl.updateStars = function (stars) {
+                stars.stars = [];
+                for (var i = 0; i < maxStars; i++) {
+                    stars.stars.push({ filled: i < stars.value });
+                }
+                ctrl.editIdeaRating($scope.idea);
+            };
+
+            /*$scope.$watch('ratingValue', function (oldVal, newVal) {
+                if (newVal) {
+                    ctrl.updateStars();
+                }
+            });*/
+
+            $scope.toggle = function (index, stars) {
+                if($scope.isUserLoggedIn()) {
+                    stars.value = index + 1;
+                    ctrl.updateStars(stars);
+                }
+            };
+
+            //Pass either $scope.idea.value or $scope.idea.complexity
+            $scope.hasUserRated = function hasUserRated(rating) {
+                var hasUserRated = false;
+                if (userSvc.isUserLoggedIn() && typeof rating !== 'undefined') {
+                    rating.forEach(function(value) {
+                        if (userSvc.getProperty('_id') === value.authorId) {
+                            hasUserRated = true;
+                        }
+                    });
+                }
+                return hasUserRated;
+            };
+
+            //Pass 'value' or 'complex' to retreive value or complexity for user
+            ctrl.loadUserRating = function loadUserRating(rating) {
+                if(typeof rating !== undefined) {
+                    rating.forEach(function(value) {
+                        if (userSvc.getProperty('_id') === value.authorId) {
+                            return value;
+                        }
+                    })
                 }
             };
         }

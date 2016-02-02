@@ -42,10 +42,34 @@
                     </span>
                 </div>
             </div>
-            <div class="extra-padding-sides-15">
-                Value: <star-rating ng-model="idea.ratings.value.stars"></star-rating>
-                Complexity: <star-rating ng-model="idea.ratings.complexity.stars"></star-rating>
+            <div class="extra-padding-sides-15" ng-if="isUserLoggedIn() && hasUserRated(idea.value)">
+                Value: <span ng-repeat="star in idea.value[0].stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.value[0])">
+                    <!--Empty Star-->
+                    <md-icon class="star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
+                    <!--Half Star-->
+                    <i ng-show="false" class="material-icons">&#xE839;</i>
+                    <!--Filled Star-->
+                    <md-icon class="star" ng-show="star.filled" class="material-icons">&#xE838;</md-icon>
+                </span>
             </div>
+            <div class="extra-padding-sides-15" ng-if="!isUserLoggedIn() || !hasUserRated(idea.value)">
+                Value: <span ng-repeat="star in idea.value[0].stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.value[0])">
+                    <!--Empty Star-->
+                    <md-icon class="black-star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
+                    <!--Half Star-->
+                    <i ng-show="false" class="material-icons">&#xE839;</i>
+                    <!--Filled Star-->
+                    <md-icon class="black-star" ng-show="star.filled" class="material-icons">&#xE838;</md-icon>
+                </span>
+            </div>
+            <!--<div>
+                Complexity:
+                <span ng-repeat="star in stars" ng-class="{filled: star.filled}" ng-click="toggle($index)">
+                    <md-icon class="star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
+                    <i ng-show="false" class="material-icons">&#xE839;</i>
+                    <md-icon class="star" ng-show="star.filled" class="material-icons">&#xE838;</md-icon>
+                </span>
+            </div>-->
             <p class="word-wrap extra-padding-sides-15">{{idea.description}}</p>
             <div layout="row" flex layout-wrap class="extra-padding-sides-15">
                 <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">

@@ -6,13 +6,12 @@ angular.module('flintAndSteel')
         function($scope) {
             "use strict";
 
+            var ctrl = this;
+
             $scope.rating = 0;
-            $scope.ratingValue = $scope.stars;
+            $scope.maxStars = 5;
 
             function updateStars() {
-                if($scope.maxStars == undefined) {
-                    $scope.maxStars = 5;
-                }
                 $scope.stars = [];
                 for (var i = 0; i < $scope.maxStars; i++) {
                     $scope.stars.push({
@@ -34,6 +33,33 @@ angular.module('flintAndSteel')
                 /*$scope.onRatingSelected({
                     rating: index + 1
                 });*/
+            };
+
+            ////////////////////////
+            // HAS USER FUNCTIONS //
+            ////////////////////////
+            ctrl.hasUserRatedValue = function hasUserRatedValue() {
+                var hasUserRatedValue = false;
+                if (userSvc.isUserLoggedIn() && typeof $scope.idea.ratings.value !== 'undefined') {
+                    $scope.idea.ratings.value.forEach(function(value) {
+                        if (userSvc.getProperty('_id') === value.authorId) {
+                            hasUserRatedValue = true;
+                        }
+                    });
+                }
+                return hasUserRatedValue;
+            };
+
+            ctrl.hasUserRatedComplexity = function hasUserRatedComplexity() {
+                var hasUserRatedComplexity = false;
+                if (userSvc.isUserLoggedIn() && typeof $scope.idea.ratings.complexity !== 'undefined') {
+                    $scope.idea.ratings.complexity.forEach(function(complexity) {
+                        if (userSvc.getProperty('_id') === complexity.authorId) {
+                            hasUserRatedComplexity = true;
+                        }
+                    });
+                }
+                return hasUserRatedComplexity;
             };
         }
     ]

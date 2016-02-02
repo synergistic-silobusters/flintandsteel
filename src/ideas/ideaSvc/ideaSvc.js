@@ -87,6 +87,17 @@ angular.module('flintAndSteel')
                 }
             };
 
+            this.editIdeaRating = function editIdea(ideaId, value, complexity) {
+                if (ideaId !== 'mock_idea') {
+                    return $http.patch('/api/v1/ideas/' + ideaId,
+                        [
+                            { operation: 'modify', path: 'value', value: JSON.stringify(value) },
+                            { operation: 'modify', path: 'complexity', value: JSON.stringify(complexity) }
+                        ]
+                    );
+                }
+            };
+
             this.deleteIdea = function deleteIdea(ideaId) {
                 if (ideaId !== 'mock_idea') {
                     return $http.delete('/api/v1/ideas/' + ideaId);
@@ -122,7 +133,8 @@ angular.module('flintAndSteel')
                 editBack: this.editBack,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
-                getBackTypeChips: this.getBackTypeChips
+                getBackTypeChips: this.getBackTypeChips,
+                editIdeaRating: this.editIdeaRating
             };
         }
     ]

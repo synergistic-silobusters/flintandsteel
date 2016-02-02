@@ -12,6 +12,19 @@
       color: #ffcc00;
     }
 }
+
+.black-star {
+    padding: 1px;
+    color: black;
+    font-size: 20px;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+
+    &.filled {
+      color: #ffcc00;
+    }
+}
 /*
   &.readonly .star.filled {
     color: #666;

@@ -59,6 +59,18 @@
                 "memberId": "idea.authorId"
             },
             "set of objects with user._id"
+        ],
+        "value": [
+            {
+                "stars":4,
+                "authorId": "one user._id"
+            }
+        ],
+        "complexity": [
+            {
+                "stars":2,
+                "authorId": "one user._id"
+            }
         ]
     },
     "comment": {
