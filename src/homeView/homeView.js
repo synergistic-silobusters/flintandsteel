@@ -8,9 +8,7 @@ angular.module('flintAndSteel')
             "use strict";
 
 
-            $scope.internetExplorerMessage = "Some pages may not render properly in this Browser.  For best experience, please use Google Chrome."
-
-            $scope.browserVersion = parseInt(getInternetExplorerVersion());
+            $scope.internetExplorerMessage = "Some pages may not render properly in this Browser.  For best experience, please use Google Chrome.";
 
             var WordList = new Array({ text: "Innovate", weight: 2.5});
 
@@ -68,6 +66,8 @@ angular.module('flintAndSteel')
                 }
                 return rv;
             }
+
+            $scope.browserVersion = parseInt(getInternetExplorerVersion());
 
             $scope.navToBrowse = function navToBrowse() {
                 $state.go('ideabrowse');
