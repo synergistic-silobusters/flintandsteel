@@ -7,6 +7,39 @@ angular.module('flintAndSteel')
         function($document, $scope, $timeout, $state, $mdSidenav, ideaSvc) {
             "use strict";
 
+            function getInternetExplorerVersion() {
+                var rv = -1;
+                var ua = navigator.userAgent;
+                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (navigator.appName === 'Microsoft Internet Explorer') {
+                    ua = navigator.userAgent;
+                    re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                    if (re.exec(ua) !== null) {
+                        rv = parseFloat(RegExp.$1);
+                    }
+                }
+                else if (navigator.appName === 'Netscape') {
+                    ua = navigator.userAgent;
+                    re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+                    if (re.exec(ua) !== null) {
+                        rv = parseFloat(RegExp.$1);
+                    }
+                }
+                return rv;
+            }
+            $scope.IEMessage = function() {
+                var v = parseInt(getInternetExplorerVersion());
+                console.log(v);
+                if (v > 0) {
+                    return "Some pages may not render properly in this Browser.  For best experience, please use Google Chrome.";
+                }
+                else {
+                    return "";
+                }
+            };
+
+            $scope.InternetExplorerMessage = $scope.IEMessage();
+
 
             var WordList = new Array({ text: "Innovate", weight: 2.5});
 
