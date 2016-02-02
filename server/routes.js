@@ -102,7 +102,8 @@ module.exports = function(app, db) {
                 theDatabase = db.getDb();
 
             if (/comments/i.test(req.query.inpath)) {
-                query["authorId"] = new ObjectId(req.query.forterm); //jshint ignore:line
+                var key = 'authorId';
+                query[key] = new ObjectId(req.query.forterm);
                 theDatabase.collection('comments').find(query, { parentId: 1 }).toArray(function(err, comments) {
                     if (err) {
                         res.sendStatus(500);
