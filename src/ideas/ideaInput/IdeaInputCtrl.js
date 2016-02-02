@@ -29,7 +29,7 @@ angular.module('flintAndSteel')
             $scope.addTag = function addTag(tag) {
                 var reNonAlpha = /[.,-\/#!$%\^&\*;:{}=\-_`~()<>\'\"@\[\]\|\\\?]/g;
                 tag = tag.replace(reNonAlpha, " ");
-                tag = _.capitalize(_.camelCase(tag));
+                tag = _.upperFirst(_.camelCase(tag));
                 if ($scope.idea.tags.length !== 5 && !$scope.doesTagExist(tag) && tag !== '') {
                     $scope.idea.tags.push(tag);
                 }
