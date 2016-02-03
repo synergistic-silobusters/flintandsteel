@@ -151,6 +151,10 @@ insertResult = db.ideas.insert(
                 stars: [],
                 value: 4,
                 authorId: userIds[1]
+            }, {
+                stars: [],
+                value: 2,
+                authorId: userIds[0]
             }],
             complexity: [{
                 stars:2,

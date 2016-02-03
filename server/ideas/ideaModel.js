@@ -27,7 +27,7 @@ function Idea(title, description, authorId, eventId, tags, rolesreq, ratings) {
     this.value = [{
         stars:4,
         authorId: this.authorId
-    }],
+    }];
     this.complexity = [{
         stars:2,
         authorId: this.authorId
@@ -36,8 +36,8 @@ function Idea(title, description, authorId, eventId, tags, rolesreq, ratings) {
     return this;
 }
 
-exports.create = function(title, description, authorId, eventId, tags, rolesreq, ratings) {
+exports.create = function(title, description, authorId, eventId, tags, rolesreq, value, complexity) {
     "use strict";
 
-    return new Idea(title, description, authorId, eventId, tags, rolesreq, ratings);
+    return new Idea(title, description, authorId, eventId, tags, rolesreq, value, complexity);
 };
