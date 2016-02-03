@@ -81,6 +81,7 @@ img.grayscale:hover {
 }
 
 h1.no-margins {
+    margin: 0px;
     margin-block-end: 0;
     margin-block-start: 0;
     -webkit-margin-after: 0;
