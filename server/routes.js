@@ -58,7 +58,7 @@ module.exports = function(app, db) {
             req.body.title,
             req.body.description,
             new ObjectId(req.body.authorId),
-            new ObjectId(req.body.eventId),
+            req.body.eventId,
             req.body.tags,
             req.body.rolesreq
         ).then(function(doc) {
