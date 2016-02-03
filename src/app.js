@@ -9,13 +9,17 @@ angular.module('flintAndSteel', [
         'ui.router',
         'ngMaterial',
         'ngMessages',
-        'ui.identicon'
+        'ui.identicon',
+        'hc.marked'
     ]
 )
 .config([
-    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider', '$httpProvider',
-    function($urlRouterProvider, $stateProvider, $mdThemingProvider, $httpProvider) {
+    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider', '$httpProvider', 'markedProvider',
+    function($urlRouterProvider, $stateProvider, $mdThemingProvider, $httpProvider, markedProvider) {
         "use strict";
+
+        // Use GitHub Flavored Markdown ("gfm")
+        markedProvider.setOptions({gfm: true});
 
         $stateProvider
             .state('home', {
