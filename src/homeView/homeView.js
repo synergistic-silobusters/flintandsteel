@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$document', '$scope', '$timeout', '$state','$mdSidenav', 'ideaSvc',
-        function($document, $scope, $timeout, $state, $mdSidenav, ideaSvc) {
+        '$document', '$scope', '$timeout', '$window', '$state','$mdSidenav', 'ideaSvc',
+        function($document, $scope, $timeout, $window, $state, $mdSidenav, ideaSvc) {
             "use strict";
 
 
@@ -48,17 +48,17 @@ angular.module('flintAndSteel')
 
             function getInternetExplorerVersion() {
                 var rv = -1;
-                var ua = navigator.userAgent;
+                var ua = $window.navigator.userAgent;
                 var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                if (navigator.appName === 'Microsoft Internet Explorer') {
-                    ua = navigator.userAgent;
+                if ($window.navigator.appName === 'Microsoft Internet Explorer') {
+                    ua = $window.navigator.userAgent;
                     re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
                     if (re.exec(ua) !== null) {
                         rv = parseFloat(RegExp.$1);
                     }
                 }
-                else if (navigator.appName === 'Netscape') {
-                    ua = navigator.userAgent;
+                else if ($window.navigator.appName === 'Netscape') {
+                    ua = $window.navigator.userAgent;
                     re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
                     if (re.exec(ua) !== null) {
                         rv = parseFloat(RegExp.$1);
