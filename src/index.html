@@ -118,7 +118,7 @@
         </div>
     </md-toolbar>
 
-    <div flex layout="row">
+    <md-content flex layout="row">
         <md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
             <md-content ng-controller="SidenavCtrl" flex>
                 <div layout="column" flex>
@@ -144,8 +144,8 @@
             </div>
         </md-sidenav>
 
-        <md-content ui-view flex class="scroll-container"></md-content>
-    </div>
+        <md-content ui-view flex></md-content>
+    </md-content>
 
 </body>
 </html>
