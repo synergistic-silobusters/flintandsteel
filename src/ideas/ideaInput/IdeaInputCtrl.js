@@ -13,6 +13,7 @@ angular.module('flintAndSteel')
                 name: "No Event"
             };
 
+            $scope.idea.eventId = "";
             $scope.cancelFn = $scope.cancelFn || null;
             $scope.cancelBtnText = $scope.cancelBtnText || null;
 
