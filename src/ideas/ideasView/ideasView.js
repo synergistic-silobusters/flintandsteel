@@ -66,16 +66,12 @@ angular.module('flintAndSteel')
 
             ctrl.refreshIdea = function() {
                 ideaSvc.getIdea($stateParams.ideaId).then(function getIdeaSuccess(response) {
-                    if (response.data === 'IDEA_NOT_FOUND') {
-                        toastSvc.show('Sorry, that idea does not exist');
-                        $state.go('home');
-                    }
-                    else {
-                        $scope.idea = response.data;
-                        ctrl.enableEdit = false;
-                        ctrl.refreshTeam();
-                    }
+                    $scope.idea = response.data;
+                    ctrl.enableEdit = false;
+                    ctrl.refreshTeam();
                 }, function getIdeaError(response) {
+                    toastSvc.show('Sorry, that idea does not exist');
+                    $state.go('home');
                     console.log(response);
                 });
             };
