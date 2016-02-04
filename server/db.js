@@ -107,6 +107,27 @@ module.exports = function(dbName, cb) {
         });
     };
 
+    /*module.getAvg = function getAvg(collection) {
+        console.log('avg');
+        return new Promise(function(resolve, reject) {
+            db.collection(collection).aggregate([{
+                $group: {
+                    _id: 'total',
+                    total: {
+                        $avg: '$value'
+                    }
+                }
+            }]).toArray(function(err, data) {
+                if(err) throw err;
+                if(!data.length) {
+                    throw new Error('No results found')
+                }
+                var o = data[0];
+                console.log(Number(o.total).toFixed(2));
+            })
+        });
+    };*/
+
     module.findOneByProperty = function findOneByProperty(collection, property, value, cb) {
         var query = {};
         query[property] = value;
@@ -203,8 +224,8 @@ module.exports = function(dbName, cb) {
                 idToChange = '',
                 path = '',
                 runUpdate = true;
-            
-            
+
+
             if (/append|create|modify/.test(command.operation)) {
                 valueObj = JSON.parse(command.value);
 
@@ -232,13 +253,13 @@ module.exports = function(dbName, cb) {
                     valueObj = new ObjectId(valueObj);
                 }
             }
-                    
+
             switch (command.operation) {
                 case "append":
                     toChange = {};
                     valueObj._id = new ObjectId();
                     toChange[command.path] = valueObj;
-                    updateConfig = { 
+                    updateConfig = {
                         $push: toChange
                     };
                     if (collection === 'ideas') {

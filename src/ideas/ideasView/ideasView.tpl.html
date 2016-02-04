@@ -53,7 +53,7 @@
                 </span>
             </div>
             <div class="extra-padding-sides-15" ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.value))">
-                Value: <span ng-repeat="star in idea.value[0].stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.value)">
+                Value: <span ng-repeat="star in stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.value)">
                     <!--Empty Star-->
                     <md-icon class="black-star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
                     <!--Half Star-->

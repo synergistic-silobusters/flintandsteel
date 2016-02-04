@@ -78,6 +78,7 @@ angular.module('flintAndSteel')
                             $scope.idea.value.
                         }*/
                         ctrl.updateStars($scope.idea.value[0]);
+                        $scope.loadAvgRating();
                     }
                 }, function getIdeaError(response) {
                     console.log(response);
@@ -640,6 +641,14 @@ angular.module('flintAndSteel')
                 }
             };
 
+            /*ctrl.getSumRating = function() {
+                var sum = ideaSvc.getSum($scope.idea._id).then(function (response) {
+                    $scope.valueRating = response.data;
+                });
+            };*/
+
+            //ctrl.getSumRating('value');
+
             ctrl.updateStars = function (rating) {
                 rating.stars = [];
                 for (var i = 0; i < maxStars; i++) {
@@ -696,6 +705,25 @@ angular.module('flintAndSteel')
                 }
                 return userRating;
             };
+
+            // $scope.loadAvgRating = function loadAvgRating() {
+            //     ideaSvc.getAvg($stateParams.ideaId, 'rating').then(function getIdeaSuccess(response) {
+            //         if (response.data === 'IDEA_NOT_FOUND') {
+            //             toastSvc.show('Sorry, that idea does not exist');
+            //             $state.go('home');
+            //         }
+            //         else {
+            //             $scope.avgValue = response.data;
+            //         }
+            //     }, function getIdeaError(response) {
+            //         console.log(response);
+            //     });
+            //
+            //     //$scope.avgValue = ideaSvc.getAvg($stateParams.ideaId);
+            //     // for (var i = 0; i < maxStars; i++) {
+            //     //     //rating.stars.push({ filled: i < rating.avgValue });
+            //     // }
+            // };
         }
     ]
 );

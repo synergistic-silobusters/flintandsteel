@@ -53,6 +53,7 @@ module.exports = function(app, db) {
             res.status(500).json(error);
         });
     });
+
     app.post('/api/v1/ideas', function(req, res) {
         ideas.create(
             req.body.title,
@@ -80,6 +81,30 @@ module.exports = function(app, db) {
             ideas.get(req.params.id).then(function(doc) {
                 return replaceIds.idea(doc);
             }).then(function(result) {
+                var theDatabase = db.getDb();
+                var test = function(theDatabase, callback) {
+                    theDatabase.collection('ideas').aggregate([
+                    { $match: {_id: result[0]._id} },
+                    { $unwind: "$value" },
+                    { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
+                ]).toArray(function(err, data) {
+                    if(err) throw err;
+                    if(!data.length) {
+                        throw new Error('No results found')
+                    }
+                    //console.log(result[0]);
+                    //result[0].avgValue = data[0].ratingAvg;
+                    callback(data[0].ratingAvg);
+                    //return data[0].ratingAvg;
+                    //console.log(result[0]);
+                    //console.log(data[0].ratingAvg);
+                });
+
+                //console.log(test(theDatabase, function() {});
+
+            };
+
+                console.log(test);
                 res.status(200).json(result[0]);
             })
             .catch(function(error) {
@@ -93,6 +118,7 @@ module.exports = function(app, db) {
             });
         }
     }, function(req, res) {
+        console.log('search');
         if (!req.query.inpath || !req.query.forterm) {
             res.status(422).send('A query parameter is missing from the request.');
         }

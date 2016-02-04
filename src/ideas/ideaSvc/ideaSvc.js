@@ -19,6 +19,10 @@ angular.module('flintAndSteel')
                 return $http.get('/api/v1/ideas');
             };
 
+            this.getAvg = function getAvg(ideaId, type) {
+                return $http.get('/api/v1/ideas/' + ideaId, type);
+            };
+
             this.postComment = function postComment(parentId, text, authorId) {
                 return $http.post('/api/v1/comments',
                     {
@@ -134,7 +138,8 @@ angular.module('flintAndSteel')
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
                 getBackTypeChips: this.getBackTypeChips,
-                editIdeaRating: this.editIdeaRating
+                editIdeaRating: this.editIdeaRating,
+                getAvg: this.getAvg
             };
         }
     ]
