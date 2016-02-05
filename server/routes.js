@@ -78,28 +78,27 @@ module.exports = function(app, db) {
             next();
         }
         else {
+            var idea;
             ideas.get(req.params.id).then(function(doc) {
                 return replaceIds.idea(doc);
             }).then(function(result) {
-                var theDatabase = db.getDb();
-                //var test = function(theDatabase, callback)
+                //get the idea, set it to an acessible variable
+                idea = result[0];
 
-                theDatabase.collection('ideas').aggregate([
+                //aggregate for average
+                var theDatabase = db.getDb();
+                return theDatabase.collection('ideas').aggregate([
                     { $match: {_id: result[0]._id} },
                     { $unwind: "$value" },
                     { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
-                    ]).toArray(function(err, data) {
-                        if(err) throw err;
-                        //if(err) callback(err);
-                        if(!data.length) {
-                            throw new Error('No results found')
-                        }
-                        //callback(null, data[0].ratingAvg);
-                    console.log(data[0].ratingAvg);
-                    });
-
-                //console.log(callback[0]);
-                res.status(200).json(result[0]);
+                ]).toArray();
+            }).then(function(averages) {
+                //select the average rating and append to the idea
+                idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
+                return idea;
+            }).then(function(ideaToSend) {
+                //send the idea to client side
+                res.status(200).json(ideaToSend);
             })
             .catch(function(error) {
                 if (error.message === 'NOT_FOUND') {

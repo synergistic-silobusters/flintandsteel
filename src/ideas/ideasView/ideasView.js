@@ -74,10 +74,6 @@ angular.module('flintAndSteel')
                         $scope.idea = response.data;
                         ctrl.enableEdit = false;
                         ctrl.refreshTeam();
-                        /*if (hasUserRatedValue()) {
-                            $scope.idea.value.
-                        }*/
-                        $scope.idea.avgValue = {value: 4};
                         ctrl.updateStars($scope.idea.value[0]);
                         $scope.loadRating($scope.idea.avgValue);
                     }
