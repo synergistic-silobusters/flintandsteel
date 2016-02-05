@@ -82,29 +82,23 @@ module.exports = function(app, db) {
                 return replaceIds.idea(doc);
             }).then(function(result) {
                 var theDatabase = db.getDb();
-                var test = function(theDatabase, callback) {
-                    theDatabase.collection('ideas').aggregate([
+                //var test = function(theDatabase, callback)
+
+                theDatabase.collection('ideas').aggregate([
                     { $match: {_id: result[0]._id} },
                     { $unwind: "$value" },
                     { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
-                ]).toArray(function(err, data) {
-                    if(err) throw err;
-                    if(!data.length) {
-                        throw new Error('No results found')
-                    }
-                    //console.log(result[0]);
-                    //result[0].avgValue = data[0].ratingAvg;
-                    callback(data[0].ratingAvg);
-                    //return data[0].ratingAvg;
-                    //console.log(result[0]);
-                    //console.log(data[0].ratingAvg);
-                });
+                    ]).toArray(function(err, data) {
+                        if(err) throw err;
+                        //if(err) callback(err);
+                        if(!data.length) {
+                            throw new Error('No results found')
+                        }
+                        //callback(null, data[0].ratingAvg);
+                    console.log(data[0].ratingAvg);
+                    });
 
-                //console.log(test(theDatabase, function() {});
-
-            };
-
-                console.log(test);
+                //console.log(callback[0]);
                 res.status(200).json(result[0]);
             })
             .catch(function(error) {
