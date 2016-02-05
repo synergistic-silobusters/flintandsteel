@@ -3,7 +3,7 @@
     <md-card-content class="no-padding-all">
         <div ng-if="!ideasView.enableEdit">
             <div layout="column" layout-align="space-between center" class="top-bar extra-padding-sides-15 center-text">
-                <div flex=75>
+                <div>
                     <h1 class="no-margins word-wrap center-text">{{idea.title}}</h1>
                     <small>
                         <span class="center-stuff" ng-show="idea.timeModified === idea.timeCreated">Created&nbsp</span>
@@ -71,6 +71,7 @@
                 </span>
             </div>-->
             <p class="word-wrap extra-padding-sides-15">{{idea.description}}</p>
+            <div class="extra-padding-sides-15" marked="idea.description"></div>
             <div layout="row" flex layout-wrap class="extra-padding-sides-15">
                 <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
                     <small class="custom-chip">#{{tag}}</small>
@@ -212,14 +213,20 @@
                                            ng-maxlength="500"
                                            md-maxlength="500"></textarea>
                                     <div ng-messages="newUpdateForm.updateBox.$error">
-                                        <div ng-message="minlength">Your comment is too short. Must be at least 4 characters</div>
-                                        <div ng-message="maxlength">Your comment is too long Must be under 500 characters</div>
+                                        <div ng-message="minlength">Your update is too short. Must be at least 4 characters</div>
+                                        <div ng-message="maxlength">Your update is too long. Must be under 500 characters</div>
                                     </div>
                                 </md-input-container>
                                 <md-button class="md-icon-button" type="submit" aria-label="Submit" ng-disabled="newUpdateForm.$invalid || !ideasView.newUpdate">
                                     <i class="material-icons icon-button-adjust">&#xE876;</i>
                                 </md-button>
                             </form>
+                            <a class="markdown-supported" href="https://guides.github.com/features/mastering-markdown/" target="_blank">
+                                  <svg aria-hidden="true" height="16" role="img" version="1.1" viewBox="0 0 16 16" width="16">
+                                      <path d="M14.85 3H1.15C0.52 3 0 3.52 0 4.15v7.69C0 12.48 0.52 13 1.15 13h13.69c0.64 0 1.15-0.52 1.15-1.15V4.15C16 3.52 15.48 3 14.85 3zM9 11L7 11V8l-1.5 1.92L4 8v3H2V5h2l1.5 2 1.5-2 2 0V11zM11.99 11.5L9.5 8h1.5V5h2v3h1.5L11.99 11.5z"></path>
+                                  </svg>
+                                  Styling with Markdown is supported
+                            </a>
                         </md-card-content>
                         <md-card-content ng-if="!idea.updates[0] && !ideasView.isUserMemberOfTeam() && !ideasView.isUserAuthor()">
                             <p>There are no status updates on this idea.  Come back later to see if progress has been made on this idea.</p>
@@ -240,7 +247,7 @@
                                         </md-button>
                                     </span>
                                 </div>
-                                <p class="convo-text-bubble text-area left word-wrap">{{update.text}}</p>
+                                <div class="convo-text-bubble text-area left" marked="update.text"></div>
                             </div>
                         </div>
                     </div>
