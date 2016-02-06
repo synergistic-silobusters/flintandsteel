@@ -1,6 +1,7 @@
 /* global require */
 /* global module */
 /* global process */
+/* global TypeError */
 
 module.exports = function(db) {
     "use strict";
@@ -26,12 +27,19 @@ module.exports = function(db) {
         });
     }
 
+    function generateNewToken(user) {
+        if (!user._id || !user.email) {
+            throw new TypeError('The format of the user object is invalid');
+        }
+        return sha256.update(serverToken + user._id + user.email).digest('hex');
+    }
+
     serverToken = sha256.update(new Date().toISOString() + process.argv[2]).digest('hex');
 
     db.collection('users').find({}, { email: 1 }).toArray().then(function(users) {
         var promises = [];
         _.forEach(users, function(user) {
-            var userToken = sha256.update(serverToken + user._id + user.email).digest('hex');
+            var userToken = generateNewToken(user);
             promises.push(db.collection('users').findOneAndUpdate(
                 { _id: user._id },
                 { $set: { token: userToken } }
@@ -45,6 +53,7 @@ module.exports = function(db) {
     });
 
     return {
+        generate: generateNewToken,
         authorize: authorize
     };
 };
