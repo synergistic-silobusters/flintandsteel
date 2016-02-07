@@ -139,6 +139,7 @@ gulp.task('start:dev', ['test:client', 'inject', 'generate:data'], function() {
         script: 'server/server.js',
         env: { 'NODE_ENV': 'development' },
         'ignore': [
+            'coverage/*',
             'server/datastore/*',
             'src/*'
         ]
@@ -152,6 +153,7 @@ gulp.task('start:test', ['test:client', 'inject'], function() {
         script: 'server/server.js',
         env: { 'NODE_ENV': 'test' },
         'ignore': [
+            'coverage/*',
             'server/datastore/*',
             'src/*'
         ]
@@ -165,6 +167,7 @@ gulp.task('start:prod', ['test:client', 'inject'], function() {
         script: 'server/server.js',
         env: { 'NODE_ENV': 'production' },
         'ignore': [
+            'coverage/*',
             'server/datastore/*',
             'src/*'
         ]
