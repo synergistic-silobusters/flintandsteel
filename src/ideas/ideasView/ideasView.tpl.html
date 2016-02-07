@@ -50,7 +50,7 @@
                     <i ng-show="false" class="material-icons">&#xE839;</i>
                     <!--Filled Star-->
                     <md-icon class="star" ng-show="star.filled" class="material-icons">&#xE838;</md-icon>
-                    <md-tooltip direction: "bottom">Average Value: {{idea.avgValue.value}} </md-tooltip>
+                    <!--<md-tooltip direction:"bottom">Average Value: {{idea.avgValue.value}} </md-tooltip>-->
                 </span>
             </div>
             <div class="extra-padding-sides-15" ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.value))">
@@ -64,14 +64,6 @@
                     <md-tooltip direction: "bottom">Average Value: {{idea.avgValue.value}} </md-tooltip>
                 </span>
             </div>
-            <!--<div>
-                Complexity:
-                <span ng-repeat="star in stars" ng-class="{filled: star.filled}" ng-click="toggle($index)">
-                    <md-icon class="star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
-                    <i ng-show="false" class="material-icons">&#xE839;</i>
-                    <md-icon class="star" ng-show="star.filled" class="material-icons">&#xE838;</md-icon>
-                </span>
-            </div>-->
             <p class="word-wrap extra-padding-sides-15">{{idea.description}}</p>
             <div layout="row" flex layout-wrap class="extra-padding-sides-15">
                 <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">

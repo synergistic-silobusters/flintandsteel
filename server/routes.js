@@ -87,14 +87,24 @@ module.exports = function(app, db) {
 
                 //aggregate for average
                 var theDatabase = db.getDb();
+
                 return theDatabase.collection('ideas').aggregate([
                     { $match: {_id: result[0]._id} },
                     { $unwind: "$value" },
                     { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
                 ]).toArray();
             }).then(function(averages) {
+                console.log(averages);
                 //select the average rating and append to the idea
-                idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
+                if(typeof averages[0] === 'undefined') {
+                    //if no ratings, return 0 as average rating
+                    idea.avgValue = {value: Number(0).toFixed(2)};
+                }
+                else {
+                    console.log(averages[0].ratingAvg);
+                    idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
+                }
+
                 return idea;
             }).then(function(ideaToSend) {
                 //send the idea to client side

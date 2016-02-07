@@ -74,7 +74,7 @@ angular.module('flintAndSteel')
                         $scope.idea = response.data;
                         ctrl.enableEdit = false;
                         ctrl.refreshTeam();
-                        ctrl.updateStars($scope.idea.value[0]);
+                        //ctrl.updateStars($scope.idea.value[0]);
                         $scope.loadRating($scope.idea.avgValue);
                     }
                 }, function getIdeaError(response) {
@@ -629,22 +629,17 @@ angular.module('flintAndSteel')
                             delete star.$$hashKey;
                         });
                     });
-                    ideaSvc.editIdeaRating($scope.idea._id, idea.value).then(function() {
-                        //ctrl.refreshIdea();
-                    },
-                    function() {
+                    //var idea = {};
+                    var tempAvgV = $scope.idea.avgValue;
+                    ideaSvc.editIdeaRating($scope.idea._id, idea.value)
+                    .then(function() {
+                        ctrl.refreshIdea();
+                    }, function() {
                         console.log("ERR: Could not update idea.");
                     });
                 }
+                console.log($scope.idea.avgValue);
             };
-
-            /*ctrl.getSumRating = function() {
-                var sum = ideaSvc.getSum($scope.idea._id).then(function (response) {
-                    $scope.valueRating = response.data;
-                });
-            };*/
-
-            //ctrl.getSumRating('value');
 
             ctrl.updateStars = function (rating) {
                 rating.stars = [];
