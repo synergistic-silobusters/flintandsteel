@@ -74,7 +74,6 @@ angular.module('flintAndSteel')
                         $scope.idea = response.data;
                         ctrl.enableEdit = false;
                         ctrl.refreshTeam();
-                        //ctrl.updateStars($scope.idea.value[0]);
                         $scope.loadRating($scope.idea.avgValue);
                     }
                 }, function getIdeaError(response) {
