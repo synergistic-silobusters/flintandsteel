@@ -78,34 +78,36 @@ module.exports = function(app, db) {
             next();
         }
         else {
+            var idea;
             ideas.get(req.params.id).then(function(doc) {
                 return replaceIds.idea(doc);
             }).then(function(result) {
+                //get the idea, set it to an acessible variable
+                idea = result[0];
+
+                //aggregate for average
                 var theDatabase = db.getDb();
-                var test = function(theDatabase, callback) {
-                    theDatabase.collection('ideas').aggregate([
+
+                return theDatabase.collection('ideas').aggregate([
                     { $match: {_id: result[0]._id} },
                     { $unwind: "$value" },
                     { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
-                ]).toArray(function(err, data) {
-                    if(err) throw err;
-                    if(!data.length) {
-                        throw new Error('No results found')
-                    }
-                    //console.log(result[0]);
-                    //result[0].avgValue = data[0].ratingAvg;
-                    callback(data[0].ratingAvg);
-                    //return data[0].ratingAvg;
-                    //console.log(result[0]);
-                    //console.log(data[0].ratingAvg);
-                });
+                ]).toArray();
+            }).then(function(averages) {
 
-                //console.log(test(theDatabase, function() {});
+                //select the average rating and append to the idea
+                if(typeof averages[0] === 'undefined') {
+                    //if no ratings, return 0 as average rating
+                    idea.avgValue = {value: Number(0).toFixed(2)};
+                }
+                else {
+                    idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
+                }
 
-            };
-
-                console.log(test);
-                res.status(200).json(result[0]);
+                return idea;
+            }).then(function(ideaToSend) {
+                //send the idea to client side
+                res.status(200).json(ideaToSend);
             })
             .catch(function(error) {
                 if (error.message === 'NOT_FOUND') {

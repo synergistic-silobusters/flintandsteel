@@ -109,7 +109,8 @@ angular.module('flintAndSteel')
                 tags: [
                     "thisIsATag",
                     "tagAllTheThings"
-                ]
+                ],
+                value: []
             };
 
             return {
