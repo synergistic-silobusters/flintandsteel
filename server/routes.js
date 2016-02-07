@@ -94,14 +94,13 @@ module.exports = function(app, db) {
                     { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
                 ]).toArray();
             }).then(function(averages) {
-                console.log(averages);
+
                 //select the average rating and append to the idea
                 if(typeof averages[0] === 'undefined') {
                     //if no ratings, return 0 as average rating
                     idea.avgValue = {value: Number(0).toFixed(2)};
                 }
                 else {
-                    console.log(averages[0].ratingAvg);
                     idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
                 }
 

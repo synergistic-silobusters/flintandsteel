@@ -24,20 +24,13 @@ function Idea(title, description, authorId, eventId, tags, rolesreq, ratings) {
         types: [{name: "Owner", _lowername: "owner"}]
     }];
     this.team = [{memberId: this.authorId}];
-    this.value = [{
-        stars:4,
-        authorId: this.authorId
-    }];
-    this.complexity = [{
-        stars:2,
-        authorId: this.authorId
-    }];
+    this.value = [];
 
     return this;
 }
 
-exports.create = function(title, description, authorId, eventId, tags, rolesreq, value, complexity) {
+exports.create = function(title, description, authorId, eventId, tags, rolesreq, value) {
     "use strict";
 
-    return new Idea(title, description, authorId, eventId, tags, rolesreq, value, complexity);
+    return new Idea(title, description, authorId, eventId, tags, rolesreq, value);
 };
