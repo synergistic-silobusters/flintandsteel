@@ -74,13 +74,15 @@ angular.module('flintAndSteel')
                         $scope.idea = response.data;
                         ctrl.enableEdit = false;
                         ctrl.refreshTeam();
-                        /*if (hasUserRatedValue()) {
-                            $scope.idea.value.
-                        }*/
                         ctrl.updateStars($scope.idea.value[0]);
                         $scope.loadAvgRating();
                     }
+                    $scope.idea = response.data;
+                    ctrl.enableEdit = false;
+                    ctrl.refreshTeam();
                 }, function getIdeaError(response) {
+                    toastSvc.show('Sorry, that idea does not exist');
+                    $state.go('home');
                     console.log(response);
                 });
             };
@@ -640,14 +642,6 @@ angular.module('flintAndSteel')
                     });
                 }
             };
-
-            /*ctrl.getSumRating = function() {
-                var sum = ideaSvc.getSum($scope.idea._id).then(function (response) {
-                    $scope.valueRating = response.data;
-                });
-            };*/
-
-            //ctrl.getSumRating('value');
 
             ctrl.updateStars = function (rating) {
                 rating.stars = [];

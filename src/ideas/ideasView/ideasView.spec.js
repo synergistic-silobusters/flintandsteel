@@ -107,15 +107,14 @@ describe('IdeasViewCtrl', function() {
 
         it('should notify if idea is not found', function() {
             spyOn(ideaSvcMock, 'getIdea').and.callFake(function getIdea() {
-                return $q.when({data: 'IDEA_NOT_FOUND'});
+                return $q.reject();
             });
+            spyOn(console, 'log').and.callFake(function() {});
 
             ctrl.refreshIdea();
             scope.$digest();
-            ideaSvcMock.getIdea().then(function() {
-                expect(toastSvc.show).toHaveBeenCalled();
-                expect($state.go).toHaveBeenCalled();
-            });
+            expect(toastSvc.show).toHaveBeenCalled();
+            expect($state.go).toHaveBeenCalled();
         });
 
         it('should output a console log if an idea error', function() {
