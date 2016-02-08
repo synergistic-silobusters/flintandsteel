@@ -30,10 +30,6 @@ module.exports = function(db) {
         });
     };
 
-    /*module.getAvg = function(id) {
-        return db.getAvg(COLLECTION, id);
-    }*/
-
     module.get = function(id) {
         return db.findOneById(COLLECTION, id);
     };

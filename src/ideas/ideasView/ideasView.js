@@ -74,9 +74,7 @@ angular.module('flintAndSteel')
                         $scope.idea = response.data;
                         ctrl.enableEdit = false;
                         ctrl.refreshTeam();
-                        ctrl.updateStars($scope.idea.value[0]);
-                        //$scope.loadAvgRating();
-                        //$scope.loadRating($scope.idea.avgValue);
+                        $scope.loadRating($scope.idea.avgValue);
                     }
                     $scope.idea = response.data;
                     ctrl.enableEdit = false;
@@ -252,7 +250,8 @@ angular.module('flintAndSteel')
                         delete roles.$$hashKey;
                         delete roles.checked;
                     });
-                    ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId).then(function() {
+                    ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId)
+                    .then(function() {
                         ctrl.refreshIdea();
                     },
                     function() {
@@ -484,6 +483,7 @@ angular.module('flintAndSteel')
                             $scope.selectedTypes = answer.selectTypes;
                             ctrl.editBack(backObj);
                         }
+                        $scope.loadRating($scope.idea.avgValue);
                         $scope.edittingBack = false;
                     }, function() {
                         $scope.status = 'You canceled the dialog.';
@@ -524,12 +524,14 @@ angular.module('flintAndSteel')
                     }
                     ideaSvc.editBack($scope.idea._id, back._id, newBack).then(
                         function success() {
-                            ctrl.refreshIdea();
+                            //ctrl.refreshIdea();
+                            $scope.loadRating($scope.idea.avgValue);
                         },
                         function error(response) {
                             console.log(response);
                         }
                     );
+
                     $scope.showEditBackInput = false;
                     ctrl.editBackText = '';
                     $scope.selectedTypes = [];
@@ -639,7 +641,7 @@ angular.module('flintAndSteel')
                     var tempAvgV = $scope.idea.avgValue;
                     ideaSvc.editIdeaRating($scope.idea._id, idea.value)
                     .then(function() {
-                        ctrl.refreshIdea();
+                        //ctrl.refreshIdea();
                     }, function() {
                         console.log("ERR: Could not update idea.");
                     });

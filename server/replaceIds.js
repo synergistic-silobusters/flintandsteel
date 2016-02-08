@@ -177,6 +177,16 @@ module.exports = function(db) {
             });
         }
 
+        var ideaAvgValue = {};
+        if (data.avgValue.length === 0) {
+            ideaAvgValue.push(new Promise(function(resolve) {
+                resolve();
+            }));
+        }
+        else {
+            ideaAvgValue = data.avgValue;
+        }
+        console.log(ideaAvgValue);
         return Promise.all([
             ideaAuthor,
             ideaEvent,
@@ -184,7 +194,8 @@ module.exports = function(db) {
             Promise.all(ideaCommentAuthors),
             Promise.all(ideaBacks),
             Promise.all(ideaTeam),
-            Promise.all(ideaUpdates)
+            Promise.all(ideaUpdates),
+            ideaAvgValue
         ]);
     };
 

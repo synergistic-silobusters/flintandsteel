@@ -79,22 +79,20 @@ module.exports = function(app, db) {
         }
         else {
             var idea;
-            ideas.get(req.params.id).then(function(doc) {
-                return replaceIds.idea(doc);
-            }).then(function(result) {
+            ideas.get(req.params.id)
+            .then(function(result) {
                 //get the idea, set it to an acessible variable
-                idea = result[0];
+                idea = result;
 
                 //aggregate for average
                 var theDatabase = db.getDb();
 
                 return theDatabase.collection('ideas').aggregate([
-                    { $match: {_id: result[0]._id} },
+                    { $match: {_id: result._id} },
                     { $unwind: "$value" },
                     { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
                 ]).toArray();
             }).then(function(averages) {
-
                 //select the average rating and append to the idea
                 if(typeof averages[0] === 'undefined') {
                     //if no ratings, return 0 as average rating
@@ -103,11 +101,14 @@ module.exports = function(app, db) {
                 else {
                     idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
                 }
-
                 return idea;
-            }).then(function(ideaToSend) {
+            })
+            .then(function(doc) {
+                return replaceIds.idea(doc);
+            })
+            .then(function(ideaToSend) {
                 //send the idea to client side
-                res.status(200).json(ideaToSend);
+                res.status(200).json(ideaToSend[0]);
             })
             .catch(function(error) {
                 if (error.message === 'NOT_FOUND') {
@@ -191,8 +192,10 @@ module.exports = function(app, db) {
     });
 
     app.patch('/api/v1/ideas/:id', function(req, res) {
-        // console.log(req.body);
+
+            console.log('meep');
         var promises = [];
+        var avgIdea;
 
         _.forEach(req.body, function(patchOp) {
             promises.push(db.patchObject('ideas', req.params.id, patchOp));
@@ -204,7 +207,28 @@ module.exports = function(app, db) {
                 ideas.get(req.params.id),
                 ideas.fetch()
             ]);
+        }).then(function(result) {
+            //aggregate average value on edit as well
+            avgIdea = result;
+            var theDatabase = db.getDb();
+
+            return theDatabase.collection('ideas').aggregate([
+                { $match: {_id: result[0]._id} },
+                { $unwind: "$value" },
+                { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
+            ]).toArray();
+        }).then(function(averages) {
+            //select the average rating and append to the idea
+            if(typeof averages[0] === 'undefined') {
+                //if no ratings, return 0 as average rating
+                avgIdea[0].avgValue = {value: Number(0).toFixed(2)};
+            }
+            else {
+                avgIdea[0].avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
+            }
+            return avgIdea;
         }).then(function(ideaResults) {
+            //update idea with new values
             IdeasInstance.updateIdea(ideaResults[0]);
             IdeasInstance.newHeaders(ideaResults[1]);
         }).catch(function(error) {
