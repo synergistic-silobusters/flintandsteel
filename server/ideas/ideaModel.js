@@ -1,6 +1,6 @@
 /* global exports */
 
-function Idea(title, description, authorId, eventId, tags, rolesreq, ratings) {
+function Idea(title, description, authorId, eventId, tags, rolesreq) {
     "use strict";
 
     var now = new Date().toISOString();

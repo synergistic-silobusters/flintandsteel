@@ -7,7 +7,6 @@ module.exports = function(app, db) {
     "use strict";
 
     var module = {};
-    var ctrl = this;
 
     var ideas = require('./ideas/ideas')(db),
         users = require('./users/users')(db),
@@ -91,11 +90,11 @@ module.exports = function(app, db) {
                 return theDatabase.collection('ideas').aggregate([
                     { $match: {_id: result._id} },
                     { $unwind: "$value" },
-                    { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
+                    { $group: {_id: null, ratingAvg: {$avg: '$value.value'}} }
                 ]).toArray();
             }).then(function(averages) {
                 //select the average rating and append to the idea
-                if(typeof averages[0] === 'undefined') {
+                if (typeof averages[0] === 'undefined') {
                     //if no ratings, return 0 as average rating
                     idea.avgValue = {value: Number(0).toFixed(2)};
                 }
@@ -220,11 +219,11 @@ module.exports = function(app, db) {
             return theDatabase.collection('ideas').aggregate([
                 { $match: {_id: result[0]._id} },
                 { $unwind: "$value" },
-                { $group: {_id: null, ratingAvg: {$avg:'$value.value'}} }
+                { $group: {_id: null, ratingAvg: {$avg: '$value.value'}} }
             ]).toArray();
         }).then(function(averages) {
             //select the average rating and append to the idea
-            if(typeof averages[0] === 'undefined') {
+            if (typeof averages[0] === 'undefined') {
                 //if no ratings, return 0 as average rating
                 avgIdea[0].avgValue = {value: Number(0).toFixed(2)};
             }

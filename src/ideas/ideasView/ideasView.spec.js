@@ -1273,7 +1273,7 @@ describe('IdeasViewCtrl', function() {
             });
 
             it('should console log if isses with editIdeaRating', function() {
-                spyOn(ideaSvcMock, 'editIdeaRating').and.callFake(function editIdeaRating () {
+                spyOn(ideaSvcMock, 'editIdeaRating').and.callFake(function editIdeaRating() {
                     return $q.reject();
                 });
                 spyOn(console, 'log').and.callFake(function() {});

@@ -632,8 +632,6 @@ angular.module('flintAndSteel')
                             delete star.$$hashKey;
                         });
                     });
-                    //var idea = {};
-                    var tempAvgV = $scope.idea.avgValue;
                     ideaSvc.editIdeaRating($scope.idea._id, idea.value)
                     .then(function() {
                         //ctrl.refreshIdea();
@@ -644,7 +642,7 @@ angular.module('flintAndSteel')
             };
 
             //turns a rating value into filled stars
-            ctrl.updateStars = function (rating) {
+            ctrl.updateStars = function(rating) {
                 rating.stars = [];
                 for (var i = 0; i < maxStars; i++) {
                     rating.stars.push({ filled: i < rating.value });
@@ -656,14 +654,14 @@ angular.module('flintAndSteel')
                 ctrl.editIdeaRating($scope.idea);
             };
 
-            $scope.toggle = function (index, rating) {
-                if($scope.isUserLoggedIn()) {
-                    if(!$scope.hasUserRated(rating)) {
+            $scope.toggle = function(index, rating) {
+                if ($scope.isUserLoggedIn()) {
+                    if (!$scope.hasUserRated(rating)) {
                         rating.push({
                             value: '',
                             stars: [],
                             authorId: userSvc.getProperty('_id')
-                        })
+                        });
                     }
 
                     //can I do just length - 1 instead
@@ -678,22 +676,22 @@ angular.module('flintAndSteel')
 
             //Pass either $scope.idea.value or $scope.idea.complexity
             $scope.hasUserRated = function hasUserRated(rating) {
-                var hasUserRated = false;
+                var userRated = false;
                 if (userSvc.isUserLoggedIn() && typeof rating !== 'undefined') {
                     rating.forEach(function(value) {
                         if (userSvc.getProperty('_id') === value.authorId) {
-                            hasUserRated = true;
+                            userRated = true;
                         }
                     });
                 }
-                return hasUserRated;
+                return userRated;
             };
 
             //Pass 'value' or 'complex' to retreive value or complexity for user
             $scope.loadUserRating = function loadUserRating(rating) {
                 var userRating = {};
-                if($scope.isUserLoggedIn()) {
-                    if(typeof rating !== undefined) {
+                if ($scope.isUserLoggedIn()) {
+                    if (typeof rating !== undefined) {
                         rating.forEach(function(value) {
                             if (userSvc.getProperty('_id') === value.authorId) {
                                 userRating = value;
