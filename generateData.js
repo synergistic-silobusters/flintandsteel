@@ -120,7 +120,7 @@ insertResult = db.ideas.insert(
                 _id: new ObjectId(),
                 text: 'Idea Owner',
                 authorId: userIds[0],
-                time: ISODate(),
+                timeCreated: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
             team: [{ _id: new ObjectId(), memberId: userIds[0] }]
@@ -141,7 +141,7 @@ insertResult = db.ideas.insert(
                 _id: new ObjectId(),
                 text: 'Idea Owner',
                 authorId: userIds[1],
-                time: ISODate(),
+                timeCreated: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
             team: [{ _id: new ObjectId(), memberId: userIds[1] }]
@@ -162,7 +162,7 @@ insertResult = db.ideas.insert(
                 _id: new ObjectId(),
                 text: 'Idea Owner',
                 authorId: userIds[2],
-                time: ISODate(),
+                timeCreated: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
             team: [{ _id: new ObjectId(), memberId: userIds[2] }]

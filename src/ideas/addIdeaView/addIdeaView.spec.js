@@ -41,7 +41,8 @@ describe('AddIdeaViewCtrl', function() {
             title: 'Test Title',
             eventId: 0,
             description: 'This is a test idea.',
-            tags: ['TestTag1', 'TestTag2']
+            tags: ['TestTag1', 'TestTag2'],
+            rolesreq: []
         };
     }));
 
