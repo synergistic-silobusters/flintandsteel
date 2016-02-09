@@ -74,7 +74,6 @@ angular.module('flintAndSteel')
                         $scope.idea = response.data;
                         ctrl.enableEdit = false;
                         ctrl.refreshTeam();
-                        $scope.loadRating($scope.idea.avgValue);
                     }
                     $scope.idea = response.data;
                     ctrl.enableEdit = false;
@@ -482,7 +481,6 @@ angular.module('flintAndSteel')
                             $scope.selectedTypes = answer.selectTypes;
                             ctrl.editBack(backObj);
                         }
-                        $scope.loadRating($scope.idea.avgValue);
                         $scope.edittingBack = false;
                     }, function() {
                         $scope.status = 'You canceled the dialog.';
@@ -523,8 +521,6 @@ angular.module('flintAndSteel')
                     }
                     ideaSvc.editBack($scope.idea._id, back._id, newBack).then(
                         function success() {
-                            //ctrl.refreshIdea();
-                            $scope.loadRating($scope.idea.avgValue);
                         },
                         function error(response) {
                             console.log(response);
@@ -703,19 +699,6 @@ angular.module('flintAndSteel')
                     });
                 }
                 return userRating;
-            };
-
-            $scope.loadRating = function loadRating(obj) {
-                obj.stars = [];
-                for (var i = 0; i < maxStars; i++) {
-                    obj.stars.push({ filled: i < obj.value });
-                }
-                //removes $$hashKey and checked because they can't be stored in backend
-                _.forEach(obj.stars, function(roles) {
-                    delete roles.$$hashKey;
-                });
-
-                //return obj;
             };
         }
     ]

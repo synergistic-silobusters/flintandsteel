@@ -102,6 +102,13 @@ module.exports = function(app, db) {
                 else {
                     idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
                 }
+
+                //load star values to update page
+                idea.avgValue.stars = [];
+                for (var i = 0; i < 5; i++) {
+                    idea.avgValue.stars.push({ filled: i < idea.avgValue.value });
+                }
+
                 return idea;
             })
             .then(function(doc) {
