@@ -107,27 +107,6 @@ module.exports = function(dbName, cb) {
         });
     };
 
-    /*module.getAvg = function getAvg(collection) {
-        console.log('avg');
-        return new Promise(function(resolve, reject) {
-            db.collection(collection).aggregate([{
-                $group: {
-                    _id: 'total',
-                    total: {
-                        $avg: '$value'
-                    }
-                }
-            }]).toArray(function(err, data) {
-                if(err) throw err;
-                if(!data.length) {
-                    throw new Error('No results found')
-                }
-                var o = data[0];
-                console.log(Number(o.total).toFixed(2));
-            })
-        });
-    };*/
-
     module.findOneByProperty = function findOneByProperty(collection, property, value, cb) {
         var query = {};
         query[property] = value;

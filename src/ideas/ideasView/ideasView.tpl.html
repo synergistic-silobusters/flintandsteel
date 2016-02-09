@@ -53,7 +53,6 @@
                     <md-tooltip direction:"bottom">Average Value: {{idea.avgValue.value}} </md-tooltip>
                 </span>
             </div>
-            <div> {{idea.avgValue}} </div>
             <div class="extra-padding-sides-15" ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.value))">
                 Value: <span ng-repeat="star in idea.avgValue.stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.value)">
                     <!--Empty Star-->

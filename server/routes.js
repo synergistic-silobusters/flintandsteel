@@ -7,6 +7,7 @@ module.exports = function(app, db) {
     "use strict";
 
     var module = {};
+    var ctrl = this;
 
     var ideas = require('./ideas/ideas')(db),
         users = require('./users/users')(db),
@@ -121,7 +122,6 @@ module.exports = function(app, db) {
             });
         }
     }, function(req, res) {
-        console.log('search');
         if (!req.query.inpath || !req.query.forterm) {
             res.status(422).send('A query parameter is missing from the request.');
         }
@@ -192,8 +192,6 @@ module.exports = function(app, db) {
     });
 
     app.patch('/api/v1/ideas/:id', function(req, res) {
-
-            console.log('meep');
         var promises = [];
         var avgIdea;
 
@@ -226,6 +224,14 @@ module.exports = function(app, db) {
             else {
                 avgIdea[0].avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
             }
+
+            //load star values to update page
+            avgIdea[0].avgValue.stars = [];
+            for (var i = 0; i < 5; i++) {
+                avgIdea[0].avgValue.stars.push({ filled: i < avgIdea[0].avgValue.value });
+            }
+
+            //return updated idea
             return avgIdea;
         }).then(function(ideaResults) {
             //update idea with new values

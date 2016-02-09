@@ -186,7 +186,6 @@ module.exports = function(db) {
         else {
             ideaAvgValue = data.avgValue;
         }
-        console.log(ideaAvgValue);
         return Promise.all([
             ideaAuthor,
             ideaEvent,

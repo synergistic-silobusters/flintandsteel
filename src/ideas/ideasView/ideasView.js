@@ -319,7 +319,6 @@ angular.module('flintAndSteel')
 
                 ideaSvc.updateIdea($scope.idea._id, 'team', $scope.idea.team).then(
                     function success() {
-                        //console.log(data);
                     },
                     function error(response) {
                         console.log(response);
@@ -646,9 +645,9 @@ angular.module('flintAndSteel')
                         console.log("ERR: Could not update idea.");
                     });
                 }
-                console.log($scope.idea.avgValue);
             };
 
+            //turns a rating value into filled stars
             ctrl.updateStars = function (rating) {
                 rating.stars = [];
                 for (var i = 0; i < maxStars; i++) {
