@@ -3,7 +3,7 @@
 /* global process */
 /* global TypeError */
 
-module.exports = function(db) {
+module.exports = function() {
     "use strict";
 
     var sha256 = require('sha.js')('sha256');
@@ -11,8 +11,14 @@ module.exports = function(db) {
     var Promise = require('bluebird');
     var serverToken = 'uninitialized';
     var ObjectId = require('mongodb').ObjectId;
+    var MongoClient = require('mongodb').MongoClient;
 
-    function authorize(userId, token) {
+    var dbName = 'flintandsteel';
+    if (process.env.NODE_ENV === 'development') {
+        dbName += '-dev';
+    }
+
+    function authorize(db, userId, token) {
         if (_.isString(userId)) {
             userId = new ObjectId(userId);
         }
@@ -36,11 +42,16 @@ module.exports = function(db) {
 
     serverToken = sha256.update(new Date().toISOString() + process.argv[2]).digest('hex');
 
-    db.collection('users').find({}, { email: 1 }).toArray().then(function(users) {
+    var dbInstance;
+
+    MongoClient.connect('mongodb://localhost:27017/' + dbName).then(function(db) {
+        dbInstance = db;
+        return dbInstance.collection('users').find({}, { email: 1 }).toArray();
+    }).then(function(users) {
         var promises = [];
         _.forEach(users, function(user) {
             var userToken = generateNewToken(user);
-            promises.push(db.collection('users').findOneAndUpdate(
+            promises.push(dbInstance.collection('users').findOneAndUpdate(
                 { _id: user._id },
                 { $set: { token: userToken } }
             ));
@@ -48,8 +59,10 @@ module.exports = function(db) {
         return Promise.all(promises);
     }).then(function(results) {
         console.log(results.length + ' tokens were generated successfully.');
+        return dbInstance.close();
     }).catch(function(err) {
         console.log(err);
+        dbInstance.close();
     });
 
     return {
