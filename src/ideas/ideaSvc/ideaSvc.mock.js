@@ -181,6 +181,10 @@ angular.module('flintAndSteel')
                     mockIdea.timeModified = new Date().toISOString();
                     return $q.when('Edited');
                 },
+                editIdeaRating: function editIdeaRating(ideaId, value) {
+                    mockIdea.value = value;
+                    return $q.when('Edited');
+                },
                 deleteIdea: function deleteIdea() {
                     return $q.when('Deleted!');
                 },

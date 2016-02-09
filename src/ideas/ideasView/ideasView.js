@@ -666,6 +666,7 @@ angular.module('flintAndSteel')
                         })
                     }
 
+                    //can I do just length - 1 instead
                     rating.forEach(function(value) {
                         if (userSvc.getProperty('_id') === value.authorId) {
                             value.value = index + 1;
@@ -691,12 +692,14 @@ angular.module('flintAndSteel')
             //Pass 'value' or 'complex' to retreive value or complexity for user
             $scope.loadUserRating = function loadUserRating(rating) {
                 var userRating = {};
-                if(typeof rating !== undefined) {
-                    rating.forEach(function(value) {
-                        if (userSvc.getProperty('_id') === value.authorId) {
-                            userRating = value;
-                        }
-                    });
+                if($scope.isUserLoggedIn()) {
+                    if(typeof rating !== undefined) {
+                        rating.forEach(function(value) {
+                            if (userSvc.getProperty('_id') === value.authorId) {
+                                userRating = value;
+                            }
+                        });
+                    }
                 }
                 return userRating;
             };

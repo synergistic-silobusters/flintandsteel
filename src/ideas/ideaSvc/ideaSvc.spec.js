@@ -47,6 +47,19 @@ describe('ideaSvc', function() {
                     name: 'Experience',
                     _lowername: 'experience'
                 }
+            ],
+            value: [
+                {
+                    value: 4,
+                    authorId: 1,
+                    stars: [
+                        { filled: true },
+                        { filled: true },
+                        { filled: true },
+                        { filled: true },
+                        { filled: false }
+                    ]
+                }
             ]
         };
     }));
@@ -321,6 +334,38 @@ describe('ideaSvc', function() {
             $httpBackend.expectPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation);
 
             ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq, dummyIdea.eventId)
+            .then(function(response) {
+                expect(response.data).toBe('OK');
+            }, function() { });
+
+            $httpBackend.flush();
+        });
+    });
+
+    describe('ideaSvc.editIdeaRating', function() {
+        var editIdeaHandler, smallDummyIdea, patchOperation;
+
+        beforeEach(function() {
+            editIdeaHandler = $httpBackend.whenPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
+            smallDummyIdea = {
+                id: dummyIdea._id,
+                title: dummyIdea.title,
+                description: dummyIdea.description,
+                tags: dummyIdea.tags,
+                rolesreq: dummyIdea.rolesreq,
+                eventId: 1,
+                value: dummyIdea.value
+            };
+
+            patchOperation = [
+                { operation: 'modify', path: 'value', value: JSON.stringify(smallDummyIdea.value) }
+            ];
+        });
+
+        it('should edit an existing idea', function() {
+            $httpBackend.expectPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
+
+            ideaSvc.editIdeaRating(dummyIdea._id, dummyIdea.value)
             .then(function(response) {
                 expect(response.data).toBe('OK');
             }, function() { });
