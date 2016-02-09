@@ -36,7 +36,7 @@
             </svg>
             Styling with Markdown is supported
         </a>
-        <md-input-container>
+        <md-input-container ng-if="false">
             <label>Event</label>
             <md-select placeholder="Select an Event" md-on-open="loadEvents()" ng-model="idea.eventId">
                 <md-option ng-value="event._id" ng-repeat="event in events">{{event.name}}</md-option>
