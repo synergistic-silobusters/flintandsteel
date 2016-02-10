@@ -49,10 +49,11 @@ angular.module('flintAndSteel')
                 var browserVersion = -1;
                 var userAgent = navObj.userAgent;
                 var versionMatcher;
+                var searchResults;
                 if (navObj.appName === 'Microsoft Internet Explorer') {
                     versionMatcher = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
                     console.log('We shouldn\'t be here');
-                    var searchResults = versionMatcher.exec(userAgent);
+                    searchResults = versionMatcher.exec(userAgent);
                     if (searchResults !== null) {
                         browserVersion = parseFloat(searchResults[1]);
                     }
@@ -60,7 +61,7 @@ angular.module('flintAndSteel')
                 else if (navObj.appName === 'Netscape') {
                     versionMatcher = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
                     console.log(searchResults);
-                    var searchResults = versionMatcher.exec(userAgent);
+                    searchResults = versionMatcher.exec(userAgent);
                     if (searchResults !== null) {
                         browserVersion = parseFloat(searchResults[1]);
                     }
