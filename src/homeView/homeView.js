@@ -46,28 +46,31 @@ angular.module('flintAndSteel')
 
             $scope.Events = [$scope.Event1,$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];
 
-            function getInternetExplorerVersion() {
-                var rv = -1;
-                var ua = $window.navigator.userAgent;
-                var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                if ($window.navigator.appName === 'Microsoft Internet Explorer') {
-                    ua = $window.navigator.userAgent;
-                    re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                    if (re.exec(ua) !== null) {
-                        rv = parseFloat(RegExp.$1);
+            function getInternetExplorerVersion(navObj) {
+                console.log(navObj);
+                var browserVersion = -1;
+                var userAgent = navObj.userAgent;
+                var versionMatcher;
+                if (navObj.appName === 'Microsoft Internet Explorer') {
+                    versionMatcher = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                    console.log('We shouldn\'t be here');
+                    var searchResults = versionMatcher.exec(userAgent);
+                    if (searchResults !== null) {
+                        browserVersion = parseFloat(searchResults[1]);
                     }
                 }
-                else if ($window.navigator.appName === 'Netscape') {
-                    ua = $window.navigator.userAgent;
-                    re = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
-                    if (re.exec(ua) !== null) {
-                        rv = parseFloat(RegExp.$1);
+                else if (navObj.appName === 'Netscape') {
+                    versionMatcher = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
+                    console.log(searchResults);
+                    var searchResults = versionMatcher.exec(userAgent);
+                    if (searchResults !== null) {
+                        browserVersion = parseFloat(searchResults[1]);
                     }
                 }
-                return rv;
+                return browserVersion;
             }
 
-            $scope.browserVersion = parseInt(getInternetExplorerVersion());
+            $scope.browserVersion = parseInt(getInternetExplorerVersion($window.navigator));
 
             $scope.navToBrowse = function navToBrowse() {
                 $state.go('ideabrowse');
