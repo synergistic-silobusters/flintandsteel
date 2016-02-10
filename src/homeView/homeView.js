@@ -22,14 +22,12 @@ angular.module('flintAndSteel')
 
             $scope.Actions = "Ideas Comments Backs Team Likes";
 
-            $scope.Event1 = {type: "bg-success", alignment: "left-aligned", date: "January 24",
-                            location: "Cleveland", time: "12: 00 PM", name: "Monthly Innovation Event",
-                            description: "This is the text about the monthly innovation event.  "};
+
             $scope.Event2 = {type: "bg-info", date: "February 22",
-                            location: "Global", time: "12: 00 PM", name: "E-Week Kickoff",
+                            location: "Cleveland", time: "12: 00 PM", name: "E-Week Kickoff",
                             description: "We're kicking off E-week with this fun and exciting event.  Someone type some more things here"};
             $scope.Event3 = {type: "bg-info", alignment: "left-aligned", date: "February 25",
-                            location: "Global", time: "12: 00 PM", name: "E-Week Wrap-up",
+                            location: "Cleveland", time: "12: 00 PM", name: "E-Week Wrap-up",
                             description: "Here's where we're going to close E-week. We're going to have some bosses there to present awards and win prizes."};
             $scope.Event4 = {type: "bg-warning", date: "March 10",
                             location: "Cleveland", time: "5: 00 PM", name: "Innovation Challenge Kickoff",
@@ -44,7 +42,7 @@ angular.module('flintAndSteel')
                             location: "Global", time: "", name: "Innovation Challenge Final Readout",
                             description: "You made it past Fluffy and the Devil's snare.  Those were easy compared to this."};
 
-            $scope.Events = [$scope.Event1,$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];
+            $scope.Events = [$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];
 
             function getInternetExplorerVersion(navObj) {
                 console.log(navObj);
