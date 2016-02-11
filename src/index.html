@@ -23,6 +23,7 @@
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="lib/angular-mocks/angular-mocks.js"></script>
     <script src="lib/angular-material/angular-material.js"></script>
+    <script src="lib/angular-marked/dist/angular-marked.js"></script>
     <script src="lib/angular-messages/angular-messages.js"></script>
     <script src="lib/angular-aria/angular-aria.js"></script>
     <script src="lib/angular-identicon/dist/angular-identicon.js"></script>
@@ -30,6 +31,7 @@
     <script src="lib/identicon/identicon.js"></script>
     <script src="lib/identicon/pnglib.js"></script>
     <script src="lib/lodash/lodash.js"></script>
+    <script src="lib/marked/lib/marked.js"></script>
     <script src="lib/moment/moment.js"></script>
     <script src="lib/event-source-polyfill/eventsource.js"></script>
     <script src="lib/angular-timeline/dist/angular-timeline.js"></script>
@@ -121,7 +123,7 @@
         </div>
     </md-toolbar>
 
-    <div flex layout="row">
+    <md-content flex layout="row">
         <md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
             <md-content ng-controller="SidenavCtrl" flex>
                 <div layout="column" flex>
@@ -147,8 +149,8 @@
             </div>
         </md-sidenav>
 
-        <md-content ui-view flex class="scroll-container"></md-content>
-    </div>
+        <md-content ui-view flex></md-content>
+    </md-content>
 
 </body>
 </html>

@@ -57,7 +57,7 @@ module.exports = function(app, db) {
         ideas.create(
             req.body.title,
             req.body.description,
-            req.body.authorId,
+            new ObjectId(req.body.authorId),
             req.body.eventId,
             req.body.tags,
             req.body.rolesreq
@@ -101,16 +101,51 @@ module.exports = function(app, db) {
                 projection = { title: 1, authorId: 1 },
                 theDatabase = db.getDb();
 
-            query[req.query.inpath] = /id/i.test(req.query.inpath) ? new ObjectId(req.query.forterm) : req.query.forterm;
+            if (/comments/i.test(req.query.inpath)) {
+                var key = 'authorId';
+                query[key] = new ObjectId(req.query.forterm);
+                theDatabase.collection('comments').find(query, { parentId: 1 }).toArray(function(err, comments) {
+                    if (err) {
+                        res.sendStatus(500);
+                    }
+                    else {
+                        var uniqParentIds = _.uniqBy(comments, function(obj) {
+                            return obj.parentId.toString();
+                        });
 
-            theDatabase.collection('ideas').find(query, projection).toArray(function(err, docs) {
-                if (err) {
-                    res.sendStatus(500);
-                }
-                else {
-                    res.status(200).json(docs);
-                }
-            });
+                        var ideaIds = [];
+
+                        _.forEach(uniqParentIds, function(id) {
+                            ideaIds.push(new ObjectId(id.parentId));
+                        });
+
+                        // TODO - This will break for nested comments.
+                        theDatabase.collection('ideas').find(
+                            { _id: { $in: ideaIds } },
+                            projection
+                        ).toArray(function(err, docs) {
+                            if (err) {
+                                res.sendStatus(500);
+                            }
+                            else {
+                                res.status(200).json(docs);
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                query[req.query.inpath] = /id/i.test(req.query.inpath) ? new ObjectId(req.query.forterm) : req.query.forterm;
+
+                theDatabase.collection('ideas').find(query, projection).toArray(function(err, docs) {
+                    if (err) {
+                        res.sendStatus(500);
+                    }
+                    else {
+                        res.status(200).json(docs);
+                    }
+                });
+            }
         }
     });
 
