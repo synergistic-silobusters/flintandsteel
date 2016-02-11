@@ -23,26 +23,21 @@ angular.module('flintAndSteel')
             $scope.Actions = "Ideas Comments Backs Team Likes";
 
 
-            $scope.Event2 = {type: "bg-info", date: "February 22",
-                            location: "Cleveland", time: "12: 00 PM", name: "E-Week Kickoff",
-                            description: "We're kicking off E-week with this fun and exciting event.  Someone type some more things here"};
-            $scope.Event3 = {type: "bg-info", alignment: "left-aligned", date: "February 25",
-                            location: "Cleveland", time: "12: 00 PM", name: "E-Week Wrap-up",
-                            description: "Here's where we're going to close E-week. We're going to have some bosses there to present awards and win prizes."};
-            $scope.Event4 = {type: "bg-warning", date: "March 10",
-                            location: "Cleveland", time: "5: 00 PM", name: "Innovation Challenge Kickoff",
-                            description: "We're going to kick off the Cleveland innovation challenge on this day. We'll do some fun things, have food."};
-            $scope.Event5 = {type: "bg-warning", alignment: "left-aligned", date: "April",
-                            location: "Cleveland", time: "", name: "Innovation Challenge Mid-Point Readout",
-                            description: "Scared of presentations?  Welp you're up a creek then.  Take your idea and present to everybody."};
-            $scope.Event6 = {type: "bg-warning", alignment: "", date: "June",
-                            location: "Cleveland", time: "", name: "Innovation Challenge Final Readout",
-                            description: "Mid point readout didn't go well?  Get ready for a grilling from upper management."};
-            $scope.Event7 = {type: "bg-info", alignment: "left-aligned", date: "June",
-                            location: "Global", time: "", name: "Innovation Challenge Final Readout",
-                            description: "You made it past Fluffy and the Devil's snare.  Those were easy compared to this."};
+            $scope.Event2 = {type: "bg-info", date: "Feb 2016",
+                            location: "Global", time: "", name: "Ideation Events and E-Week",
+                            description: "Brainstorm your idea and learn more about the Innovation Challenge"};
+            $scope.Event3 = {type: "bg-warning", alignment: "left-aligned", date: "March 2016",
+                            location: "Global", time: "", name: "Innovation Challenge Begins",
+                            description: "Finalize your team and start developing your idea"};
+            $scope.Event4 = {type: "bg-warning", date: "May 2016",
+                            location: "Regional", time: "", name: "Innovation Challenge Begins",
+                            description: "Local events allow your team to share your developed idea"};
+            $scope.Event5 = {type: "bg-warning", alignment: "left-aligned", date: "June 2016",
+                            location: "Global", time: "", name: "Global Innovation Challenge – Executive Pitch",
+                            description: "Select teams will have the opportunity to pitch their idea to Rockwell Automation leadership"};
 
-            $scope.Events = [$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5, $scope.Event6, $scope.Event7];
+
+            $scope.Events = [$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5];
 
             function getInternetExplorerVersion(navObj) {
                 console.log(navObj);
