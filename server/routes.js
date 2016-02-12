@@ -411,14 +411,22 @@ module.exports = function(app, db) {
         var sse = startSees(res);
 
         function updateHeaders(headers) {
-            replaceIds.headers(headers).then(function(headersData) {
-                var headersToSend = headersData.map(function(singleHeader) {
-                    return singleHeader[0];
-                });
+            // If the last idea is deleted, we send an empty array of headers.
+            if (typeof headers === 'undefined') {
+                var headersToSend = [];
                 sse("newHeaders", headersToSend);
-            }).catch(function(err) {
-                console.error(chalk.bgRed(err));
-            });
+            }
+            // Otherwise, we process the headers and send the results.
+            else {
+                replaceIds.headers(headers).then(function(headersData) {
+                    var headersToSend = headersData.map(function(singleHeader) {
+                        return singleHeader[0];
+                    });
+                    sse("newHeaders", headersToSend);
+                }).catch(function(err) {
+                    console.error(chalk.bgRed(err));
+                });
+            }
         }
 
         IdeasInstance.on("newHeaders", updateHeaders);
