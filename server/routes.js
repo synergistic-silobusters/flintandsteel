@@ -29,7 +29,6 @@ module.exports = function(app, db) {
             var authorizationToken = req.headers.authorization.split(' ')[1];
             var userId = authorizationToken.split(':')[0];
             var authorizationId = authorizationToken.split(':')[1];
-            console.log(authorizationType, userId, authorizationId);
             tokens.authorize(db.getDb(), userId, authorizationId).then(function(result) {
                 if (result && authorizationType === 'Bearer') {
                     next();
@@ -186,6 +185,7 @@ module.exports = function(app, db) {
     });
 
     app.delete('/api/v1/ideas/:id', processAuthorization, function(req, res) {
+        console.log('id: ', req.params.id);
         ideas.delete(req.params.id).then(function() {
             res.sendStatus(204);
             return ideas.fetch();
@@ -272,7 +272,14 @@ module.exports = function(app, db) {
                                 return res.status(200).json(users.errResObj);
                             }
                             else {
-                                return res.status(200).json(responseObj);
+                                var token = tokens.generate({ _id: responseObj._id, email: responseObj.email });
+                                users.update(responseObj._id, 'token', token, function(tokenError) {
+                                    if (err) {
+                                        console.log(chalk.bgRed(tokenError));
+                                    }
+                                    responseObj.token = token;
+                                    return res.status(200).json(responseObj);
+                                });
                             }
                         });
                     }
