@@ -412,7 +412,7 @@ module.exports = function(app, db) {
 
         function updateHeaders(headers) {
             // If the last idea is deleted, we send an empty array of headers.
-            if (typeof headers === 'undefined') {
+            if (!headers) {
                 var headersToSend = [];
                 sse("newHeaders", headersToSend);
             }
