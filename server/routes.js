@@ -89,7 +89,7 @@ module.exports = function(app, db) {
             res.status(500).json(error);
         });
     });
-    app.post('/api/v1/ideas', function(req, res) {
+    app.post('/api/v1/ideas', processAuthorization, function(req, res) {
         ideas.create(
             req.body.title,
             req.body.description,
@@ -185,7 +185,7 @@ module.exports = function(app, db) {
         }
     });
 
-    app.delete('/api/v1/ideas/:id', function(req, res) {
+    app.delete('/api/v1/ideas/:id', processAuthorization, function(req, res) {
         ideas.delete(req.params.id).then(function() {
             res.sendStatus(204);
             return ideas.fetch();
@@ -281,7 +281,7 @@ module.exports = function(app, db) {
         }
     });
 
-    app.delete('/api/v1/users/:id', function(req, res) {
+    app.delete('/api/v1/users/:id', processAuthorization, function(req, res) {
         var promises = [], patchDelete = [
             { "operation": "modify", "path": "firstName", "value": "\"Deleted\"" },
             { "operation": "modify", "path": "lastName", "value": "\"User\"" },
@@ -305,7 +305,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/api/v1/users/:id', function(req, res) {
+    app.patch('/api/v1/users/:id', processAuthorization, function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -344,7 +344,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/api/v1/events', function(req, res) {
+    app.post('/api/v1/events', processAuthorization, function(req, res) {
         events.create(req.body.name, req.body.location, req.body.startDate, req.body.endDate).then(function(result) {
             res.status(201).json(result);
         }).catch(function(error) {
@@ -353,7 +353,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.delete('/api/v1/events/:id', function(req, res) {
+    app.delete('/api/v1/events/:id', processAuthorization, function(req, res) {
         db.deleteOne('events', req.params.id).then(function() {
             res.sendStatus(204);
         }).catch(function(error) {
@@ -362,7 +362,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/api/v1/events/:id', function(req, res) {
+    app.patch('/api/v1/events/:id', processAuthorization, function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -377,7 +377,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/api/v1/comments', function(req, res) {
+    app.post('/api/v1/comments', processAuthorization, function(req, res) {
         Promise.all([
             ideas.get(req.body.parentId),
             comments.create(req.body.parentId, req.body.text, req.body.authorId)
@@ -403,7 +403,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/api/v1/comments/:id', function(req, res) {
+    app.patch('/api/v1/comments/:id', processAuthorization, function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -418,7 +418,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.delete('/api/v1/comments/:id', function(req, res) {
+    app.delete('/api/v1/comments/:id', processAuthorization, function(req, res) {
         comments.get(req.params.id).then(function(commentToDelete) {
             return ideas.get(commentToDelete.parentId);
         }).then(function(idea) {
