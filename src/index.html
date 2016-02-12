@@ -85,23 +85,23 @@
 
             <div class="md-padding" layout="row">
                 <!-- Feedback Button -->
-                <md-button aria-label="Feedback" ui-sref="idea({ ideaId: '566eff2a6405f74421c3a583' })" ng-if="isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust md-icon-button" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE87F;</i>
-                    <md-tooltip md-direction="left">Feedback</md-tooltip>
+                <md-button class="md-icon-button" aria-label="Feedback" ui-sref="idea({ ideaId: '566eff2a6405f74421c3a583' })" ng-if="isUserLoggedIn()">
+                    <i class="material-icons icon-button-adjust" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE87F;</i>
+                    <md-tooltip md-direction="bottom">Feedback</md-tooltip>
                 </md-button>
                 <!-- Login Button -->
                 <md-button aria-label="Account" ng-click="showLogin($event)" ng-if="!isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust md-icon-button" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE8A6;</i>
+                    <i class="material-icons icon-button-adjust" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE8A6;</i>
                     Login
-                    <md-tooltip md-direction="left">Login</md-tooltip>
+                    <md-tooltip md-direction="bottom">Login</md-tooltip>
                 </md-button>
                 <!-- Profile button -->
-                <div ng-show="isUserLoggedIn()" style="font-size:14px">
+                <div class="user-menu" ng-show="isUserLoggedIn()">
                     <md-menu md-offset="0 60">
                         <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
-                            <identicon md-menu-origin="" username='getUsername()' size='30' class="identicon identicon-home"></identicon>
+                            <identicon md-menu-origin="" username='getUsername()' size='24' class="identicon identicon-home"></identicon>
                             {{currentUser}}
-                            <i class="material-icons icon-button-adjust md-icon-button">&#xE5CF;</i>
+                            <i class="material-icons icon-button-adjust">&#xE5CF;</i>
                         </md-button>
                         <md-menu-content width="4">
                             <md-menu-item>
@@ -114,7 +114,7 @@
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
-                    <md-tooltip md-direction="left">User Menu</md-tooltip>
+                    <md-tooltip md-direction="bottom">User Menu</md-tooltip>
                 </div>
             </div>
             <md-button class="md-icon-button" aria-label="More" ng-show="displayOverflow">
