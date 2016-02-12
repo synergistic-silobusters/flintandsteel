@@ -45,7 +45,7 @@ angular.module('flintAndSteel')
             };
 
             this.deleteComment = function deleteComment(commentId) {
-                return $http.delete('/api/v1/comments/' + commentId, undefined, {
+                return $http.delete('/api/v1/comments/' + commentId, {
                     headers: {
                         'Authorization': getAuthorizationString()
                     }
