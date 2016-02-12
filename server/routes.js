@@ -18,7 +18,44 @@ module.exports = function(app, db) {
         mongo = require('mongodb'),
         Promise = require('bluebird'),
         ObjectId = mongo.ObjectID,
-        passport = require('passport');
+        passport = require('passport'),
+        Tokens = require('./tokens');
+
+    var tokens = new Tokens();
+
+    function processAuthorization(req, res, next) {
+        if (req.headers.authorization) {
+            var authorizationType = req.headers.authorization.split(' ')[0];
+            var authorizationToken = req.headers.authorization.split(' ')[1];
+            var userId = authorizationToken.split(':')[0];
+            var authorizationId = authorizationToken.split(':')[1];
+            console.log(authorizationType, userId, authorizationId);
+            tokens.authorize(db.getDb(), userId, authorizationId).then(function(result) {
+                if (result && authorizationType === 'Bearer') {
+                    next();
+                }
+                else {
+                    var message = 'authorization token malformed';
+                    if (!result) {
+                        message = 'authorization rejected';
+                    }
+                    res.set('WWW-Authenticate', 'Bearer');
+                    res.status(401).json({
+                        status: 401,
+                        message: message
+                    });
+                }
+            });
+        }
+        else {
+            res.set('WWW-Authenticate', 'Bearer');
+            res.status(401).json({
+                status: 401,
+                message: 'authorization token not found.'
+            });
+        }
+    }
+
     var IdeasInstance = ideas.getInstance();
 
     function startSees(res) {
@@ -161,7 +198,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/api/v1/ideas/:id', function(req, res) {
+    app.patch('/api/v1/ideas/:id', processAuthorization, function(req, res) {
         // console.log(req.body);
         var promises = [];
 
