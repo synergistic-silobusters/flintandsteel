@@ -58,7 +58,8 @@ module.exports = function(db) {
                         _id: doc._id,
                         name: doc.fullName,
                         username: doc.username,
-                        email: doc.email
+                        email: doc.email,
+                        token: doc.token
                     });
                 }
             });
