@@ -29,7 +29,7 @@ describe('LoginDialogCtrl', function() {
 
     describe('$scope.cancel', function() {
         it('should cause the mdDialog to be canceled', function() {
-            spyOn($mdDialog, 'cancel').and.callFake(function(){});
+            spyOn($mdDialog, 'cancel').and.callFake(function() {});
 
             scope.cancel();
 
@@ -45,7 +45,7 @@ describe('LoginDialogCtrl', function() {
                 password: 'test'
             };
 
-            spyOn($mdDialog, 'hide').and.callFake(function(){});
+            spyOn($mdDialog, 'hide').and.callFake(function() {});
 
             scope.login(account);
 
