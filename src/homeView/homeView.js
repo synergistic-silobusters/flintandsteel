@@ -40,14 +40,12 @@ angular.module('flintAndSteel')
             $scope.Events = [$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5];
 
             function getInternetExplorerVersion(navObj) {
-                console.log(navObj);
                 var browserVersion = -1;
                 var userAgent = navObj.userAgent;
                 var versionMatcher;
                 var searchResults;
                 if (navObj.appName === 'Microsoft Internet Explorer') {
                     versionMatcher = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                    console.log('We shouldn\'t be here');
                     searchResults = versionMatcher.exec(userAgent);
                     if (searchResults !== null) {
                         browserVersion = parseFloat(searchResults[1]);
@@ -55,7 +53,6 @@ angular.module('flintAndSteel')
                 }
                 else if (navObj.appName === 'Netscape') {
                     versionMatcher = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
-                    console.log(searchResults);
                     searchResults = versionMatcher.exec(userAgent);
                     if (searchResults !== null) {
                         browserVersion = parseFloat(searchResults[1]);
