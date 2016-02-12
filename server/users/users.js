@@ -80,6 +80,7 @@ module.exports = function(db) {
         return new Promise(function(resolve, reject) {
             db.findOneById(COLLECTION, id).then(function(doc) {
                 if (getEntireObject) {
+                    doc.token = undefined;
                     resolve(doc);
                 }
                 else {
