@@ -50,6 +50,7 @@
   <script src="toastSvc/toastSvc.js"></script>
   <script src="navigation/toolbar.js"></script>
   <script src="navigation/sidenav.js"></script>
+  <script src="learn/learn.js"></script>
   <script src="ideas/searchFilter/searchFilter.js"></script>
   <script src="ideas/ideasView/ideasView.js"></script>
   <script src="ideas/ideasView/ideaBack/dialogBack.js"></script>
@@ -76,10 +77,11 @@
                 <i class="material-icons icon-button-adjust">&#xE5D2;</i>
             </md-button>
             <h2><span>
-                <img ui-sref="home" class="center-img nav-bar-pointer" src="assets/Innovation_Challenge_Bulb.png" width="25"/>
+                <img ui-sref="home" class="toolbar-lightbulb" src="assets/Innovation_Challenge_Bulb.png" width="25"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span></h2>
-            <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">Innovate</span>
+            <span class="toolbar-left-link" ui-sref="ideabrowse">Ideas</span>
+            <span class="toolbar-links" ui-sref="learn">Learn</span>
             <span flex></span>
 
             <div class="md-padding" layout="row">
@@ -147,7 +149,6 @@
                 </md-button>
             </div>
         </md-sidenav>
-
         <md-content ui-view flex></md-content>
     </md-content>
 

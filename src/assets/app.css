@@ -419,3 +419,15 @@ h2.no-bottom-margin {
 }
 /*----------------------------------------------------*/
 /*End Conversation Bubbles*/
+
+.toolbar-left-link {
+    padding-left: 160px;
+    cursor: pointer;
+}
+.toolbar-links {
+    padding-left: 50px;
+    cursor: pointer;
+}
+.toolbar-lightbulb {
+    margin-left: 120px;
+}
