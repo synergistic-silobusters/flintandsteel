@@ -82,8 +82,21 @@
                 <img ui-sref="home"src="assets/Innovation_Challenge_Bulb.png" width="25"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </md-button></h2>
-            <md-button class="toolbar-left-link" ui-sref="ideabrowse">Browse</md-button>
-            <md-button class="toolbar-links" ui-sref="learn">Learn</md-button>
+            <div ng-controller="SidenavCtrl">
+            <md-button class=" toolbar-left-link" aria-label="Add another idea" ng-click="navTo('addidea')">
+                Create
+                <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
+                <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Please Log In</md-tooltip>
+            </md-button>
+            </div>
+            <md-button class="toolbar-links" ui-sref="ideabrowse">
+                Browse
+                <md-tooltip md-direction="bottom">Browse Ideas</md-tooltip>
+            </md-button>
+            <md-button class="toolbar-links" ui-sref="learn">
+                Learn
+                <md-tooltip md-direction="bottom">Learn About Innovate</md-tooltip>
+            </md-button>
             <span flex></span>
 
             <div class="md-padding" layout="row">
