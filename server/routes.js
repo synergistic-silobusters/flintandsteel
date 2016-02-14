@@ -273,11 +273,14 @@ module.exports = function(app, db) {
                             else {
                                 var token = tokens.generate({ _id: responseObj._id, email: responseObj.email });
                                 users.update(responseObj._id, 'token', token, function(tokenError) {
-                                    if (err) {
+                                    if (tokenError) {
                                         console.log(chalk.bgRed(tokenError));
+                                        return res.status(500).json(tokenError);
                                     }
-                                    responseObj.token = token;
-                                    return res.status(200).json(responseObj);
+                                    else {
+                                        responseObj.token = token;
+                                        return res.status(200).json(responseObj);
+                                    }
                                 });
                             }
                         });
