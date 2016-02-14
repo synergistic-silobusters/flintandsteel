@@ -86,7 +86,7 @@
             <md-button class=" toolbar-left-link" aria-label="Add another idea" ng-click="navTo('addidea')">
                 Create
                 <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
-                <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Please Log In</md-tooltip>
+                <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
             </md-button>
             </div>
             <md-button class="toolbar-links" ui-sref="ideabrowse">
@@ -158,10 +158,6 @@
                 </div>
             </md-content>
             <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
-                <md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-if="isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust">&#xE145;</i>
-                    <md-tooltip md-direction="left">Add Idea</md-tooltip>
-                </md-button>
             </div>
         </md-sidenav>
         <md-content ui-view flex></md-content>
