@@ -185,7 +185,6 @@ module.exports = function(app, db) {
     });
 
     app.delete('/api/v1/ideas/:id', processAuthorization, function(req, res) {
-        console.log('id: ', req.params.id);
         ideas.delete(req.params.id).then(function() {
             res.sendStatus(204);
             return ideas.fetch();
