@@ -8,7 +8,7 @@ angular.module('flintAndSteel')
         function($document, $scope) {
             "use strict";
 
-            $scope.learnItem  = {title: "Login",
+            $scope.learnItem0 = {title: "Login",
                                 imgSource: "assets/learn/learnToLogin.gif",
                                 orderImg: "1",
                                 orderDesc: "2",
@@ -39,7 +39,7 @@ angular.module('flintAndSteel')
                                 description: "Comments are a way to give feedback to the author or team of an idea.  One could give ideas or constructive criticism to further the innovation."
                                 };
 
-            $scope.LearnItems = [$scope.learnItem, $scope.learnItem1, $scope.learnItem2, $scope.learnItem3, $scope.learnItem4];
+            $scope.LearnItems = [$scope.learnItem0, $scope.learnItem1, $scope.learnItem2, $scope.learnItem3, $scope.learnItem4];
 
         }
     ]
