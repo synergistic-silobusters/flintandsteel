@@ -6,10 +6,10 @@
 /* global it */
 /* global expect */
 
-describe('ideaItem', function() {
+describe('learnItem', function() {
     "use strict";
 
-    var DIRECTIVE_NAME = "idea-item";
+    var DIRECTIVE_NAME = "learn-item";
 
     var scope, compile, element;
 
@@ -23,7 +23,7 @@ describe('ideaItem', function() {
     beforeEach(function() {
         module('flintAndSteel');
         module('ui.identicon');
-        module('ideas/ideaItem/ideaItem.tpl.html');
+        module('learn/learnItem/learnItem.tpl.html');
 
         inject(function($rootScope, $compile) {
             scope = $rootScope.$new();
