@@ -12,7 +12,7 @@ module.exports = function(app, db) {
         users = require('./users/users')(db),
         events = require('./events/events')(db),
         comments = require('./comments/comments')(db),
-        replaceIds = require('./replaceIds')(db),
+        ideaPostProcessing = require('./ideaPostProcessing')(db),
         chalk = require('chalk'),
         _ = require('lodash'),
         mongo = require('mongodb'),
@@ -42,7 +42,7 @@ module.exports = function(app, db) {
 
     app.get('/api/v1/ideas', function(req, res) {
         ideas.fetch().then(function(headers) {
-            return replaceIds.headers(headers);
+            return ideaPostProcessing.headers(headers);
         }).then(function(replacedHeaders) {
             var headersToSend = replacedHeaders.map(function(singleHeader) {
                 return singleHeader[0];
@@ -81,11 +81,9 @@ module.exports = function(app, db) {
             var idea;
             ideas.get(req.params.id)
             .then(function(doc) {
-                return replaceIds.idea(doc);
+                return ideaPostProcessing.idea(doc);
             })
             .then(function(ideaToSend) {
-                console.log(ideaToSend[0]);
-                console.log('*****');
                 //send the idea to client side
                 res.status(200).json(ideaToSend[0]);
             })
@@ -419,7 +417,7 @@ module.exports = function(app, db) {
         var sse = startSees(res);
 
         function updateHeaders(headers) {
-            replaceIds.headers(headers).then(function(headersData) {
+            ideaPostProcessing.headers(headers).then(function(headersData) {
                 var headersToSend = headersData.map(function(singleHeader) {
                     return singleHeader[0];
                 });
@@ -444,7 +442,7 @@ module.exports = function(app, db) {
                 sse("updateIdea_" + req.params.id, idea, req.params.id);
                 return;
             }
-            replaceIds.idea(idea).then(function(ideaData) {
+            ideaPostProcessing.idea(idea).then(function(ideaData) {
                 sse("updateIdea_" + req.params.id, ideaData[0], req.params.id);
             }).catch(function(err) {
                 // TODO: This ends up running since ideaData[0] isn't defined here.

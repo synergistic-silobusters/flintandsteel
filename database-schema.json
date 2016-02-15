@@ -14,10 +14,6 @@
         "title": "",
         "description": "",
         "authorId": "one user._id",
-        "avgValue": {
-            "stars": {"filled": true, "filled": true, "filled": true, "filled": true, "filled": false},
-            "value": 4,
-        },
         "eventId": "",
         "timeCreated": "",
         "timeModified": "",

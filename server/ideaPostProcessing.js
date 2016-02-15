@@ -199,12 +199,10 @@ module.exports = function(db) {
                         stars: []
                     };
                 }
-
                 //load star values to update page
                 for (var i = 0; i < 5; i++) {
                     data.avgValue.stars.push({ filled: i < data.avgValue.value });
                 }
-
                 resolve(data);
             }).catch(function(err) {
                 console.log(err);
