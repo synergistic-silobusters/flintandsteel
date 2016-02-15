@@ -123,7 +123,9 @@ insertResult = db.ideas.insert(
                 timeCreated: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
-            team: [{ _id: new ObjectId(), memberId: userIds[0] }]
+            team: [{ _id: new ObjectId(), memberId: userIds[0] }],
+            value: [],
+            complexity: []
         },
         {
             title: 'Rick\'s Test Idea',
@@ -144,7 +146,16 @@ insertResult = db.ideas.insert(
                 timeCreated: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
-            team: [{ _id: new ObjectId(), memberId: userIds[1] }]
+            team: [{ _id: new ObjectId(), memberId: userIds[1] }],
+            value: [{
+                stars: [{filled: true}, {filled: true}, {filled: true}, {filled: true}, {filled: false}],
+                value: 4,
+                authorId: userIds[1]
+            },{
+                stars: [{filled: true}, {filled: true}, {filled: false}, {filled: false}, {filled: false}],
+                value: 2,
+                authorId: userIds[0]
+            }]
         },
         {
             title: 'Dick\'s Test Idea',
@@ -165,7 +176,12 @@ insertResult = db.ideas.insert(
                 timeCreated: ISODate(),
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
-            team: [{ _id: new ObjectId(), memberId: userIds[2] }]
+            team: [{ _id: new ObjectId(), memberId: userIds[2] }],
+            value: [{
+                stars: [{filled: true}, {filled: true}, {filled: false}, {filled: false}, {filled: false}],
+                value: 2,
+                authorId: userIds[0]
+            }]
         }
     ]
 );

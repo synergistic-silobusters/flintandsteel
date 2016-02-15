@@ -66,6 +66,15 @@ angular.module('flintAndSteel')
 
             ctrl.refreshIdea = function() {
                 ideaSvc.getIdea($stateParams.ideaId).then(function getIdeaSuccess(response) {
+                    if (response.data === 'IDEA_NOT_FOUND') {
+                        toastSvc.show('Sorry, that idea does not exist');
+                        $state.go('home');
+                    }
+                    else {
+                        $scope.idea = response.data;
+                        ctrl.enableEdit = false;
+                        ctrl.refreshTeam();
+                    }
                     $scope.idea = response.data;
                     ctrl.enableEdit = false;
                     ctrl.refreshTeam();
@@ -240,7 +249,8 @@ angular.module('flintAndSteel')
                         delete roles.$$hashKey;
                         delete roles.checked;
                     });
-                    ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId).then(function() {
+                    ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId)
+                    .then(function() {
                         ctrl.refreshIdea();
                     },
                     function() {
@@ -308,7 +318,6 @@ angular.module('flintAndSteel')
 
                 ideaSvc.updateIdea($scope.idea._id, 'team', $scope.idea.team).then(
                     function success() {
-                        //console.log(data);
                     },
                     function error(response) {
                         console.log(response);
@@ -512,12 +521,12 @@ angular.module('flintAndSteel')
                     }
                     ideaSvc.editBack($scope.idea._id, back._id, newBack).then(
                         function success() {
-                            ctrl.refreshIdea();
                         },
                         function error(response) {
                             console.log(response);
                         }
                     );
+
                     $scope.showEditBackInput = false;
                     ctrl.editBackText = '';
                     $scope.selectedTypes = [];
@@ -607,6 +616,90 @@ angular.module('flintAndSteel')
                     });
                     $window.location = $scope.emailString;
                 }
+            };
+
+            ////////////////////////
+            // RATING FUNCTIONS   //
+            ////////////////////////
+
+            var maxStars = 5;
+
+            ctrl.editIdeaRating = function(idea) {
+                if ($scope.isUserLoggedIn()) {
+                    _.forEach(idea.value, function(rating) {
+                        delete rating.$$hashKey;
+                        _.forEach(rating.stars, function(star) {
+                            delete star.$$hashKey;
+                        });
+                    });
+                    ideaSvc.editIdeaRating($scope.idea._id, idea.value)
+                    .then(function() {
+                        //ctrl.refreshIdea();
+                    }, function() {
+                        console.log("ERR: Could not update idea.");
+                    });
+                }
+            };
+
+            //turns a rating value into filled stars
+            ctrl.updateStars = function(rating) {
+                rating.stars = [];
+                for (var i = 0; i < maxStars; i++) {
+                    rating.stars.push({ filled: i < rating.value });
+                }
+                //removes $$hashKey and checked because they can't be stored in backend
+                _.forEach(rating.stars, function(roles) {
+                    delete roles.$$hashKey;
+                });
+                ctrl.editIdeaRating($scope.idea);
+            };
+
+            $scope.toggle = function(index, rating) {
+                if ($scope.isUserLoggedIn()) {
+                    if (!$scope.hasUserRated(rating)) {
+                        rating.push({
+                            value: '',
+                            stars: [],
+                            authorId: userSvc.getProperty('_id')
+                        });
+                    }
+
+                    //can I do just length - 1 instead
+                    rating.forEach(function(value) {
+                        if (userSvc.getProperty('_id') === value.authorId) {
+                            value.value = index + 1;
+                            ctrl.updateStars(value);
+                        }
+                    });
+                }
+            };
+
+            //Pass either $scope.idea.value or $scope.idea.complexity
+            $scope.hasUserRated = function hasUserRated(rating) {
+                var userRated = false;
+                if (userSvc.isUserLoggedIn() && typeof rating !== 'undefined') {
+                    rating.forEach(function(value) {
+                        if (userSvc.getProperty('_id') === value.authorId) {
+                            userRated = true;
+                        }
+                    });
+                }
+                return userRated;
+            };
+
+            //Pass 'value' or 'complex' to retreive value or complexity for user
+            $scope.loadUserRating = function loadUserRating(rating) {
+                var userRating = {};
+                if ($scope.isUserLoggedIn()) {
+                    if (typeof rating !== undefined) {
+                        rating.forEach(function(value) {
+                            if (userSvc.getProperty('_id') === value.authorId) {
+                                userRating = value;
+                            }
+                        });
+                    }
+                }
+                return userRating;
             };
         }
     ]

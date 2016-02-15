@@ -53,6 +53,7 @@ module.exports = function(app, db) {
             res.status(500).json(error);
         });
     });
+
     app.post('/api/v1/ideas', function(req, res) {
         ideas.create(
             req.body.title,
@@ -77,10 +78,44 @@ module.exports = function(app, db) {
             next();
         }
         else {
-            ideas.get(req.params.id).then(function(doc) {
+            var idea;
+            ideas.get(req.params.id)
+            .then(function(result) {
+                //get the idea, set it to an acessible variable
+                idea = result;
+
+                //aggregate for average
+                var theDatabase = db.getDb();
+
+                return theDatabase.collection('ideas').aggregate([
+                    { $match: {_id: result._id} },
+                    { $unwind: "$value" },
+                    { $group: {_id: null, ratingAvg: {$avg: '$value.value'}} }
+                ]).toArray();
+            }).then(function(averages) {
+                //select the average rating and append to the idea
+                if (typeof averages[0] === 'undefined') {
+                    //if no ratings, return 0 as average rating
+                    idea.avgValue = {value: Number(0).toFixed(2)};
+                }
+                else {
+                    idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
+                }
+
+                //load star values to update page
+                idea.avgValue.stars = [];
+                for (var i = 0; i < 5; i++) {
+                    idea.avgValue.stars.push({ filled: i < idea.avgValue.value });
+                }
+
+                return idea;
+            })
+            .then(function(doc) {
                 return replaceIds.idea(doc);
-            }).then(function(result) {
-                res.status(200).json(result[0]);
+            })
+            .then(function(ideaToSend) {
+                //send the idea to client side
+                res.status(200).json(ideaToSend[0]);
             })
             .catch(function(error) {
                 if (error.message === 'NOT_FOUND') {
@@ -163,8 +198,8 @@ module.exports = function(app, db) {
     });
 
     app.patch('/api/v1/ideas/:id', function(req, res) {
-        // console.log(req.body);
         var promises = [];
+        var avgIdea;
 
         _.forEach(req.body, function(patchOp) {
             promises.push(db.patchObject('ideas', req.params.id, patchOp));
@@ -176,7 +211,36 @@ module.exports = function(app, db) {
                 ideas.get(req.params.id),
                 ideas.fetch()
             ]);
+        }).then(function(result) {
+            //aggregate average value on edit as well
+            avgIdea = result;
+            var theDatabase = db.getDb();
+
+            return theDatabase.collection('ideas').aggregate([
+                { $match: {_id: result[0]._id} },
+                { $unwind: "$value" },
+                { $group: {_id: null, ratingAvg: {$avg: '$value.value'}} }
+            ]).toArray();
+        }).then(function(averages) {
+            //select the average rating and append to the idea
+            if (typeof averages[0] === 'undefined') {
+                //if no ratings, return 0 as average rating
+                avgIdea[0].avgValue = {value: Number(0).toFixed(2)};
+            }
+            else {
+                avgIdea[0].avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
+            }
+
+            //load star values to update page
+            avgIdea[0].avgValue.stars = [];
+            for (var i = 0; i < 5; i++) {
+                avgIdea[0].avgValue.stars.push({ filled: i < avgIdea[0].avgValue.value });
+            }
+
+            //return updated idea
+            return avgIdea;
         }).then(function(ideaResults) {
+            //update idea with new values
             IdeasInstance.updateIdea(ideaResults[0]);
             IdeasInstance.newHeaders(ideaResults[1]);
         }).catch(function(error) {

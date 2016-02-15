@@ -19,6 +19,10 @@ angular.module('flintAndSteel')
                 return $http.get('/api/v1/ideas');
             };
 
+            // this.getAvg = function getAvg(ideaId, type) {
+            //     return $http.get('/api/v1/ideas/' + ideaId, type);
+            // };
+
             this.postComment = function postComment(parentId, text, authorId) {
                 return $http.post('/api/v1/comments',
                     {
@@ -87,6 +91,17 @@ angular.module('flintAndSteel')
                 }
             };
 
+            this.editIdeaRating = function editIdeaRating(ideaId, value/*, complexity*/) {
+                if (ideaId !== 'mock_idea') {
+                    return $http.patch('/api/v1/ideas/' + ideaId,
+                        [
+                            { operation: 'modify', path: 'value', value: JSON.stringify(value) }/*,
+                            { operation: 'modify', path: 'complexity', value: JSON.stringify(complexity) }*/
+                        ]
+                    );
+                }
+            };
+
             this.deleteIdea = function deleteIdea(ideaId) {
                 if (ideaId !== 'mock_idea') {
                     return $http.delete('/api/v1/ideas/' + ideaId);
@@ -122,7 +137,9 @@ angular.module('flintAndSteel')
                 editBack: this.editBack,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
-                getBackTypeChips: this.getBackTypeChips
+                getBackTypeChips: this.getBackTypeChips,
+                editIdeaRating: this.editIdeaRating,
+                getAvg: this.getAvg
             };
         }
     ]

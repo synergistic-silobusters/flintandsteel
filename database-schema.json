@@ -14,6 +14,10 @@
         "title": "",
         "description": "",
         "authorId": "one user._id",
+        "avgValue": {
+            "stars": {"filled": true, "filled": true, "filled": true, "filled": true, "filled": false},
+            "value": 4,
+        },
         "eventId": "",
         "timeCreated": "",
         "timeModified": "",
@@ -59,6 +63,13 @@
                 "memberId": "idea.authorId"
             },
             "set of objects with user._id"
+        ],
+        "value": [
+            {
+                "stars": {"filled": true, "filled": true, "filled": true, "filled": true, "filled": false},
+                "value": 4,
+                "authorId": "one user._id"
+            }
         ]
     },
     "comment": {
