@@ -177,15 +177,41 @@ module.exports = function(db) {
             });
         }
 
-        var ideaAvgValue = {};
-        if (data.avgValue.length === 0) {
-            ideaAvgValue.push(new Promise(function(resolve) {
-                resolve();
-            }));
-        }
-        else {
-            ideaAvgValue = data.avgValue;
-        }
+        // Calculate the average Value rating
+        var theDatabase = db.getDb();
+        var ideaAvgValue = new Promise(function(resolve, reject) {
+            theDatabase.collection('ideas').aggregate([
+                { $match: {_id: data._id} },
+                { $unwind: "$value" },
+                { $group: {_id: null, ratingAvg: { $avg: '$value.value'} } }
+            ]).toArray().then(function(averages) {
+                //If no ratings, average to zero
+                if(typeof averages === 'undefined') {
+                    data.avgValue = {
+                        value: Number(0).toFixed(2),
+                        stars: []
+                    };
+                }
+                //If ratings, average to 2 decimals
+                else {
+                    data.avgValue = {
+                        value: Number(averages[0].ratingAvg).toFixed(2),
+                        stars: []
+                    };
+                }
+
+                //load star values to update page
+                for (var i = 0; i < 5; i++) {
+                    data.avgValue.stars.push({ filled: i < data.avgValue.value });
+                }
+
+                resolve(data);
+            }).catch(function(err) {
+                console.log(err);
+                reject(err);
+            });
+        });
+
         return Promise.all([
             ideaAuthor,
             ideaEvent,

@@ -80,40 +80,12 @@ module.exports = function(app, db) {
         else {
             var idea;
             ideas.get(req.params.id)
-            .then(function(result) {
-                //get the idea, set it to an acessible variable
-                idea = result;
-
-                //aggregate for average
-                var theDatabase = db.getDb();
-
-                return theDatabase.collection('ideas').aggregate([
-                    { $match: {_id: result._id} },
-                    { $unwind: "$value" },
-                    { $group: {_id: null, ratingAvg: {$avg: '$value.value'}} }
-                ]).toArray();
-            }).then(function(averages) {
-                //select the average rating and append to the idea
-                if (typeof averages[0] === 'undefined') {
-                    //if no ratings, return 0 as average rating
-                    idea.avgValue = {value: Number(0).toFixed(2)};
-                }
-                else {
-                    idea.avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
-                }
-
-                //load star values to update page
-                idea.avgValue.stars = [];
-                for (var i = 0; i < 5; i++) {
-                    idea.avgValue.stars.push({ filled: i < idea.avgValue.value });
-                }
-
-                return idea;
-            })
             .then(function(doc) {
                 return replaceIds.idea(doc);
             })
             .then(function(ideaToSend) {
+                console.log(ideaToSend[0]);
+                console.log('*****');
                 //send the idea to client side
                 res.status(200).json(ideaToSend[0]);
             })
@@ -211,34 +183,6 @@ module.exports = function(app, db) {
                 ideas.get(req.params.id),
                 ideas.fetch()
             ]);
-        }).then(function(result) {
-            //aggregate average value on edit as well
-            avgIdea = result;
-            var theDatabase = db.getDb();
-
-            return theDatabase.collection('ideas').aggregate([
-                { $match: {_id: result[0]._id} },
-                { $unwind: "$value" },
-                { $group: {_id: null, ratingAvg: {$avg: '$value.value'}} }
-            ]).toArray();
-        }).then(function(averages) {
-            //select the average rating and append to the idea
-            if (typeof averages[0] === 'undefined') {
-                //if no ratings, return 0 as average rating
-                avgIdea[0].avgValue = {value: Number(0).toFixed(2)};
-            }
-            else {
-                avgIdea[0].avgValue = {value: Number(averages[0].ratingAvg).toFixed(2)};
-            }
-
-            //load star values to update page
-            avgIdea[0].avgValue.stars = [];
-            for (var i = 0; i < 5; i++) {
-                avgIdea[0].avgValue.stars.push({ filled: i < avgIdea[0].avgValue.value });
-            }
-
-            //return updated idea
-            return avgIdea;
         }).then(function(ideaResults) {
             //update idea with new values
             IdeasInstance.updateIdea(ideaResults[0]);
