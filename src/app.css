@@ -432,6 +432,10 @@ h2.no-bottom-margin {
     line-height: 65px;
     border-radius: 0;
 }
+.toolbar-lightbulb {
+    cursor: pointer;
+    cursor: hand;
+}
 .lightbulb {
     padding-top: 50px;
     max-width: 100%;
