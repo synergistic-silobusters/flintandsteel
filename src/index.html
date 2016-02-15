@@ -11,9 +11,8 @@
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="./lib/angular-material/angular-material.css"/>
-    <link rel="stylesheet" type="text/css" href="assets/app.css">
+    <link rel="stylesheet" type="text/css" href="app.css">
     <link rel="stylesheet" type="text/css" href="homeView/homeView.css">
-    <link rel="stylesheet" type="text/css" href="learn/learn.css">
     <link rel="stylesheet" href="lib/angular-timeline/dist/angular-timeline.css"/>
     <link rel="stylesheet" href="lib/jqcloud2/dist/jqcloud.min.css"/>
 
@@ -78,10 +77,10 @@
             <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
                 <i class="material-icons icon-button-adjust">&#xE5D2;</i>
             </md-button>
-            <h2><md-button>
+            <md-button>
                 <img ui-sref="home"src="assets/Innovation_Challenge_Bulb.png" width="25"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
-            </md-button></h2>
+            </md-button>
             <div ng-controller="SidenavCtrl">
             <md-button class=" toolbar-left-link" aria-label="Add another idea" ng-click="navTo('addidea')">
                 Create

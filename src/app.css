@@ -428,3 +428,17 @@ h2.no-bottom-margin {
     margin-left: 30px;
     cursor: pointer;
 }
+.lightbulb {
+    padding-top: 50px;
+    max-width: 100%;
+}
+
+.title {
+    padding: 35px;
+}
+.learn-objects {
+    padding: 50px;
+}
+.learn-objects-img {
+    width:100%;
+}
