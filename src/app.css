@@ -419,3 +419,34 @@ h2.no-bottom-margin {
 }
 /*----------------------------------------------------*/
 /*End Conversation Bubbles*/
+
+.toolbar-left-link {
+    margin-left: 275px;
+    cursor: pointer;
+    line-height: 65px;
+    border-radius: 0;
+}
+.toolbar-links {
+    margin-left: 6px;
+    cursor: pointer;
+    line-height: 65px;
+    border-radius: 0;
+}
+.toolbar-lightbulb {
+    cursor: pointer;
+    cursor: hand;
+}
+.lightbulb {
+    padding-top: 50px;
+    max-width: 100%;
+}
+
+.title {
+    padding: 35px;
+}
+.learn-objects {
+    padding: 50px;
+}
+.learn-objects-img {
+    width:100%;
+}

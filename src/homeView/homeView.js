@@ -109,7 +109,7 @@ angular.module('flintAndSteel')
                 angular.element("#wordcloud").jQCloud(WordList, {
                     classPattern: null,
                     delay: 50,
-                    colors: ["#900100", "#7f7f7f","#7f7f7f", "#7f7f7f", "#7f7f7f", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0"],
+                    colors: ["#900100", "#7f7f7f","#7f7f7f", "#7f7f7f", "#7f7f7f", "#b7b7b7", "#b7b7b7", "#b7b7b7", "#b7b7b7", "#b7b7b7"],
                     fontSize: { from: 0.05, to: 0.01 },
                     shape: 'cloud',
                     width: width,

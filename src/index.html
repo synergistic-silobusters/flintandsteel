@@ -11,7 +11,7 @@
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="./lib/angular-material/angular-material.css"/>
-    <link rel="stylesheet" type="text/css" href="assets/app.css">
+    <link rel="stylesheet" type="text/css" href="app.css">
     <link rel="stylesheet" type="text/css" href="homeView/homeView.css">
     <link rel="stylesheet" href="lib/angular-timeline/dist/angular-timeline.css"/>
     <link rel="stylesheet" href="lib/jqcloud2/dist/jqcloud.min.css"/>
@@ -50,6 +50,8 @@
   <script src="toastSvc/toastSvc.js"></script>
   <script src="navigation/toolbar.js"></script>
   <script src="navigation/sidenav.js"></script>
+  <script src="learn/learnItem/learnItem.js"></script>
+  <script src="learn/learn.js"></script>
   <script src="ideas/searchFilter/searchFilter.js"></script>
   <script src="ideas/ideasView/ideasView.js"></script>
   <script src="ideas/ideasView/ideaBack/dialogBack.js"></script>
@@ -62,7 +64,6 @@
   <script src="ideas/addIdeaView/addIdeaView.js"></script>
   <script src="homeView/timelineEvent/timelineEvent.js"></script>
   <script src="homeView/homeView.js"></script>
-  <script src="homeView/helpCard/helpCard.js"></script>
   <script src="events/eventSvc/eventSvc.js"></script>
   <script src="about/about.js"></script>
   <!-- endinject -->
@@ -76,11 +77,25 @@
             <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
                 <i class="material-icons icon-button-adjust">&#xE5D2;</i>
             </md-button>
-            <h2><span>
-                <img ui-sref="home" class="center-img nav-bar-pointer" src="assets/Innovation_Challenge_Bulb.png" width="25"/>
+            <span class="toolbar-lightbulb">
+                <img ui-sref="home"src="assets/Innovation_Challenge_Bulb.png" width="25"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
-            </span></h2>
-            <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">Innovate</span>
+            </span>
+            <div ng-controller="SidenavCtrl">
+            <md-button class=" toolbar-left-link" aria-label="Add another idea" ng-click="navTo('addidea')">
+                Create
+                <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
+                <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
+            </md-button>
+            </div>
+            <md-button class="toolbar-links" ui-sref="ideabrowse">
+                Browse
+                <md-tooltip md-direction="bottom">Browse Ideas</md-tooltip>
+            </md-button>
+            <md-button class="toolbar-links" ui-sref="learn">
+                Learn
+                <md-tooltip md-direction="bottom">Learn About Innovate</md-tooltip>
+            </md-button>
             <span flex></span>
 
             <div class="md-padding" layout="row">
@@ -142,13 +157,8 @@
                 </div>
             </md-content>
             <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
-                <md-button class="md-fab fab-layout" aria-label="Add another idea" ng-click="navTo('addidea')" ng-if="isUserLoggedIn()">
-                    <i class="material-icons icon-button-adjust">&#xE145;</i>
-                    <md-tooltip md-direction="left">Add Idea</md-tooltip>
-                </md-button>
             </div>
         </md-sidenav>
-
         <md-content ui-view flex></md-content>
     </md-content>
 

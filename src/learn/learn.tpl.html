@@ -1,0 +1,12 @@
+<md-content layout="column" layout-align="space-between center" ng-controller="LearnCtrl as learn">
+    <div style="width:15%">
+        <img src="assets/Lightbulb.png"   class="lightbulb">
+    </div>
+    <div class="title" layout="column" layout-align="center center">
+        <h1>Learn</h1>
+        <div>Learn how to interact with Innovate.RA</div>
+    </div>
+</md-content>
+<md-item ng-repeat="LearnItem in LearnItems">
+<learn-item  item="LearnItem"></learn-item>
+</md-item>
