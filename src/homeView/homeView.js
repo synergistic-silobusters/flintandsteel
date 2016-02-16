@@ -30,7 +30,7 @@ angular.module('flintAndSteel')
                             location: "Global", time: "", name: "Innovation Challenge Begins",
                             description: "Finalize your team and start developing your idea"};
             $scope.Event4 = {type: "bg-warning", date: "May 2016",
-                            location: "Regional", time: "", name: "Innovation Challenge Begins",
+                            location: "Regional", time: "", name: "Innovation Challenge Readouts",
                             description: "Local events allow your team to share your developed idea"};
             $scope.Event5 = {type: "bg-warning", alignment: "left-aligned", date: "June 2016",
                             location: "Global", time: "", name: "Global Innovation Challenge – Executive Pitch",
