@@ -1,0 +1,18 @@
+<md-dialog aria-label={{item.Name}}  ng-cloak>
+  <form>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>{{item.title}}</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="learn-dialog-content">
+      <img src={{item.imgSource}} class="learn-objects-img">
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button ng-click="answer()" style="learn-dialog-button" >
+      Got It!
+    </md-button>
+  </div>
+  </form>
+</md-dialog>
