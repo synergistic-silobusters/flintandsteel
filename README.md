@@ -6,7 +6,7 @@
 
 # flintandsteel
 
-![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/Innovate-Rockwell-Automation-Black.png)
+![Rok-Starter](https://github.com/synergistic-silobusters/flintandsteel/raw/master/src/assets/Innovate-Rockwell-Automation-Black.png)
 
 ## Installation
 
