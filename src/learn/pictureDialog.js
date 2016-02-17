@@ -1,14 +1,8 @@
-function DialogController($scope, $mdDialog, learnItem1) {
+function DialogController($scope, $mdDialog, learnItem) {
+    "use strict";
+    $scope.item = learnItem;
 
-    $scope.item = learnItem1;
-
-  $scope.hide = function() {
-    $mdDialog.hide();
-  };
-  $scope.cancel = function() {
-    $mdDialog.cancel();
-  };
-  $scope.answer = function() {
-    $mdDialog.hide();
-  };
+    $scope.answer = function() {
+        $mdDialog.hide();
+    };
 }

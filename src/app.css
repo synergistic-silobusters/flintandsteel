@@ -450,7 +450,13 @@ h2.no-bottom-margin {
 .learn-objects-img {
     width:100%;
 }
+.learn-dialog-img {
+    width:85%;
+}
 .learn-dialog-content {
     max-width:800px;
-    max-height:810px; 
+    max-height:810px;
+}
+.learn-dialog-button {
+    margin-right:20px;
 }

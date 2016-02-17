@@ -41,20 +41,20 @@ angular.module('flintAndSteel')
 
             $scope.LearnItems = [$scope.learnItem0, $scope.learnItem1, $scope.learnItem2, $scope.learnItem3, $scope.learnItem4];
 
-            $scope.showAdvanced = function(ev,item) {
+            $scope.showAdvanced = function(ev, item) {
                 $mdDialog.show({
-                  controller: DialogController,
-                  templateUrl: 'learn/pictureDialog.tpl.html',
-                  parent: angular.element(document.body),
-                  targetEvent: ev,
-                  clickOutsideToClose:true,
-                  resolve: {
-                    learnItem1: function () {
-                      return item;
+                    controller: DialogController,
+                    templateUrl: 'learn/pictureDialog.tpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    resolve: {
+                        learnItem: function() {
+                            return item;
+                        }
                     }
-                  }
-                })
-              };
+                });
+            };
 
 
         }
