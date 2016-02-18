@@ -15,7 +15,7 @@
 The following applications need to be installed:
 
 * [Git](http://git-scm.com/)
-* [Node.js](https://nodejs.org/en/) - this project tests against v4.2.2 LTS
+* [Node.js](https://nodejs.org/en/) - this project tests against v5.6.0
 * [MongoDB](https://www.mongodb.org/)
 * A text editor like [Notepad++](https://notepad-plus-plus.org/) or [Sublime Text 3](http://www.sublimetext.com/3)
 
