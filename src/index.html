@@ -82,7 +82,7 @@
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span>
             <div ng-controller="SidenavCtrl">
-            <md-button class=" toolbar-left-link" aria-label="Add another idea" ng-click="navTo('addidea')">
+            <md-button class=" toolbar-left-link" aria-label="Add another idea" ng-click="navTo('addidea')"><md-button aria-label="Add another idea" ng-click="navTo('addidea')">
                 Create
                 <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
                 <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
