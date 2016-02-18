@@ -67,7 +67,7 @@ module.exports = function(app, db) {
         }).then(function(headers) {
             IdeasInstance.newHeaders(headers);
         }).catch(function(error) {
-            console.error(chalk.bgRed(error));
+            console.error("ideas POST: " + chalk.bgRed(error));
             res.sendStatus(500);
         });
     });

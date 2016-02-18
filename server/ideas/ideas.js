@@ -19,6 +19,9 @@ module.exports = function(db) {
     module.create = function(title, description, authorId, eventId, tags, rolesreq) {
         var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq);
         return new Promise(function(resolve, reject) {
+            if (idea instanceof Error) {
+                return reject(idea);
+            }
             db.insertOne(COLLECTION, idea, function(err, doc) {
                 if (err) {
                     reject(err);
