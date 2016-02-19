@@ -290,6 +290,7 @@ module.exports = function(app, db) {
         }
     });
 
+    /*
     app.delete('/api/v1/users/:id', processAuthorization, function(req, res) {
         var promises = [], patchDelete = [
             { "operation": "modify", "path": "firstName", "value": "\"Deleted\"" },
@@ -328,6 +329,7 @@ module.exports = function(app, db) {
             res.sendStatus(500);
         });
     });
+    */
 
 
     app.get('/api/v1/events', function(req, res) {
