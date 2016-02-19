@@ -78,10 +78,10 @@
                 <i class="material-icons icon-button-adjust">&#xE5D2;</i>
             </md-button>
             <span class="toolbar-lightbulb">
-                <img ui-sref="home"src="assets/Innovate-Rockwell-Automation-White.png" width="250"/>
+                <img ui-sref="home" src="assets/Innovate-Rockwell-Automation-White.png" width="250"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span>
-            <md-button ng-controller="SidenavCtrl" aria-label="Add another idea" class="toolbar-links" ng-click="navTo('addidea')">
+            <md-button ng-controller="SidenavCtrl" aria-label="Add another idea" class="toolbar-left-link" ng-click="navTo('addidea')">
                 Create
                 <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
                 <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
