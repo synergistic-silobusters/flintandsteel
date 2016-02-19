@@ -75,7 +75,6 @@ angular.module('flintAndSteel', [
             '900': 'bb1e32'
         });
         var rockstarterGrayMap = $mdThemingProvider.extendPalette('grey', {
-            '900': '6d6e71'
         });
 
         $mdThemingProvider.definePalette('rokstarter-red', rockstarterRedMap);
