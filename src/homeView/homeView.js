@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$document', '$scope', '$timeout', '$window', '$state','$mdSidenav', 'ideaSvc',
-        function($document, $scope, $timeout, $window, $state, $mdSidenav, ideaSvc) {
+        '$document', '$scope', '$timeout', '$window', '$state',
+        function($document, $scope, $timeout, $window, $state) {
             "use strict";
 
 
@@ -69,13 +69,6 @@ angular.module('flintAndSteel')
             $scope.navToBrowse = function navToBrowse() {
                 $state.go('ideabrowse');
             };
-
-            ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                $scope.topIdeas = data;
-                console.log(data);
-            }, function getIdeaHeadersError(data, status) {
-                console.log(status);
-            });
 
             $scope.generateWords = function generateWords() {
 
