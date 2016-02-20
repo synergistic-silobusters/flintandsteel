@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .factory('ideaSvc',
     [
-        '$http',
-        function($http) {
+        '$http', '$q',
+        function($http, $q) {
             "use strict";
 
             this.postIdea = function postIdea(idea) {
@@ -110,6 +110,24 @@ angular.module('flintAndSteel')
                 });
             };
 
+            this.getUserIdeasById = function getUserIdeasById(userId) {
+                if (userId) {
+                    return $http.get('/api/v1/ideas/search?forterm=' + userId + '&inpath=authorId');
+                }
+                else {
+                    return $q.when(false);
+                }
+            };
+
+            this.getUserBacksById = function getUserBacksById(userId) {
+                if (userId) {
+                    return $http.get('/api/v1/ideas/search?forterm=' + userId + '&inpath=backs.authorId');
+                }
+                else {
+                    return $q.when(false);
+                }
+            };
+
             return {
                 postIdea: this.postIdea,
                 getIdea: this.getIdea,
@@ -122,7 +140,9 @@ angular.module('flintAndSteel')
                 editBack: this.editBack,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
-                getBackTypeChips: this.getBackTypeChips
+                getBackTypeChips: this.getBackTypeChips,
+                getUserIdeasById: this.getUserIdeasById,
+                getUserBacksById: this.getUserBacksById
             };
         }
     ]

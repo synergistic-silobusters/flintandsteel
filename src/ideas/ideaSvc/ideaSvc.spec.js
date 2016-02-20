@@ -9,7 +9,7 @@
 describe('ideaSvc', function() {
     "use strict";
 
-    var ideaSvc, $httpBackend, dummyIdea;
+    var ideaSvc, $httpBackend, dummyIdea, dummyUser, dummyRes;
 
     beforeEach(module('flintAndSteel'));
 
@@ -49,6 +49,18 @@ describe('ideaSvc', function() {
                 }
             ]
         };
+
+        dummyUser = {
+            id: 'dummy_user',
+            username: 'theBestDummy',
+            password: 'password',
+            name: 'Dummy User',
+            likedIdeas: ['mock_idea', 'dummy_idea']
+        };
+
+        dummyRes = dummyUser;
+        dummyRes.password = undefined;
+        dummyRes.status = 'AUTH_OK';
     }));
 
     afterEach(function() {
@@ -326,6 +338,36 @@ describe('ideaSvc', function() {
             }, function() { });
 
             $httpBackend.flush();
+        });
+
+        describe('ideaSvc.getUserIdeasById', function() {
+            it('should query the server for ideas by a user when an id is supplied', function() {
+                $httpBackend.whenGET('/api/v1/ideas/search?forterm=1&inpath=authorId').respond(200, dummyRes);
+                ideaSvc.getUserIdeasById(1).then(function() {}, function() {});
+                $httpBackend.flush();
+            });
+
+            it('should return false if an id was not supplied', function() {
+                ideaSvc.getUserIdeasById().then(function(result) {
+                    expect(result).toBe(false);
+                });
+
+            });
+        });
+
+        describe('ideaSvc.getUserBacksById', function() {
+            it('should query the server idea backs by a user when an id is supplied', function() {
+                $httpBackend.whenGET('/api/v1/ideas/search?forterm=1&inpath=backs.authorId').respond(200, dummyRes);
+                ideaSvc.getUserBacksById(1).then(function() {}, function() {});
+                $httpBackend.flush();
+            });
+
+            it('should return false if an id was not supplied', function() {
+                ideaSvc.getUserBacksById().then(function(result) {
+                    expect(result).toBe(false);
+                });
+
+            });
         });
     });
 
