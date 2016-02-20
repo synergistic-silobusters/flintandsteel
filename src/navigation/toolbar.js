@@ -86,6 +86,9 @@ angular.module('flintAndSteel')
                 else if ($state.includes('addidea')) {
                     $state.go('home');
                 }
+                else if ($state.includes('account')) {
+                    $state.go('home');
+                }
             };
 
             // Re-route to account page from menu
