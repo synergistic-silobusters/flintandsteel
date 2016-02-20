@@ -51,15 +51,13 @@ angular.module('flintAndSteel')
                                     result.data.timeCreated = moment(result.data.timeCreated).calendar();
                                     result.data.timeModified = moment(result.data.timeModified).calendar();
                                     $scope.userBacks.push(result.data);
-                                    var userTeamSearch = _.some(result.data.team, function(member) {
-                                        return member.memberId === $scope.user._id;
+                                    _.some(result.data.team, function(member) {
+                                        if (member.memberId === userId) {
+                                            $scope.userTeams.push(result.data);
+                                        }
                                     });
-                                    if (userTeamSearch) {
-                                        $scope.userTeams.push(result.data);
-                                    }
                                 });
                         });
-
                     }
                 );
             }

@@ -207,6 +207,26 @@ angular.module('flintAndSteel')
                         $mdDialog.hide(true);
                     };
                 },
+                getUserIdeasById: function getUserIdeasById() {
+                    return $q.when({ data: [
+                        {
+                            id: 'mock_idea',
+                            title: 'The bestest Idea ever!',
+                            author: 'Yash Kulshrestha',
+                            authorId: 1
+                        }
+                    ]});
+                },
+                getUserBacksById: function getUserBacksById() {
+                    return $q.when({ data: [
+                        {
+                            id: 'mock_idea',
+                            title: 'The bestest Idea ever!',
+                            author: 'Yash Kulshrestha',
+                            authorId: 1
+                        }
+                    ]});
+                },
                 mockData: mockIdea
             };
         }
