@@ -58,6 +58,11 @@ angular.module('flintAndSteel', [
                 templateUrl: 'about/about.tpl.html',
                 controller: ''
             })
+            .state('learn', {
+                url: '/learn',
+                templateUrl: 'learn/learn.tpl.html',
+                controller: 'LearnCtrl'
+            })
             .state('innovationdisclosure', {
                 url: '/innovationdisclosure',
                 templateUrl: 'innovationDisclosureView/innovationDisclosureView.tpl.html',
@@ -70,7 +75,6 @@ angular.module('flintAndSteel', [
             '900': 'bb1e32'
         });
         var rockstarterGrayMap = $mdThemingProvider.extendPalette('grey', {
-            '900': '6d6e71'
         });
 
         $mdThemingProvider.definePalette('rokstarter-red', rockstarterRedMap);
