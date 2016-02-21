@@ -1,18 +1,18 @@
 <md-dialog ng-cloak aria-label="Picture Dialog">
-  <form>
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <h2>{{item.title}}</h2>
-    </div>
-  </md-toolbar>
-  <md-dialog-content style="learn-dialog-content" layout-align="center center" layout="row">
-      <img src={{item.imgSource}} class="learn-dialog-img">
-  </md-dialog-content>
-  <div class="md-actions" layout="row">
-    <span flex></span>
-    <md-button ng-click="answer()" style="learn-dialog-button" >
-      Got It!
-    </md-button>
-  </div>
-  </form>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{item.title}}</h2>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="learn-dialog-content" layout-align="center center" layout="row">
+            <img src={{item.imgSource}} class="learn-dialog-img">
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="answer()" style="learn-dialog-button" >
+                Got It!
+            </md-button>
+        </div>
+    </form>
 </md-dialog>
