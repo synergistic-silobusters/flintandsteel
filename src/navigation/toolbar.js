@@ -1,33 +1,5 @@
 /* global angular */
 
-
-// Dialog Controller used for controlling the behavior of the dialog
-//   used for login.
-function DialogController($scope, $mdDialog) {
-    "use strict";
-
-    $scope.hide = function() {
-        $mdDialog.hide();
-    };
-    // what happens when you hit the cancel button
-    $scope.cancel = function() {
-        $mdDialog.cancel();
-    };
-    // what happens when you hit the login button
-    $scope.login = function(answer) {
-        $mdDialog.hide($scope.loginUser(answer));
-    };
-
-    //pass the account object to the dialog window
-    $scope.loginUser = function(account) {
-        var status = {
-            username: account.username,
-            password: account.password
-        };
-        return status;
-    };
-}
-
 angular.module('flintAndSteel')
 .controller('ToolbarCtrl',
     [
@@ -67,7 +39,7 @@ angular.module('flintAndSteel')
             //Login controller showing current login and logging in a new user
             $scope.showLogin = function(ev) {
                 $mdDialog.show({
-                    controller: DialogController,
+                    controller: 'LoginDialogCtrl',
                     templateUrl: 'users/loginView/loginView.tpl.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,

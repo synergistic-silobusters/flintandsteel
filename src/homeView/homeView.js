@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$document', '$scope', '$timeout', '$window', '$state','$mdSidenav', 'ideaSvc',
-        function($document, $scope, $timeout, $window, $state, $mdSidenav, ideaSvc) {
+        '$document', '$scope', '$timeout', '$window', '$state',
+        function($document, $scope, $timeout, $window, $state) {
             "use strict";
 
 
@@ -30,7 +30,7 @@ angular.module('flintAndSteel')
                             location: "Global", time: "", name: "Innovation Challenge Begins",
                             description: "Finalize your team and start developing your idea"};
             $scope.Event4 = {type: "bg-warning", date: "May 2016",
-                            location: "Regional", time: "", name: "Innovation Challenge Begins",
+                            location: "Regional", time: "", name: "Innovation Challenge Readouts",
                             description: "Local events allow your team to share your developed idea"};
             $scope.Event5 = {type: "bg-warning", alignment: "left-aligned", date: "June 2016",
                             location: "Global", time: "", name: "Global Innovation Challenge – Executive Pitch",
@@ -67,13 +67,6 @@ angular.module('flintAndSteel')
                 $state.go('ideabrowse');
             };
 
-            ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                $scope.topIdeas = data;
-                console.log(data);
-            }, function getIdeaHeadersError(data, status) {
-                console.log(status);
-            });
-
             $scope.generateWords = function generateWords() {
 
                 //Click handler overrides the link, link is just there as a temp fix to make the word light up on mouse over
@@ -106,7 +99,7 @@ angular.module('flintAndSteel')
                 angular.element("#wordcloud").jQCloud(WordList, {
                     classPattern: null,
                     delay: 50,
-                    colors: ["#900100", "#7f7f7f","#7f7f7f", "#7f7f7f", "#7f7f7f", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0"],
+                    colors: ["#900100", "#7f7f7f","#7f7f7f", "#7f7f7f", "#7f7f7f", "#b7b7b7", "#b7b7b7", "#b7b7b7", "#b7b7b7", "#b7b7b7"],
                     fontSize: { from: 0.05, to: 0.01 },
                     shape: 'cloud',
                     width: width,

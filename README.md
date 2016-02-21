@@ -6,7 +6,7 @@
 
 # flintandsteel
 
-![Rok-Starter](https://raw.githubusercontent.com/YashdalfTheGray/flintandsteel/master/src/assets/InnovationChallengeLogo.png)
+![Rok-Starter](https://github.com/synergistic-silobusters/flintandsteel/raw/master/src/assets/Innovate-Rockwell-Automation-Black.png)
 
 ## Installation
 
@@ -15,7 +15,7 @@
 The following applications need to be installed:
 
 * [Git](http://git-scm.com/)
-* [Node.js](https://nodejs.org/en/) - this project tests against v4.2.2 LTS
+* [Node.js](https://nodejs.org/en/) - this project tests against v5.6.0
 * [MongoDB](https://www.mongodb.org/)
 * A text editor like [Notepad++](https://notepad-plus-plus.org/) or [Sublime Text 3](http://www.sublimetext.com/3)
 
@@ -81,7 +81,7 @@ To run the server load tests, execute `gulp start:test` from a terminal window t
 
 Running `gulp jshint` will lint any JavaScript file under the `src` folder (excluding `src/lib`), the `server` folder and `gulpfile.js`. Running `gulp jscs` will check the code style for the aforementioned files.
 
-Running `gulp code-check` will run both of these commands. 
+Running `gulp code-check` will run both of these commands.
 
 Unlike `gulp test:client`, these commands do not automatically run when executing a `gulp start:dev` or `gulp start:prod`
 
