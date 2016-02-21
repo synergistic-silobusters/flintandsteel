@@ -13,15 +13,15 @@
                 </div>
                 <div>
                     <md-button aria-label="edit" class="md-icon-button" ng-click="ideasView.enableEdit = true;" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
-                        <md-tooltip md-direction="top">Edit Idea</md-tooltip>
+                        <md-tooltip md-direction="bottom">Edit Idea</md-tooltip>
                         <i class="material-icons icon-button-adjust">&#xE254;</i>
                     </md-button>
                     <md-button aria-label="delete" class="md-icon-button" ng-click="ideasView.confirmDeleteIdea($event);" ng-show="ideasView.isUserAuthor() && !ideasView.enableEdit">
-                        <md-tooltip md-direction="top">Delete Idea</md-tooltip>
+                        <md-tooltip md-direction="bottom">Delete Idea</md-tooltip>
                         <i class="material-icons icon-button-adjust">&#xE872;</i>
                     </md-button>
                     <md-button aria-label="email group" class="md-icon-button" ng-click="ideasView.parseTeamEmail()">
-                        <md-tooltip md-direction="top">Email Team</md-tooltip>
+                        <md-tooltip md-direction="bottom">Email Team</md-tooltip>
                         <i class="material-icons icon-button-adjust">&#xE0BE;</i>
                     </md-button>
                 </div>
