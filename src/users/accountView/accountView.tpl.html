@@ -1,27 +1,36 @@
 <md-content layout="row" layout-align="start start" layout-fill class="md-padding">
-        <div class="md-padding">
-            <identicon username='user.username' size='230'></identicon>
+        <div class="md-padding account-side-panel" layout="column" layout-align="center center">
+            <identicon username='user.username' size='200' style="text-align:center"></identicon>
             <h2>{{user.username}}</h2>
-            <h4>{{user.email}}<h4>
-            <div layout="row">
-                {{userIdeas.length}}
-                {{userBacks.length}}
-                {{userTeams.length}}
+            <h4 class="no-margins">{{user.email}}<h4>
+            <div layout="row" layout-align="space-between" class="extra-padding-top-lg">
+                <div layout="column" layout-align="center center">
+                    <h1 class="account-side-panel-stat">{{userIdeas.length}}</h2>
+                    <h2 class="account-side-panel-stat">Ideas</h2>
+                </div>
+                <div layout="column" layout-align="center center">
+                    <h1 class="account-side-panel-stat">{{userBacks.length}}</h2>
+                    <h2 class="account-side-panel-stat">Backs</h2>
+                </div>
+                <div layout="column" layout-align="center center">
+                    <h1 class="account-side-panel-stat">{{userTeams.length}}</h2>
+                    <h2 class="account-side-panel-stat">Teams</h2>
+                </div>
             </div>
         </div>
-        <div flex>
+        <div layout="column">
             <h1>{{user.fullName}}</h1>
             <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">
                 <md-tab label="My Ideas">
                     <md-content class="md-padding">
-                            <md-list class="top-ideas-list">
+                            <md-list>
                                 <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!userIdeas.length">
                                     <h3><i>You have not contributed any ideas!</i></h3>
                                 </div>
                                 <md-item ng-repeat="idea in userIdeas | orderBy:'-likes'">
-                                    <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer" class="ellipsis-overflow">
-                                        <h4 class="no-bottom-margin">{{idea.title}}</h4>
-                                        <small class="ellipsis-overflow">{{idea.description}}</small>
+                                    <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer">
+                                        <h4 class="no-bottom-margin ellipsis-overflow">{{idea.title}}</h4>
+                                        <h4 class="ellipsis-overflow">{{idea.description}}</h4>
                                         <div layout="row" layout-align="start center">
                                                 <md-button class="md-icon-button" aria-label="Like">
                                                     {{idea.likes.length}}
@@ -70,12 +79,12 @@
                 </md-tab>
                 <md-tab label="My Backs">
                     <md-content class="md-padding">
-                            <md-list class="top-ideas-list">
+                            <md-list>
                                 <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!userBacks.length">
                                     <h3><i>You have not backed any ideas!</i></h3>
                                 </div>
                                 <md-item ng-repeat="idea in userBacks | orderBy:'-likes'">
-                                    <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer" class="ellipsis-overflow">
+                                    <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer ellipsis-overflow about-padding-bottom">
                                         <h4 class="no-bottom-margin">{{idea.title}}</h4>
                                         <small class="ellipsis-overflow">{{idea.description}}</small>
                                         <div layout="row" layout-align="start center">
@@ -117,6 +126,14 @@
                                                     <span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>
                                                     {{idea.timeModified}}
                                                 </small>
+                                        </div>
+                                        <div layout="row" layout-align="start center">
+                                            <small>Contributions: </small>
+                                            <div ng-repeat="back in idea.backs" class="extra-padding-left-md">
+                                                <span class="custom-chip-wrapper" ng-repeat="type in back.types" ng-if="back.authorId === user._id">
+                                                    <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                     <md-divider></md-divider>
@@ -126,12 +143,12 @@
                 </md-tab>
                 <md-tab label="My Teams">
                     <md-content class="md-padding">
-                            <md-list class="top-ideas-list">
+                            <md-list>
                                 <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!userTeams.length">
                                     <h3><i>You are not a part of any teams!</i></h3>
                                 </div>
                                 <md-item ng-repeat="idea in userTeams | orderBy:'-likes'">
-                                    <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer" class="ellipsis-overflow">
+                                    <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer ellipsis-overflow about-padding-bottom">
                                         <h4 class="no-bottom-margin">{{idea.title}}</h4>
                                         <small class="ellipsis-overflow">{{idea.description}}</small>
                                         <div layout="row" layout-align="start center">
@@ -174,6 +191,10 @@
                                                     {{idea.timeModified}}
                                                 </small>
                                         </div>
+                                        <span>
+                                            <small>Team Members: </small>
+                                            <small ng-repeat="member in idea.team" class="extra-padding-left-md">{{member.member.name}}</small>
+                                        </span>
                                     </div>
                                     <md-divider></md-divider>
                                 </md-item>

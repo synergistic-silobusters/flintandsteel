@@ -80,7 +80,7 @@ img.grayscale:hover {
     overflow: scroll;
 }
 
-h1.no-margins {
+h1.no-margins, h2.no-margins, h3.no-margins, h4.no-margins {
     margin: 0px;
     margin-block-end: 0;
     margin-block-start: 0;
@@ -88,7 +88,7 @@ h1.no-margins {
     -webkit-margin-before: 0;
 }
 
-h2.no-bottom-margin {
+h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin, h4.no-bottom-margin {
     -webkit-margin-after: 0;
 }
 
@@ -449,4 +449,13 @@ h2.no-bottom-margin {
 }
 .learn-objects-img {
     width:100%;
+}
+
+.account-side-panel {
+    width: 250px;
+}
+
+.account-side-panel-stat {
+    color: #1976D2;
+    margin: 0px 2px 0px 2px;
 }
