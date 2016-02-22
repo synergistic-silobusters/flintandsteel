@@ -4,6 +4,11 @@
     vertical-align: middle;
 }
 
+.user-menu {
+    font-size: 14px;
+    margin-top: 6px;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     color: #666;

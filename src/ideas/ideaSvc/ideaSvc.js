@@ -3,12 +3,22 @@
 angular.module('flintAndSteel')
 .factory('ideaSvc',
     [
-        '$http', '$q',
-        function($http, $q) {
+        '$http', 'userSvc', '$q',
+        function($http, userSvc, $q) {
             "use strict";
 
+            function getAuthorizationString() {
+                return 'Bearer ' +
+                    userSvc.getProperty('_id') + ':' +
+                    userSvc.getProperty('token');
+            }
+
             this.postIdea = function postIdea(idea) {
-                return $http.post('/api/v1/ideas', idea);
+                return $http.post('/api/v1/ideas', idea, {
+                    headers: {
+                        'Authorization': getAuthorizationString()
+                    }
+                });
             };
 
             this.getIdea = function getIdea(ideaId) {
@@ -25,12 +35,21 @@ angular.module('flintAndSteel')
                         parentId: parentId,
                         text: text,
                         authorId: authorId
+                    },
+                    {
+                        headers: {
+                            'Authorization': getAuthorizationString()
+                        }
                     }
                 );
             };
 
             this.deleteComment = function deleteComment(commentId) {
-                return $http.delete('/api/v1/comments/' + commentId);
+                return $http.delete('/api/v1/comments/' + commentId, {
+                    headers: {
+                        'Authorization': getAuthorizationString()
+                    }
+                });
             };
 
             this.updateIdea = function updateIdea(ideaId, property, data) {
@@ -38,7 +57,12 @@ angular.module('flintAndSteel')
                     return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'modify', path: property, value: JSON.stringify(data) }
-                        ]
+                        ],
+                        {
+                            headers: {
+                                'Authorization': getAuthorizationString()
+                            }
+                        }
                     );
                 }
             };
@@ -48,7 +72,12 @@ angular.module('flintAndSteel')
                     return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'append', path: type, value: JSON.stringify(object) }
-                        ]
+                        ],
+                        {
+                            headers: {
+                                'Authorization': getAuthorizationString()
+                            }
+                        }
                     );
                 }
             };
@@ -58,7 +87,12 @@ angular.module('flintAndSteel')
                     return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'delete', path: type + '/' + object._id }
-                        ]
+                        ],
+                        {
+                            headers: {
+                                'Authorization': getAuthorizationString()
+                            }
+                        }
                     );
                 }
             };
@@ -68,7 +102,12 @@ angular.module('flintAndSteel')
                     return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'modify', path: 'backs/' + backId, value: JSON.stringify(newBack) }
-                        ]
+                        ],
+                        {
+                            headers: {
+                                'Authorization': getAuthorizationString()
+                            }
+                        }
                     );
                 }
             };
@@ -82,14 +121,23 @@ angular.module('flintAndSteel')
                             { operation: 'modify', path: 'tags', value: JSON.stringify(tags) },
                             { operation: 'modify', path: 'rolesreq', value: JSON.stringify(rolesreq) },
                             { operation: 'modify', path: 'eventId', value: JSON.stringify(eventId) }
-                        ]
+                        ],
+                        {
+                            headers: {
+                                'Authorization': getAuthorizationString()
+                            }
+                        }
                     );
                 }
             };
 
             this.deleteIdea = function deleteIdea(ideaId) {
                 if (ideaId !== 'mock_idea') {
-                    return $http.delete('/api/v1/ideas/' + ideaId);
+                    return $http.delete('/api/v1/ideas/' + ideaId, {
+                        headers: {
+                            'Authorization': getAuthorizationString()
+                        }
+                    });
                 }
             };
 
