@@ -16,3 +16,6 @@ script:
 
 after_script:
   - codeclimate-test-reporter < ./coverage/report-lcov/lcov.info
+  
+notifications:
+  slack: syn-silobusters:qjMCRvAkoq32QFyUP9FvQj0u
