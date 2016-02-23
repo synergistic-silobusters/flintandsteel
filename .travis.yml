@@ -1,21 +1,17 @@
 language: node_js
 node_js:
-  - "5.6.0"
-
+- 5.6.0
 before_install:
-  - npm install -g npm
-  - npm install -g bower
-
+- npm install -g npm
+- npm install -g bower
 before_script:
-  - npm install -g gulp
-
+- npm install -g gulp
 script:
-  - gulp jshint
-  - gulp jscs
-  - gulp test:client
-
+- gulp jshint
+- gulp jscs
+- gulp test:client
 after_script:
-  - codeclimate-test-reporter < ./coverage/report-lcov/lcov.info
-  
+- codeclimate-test-reporter < ./coverage/report-lcov/lcov.info
 notifications:
-  slack: syn-silobusters:qjMCRvAkoq32QFyUP9FvQj0u
+  slack:
+    secure: FMTvWijjdRhOpEz2M5L7yWmT7tCXtoMF06TfjyvUTr5/RnRqW9GzaRa8wSFxqD7jWXFizcDfa9bUKkg6o1R1fpdHofsErG9PfcsE5nk4wNindNkhGO86D56SD3jBguaGjrpSxN2I3rhKAnHNTBDA75ekpui3NJFfA2oonoegbwE=
