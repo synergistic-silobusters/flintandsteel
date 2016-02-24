@@ -110,7 +110,7 @@ angular.module('flintAndSteel')
                     "thisIsATag",
                     "tagAllTheThings"
                 ],
-                values: []
+                complexity: []
             };
 
             return {
@@ -182,7 +182,7 @@ angular.module('flintAndSteel')
                     return $q.when('Edited');
                 },
                 editIdeaRating: function editIdeaRating(ideaId, value) {
-                    mockIdea.values = value;
+                    mockIdea.complexity = value;
                     return $q.when('Edited');
                 },
                 deleteIdea: function deleteIdea() {

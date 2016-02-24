@@ -354,11 +354,11 @@ describe('ideaSvc', function() {
                 tags: dummyIdea.tags,
                 rolesreq: dummyIdea.rolesreq,
                 eventId: 1,
-                value: dummyIdea.complexity
+                complexity: dummyIdea.complexity
             };
 
             patchOperation = [
-                { operation: 'modify', path: 'value', value: JSON.stringify(smallDummyIdea.complexity) }
+                { operation: 'modify', path: 'complexity', value: JSON.stringify(smallDummyIdea.complexity) }
             ];
         });
 
