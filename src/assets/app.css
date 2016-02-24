@@ -1,10 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
 .star {
-    padding: 1px;
     /*color: #ffcc00;*/
+    padding-top: 7px;
     color: #3F51B5;
-    font-size: 20px;
+    font-size: 15px;
     list-style-type: none;
     display: inline-block;
     cursor: pointer;
@@ -15,9 +15,9 @@
 }
 
 .black-star {
-    padding: 1px;
+    padding-top: 7px;
     color: black;
-    font-size: 20px;
+    font-size: 15px;
     list-style-type: none;
     display: inline-block;
     cursor: pointer;
@@ -221,6 +221,10 @@ h2.no-bottom-margin {
 
 .extra-padding-left-sm {
     padding-left: 5px;
+}
+
+.extra-padding-right-sm {
+    padding-right: 5px;
 }
 
 .extra-padding-left-md {
