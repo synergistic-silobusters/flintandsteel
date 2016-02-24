@@ -48,7 +48,7 @@ describe('ideaSvc', function() {
                     _lowername: 'experience'
                 }
             ],
-            value: [
+            complexity: [
                 {
                     value: 4,
                     authorId: 1,
@@ -354,18 +354,18 @@ describe('ideaSvc', function() {
                 tags: dummyIdea.tags,
                 rolesreq: dummyIdea.rolesreq,
                 eventId: 1,
-                value: dummyIdea.value
+                value: dummyIdea.complexity
             };
 
             patchOperation = [
-                { operation: 'modify', path: 'value', value: JSON.stringify(smallDummyIdea.value) }
+                { operation: 'modify', path: 'value', value: JSON.stringify(smallDummyIdea.complexity) }
             ];
         });
 
         it('should edit an existing idea', function() {
             $httpBackend.expectPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
 
-            ideaSvc.editIdeaRating(dummyIdea._id, dummyIdea.value)
+            ideaSvc.editIdeaRating(dummyIdea._id, dummyIdea.complexity)
             .then(function(response) {
                 expect(response.data).toBe('OK');
             }, function() { });

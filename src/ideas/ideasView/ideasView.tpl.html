@@ -42,26 +42,26 @@
                     </span>
                 </div>
             </div>
-            <div class="extra-padding-sides-15" ng-if="isUserLoggedIn() && hasUserRated(idea.values)">
-                Value: <span ng-repeat="star in loadUserRating(idea.values).stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.values)">
+            <div class="extra-padding-sides-15" ng-if="isUserLoggedIn() && hasUserRated(idea.complexity)">
+                Complexity: <span ng-repeat="star in loadUserRating(idea.complexity).stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.complexity)">
                     <!--Empty Star-->
                     <md-icon class="star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
                     <!--Half Star-->
                     <i ng-show="false" class="material-icons">&#xE839;</i>
                     <!--Filled Star-->
                     <md-icon class="star" ng-show="star.filled" class="material-icons">&#xE838;</md-icon>
-                    <md-tooltip direction:"bottom">Average Value: {{idea.avgValue.value}} </md-tooltip>
+                    <md-tooltip direction:"bottom">Average Complexity: {{idea.avgComplexity.value}} </md-tooltip>
                 </span>
             </div>
-            <div class="extra-padding-sides-15" ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.values))">
-                Value: <span ng-repeat="star in idea.avgValue.stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.values)">
+            <div class="extra-padding-sides-15" ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.complexity))">
+                Complexity: <span ng-repeat="star in idea.avgComplexity.stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.complexity)">
                     <!--Empty Star-->
                     <md-icon class="black-star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
                     <!--Half Star-->
                     <i ng-show="false" class="material-icons">&#xE839;</i>
                     <!--Filled Star-->
                     <md-icon class="black-star" ng-show="star.filled" class="material-icons">&#xE838;</md-icon>
-                    <md-tooltip direction: "bottom">Average Value: {{idea.avgValue.value}} </md-tooltip>
+                    <md-tooltip direction: "bottom">Average Complexity: {{idea.avgComplexity.value}} </md-tooltip>
                 </span>
             </div>
             <p class="word-wrap extra-padding-sides-15">{{idea.description}}</p>

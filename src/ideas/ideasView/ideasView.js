@@ -626,13 +626,13 @@ angular.module('flintAndSteel')
 
             ctrl.editIdeaRating = function(idea) {
                 if ($scope.isUserLoggedIn()) {
-                    _.forEach(idea.values, function(rating) {
+                    _.forEach(idea.complexity, function(rating) {
                         delete rating.$$hashKey;
                         _.forEach(rating.stars, function(star) {
                             delete star.$$hashKey;
                         });
                     });
-                    ideaSvc.editIdeaRating($scope.idea._id, idea.values)
+                    ideaSvc.editIdeaRating($scope.idea._id, idea.complexity)
                     .then(function() {
                         //ctrl.refreshIdea();
                     }, function() {

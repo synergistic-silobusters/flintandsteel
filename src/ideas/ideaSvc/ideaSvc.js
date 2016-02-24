@@ -87,12 +87,11 @@ angular.module('flintAndSteel')
                 }
             };
 
-            this.editIdeaRating = function editIdeaRating(ideaId, value/*, complexity*/) {
+            this.editIdeaRating = function editIdeaRating(ideaId, complexity) {
                 if (ideaId !== 'mock_idea') {
                     return $http.patch('/api/v1/ideas/' + ideaId,
                         [
-                            { operation: 'modify', path: 'values', value: JSON.stringify(value) }/*,
-                            { operation: 'modify', path: 'complexity', value: JSON.stringify(complexity) }*/
+                            { operation: 'modify', path: 'complexity', value: JSON.stringify(complexity) }
                         ]
                     );
                 }

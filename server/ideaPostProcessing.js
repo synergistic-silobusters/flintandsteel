@@ -179,29 +179,29 @@ module.exports = function(db) {
 
         // Calculate the average Value rating
         var theDatabase = db.getDb();
-        var ideaAvgValue = new Promise(function(resolve, reject) {
+        var ideaAvgComplexity = new Promise(function(resolve, reject) {
             theDatabase.collection('ideas').aggregate([
                 { $match: {_id: data._id} },
-                { $unwind: "$value" },
-                { $group: {_id: null, ratingAvg: { $avg: '$value.value'} } }
+                { $unwind: "$complexity" },
+                { $group: {_id: null, ratingAvg: { $avg: '$complexity.value'} } }
             ]).toArray().then(function(averages) {
                 //If no ratings, average to zero
                 if(typeof averages[0] === 'undefined') {
-                    data.avgValue = {
+                    data.avgComplexity = {
                         value: Number(0).toFixed(2),
                         stars: []
                     };
                 }
                 //If ratings, average to 2 decimals
                 else {
-                    data.avgValue = {
+                    data.avgComplexity = {
                         value: Number(averages[0].ratingAvg).toFixed(2),
                         stars: []
                     };
                 }
                 //load star values to update page
                 for (var i = 0; i < 5; i++) {
-                    data.avgValue.stars.push({ filled: i < data.avgValue.value });
+                    data.avgComplexity.stars.push({ filled: i < data.avgComplexity.value });
                 }
                 resolve(data);
             }).catch(function(err) {
@@ -218,7 +218,7 @@ module.exports = function(db) {
             Promise.all(ideaBacks),
             Promise.all(ideaTeam),
             Promise.all(ideaUpdates),
-            ideaAvgValue
+            ideaAvgComplexity
         ]);
     };
 
