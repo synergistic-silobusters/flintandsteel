@@ -33,8 +33,8 @@ angular.module('flintAndSteel')
                         _.forEach(userIdeaSearch, function(idea) {
                             ideaSvc.getIdea(idea._id).then(
                                 function(result) {
-                                    result.data.timeCreated = moment(result.data.timeCreated).calendar();
-                                    result.data.timeModified = moment(result.data.timeModified).calendar();
+                                    result.data.timeCreated = moment(new Date(result.data.timeCreated)).calendar();
+                                    result.data.timeModified = moment(new Date(result.data.timeModified)).calendar();
                                     $scope.userIdeas.push(result.data);
                                 });
                         });
@@ -48,8 +48,8 @@ angular.module('flintAndSteel')
                         _.forEach(userBackSearch, function(idea) {
                             ideaSvc.getIdea(idea._id).then(
                                 function(result) {
-                                    result.data.timeCreated = moment(result.data.timeCreated).calendar();
-                                    result.data.timeModified = moment(result.data.timeModified).calendar();
+                                    result.data.timeCreated = moment(new Date(result.data.timeCreated)).calendar();
+                                    result.data.timeModified = moment(new Date(result.data.timeModified)).calendar();
                                     $scope.userBacks.push(result.data);
                                     _.some(result.data.team, function(member) {
                                         if (member.memberId === userId) {
