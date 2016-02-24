@@ -46,6 +46,7 @@
   <script src="utilities/paginateSvc.js"></script>
   <script src="utilities/emailLink.js"></script>
   <script src="users/userSvc/userSvc.js"></script>
+  <script src="users/loginView/loginDialog.js"></script>
   <script src="users/accountView/accountView.js"></script>
   <script src="toastSvc/toastSvc.js"></script>
   <script src="navigation/toolbar.js"></script>
@@ -83,7 +84,12 @@
             <span class="padding-left-20 idea-likes-click" ui-sref="ideabrowse">Innovate</span>
             <span flex></span>
 
-            <div class="md-padding">
+            <div class="md-padding" layout="row">
+                <!-- Feedback Button -->
+                <md-button aria-label="Feedback" ui-sref="idea({ ideaId: '566eff2a6405f74421c3a583' })" ng-if="isUserLoggedIn()">
+                    <i class="material-icons icon-button-adjust md-icon-button" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE87F;</i>
+                    <md-tooltip md-direction="left">Feedback</md-tooltip>
+                </md-button>
                 <!-- Login Button -->
                 <md-button aria-label="Account" ng-click="showLogin($event)" ng-if="!isUserLoggedIn()">
                     <i class="material-icons icon-button-adjust md-icon-button" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE8A6;</i>

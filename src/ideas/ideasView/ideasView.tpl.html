@@ -42,8 +42,8 @@
                     </span>
                 </div>
             </div>
-            <div class="extra-padding-sides-15" ng-if="isUserLoggedIn() && hasUserRated(idea.value)">
-                Value: <span ng-repeat="star in loadUserRating(idea.value).stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.value)">
+            <div class="extra-padding-sides-15" ng-if="isUserLoggedIn() && hasUserRated(idea.values)">
+                Value: <span ng-repeat="star in loadUserRating(idea.values).stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.values)">
                     <!--Empty Star-->
                     <md-icon class="star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
                     <!--Half Star-->
@@ -53,8 +53,8 @@
                     <md-tooltip direction:"bottom">Average Value: {{idea.avgValue.value}} </md-tooltip>
                 </span>
             </div>
-            <div class="extra-padding-sides-15" ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.value))">
-                Value: <span ng-repeat="star in idea.avgValue.stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.value)">
+            <div class="extra-padding-sides-15" ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.values))">
+                Value: <span ng-repeat="star in idea.avgValue.stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.values)">
                     <!--Empty Star-->
                     <md-icon class="black-star" ng-show="!star.filled" class="material-icons">&#xE83A;</md-icon>
                     <!--Half Star-->

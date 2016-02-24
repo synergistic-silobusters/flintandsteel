@@ -1305,9 +1305,9 @@ describe('IdeasViewCtrl', function() {
             });
 
             it('should not update if data is null', function() {
-                scope.idea.value.push({value: 2, authorId: 1});
-                ctrl.updateStars(scope.idea.value[0]);
-                expect(scope.idea.value[0].stars).toEqual(mockStars);
+                scope.idea.values.push({value: 2, authorId: 1});
+                ctrl.updateStars(scope.idea.values[0]);
+                expect(scope.idea.values[0].stars).toEqual(mockStars);
             });
         });
 
@@ -1335,7 +1335,7 @@ describe('IdeasViewCtrl', function() {
                 //Logout as user
                 userSvcMock.logout();
 
-                scope.toggle(1, scope.idea.value);
+                scope.toggle(1, scope.idea.values);
                 expect(userSvcMock.getProperty).not.toHaveBeenCalled();
             });
 
@@ -1343,17 +1343,17 @@ describe('IdeasViewCtrl', function() {
                 //Login
                 userSvcMock.checkLogin(authorAccount);
 
-                scope.idea.value.push(mockValue);
-                scope.toggle(2, scope.idea.value);
-                expect(scope.idea.value[0].value).toBe(3);
+                scope.idea.values.push(mockValue);
+                scope.toggle(2, scope.idea.values);
+                expect(scope.idea.values[0].value).toBe(3);
             });
 
             it('should create a new rating if user has not rated', function() {
                 //Login
                 userSvcMock.checkLogin(authorAccount);
 
-                scope.toggle(2, scope.idea.value);
-                expect(scope.idea.value[0].value).toBe(3);
+                scope.toggle(2, scope.idea.values);
+                expect(scope.idea.values[0].value).toBe(3);
             });
         });
 
@@ -1380,16 +1380,16 @@ describe('IdeasViewCtrl', function() {
                 //Login
                 userSvcMock.checkLogin(authorAccount);
 
-                testReturn = scope.hasUserRated(scope.idea.value);
+                testReturn = scope.hasUserRated(scope.idea.values);
                 expect(testReturn).toBe(false);
             });
 
             it('should return true if user has rated', function() {
                 //Login
                 userSvcMock.checkLogin(authorAccount);
-                scope.toggle(3, scope.idea.value);
+                scope.toggle(3, scope.idea.values);
 
-                testReturn = scope.hasUserRated(scope.idea.value);
+                testReturn = scope.hasUserRated(scope.idea.values);
                 expect(testReturn).toBe(true);
             });
 
@@ -1397,7 +1397,7 @@ describe('IdeasViewCtrl', function() {
                 //Logout as user
                 userSvcMock.logout();
 
-                testReturn = scope.hasUserRated(scope.idea.value);
+                testReturn = scope.hasUserRated(scope.idea.values);
                 expect(testReturn).toBe(false);
             });
         });
@@ -1425,7 +1425,7 @@ describe('IdeasViewCtrl', function() {
                 //Logout as user
                 userSvcMock.logout();
 
-                testReturn = scope.loadUserRating(scope.idea.value);
+                testReturn = scope.loadUserRating(scope.idea.values);
                 expect(testReturn).toEqual({});
             });
 
@@ -1433,7 +1433,7 @@ describe('IdeasViewCtrl', function() {
                 //Login
                 userSvcMock.checkLogin(authorAccount);
 
-                testReturn = scope.loadUserRating(scope.idea.value);
+                testReturn = scope.loadUserRating(scope.idea.values);
                 expect(testReturn).toEqual({});
             });
 
@@ -1441,8 +1441,8 @@ describe('IdeasViewCtrl', function() {
                 //Login
                 userSvcMock.checkLogin(authorAccount);
 
-                scope.idea.value.push(mockValue);
-                testReturn = scope.loadUserRating(scope.idea.value);
+                scope.idea.values.push(mockValue);
+                testReturn = scope.loadUserRating(scope.idea.values);
                 expect(testReturn).toEqual(mockValue);
             });
         });

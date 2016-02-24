@@ -186,7 +186,7 @@ module.exports = function(db) {
                 { $group: {_id: null, ratingAvg: { $avg: '$value.value'} } }
             ]).toArray().then(function(averages) {
                 //If no ratings, average to zero
-                if(typeof averages === 'undefined') {
+                if(typeof averages[0] === 'undefined') {
                     data.avgValue = {
                         value: Number(0).toFixed(2),
                         stars: []

@@ -626,13 +626,13 @@ angular.module('flintAndSteel')
 
             ctrl.editIdeaRating = function(idea) {
                 if ($scope.isUserLoggedIn()) {
-                    _.forEach(idea.value, function(rating) {
+                    _.forEach(idea.values, function(rating) {
                         delete rating.$$hashKey;
                         _.forEach(rating.stars, function(star) {
                             delete star.$$hashKey;
                         });
                     });
-                    ideaSvc.editIdeaRating($scope.idea._id, idea.value)
+                    ideaSvc.editIdeaRating($scope.idea._id, idea.values)
                     .then(function() {
                         //ctrl.refreshIdea();
                     }, function() {
@@ -674,7 +674,7 @@ angular.module('flintAndSteel')
                 }
             };
 
-            //Pass either $scope.idea.value or $scope.idea.complexity
+            //Pass either $scope.idea.values or $scope.idea.complexity
             $scope.hasUserRated = function hasUserRated(rating) {
                 var userRated = false;
                 if (userSvc.isUserLoggedIn() && typeof rating !== 'undefined') {
@@ -687,7 +687,7 @@ angular.module('flintAndSteel')
                 return userRated;
             };
 
-            //Pass 'value' or 'complex' to retreive value or complexity for user
+            //Pass 'values' or 'complexity' to retreive values or complexity for user
             $scope.loadUserRating = function loadUserRating(rating) {
                 var userRating = {};
                 if ($scope.isUserLoggedIn()) {

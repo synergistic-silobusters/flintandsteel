@@ -9,26 +9,68 @@
 describe('HomeViewCtrl', function() {
     "use strict";
 
-    var scope, ctrl, $state;
+    var scope, ctrl, $controller, $state, ideaSvcMock, mockWindow;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
 
-    beforeEach(inject(function($rootScope, $controller, _$state_) {
+    beforeEach(inject(function($rootScope, _$controller_, _$state_, _ideaSvcMock_) {
         scope = $rootScope.$new();
+        $controller = _$controller_;
         $state = _$state_;
-        ctrl = $controller('HomeViewCtrl', {
-            $scope: scope,
-            $state: $state
-        });
+        ideaSvcMock = _ideaSvcMock_;
+
+        mockWindow = { navigator: { } };
     }));
 
+    function createController() {
+        return $controller('HomeViewCtrl', {
+            $scope: scope,
+            $state: $state,
+            ideaSvc: ideaSvcMock,
+            $window: mockWindow
+        });
+    }
+
     it('should exist', function() {
-        expect(scope).toBeDefined();
+        ctrl = createController();
+        expect(ctrl).toBeDefined();
+    });
+
+    describe('$scope.browserVersion', function() {
+
+        it('detects IE 11', function() {
+            mockWindow.navigator = {
+                userAgent: 'MSIE 11.0',
+                appName: 'Microsoft Internet Explorer'
+            };
+            ctrl = createController();
+            expect(scope.browserVersion).toBe(11);
+        });
+
+        it('detects unknown IE version', function() {
+            mockWindow.navigator = {
+                userAgent: '',
+                appName: 'Microsoft Internet Explorer'
+            };
+            ctrl = createController();
+            expect(scope.browserVersion).toBe(-1);
+        });
+
+        it('detects trident v 1.0', function() {
+            mockWindow.navigator = {
+                userAgent: 'Trident rv:1.0',
+                appName: 'Netscape'
+            };
+            ctrl = createController();
+            expect(scope.browserVersion).toBe(-1);
+        });
+
     });
 
     describe('navToBrowse()', function() {
         beforeEach(function() {
+            ctrl = createController();
             spyOn($state, 'go');
         });
 

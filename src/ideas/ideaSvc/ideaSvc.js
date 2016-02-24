@@ -91,7 +91,7 @@ angular.module('flintAndSteel')
                 if (ideaId !== 'mock_idea') {
                     return $http.patch('/api/v1/ideas/' + ideaId,
                         [
-                            { operation: 'modify', path: 'value', value: JSON.stringify(value) }/*,
+                            { operation: 'modify', path: 'values', value: JSON.stringify(value) }/*,
                             { operation: 'modify', path: 'complexity', value: JSON.stringify(complexity) }*/
                         ]
                     );
