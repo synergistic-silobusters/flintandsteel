@@ -5,17 +5,28 @@
 /* global it */
 /* global expect */
 /* global moment */
+/* global spyOn */
 
 describe('ideaSvc', function() {
     "use strict";
 
-    var ideaSvc, $httpBackend, dummyIdea;
+    var ideaSvc, $httpBackend, dummyIdea, userSvc;
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function(_ideaSvc_, _$httpBackend_) {
+    beforeEach(inject(function(_ideaSvc_, _$httpBackend_, _userSvc_) {
         ideaSvc = _ideaSvc_;
         $httpBackend = _$httpBackend_;
+        userSvc = _userSvc_;
+
+        spyOn(userSvc, 'getProperty').and.callFake(function(prop) {
+            if (prop === '_id') {
+                return 'test_id';
+            }
+            else if (prop === 'token') {
+                return 'test_token';
+            }
+        });
 
         dummyIdea = {
             _id: 0,
