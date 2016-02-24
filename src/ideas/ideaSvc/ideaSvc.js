@@ -136,7 +136,12 @@ angular.module('flintAndSteel')
                     return $http.patch('/api/v1/ideas/' + ideaId,
                         [
                             { operation: 'modify', path: 'complexity', value: JSON.stringify(complexity) }
-                        ]
+                        ],
+                        {
+                            headers: {
+                                'Authorization': getAuthorizationString()
+                            }
+                        }
                     );
                 }
             };

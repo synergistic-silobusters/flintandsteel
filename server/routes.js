@@ -88,9 +88,7 @@ module.exports = function(app, db) {
             res.status(500).json(error);
         });
     });
-    app.post('/api/v1/ideas', processAuthorization, function(req, res) {
-    app.post('/api/v1/ideas', processAuthorization, function(req, res) {
-    app.post('/api/v1/ideas', processAuthorization, function(req, res) {
+
     app.post('/api/v1/ideas', processAuthorization, function(req, res) {
         ideas.create(
             req.body.title,
@@ -205,7 +203,6 @@ module.exports = function(app, db) {
     });
 
     app.patch('/api/v1/ideas/:id', processAuthorization, function(req, res) {
-        // console.log(req.body);
         var promises = [];
         var avgIdea;
 
