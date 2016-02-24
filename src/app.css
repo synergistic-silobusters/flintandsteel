@@ -456,11 +456,7 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin, h4.no-bottom-marg
     width:100%;
 }
 
-.account-side-panel {
-    width: 250px;
-}
-
 .account-side-panel-stat {
     color: #1976D2;
-    margin: 0px 2px 0px 2px;
+    margin: 0px 15px 0px 15px;
 }

@@ -1,25 +1,27 @@
-<md-content layout="row" layout-align="start start" layout-fill class="md-padding">
-        <div class="md-padding account-side-panel" layout="column" layout-align="center center">
-            <identicon username='user.username' size='200' style="text-align:center"></identicon>
-            <h2>{{user.username}}</h2>
-            <h4 class="no-margins">{{user.email}}<h4>
-            <div layout="row" layout-align="space-between" class="extra-padding-top-lg">
+<md-content class="md-padding">
+        <div class="md-padding" layout="row" layout-align="start center" flex>
+            <identicon username='user.username' size="150" hide show-gt-md></identicon>
+            <div layout="column" class="extra-space-left">
+                <h1 class="no-margins">{{user.fullName}}</h1>
+                <h3 class="no-margins">{{user.username}}</h3>
+                <h3 class="no-margins">{{user.email}}</h3>
+            </div>
+            <div layout="row" layout-align="space-between" class="padding-sides-20" hide show-gt-sm>
                 <div layout="column" layout-align="center center">
-                    <h1 class="account-side-panel-stat">{{userIdeas.length}}</h2>
-                    <h2 class="account-side-panel-stat">Ideas</h2>
+                    <h1 class="account-side-panel-stat">{{userIdeas.length}}</h1>
+                    <h3 class="account-side-panel-stat">Ideas</h3>
                 </div>
                 <div layout="column" layout-align="center center">
-                    <h1 class="account-side-panel-stat">{{userBacks.length}}</h2>
-                    <h2 class="account-side-panel-stat">Backs</h2>
+                    <h1 class="account-side-panel-stat">{{userBacks.length}}</h1>
+                    <h3 class="account-side-panel-stat">Backs</h3>
                 </div>
                 <div layout="column" layout-align="center center">
-                    <h1 class="account-side-panel-stat">{{userTeams.length}}</h2>
-                    <h2 class="account-side-panel-stat">Teams</h2>
+                    <h1 class="account-side-panel-stat">{{userTeams.length}}</h1>
+                    <h3 class="account-side-panel-stat">Teams</h3>
                 </div>
             </div>
         </div>
-        <div layout="column">
-            <h1>{{user.fullName}}</h1>
+        <div class="md-padding">
             <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">
                 <md-tab label="My Ideas">
                     <md-content class="md-padding">
@@ -28,9 +30,9 @@
                                     <h3><i>You have not contributed any ideas!</i></h3>
                                 </div>
                                 <md-item ng-repeat="idea in userIdeas | orderBy:'-likes'">
-                                    <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer">
+                                    <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer ellipsis-overflow">
                                         <h4 class="no-bottom-margin ellipsis-overflow">{{idea.title}}</h4>
-                                        <h4 class="ellipsis-overflow">{{idea.description}}</h4>
+                                        <small class="ellipsis-overflow">{{idea.description}}</small>
                                         <div layout="row" layout-align="start center">
                                                 <md-button class="md-icon-button" aria-label="Like">
                                                     {{idea.likes.length}}
@@ -85,7 +87,7 @@
                                 </div>
                                 <md-item ng-repeat="idea in userBacks | orderBy:'-likes'">
                                     <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer ellipsis-overflow about-padding-bottom">
-                                        <h4 class="no-bottom-margin">{{idea.title}}</h4>
+                                        <h4 class="no-bottom-margin ellipsis-overflow">{{idea.title}}</h4>
                                         <small class="ellipsis-overflow">{{idea.description}}</small>
                                         <div layout="row" layout-align="start center">
                                                 <md-button class="md-icon-button" aria-label="Like">
@@ -149,7 +151,7 @@
                                 </div>
                                 <md-item ng-repeat="idea in userTeams | orderBy:'-likes'">
                                     <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer ellipsis-overflow about-padding-bottom">
-                                        <h4 class="no-bottom-margin">{{idea.title}}</h4>
+                                        <h4 class="no-bottom-margin ellipsis-overflow">{{idea.title}}</h4>
                                         <small class="ellipsis-overflow">{{idea.description}}</small>
                                         <div layout="row" layout-align="start center">
                                                 <md-button class="md-icon-button" aria-label="Like">
