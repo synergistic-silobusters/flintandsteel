@@ -2,7 +2,8 @@
 
 .star {
     padding: 1px;
-    color: #ffcc00;
+    /*color: #ffcc00;*/
+    color: #3F51B5;
     font-size: 20px;
     list-style-type: none;
     display: inline-block;
