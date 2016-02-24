@@ -5,18 +5,21 @@
 /* global it */
 /* global expect */
 
-describe('AboutCtrl', function() {
+describe('LearnCtrl', function() {
     "use strict";
 
     var ctrl, paginateSvc;
+    var scope;
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function($controller, _paginateSvc_) {
+    beforeEach(inject(function($controller, _paginateSvc_, $rootScope) {
         paginateSvc = _paginateSvc_;
+        scope = $rootScope.$new();
 
-        ctrl = $controller('AboutCtrl', {
-            paginateSvc: paginateSvc
+        ctrl = $controller('LearnCtrl', {
+            paginateSvc: paginateSvc,
+            $scope: scope
         });
     }));
 

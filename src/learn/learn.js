@@ -1,13 +1,6 @@
 /* global angular */
 
-function PictureDialogController($scope, $mdDialog, learnItem) {
-    "use strict";
-    $scope.item = learnItem;
 
-    $scope.answer = function() {
-        $mdDialog.hide();
-    };
-}
 
 
 angular.module('flintAndSteel')
@@ -53,7 +46,12 @@ angular.module('flintAndSteel')
 
             $scope.showAdvanced = function(ev, item) {
                 $mdDialog.show({
-                    controller: PictureDialogController,
+                    controller: function PictureDialogController($scope, $mdDialog, learnItem) {
+                        $scope.item = learnItem;
+                        $scope.answer = function() {
+                            $mdDialog.hide();
+                        };
+                    },
                     templateUrl: 'learn/pictureDialog.tpl.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
