@@ -426,16 +426,19 @@ h2.no-bottom-margin {
     line-height: 65px;
     border-radius: 0;
 }
+
 .toolbar-links {
     margin-left: 6px;
     cursor: pointer;
     line-height: 65px;
     border-radius: 0;
 }
+
 .toolbar-lightbulb {
     cursor: pointer;
     cursor: hand;
 }
+
 .lightbulb {
     padding-top: 50px;
     max-width: 100%;
@@ -444,26 +447,33 @@ h2.no-bottom-margin {
 .title {
     padding: 35px;
 }
+
 .learn-objects {
     padding: 50px;
 }
+
 .learn-objects-img {
     width:100%;
 }
+
 .learn-dialog-img {
     width:100%;
 }
+
 .learn-dialog-content {
     max-width:800px;
     max-height:810px;
 }
+
 .learn-dialog-button {
     margin-right:20px;
 }
+
 .learn-item {
     cursor: pointer;
     cursor: hand;
 }
+
 .learn-dialog-toolbar-padding {
     padding-left:20px
 }
