@@ -58,7 +58,8 @@ module.exports = function(db) {
                         _id: doc._id,
                         name: doc.fullName,
                         username: doc.username,
-                        email: doc.email
+                        email: doc.email,
+                        token: doc.token
                     });
                 }
             });
@@ -80,6 +81,7 @@ module.exports = function(db) {
         return new Promise(function(resolve, reject) {
             db.findOneById(COLLECTION, id).then(function(doc) {
                 if (getEntireObject) {
+                    doc.token = undefined;
                     resolve(doc);
                 }
                 else {

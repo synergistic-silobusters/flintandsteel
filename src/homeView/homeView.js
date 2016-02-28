@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$document', '$scope', '$timeout', '$window', '$state','$mdSidenav', 'ideaSvc',
-        function($document, $scope, $timeout, $window, $state, $mdSidenav, ideaSvc) {
+        '$document', '$scope', '$timeout', '$window', '$state',
+        function($document, $scope, $timeout, $window, $state) {
             "use strict";
 
 
@@ -30,7 +30,7 @@ angular.module('flintAndSteel')
                             location: "Global", time: "", name: "Innovation Challenge Begins",
                             description: "Finalize your team and start developing your idea"};
             $scope.Event4 = {type: "bg-warning", date: "May 2016",
-                            location: "Regional", time: "", name: "Innovation Challenge Begins",
+                            location: "Regional", time: "", name: "Innovation Challenge Readouts",
                             description: "Local events allow your team to share your developed idea"};
             $scope.Event5 = {type: "bg-warning", alignment: "left-aligned", date: "June 2016",
                             location: "Global", time: "", name: "Global Innovation Challenge – Executive Pitch",
@@ -40,14 +40,12 @@ angular.module('flintAndSteel')
             $scope.Events = [$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5];
 
             function getInternetExplorerVersion(navObj) {
-                console.log(navObj);
                 var browserVersion = -1;
                 var userAgent = navObj.userAgent;
                 var versionMatcher;
                 var searchResults;
                 if (navObj.appName === 'Microsoft Internet Explorer') {
                     versionMatcher = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                    console.log('We shouldn\'t be here');
                     searchResults = versionMatcher.exec(userAgent);
                     if (searchResults !== null) {
                         browserVersion = parseFloat(searchResults[1]);
@@ -55,7 +53,6 @@ angular.module('flintAndSteel')
                 }
                 else if (navObj.appName === 'Netscape') {
                     versionMatcher = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
-                    console.log(searchResults);
                     searchResults = versionMatcher.exec(userAgent);
                     if (searchResults !== null) {
                         browserVersion = parseFloat(searchResults[1]);
@@ -69,13 +66,6 @@ angular.module('flintAndSteel')
             $scope.navToBrowse = function navToBrowse() {
                 $state.go('ideabrowse');
             };
-
-            ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-                $scope.topIdeas = data;
-                console.log(data);
-            }, function getIdeaHeadersError(data, status) {
-                console.log(status);
-            });
 
             $scope.generateWords = function generateWords() {
 
