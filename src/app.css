@@ -464,3 +464,6 @@ h2.no-bottom-margin {
     cursor: pointer;
     cursor: hand;
 }
+.learn-dialog-toolbar-padding {
+    padding-left:20px
+}
