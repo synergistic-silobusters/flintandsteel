@@ -42,7 +42,7 @@ module.exports = function(config) {
             'src/users/userSvc/userSvc.mock.js',
             'src/toastSvc/toastSvc.js',
             'src/homeView/homeView.js',
-            'src/learn/learn.js',
+            'src/learn/*.js',
             'src/events/**/*.js',
             'src/ideas/**/*.js',
             'src/navigation/**/*.js',

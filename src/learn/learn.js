@@ -1,8 +1,5 @@
 /* global angular */
 
-
-
-
 angular.module('flintAndSteel')
 .controller('LearnCtrl',
     [
@@ -46,12 +43,7 @@ angular.module('flintAndSteel')
 
             $scope.showAdvanced = function(ev, item) {
                 $mdDialog.show({
-                    controller: function PictureDialogController($scope, $mdDialog, learnItem) {
-                        $scope.item = learnItem;
-                        $scope.answer = function() {
-                            $mdDialog.hide();
-                        };
-                    },
+                    controller: 'PictureDialogController',
                     templateUrl: 'learn/pictureDialog.tpl.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
