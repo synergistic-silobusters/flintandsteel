@@ -1,7 +1,7 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('PictureDialogController',
+.controller('PictureDialogCtrl',
     [
         '$scope', '$mdDialog', 'learnItem',
 

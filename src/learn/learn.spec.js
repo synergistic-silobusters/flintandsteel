@@ -48,7 +48,7 @@ describe('LearnCtrl', function() {
 
 });
 
-describe('PictureDialogController', function() {
+describe('PictureDialogCtrl', function() {
     "use strict";
     var $controller, scope, $mdDialog, learnItem, ctrl;
 
@@ -57,16 +57,17 @@ describe('PictureDialogController', function() {
         scope = $rootScope.$new();
         $controller = _$controller_;
         $mdDialog = _$mdDialog_;
-        learnItem = {title: "Test",
-                            imgSource: "assets/learn/learnToComment.gif",
-                            orderImg: "1",
-                            orderDesc: "2",
-                            description: "Test"
-                            };
+        learnItem = {
+            title: "Test",
+            imgSource: "assets/learn/learnToComment.gif",
+            orderImg: "1",
+            orderDesc: "2",
+            description: "Test"
+        };
     }));
 
     function createController(learnItem) {
-        return $controller('PictureDialogController', {
+        return $controller('PictureDialogCtrl', {
             $scope: scope,
             $mdDialog: $mdDialog,
             learnItem: learnItem
