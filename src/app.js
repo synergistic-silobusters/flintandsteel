@@ -100,6 +100,20 @@ angular.module('flintAndSteel', [
         $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
         $httpProvider.defaults.headers.get.Pragma = 'no-cache';
     }
+])
+.run(['$rootScope', '$location', '$window',
+    function($rootScope, $location, $window) {
+        "use strict";
+
+        $rootScope.$on('$stateChangeSuccess',
+            function() {
+                if (!$window.ga) {
+                    return;
+                }
+                $window.ga('send', 'pageview', { page: $location.path() });
+            }
+        );
+    }
 ]);
 
 // red #650100
