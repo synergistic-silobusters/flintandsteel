@@ -92,7 +92,7 @@
                 <img ui-sref="home" src="assets/Innovate-Rockwell-Automation-White.png" width="250"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span>
-            <md-button ng-controller="SidenavCtrl" aria-label="Add another idea" class="toolbar-left-link" ng-click="navTo('addidea')">
+            <md-button aria-label="Add another idea" class="toolbar-left-link" ui-sref="addidea">
                 Create
                 <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
                 <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
@@ -165,8 +165,6 @@
                     </div>
                 </div>
             </md-content>
-            <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
-            </div>
         </md-sidenav>
         <md-content ui-view flex></md-content>
     </md-content>
