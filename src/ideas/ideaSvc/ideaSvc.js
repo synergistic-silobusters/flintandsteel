@@ -204,7 +204,7 @@ angular.module('flintAndSteel')
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
                 getBackTypeChips: this.getBackTypeChips,
-                editIdeaRating: this.editIdeaRating
+                editIdeaRating: this.editIdeaRating,
                 getUserIdeasById: this.getUserIdeasById,
                 getUserBacksById: this.getUserBacksById
             };
