@@ -83,7 +83,7 @@ angular.module('flintAndSteel')
                 if ($state.includes('idea')) {
                     $state.reload('idea');
                 }
-                else if ($state.includes('addidea')) {
+                else if ($state.includes('addidea') || $state.includes('account')) {
                     $state.go('home');
                 }
             };

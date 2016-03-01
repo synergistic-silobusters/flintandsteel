@@ -42,6 +42,7 @@ module.exports = function(config) {
             'src/users/userSvc/userSvc.mock.js',
             'src/toastSvc/toastSvc.js',
             'src/homeView/homeView.js',
+            'src/learn/*.js',
             'src/events/**/*.js',
             'src/ideas/**/*.js',
             'src/navigation/**/*.js',
@@ -69,6 +70,7 @@ module.exports = function(config) {
             'src/navigation/**/!(*spec|*mock).js': ['coverage'],
             'src/users/**/!(*spec|*mock).js': ['coverage'],
             'src/utilities/**/!(*spec|*mock).js': ['coverage'],
+            'src/learn/**/!(*spec|*mock).js': ['coverage'],
             'src/**/*.tpl.html': ['ng-html2js']
         },
 
