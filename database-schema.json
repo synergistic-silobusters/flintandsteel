@@ -1,0 +1,81 @@
+{
+    "user": {
+        "_id": "mongo_generated",
+        "firstName": "",
+        "lastName": "",
+        "fullName": "",
+        "username": "",
+        "email": "",
+        "nickname": "",
+        "title": ""
+    },
+    "idea": {
+        "_id": "mongo_generated",
+        "title": "",
+        "description": "",
+        "authorId": "one user._id",
+        "eventId": "",
+        "timeCreated": "",
+        "timeModified": "",
+        "tags": [
+            "5 strings to assist in searching"
+        ],
+        "rolereqs": [
+            "types of backs the author is requesting"
+        ],
+        "likes": [
+            {
+                "_id": "mongo_generated",
+                "userId": "user._id"
+            },
+            "set of objects with user._id"
+        ],
+        "updates": [
+            {
+                "_id": "mongo_generated",
+                "text": "",
+                "authorId": "one user._id",
+                "timeCreated": "",
+                "timeModified": ""
+            }
+        ],
+        "comments": [
+            { "commentId": "comment._id" },
+            "set of objects with comment._id"
+        ],
+        "backs": [
+            {
+                "_id": "mongo_generated",
+                "text": "",
+                "authorId": "one user._id",
+                "types": "",
+                "timeCreated": "",
+                "timeModified": ""
+            }
+        ],
+        "team": [
+            {
+                "_id": "mongo_generated",
+                "memberId": "idea.authorId"
+            },
+            "set of objects with user._id"
+        ]
+    },
+    "comment": {
+        "_id": "mongo_generated",
+        "parentId": "one idea._id || one comment._id",
+        "text": "",
+        "authorId": "one user._id",
+        "timeCreated": "",
+        "timeModified": ""
+    },
+    "events": [
+        {
+            "_id": "mongo_generated",
+            "name": "",
+            "location": "",
+            "startDate": "",
+            "endDate": ""
+        }
+    ]
+}

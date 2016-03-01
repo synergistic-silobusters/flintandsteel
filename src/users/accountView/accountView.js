@@ -1,39 +1,70 @@
 /* global angular */
+/* global moment */
+/* global _ */
 
 angular.module('flintAndSteel')
-.controller('AccountViewCtrl', 
-	[
-		'$scope',
-		'$state',
-		'$mdToast',
-		'loginSvc',
-		function($scope, $state, $mdToast, loginSvc) {
-			// Replace this with a DB read from logged in user
-			$scope.user = {
-				username: 'TheMainManDarth',
-				password: 'mynameisAnakin',
-				name: 'Darth Vader',
-				email: 'darth.vader@thesith.com'
-			};
-			// /Replace
-			
-			if(!loginSvc.isUserLoggedIn()) {
-				$state.go('home');
-			}
+.controller('AccountViewCtrl',
+    [
+        '$scope', '$state', 'toastSvc', 'userSvc', 'ideaSvc',
+        function($scope, $state, toastSvc, userSvc, ideaSvc) {
+            "use strict";
 
-			$scope.logout = function logout() {
-				var accountName = loginSvc.getProperty('name');
-				loginSvc.logout();
-				$mdToast.show(
-					$mdToast.simple()
-						.content(accountName + ' has been logged out!')
-						.position('top right')
-						.hideDelay(5000)
-				);
-				$state.go('home');
-			};
-			
-			
-		}
-	]	
+            // NOTE: Nothing can go above this!
+            if (!userSvc.isUserLoggedIn()) {
+                $state.go('home');
+            }
+            else {
+                // Get user info
+                var userId = userSvc.getProperty('_id');
+                userSvc.getUserById(userId).then(
+                    function(result) {
+                        $scope.user = result.data;
+                    }
+                );
+
+                $scope.userIdeas = [];
+                $scope.userBacks = [];
+                $scope.userTeams = [];
+
+                //Get user ideas
+                ideaSvc.getUserIdeasById(userId).then(
+                    function(result) {
+                        var userIdeaSearch = result.data;
+                        _.forEach(userIdeaSearch, function(idea) {
+                            ideaSvc.getIdea(idea._id).then(
+                                function(result) {
+                                    result.data.timeCreated = moment(new Date(result.data.timeCreated)).calendar();
+                                    result.data.timeModified = moment(new Date(result.data.timeModified)).calendar();
+                                    $scope.userIdeas.push(result.data);
+                                });
+                        });
+                    }
+                ).catch(function(error) {
+                    console.log(error);
+                });
+
+                //Get user Backs and Teams
+                ideaSvc.getUserBacksById(userId).then(
+                    function(result) {
+                        var userBackSearch = result.data;
+                        _.forEach(userBackSearch, function(idea) {
+                            ideaSvc.getIdea(idea._id).then(
+                                function(result) {
+                                    result.data.timeCreated = moment(new Date(result.data.timeCreated)).calendar();
+                                    result.data.timeModified = moment(new Date(result.data.timeModified)).calendar();
+                                    $scope.userBacks.push(result.data);
+                                    _.some(result.data.team, function(member) {
+                                        if (member.memberId === userId) {
+                                            $scope.userTeams.push(result.data);
+                                        }
+                                    });
+                                });
+                        });
+                    }
+                ).catch(function(error) {
+                    console.log(error);
+                });
+            }
+        }
+    ]
 );

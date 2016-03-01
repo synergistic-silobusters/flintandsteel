@@ -1,35 +1,38 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.controller('AddIdeaViewCtrl', 
-	[
-		'$scope',
-		'$state',
-		'$mdToast',
-		'ideaSvc',
-		function($scope, $state, $mdToast, ideaSvc) {
-			$scope.idea = {};
+.controller('AddIdeaViewCtrl',
+    [
+        '$scope', '$state', 'toastSvc', 'ideaSvc', 'userSvc',
+        function($scope, $state, toastSvc, ideaSvc, userSvc) {
+            "use strict";
 
-			$scope.addNewIdea = function addNewIdea(ideaToAdd) {
-				ideaToAdd.likes = 0;
-				ideaToAdd.comments = [];
-				ideaToAdd.backs = [];
-				ideaSvc.postIdea($scope.idea, function postIdeaSuccess(data) {
-					console.log(data);
-					if (data === 'Created') {
-						$mdToast.show(
-							$mdToast.simple()
-								.content('New idea created successfully!')
-								.position('top right')
-								.hideDelay(3000)
-						);
-						$scope.$emit('newIdeaAdded');
-						$state.go('home');
-					}
-				}, function(data, status, header, config) {
-					console.log(status);
-				});
-			};
-		}
-	]
+            if (!userSvc.isUserLoggedIn()) {
+                $state.go('home');
+                toastSvc.show('You need to be logged into to create an idea!');
+            }
+
+            $scope.idea = {};
+            $scope.idea.tags = [];
+            $scope.idea.rolesreq = [];
+            $scope.idea.eventId = "";
+
+            ////////////////////
+            // IDEA FUNCTIONS //
+            ////////////////////
+
+            $scope.addNewIdea = function addNewIdea(ideaToAdd) {
+                ideaToAdd.authorId = userSvc.getProperty('_id');
+                ideaSvc.postIdea($scope.idea).then(function postIdeaSuccess(response) {
+                    if (angular.isDefined(response.data.status) && response.data.status === 'Created') {
+                        toastSvc.show('New idea created successfully!');
+                        $scope.$emit('newIdeaAdded');
+                        $state.go('idea', { ideaId: response.data._id });
+                    }
+                }, function(response) {
+                    console.log(response);
+                });
+            };
+        }
+    ]
 );

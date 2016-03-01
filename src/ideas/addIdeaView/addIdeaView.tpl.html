@@ -1,25 +1,6 @@
 <md-card>
-	<md-card-content>
-		<h2>New Idea</h2>
-		<form name="newIdeaForm">
-			<div layout="column">
-				<md-input-container>
-					<label>Title</label>
-					<input ng-model="idea.title" required>
-				</md-input-container>
-				<md-input-container>
-					<label>Author</label>
-					<input ng-model="idea.author" required>
-				</md-input-container>
-				<md-input-container flex>
-					<label>Description</label>
-					<textarea ng-model="idea.description" columns="1" md-maxlength="1000" required></textarea>
-				</md-input-container>
-				<p></p>
-				<div layout="row" layout-align="end center">
-					<md-button class="md-raised md-primary" ng-click="addNewIdea(idea)">Submit idea</md-button>
-				</div>
-			</div>
-		</form>
-	</md-card-content>
+    <md-card-content class="no-padding-all">
+        <h2 class="no-bottom-margin extra-padding-sides-15">New Idea</h2>
+        <idea-input idea="idea" submit-fn="addNewIdea(idea)" submit-btn-text="Submit idea"></idea-input>
+    </md-card-content>
 </md-card>

@@ -1,34 +1,28 @@
-<md-content layout="column" layout-align="start center">
-<p></p>
-<p></p>
-    <!--<font size="12"><b><center>Rok-Starter</center></b></font>-->
-    <img src="assets/logo2.png">
-	
-	<!--<img src="assets/fire.png"/>-->
-  
-	<h3>
-        <center>A strategy that enables collaboration and development by providing visibility to innovative ideas.</center>
-    </h3>
-
-    
-
-    <div layout="row" layout-margin>
-      <div flex flex-order="1" >
-        <center><img src="assets/bald27.png"/></center>
-        <center><h2>Innovate</h2></center>
-    		<p>Create an innovative idea and post it to Rok-Starter.  This idea will be visible to other innovators around the world.</p>
-      </div>
-      <div flex flex-order="2">
-         <center><img src="assets/socialnetwork12.png"/></center>
-        <center><h2>Collaborate</h2></center>
-    		<p>Browse through posted innovations and give support to ones that are viable.  Share ideas with others who may be interested in supporting it.  Post comments to an innovator to help mold their vision.</p>
-      </div>
-      <div flex flex-order="3">
-         <center><img src="assets/winners4.png"/></center>
-        <center><h2>Achieve</h2></center>
-    		<p>Sharing innovations allows all departments to reap the benefits of a single idea.  Together we can grow our ideas to make a better company.</p>
-      </div>
-    </div>
-
+<div class="center-text" ng-if="browserVersion > 0">{{internetExplorerMessage}}</div>
+<md-content layout="row" class="cloud-container-padding">
+    <div id="wordcloud" flex="90"></div>
 </md-content>
-
+<!-- Begin Timeline -->
+<div layout="row" layout-align="center center" ng-hide="searchText">
+    <h2 class="homeview-padding-bottom">Event Schedule</h2>
+</div>
+<div class="container" ng-hide="searchText">
+    <div class="row">
+        <div class="timeline-centered">
+            <md-item ng-repeat="Event in Events">
+            <timeline-event  event="Event"/>
+            </md-item>
+            <article class="timeline-entry begin">
+                <div class="timeline-entry-inner">
+                    <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
+                        <i class="entypo-flight"/>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+<jqcloud words="words" width="500" height="350" steps="7"></jqcloud>
+<!-- End Timeline -->
+<div><h6><center><a ui-sref="about">About Us</a></center></h6></div>
+<div><h6><center><a ui-sref="innovationdisclosure">Innovation Disclosure Assistant</a></center></h6></div>

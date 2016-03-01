@@ -11,7 +11,7 @@
 
 # project files should be checked into the repository, unless a significant
 # proportion of contributors will probably not be using SublimeText
-# *.sublime-project
+*.sublime-project
 
 # sftp configuration file
 sftp-config.json
@@ -72,3 +72,12 @@ npm-debug.log
 
 # Database files
 server/datastore
+
+# Secrets files
+server/secrets
+
+# Code Coverage
+coverage
+
+# Logs
+server/*.log

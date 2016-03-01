@@ -1,49 +1,96 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('AccountViewCtrl', function() {
-	var scope, ctrl, $state, $mdToast, loginSvcMock;
+    "use strict";
 
-	beforeEach(module('flintAndSteel'));
-	beforeEach(module('ui.router'));
+    var rootScope, scope, ctrl, $state, toastSvc, userSvcMock, ideaSvcMock;
 
-	beforeEach(inject(function ($rootScope, $controller, _$state_, _$mdToast_, _loginSvcMock_) {
-		scope = $rootScope.$new();
-		$state = _$state_;
-		$mdToast = _$mdToast_;
-		loginSvcMock = _loginSvcMock_;
+    beforeEach(module('flintAndSteel'));
+    beforeEach(module('ui.router'));
+    // needed because $state takes us to home by default
+    beforeEach(module('homeView/homeView.tpl.html'));
 
-		spyOn($state, 'go');
-		spyOn(loginSvcMock, 'isUserLoggedIn').and.callFake(function() {
-			return false;
-		});
+    describe('visiting when not logged in', function() {
+        beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _userSvcMock_, _ideaSvcMock_) {
+            rootScope = $rootScope;
+            scope = $rootScope.$new();
+            $state = _$state_;
+            toastSvc = _toastSvc_;
+            userSvcMock = _userSvcMock_;
+            ideaSvcMock = _ideaSvcMock_;
 
-		ctrl = $controller('AccountViewCtrl', {
-			$scope: scope,
-			$state: $state,
-			$mdToast: $mdToast,
-			loginSvc: loginSvcMock
-		});
-	}));
+            spyOn($state, 'go');
+            spyOn(userSvcMock, 'isUserLoggedIn').and.callFake(function() {
+                return false;
+            });
 
-	it('should exist', function() {
-		expect(ctrl).toBeDefined();
-	});
+            ctrl = $controller('AccountViewCtrl', {
+                $scope: scope,
+                $state: $state,
+                toastSvc: toastSvc,
+                userSvc: userSvcMock,
+                ideaSvc: ideaSvcMock
+            });
+        }));
 
-	it('should navigate to home if no user is logged in', function() {
-		expect($state.go).toHaveBeenCalledWith('home');
-	});
+        afterEach(function() {
+            scope.$digest();
+        });
 
-	describe('$scope.logout', function() {
-		
-		beforeEach(function() {
-			spyOn(loginSvcMock, 'logout').and.callFake(function() { });
-			spyOn($mdToast, 'show');
-		});
+        it('should exist', function() {
+            expect(ctrl).toBeDefined();
+        });
 
-		it('should log out the user', function() {
-			scope.logout();
+        it('should navigate to home if no user is logged in', function() {
+            expect($state.go).toHaveBeenCalledWith('home');
+        });
+    });
 
-			expect(loginSvcMock.logout).toHaveBeenCalled();
-			expect($mdToast.show).toHaveBeenCalled();
-			expect($state.go).toHaveBeenCalledWith('home');
-		});
-	});
+    describe('visiting when logged in', function() {
+        beforeEach(inject(function($rootScope, $controller, _$state_, _toastSvc_, _userSvcMock_, _ideaSvcMock_) {
+            rootScope = $rootScope;
+            scope = $rootScope.$new();
+            $state = _$state_;
+            toastSvc = _toastSvc_;
+            userSvcMock = _userSvcMock_;
+            ideaSvcMock = _ideaSvcMock_;
+
+            spyOn($state, 'go');
+            spyOn(userSvcMock, 'isUserLoggedIn').and.callFake(function() {
+                return true;
+            });
+
+            ctrl = $controller('AccountViewCtrl', {
+                $scope: scope,
+                $state: $state,
+                toastSvc: toastSvc,
+                userSvc: userSvcMock,
+                ideaSvc: ideaSvcMock
+            });
+
+            scope.$digest();
+        }));
+
+        it('should exist', function() {
+            expect(ctrl).toBeDefined();
+        });
+
+        it('should populate user ideas', function() {
+            expect(scope.userIdeas.length).toBe(1);
+        });
+
+        it('should populate user backs', function() {
+            expect(scope.userBacks.length).toBe(1);
+        });
+
+        it('should populate user teams', function() {
+            expect(scope.userTeams.length).toBe(1);
+        });
+    });
 });

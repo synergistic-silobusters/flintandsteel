@@ -1,0 +1,491 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+.icon-button-adjust {
+    vertical-align: middle;
+}
+
+.user-menu {
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #666;
+}
+
+.gray-bg {
+    background-color: rgba(181, 181, 181, 0.6);
+    width: 100%;
+}
+
+img.grayscale {
+  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 3.5+ */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(100%); /* Chrome 19+ & Safari 6+ */
+  -webkit-transition: all .6s ease; /* Fade to color for Chrome and Safari */
+}
+
+img.grayscale:hover {
+  filter: none;
+  -webkit-filter: grayscale(0%);
+}
+
+.img-block {
+    display: inline-block;
+    padding: 10px 0 10px;
+}
+
+.add-idea {
+    min-height: 40px;
+    max-height: 40px;
+}
+
+.markdown-supported {
+    text-decoration: none;
+    font-size: 10px;
+    color: gray;
+}
+
+.markdown-supported svg {
+    vertical-align: bottom;
+    margin-right: 2px;
+}
+
+.markdown-supported:hover {
+    color: rgb(0, 148, 156);
+}
+
+.md-icon-button {
+    margin-right: 10px;
+}
+
+.md-icon-button:last-child {
+    margin-right: 0px;
+}
+
+.login-button {
+    margin-right: 10px;
+}
+
+.sign-in-tip {
+    font-size: 12px;
+    padding-top: 10px;
+    width: 100%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signup-button {
+    margin-left: 10px;
+}
+
+.scroll-container {
+    overflow: scroll;
+}
+
+h1.no-margins, h2.no-margins, h3.no-margins, h4.no-margins {
+    margin: 0px;
+    margin-block-end: 0;
+    margin-block-start: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-before: 0;
+}
+
+h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin, h4.no-bottom-margin {
+    -webkit-margin-after: 0;
+}
+
+.top-bar {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px 5px 0px 0px;
+    margin:0px;
+    padding: 10px;
+}
+
+.extra-space-left {
+    padding-left: 20px;
+}
+
+.no-padding-all {
+    padding: 0px;
+}
+
+.no-padding-bottom {
+    padding-bottom: 0px;
+}
+
+.some-padding-bottom {
+    padding-bottom: 15px;
+}
+
+.fab-layout {
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.top-ideas-list-item {
+    margin-left: 20px;
+}
+
+.custom-chip-wrapper{
+    margin:2px 2px 2px 0px;
+    display:inline-block;
+}
+
+.custom-chip{
+    margin-bottom: 3px;
+    padding: 3px 10px;
+    background-color: #e0e0e0;
+    color: #424242;
+    border-radius: 10px;
+    white-space:nowrap;
+}
+
+.custom-chip.knowledge{
+    background-color: #F44336;
+    color: #FFFFFF;
+}
+
+.custom-chip.time{
+    background-color: #3F51B5;
+    color: #FFFFFF;
+}
+
+.custom-chip.funding{
+    background-color: #009688;
+    color: #FFFFFF;
+}
+
+.custom-chip.experience{
+    background-color: #8BC34A;
+    color: #FFFFFF;
+}
+
+.custom-chip.social-network{
+    background-color: #FF9800;
+    color: #FFFFFF;
+}
+
+.custom-chip.materials{
+    background-color: #795548;
+    color: #FFFFFF;
+  }
+.custom-chip.how-can-i-help{
+    background-color: #E91E63;
+    color: #FFFFFF;
+}
+
+.custom-chip.owner{
+    background-color: #03A9F4;
+    color: #FFFFFF;
+}
+
+.custom-chip.tag {
+    padding-right: 6px;
+}
+
+.idea-pointer {
+    cursor: pointer;
+}
+
+.nav-bar-pointer {
+    cursor: pointer;
+}
+
+.extra-padding-left-sm {
+    padding-left: 5px;
+}
+
+.extra-padding-left-md {
+    padding-left: 10px;
+}
+
+.extra-padding-top-md {
+    padding-top: 10px;
+}
+
+.extra-padding-top-lg {
+    padding-top: 30px;
+}
+
+.extra-padding-15 {
+    padding: 15px;
+}
+
+.extra-padding-sides-15 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.extra-padding-lg {
+    padding: 30px;
+}
+
+.accent-text {
+    color: #650100;
+}
+
+.author-accent {
+    font-size: 13px;
+}
+
+.idea-likes-click {
+    cursor: pointer;
+    padding-left: 5px;
+}
+
+.deleted  h3, .deleted p{
+    text-decoration: line-through;
+    color: red;
+}
+
+.search-bar {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.center-stuff {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.img-padding{
+    padding-top: 15px;
+    max-width: 100%;
+}
+
+.padding-left-20{
+    padding-left: 20px;
+}
+.padding-sides-20 {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.margin-top {
+    margin-top: 30px;
+}
+
+.margin-bottom-md {
+    margin-bottom: 15px;
+}
+
+*:focus {
+    outline: 0;
+}
+
+.about-technologies{
+    padding: 15px;
+}
+
+.about-padding-bottom{
+    padding-bottom: 15px;
+}
+
+.about-padding-top{
+    padding-top: 15px;
+}
+
+.mailto-format{
+    text-decoration:none !important;
+    text-decoration:none;
+    color: #666;
+}
+
+.identicon {
+    vertical-align: middle;
+}
+.idea-tag-delete-icon {
+    width: 18px;
+    height: 18px;
+    outline: none;
+}
+
+.idea-tags-input-container {
+    padding-bottom: 8px;
+}
+
+.tag-message {
+    color: black !important;
+}
+
+.ellipsis-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.word-wrap {
+    word-break: break-word;
+    word-wrap: break-word;
+}
+
+.identicon-home {
+    margin-right: 10px;
+}
+
+.md-tab.md-active {
+    background-color: #e0e0e0;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.no-ideas-div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.small-padding-bottom {
+    padding-bottom: 15px;
+}
+
+.back-box {
+    width: 600px;
+}
+
+/*Conversation Bubbles*/
+/*----------------------------------------------------*/
+.triangle-isosceles {
+    position:relative;
+    padding:0px 5px 0px 5px;
+    margin:1em 0 3em;
+    color:#000;
+    background:#e0e0e0;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px 5px 0px 0px;
+}
+
+.triangle-isosceles.left {
+    margin:0px 0px 0px 15px;
+    background:#e0e0e0;
+}
+
+.triangle-isosceles:after {
+    content:"";
+    position:absolute;
+    bottom:-15px; /* value = - border-top-width - border-bottom-width */
+    left:50px; /* controls horizontal position */
+    border-width:15px 15px 0; /* vary these values to change the angle of the vertex */
+    border-style:solid;
+    border-color:#e0e0e0 transparent;
+    /* reduce the damage in FF3.0 */
+    display:block;
+    width:0;
+}
+
+.triangle-isosceles.left:after {
+    top:15px; /* controls vertical position */
+    left:-10px; /* value = - border-left-width - border-right-width */
+    bottom:auto;
+    border-width:10px 10px 10px 0;
+    border-color:transparent #e0e0e0;
+}
+
+
+.convo-text-bubble.text-area {
+    background-color: #FFFFFF;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 0px 0px 5px 5px;
+    margin:0px;
+    padding: 10px;
+}
+
+.convo-text-bubble.text-area.left {
+    margin:0px 0px 0px 15px;
+    padding: 10px;
+}
+
+.convo-text-bubble.top-bar {
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px 5px 0px 0px;
+    margin:0px;
+    padding: 0px 10px 0px 10px;
+}
+/*----------------------------------------------------*/
+/*End Conversation Bubbles*/
+
+.toolbar-left-link {
+    margin-left: 25px;
+    cursor: pointer;
+    line-height: 65px;
+    border-radius: 0;
+}
+
+.toolbar-links {
+    margin-left: 6px;
+    cursor: pointer;
+    line-height: 65px;
+    border-radius: 0;
+}
+
+.toolbar-lightbulb {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.lightbulb {
+    padding-top: 50px;
+    max-width: 100%;
+}
+
+.title {
+    padding: 35px;
+}
+
+.learn-objects {
+    padding: 50px;
+}
+
+.learn-objects-img {
+    width:100%;
+}
+
+.learn-dialog-img {
+    width:100%;
+    max-height: 500px;
+}
+
+.learn-dialog-content {
+    max-width:800px;
+    max-height:810px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.learn-dialog-button {
+    margin-right:20px;
+}
+
+.learn-item {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.learn-dialog-toolbar-padding {
+    padding-left:20px
+}
+
+.account-side-panel-stat {
+    color: #1976D2;
+    margin: 0px 15px 0px 15px;

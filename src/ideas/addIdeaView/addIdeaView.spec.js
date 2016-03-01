@@ -1,41 +1,91 @@
+/* global describe */
+/* global module */
+/* global beforeEach */
+/* global inject */
+/* global it */
+/* global expect */
+/* global spyOn */
+
 describe('AddIdeaViewCtrl', function() {
-	var scope, ctrl, $mdToast, $state, ideaSvcMock;
+    "use strict";
 
-	beforeEach(module('flintAndSteel'));
-	beforeEach(module('ui.router'));
+    var scope, rootScope, $q, ctrl, toastSvc, $state, ideaSvcMock, userSvcMock, eventSvcMock;
 
-	beforeEach(inject(function($rootScope, $controller, _$mdToast_, _$state_, _ideaSvcMock_) {
-		scope = $rootScope.$new();
-		$mdToast = _$mdToast_;
-		$state = _$state_;
-		ideaSvcMock = _ideaSvcMock_;
+    beforeEach(module('flintAndSteel'));
+    beforeEach(module('ui.router'));
+    // needed because $state takes us to home by default
+    beforeEach(module('homeView/homeView.tpl.html'));
 
-		spyOn($state, 'go');
-		spyOn(ideaSvcMock, 'postIdea');
+    beforeEach(inject(function($rootScope, _$q_, $controller, _toastSvc_, _$state_, _ideaSvcMock_, _userSvcMock_, _eventSvcMock_) {
+        rootScope = $rootScope;
+        scope = $rootScope.$new();
+        $q = _$q_;
+        toastSvc = _toastSvc_;
+        $state = _$state_;
+        ideaSvcMock = _ideaSvcMock_;
+        userSvcMock = _userSvcMock_;
+        eventSvcMock = _eventSvcMock_;
 
-		ctrl = $controller('AddIdeaViewCtrl', { 
-			$scope: scope,
-			$state: $state,
-			$mdToast: $mdToast,
-			ideaSvc: ideaSvcMock
-		});
-	}));
+        spyOn($state, 'go');
 
-	it('should exist', function() {
-		expect(ctrl).toBeDefined();
-	});
+        ctrl = $controller('AddIdeaViewCtrl', {
+            $scope: scope,
+            $state: $state,
+            toastSvc: toastSvc,
+            ideaSvc: ideaSvcMock,
+            userSvc: userSvcMock,
+            eventSvc: eventSvcMock
+        });
 
-	it('should add a new idea', function() {
-		var idea = {
-			title: 'Test Title',
-			author: 'Test',
-			description: 'This is a test idea.',
-		};
-		scope.addNewIdea(idea);
+        scope.idea = {
+            title: 'Test Title',
+            eventId: 0,
+            description: 'This is a test idea.',
+            tags: ['TestTag1', 'TestTag2'],
+            rolesreq: []
+        };
+    }));
 
-		expect(ideaSvcMock.postIdea).toHaveBeenCalled();
-		expect(idea.likes).toBe(0);
-		expect(idea.comments.length).toBe(0);
-		expect(idea.backs.length).toBe(0);
-	});
+    afterEach(function() {
+        scope.$digest();
+    });
+
+    it('should exist', function() {
+        expect(ctrl).toBeDefined();
+    });
+
+    describe('scope.addNewIdea', function() {
+
+        it('should add a new idea', function() {
+            spyOn(ideaSvcMock, 'postIdea').and.callThrough();
+
+            scope.addNewIdea(scope.idea);
+
+            expect(ideaSvcMock.postIdea).toHaveBeenCalled();
+            expect(scope.idea.rolesreq.length).toBe(0);
+        });
+
+        it('should use the user\'s _id as the authorId', function() {
+            scope.idea.authorId = 3;
+
+            scope.addNewIdea(scope.idea);
+
+            expect(scope.idea.authorId).not.toBe(3);
+            expect(scope.idea.authorId).toBe(1);
+        });
+
+        it('should log an error if the idea cannot be created', function() {
+            spyOn(ideaSvcMock, 'postIdea').and.callFake(function() {
+                return $q.reject('FAIL');
+            });
+            spyOn(console, 'log').and.callFake(function() {});
+
+            scope.addNewIdea(scope.idea);
+
+            scope.$digest();
+
+            expect(ideaSvcMock.postIdea).toHaveBeenCalled();
+            expect(console.log).toHaveBeenCalledWith('FAIL');
+        });
+    });
 });

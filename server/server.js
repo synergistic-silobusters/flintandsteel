@@ -1,272 +1,180 @@
+/* global __dirname */
+/* global process */
+
+// set name of db =====================================================
+var dbName = 'flintandsteel';
+
+if (process.env.NODE_ENV !== 'production') {
+    dbName += "-dev";
+}
+
+// modules ============================================================
 var express = require('express'),
-	morgan = require('morgan'),
-	path = require('path'),
-	chalk = require('chalk'),
-	datastore = require('docstore'),
-	bodyParser = require('body-parser'),
-	external = require('external-ip')(),
-	ip = require('ip'),
-	_ = require('lodash');
+    morgan = require('morgan'),
+    path = require('path'),
+    chalk = require('chalk'),
+    bodyParser = require('body-parser'),
+    external = require('external-ip')(),
+    fs = require('fs'),
+    passport = require('passport'),
+    WindowsStrategy = require('passport-windowsauth'),
+    ip = require('ip');
+// var cluster          = require('cluster');
+// var numCpus          = require('os').cpus().length;
 
-var userDb, ideasDb, ipExternal;
+// initialize db ======================================================
+var db = require('./db')(dbName);
 
-datastore.open('./server/datastore/users', function(err, store) {
-	if (err) {
-		console.log(err);
-	}
-	else {
-		userDb = store;
-	}
-});
+// configuration ======================================================
+var port = process.env.PORT_HTTP || process.argv[2] || 8080;
 
-datastore.open('./server/datastore/ideas', function(err, store) {
-	if (err) {
-		console.log(err);
-	}
-	else {
-		ideasDb = store;
-	}
-});
+if (process.env.NODE_ENV === 'test') {
+    port = 7357;
+}
+
+var logStream = fs.createWriteStream(__dirname + '/server.log', { flags: 'a' });
 
 var app = express();
 
-// Datastore filter to find everything
-var filter = function dbFilter(doc) {
-	return true;
-};
-
-
-app.use(morgan(':remote-addr - ' + 
-			   chalk.cyan('[:date] ') + 
-			   chalk.green('":method :url ') + 
-			   chalk.gray('HTTP/:http-version" ') + 
-			   chalk.yellow(':status ') + 
-			   ':res[content-length] ' + 
-			   chalk.gray('":referrer" ":user-agent" ') + 
-			   'time=:response-time ms'
-));
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
+if (process.env.NODE_ENV === 'production') {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-app.post('/login', function(req, res) {
-	userDb.get(req.body.username, function(err, doc) {
-		if (err) {
-			res.status(200).json({ status: 'USER_NOT_FOUND' });
-		}
-		else {
-			if (req.body.password === doc.password) {
-				res.status(200).json({
-					status: 'AUTH_OK',
-					id: doc.accountId,
-					username: req.body.username,
-					name: doc.name,
-					likedIdeas: doc.likedIdeas
-				});
-			}
-			else {
-				res.status(200).json({
-					status: 'AUTH_ERROR',
-					id: undefined,
-					username: undefined,
-					name: undefined
-				});
-			}
-		}
-	});
-});
-app.post('/signup', function(req, res) {
-	userDb.save(
-	{
-		key: req.body.username,
-		_id: req.body.username,
-		accountId: req.body.id,
-		password: req.body.password,
-		name: req.body.name,
-		likedIdeas: req.body.likedIdeas
-	}, 
-	function(err, doc) {
-		if (err) {
-			console.log(chalk.bgRed(err));
-		}
-		else {
-			console.log(chalk.bgGreen('Document with key %s stored in users.'), doc.key);
-		}
-	});
-	res.sendStatus(201);
-});
-app.post('/idea', function(req, res) {
-	ideasDb.save(
-	{
-		key: req.body.id,
-		_id: 'idea_' + req.body.id,
-		ideaId: req.body.id,
-		title: req.body.title,
-		description: req.body.description,
-		author: req.body.author,
-		likes: req.body.likes,
-		comments: req.body.comments,
-		backs: req.body.backs
-	}, 
-	function(err, doc) {
-		if (err) {
-			console.log(chalk.bgRed(err));
-		}
-		else {
-			console.log(chalk.bgGreen('Document with key %s stored in ideas.'), doc.key);
-		}
-	});
-	res.sendStatus(201);
-});
-app.post('/updateidea', function(req, res) {
-	ideasDb.get('idea_' + req.body.id, function(err, doc) {
-		if (err) {
-			res.sendStatus(500);
-		}
-		else {
-			doc[req.body.property] = req.body.value;
-			ideasDb.save(doc, function(err, doc) {
-				if (err) {
-					console.log(chalk.bgRed(err));
-				}
-				else {
-					console.log(chalk.bgGreen('Document with key %s updated in ideas.'), doc.key);
-					res.sendStatus(200);
-				}
-			});
-		}
-	});
-});
-app.post('/updateaccount', function(req, res) {
-	userDb.get(req.body.username, function(err, doc) {
-		if (err) {
-			res.sendStatus(500);
-		}
-		else {
-			_.assign(doc, req.body);
-			doc.status = undefined;
-			doc.id = undefined;
-			userDb.save(doc, function(err, doc) {
-				if (err) {
-					console.log(chalk.bgRed(err));
-				}
-				else {
-					console.log(chalk.bgGreen('Document with key %s updated in account.'), doc.key);
-					res.sendStatus(200);
-				}
-			});
-		}
-	});
-});
+    app.use(morgan('PROD :remote-addr - ' +
+        chalk.cyan('[:date] ') +
+        chalk.green('":method :url ') +
+        chalk.gray('HTTP/:http-version" ') +
+        chalk.yellow(':status ') +
+        ':res[content-length] ' +
+        chalk.gray('":referrer" ":user-agent" ') +
+        'time=:response-time ms',
+        {
+            stream: logStream,
+            skip: function(req) {
+                "use strict";
+                return !/api\/v1\/|sse\//.test(req.originalUrl);
+            }
+        }
+    ));
 
-app.get('/idea', function(req, res) {
-	ideasDb.get('idea_' + req.query.id, function(err, doc) {
-		if (err) {
-			res.status(200).send('IDEA_NOT_FOUND');
-		}
-		else {
-			var idea = doc;
-			idea.id = doc.ideaId;
-			idea.ideaId = undefined;
-			res.status(200).json(idea);
-		}
-	});
-});
-app.get('/ideaheaders', function(req, res) {
-	ideasDb.scan(filter, function(err, docs) {
-		if (err) {
-			res.sendStatus(500);
-		}
-		else if (docs.length === 0) {
-			res.status(200).send('NO_IDEAS_IN_STORAGE');
-		}
-		else {
-			docs.sort(function(a,b) {
-				return a.key - b.key;
-			});
-			var headers = [];
-			for(var i = 0; i < docs.length; i++) {
-				headers.push({
-					id: docs[i].ideaId,
-					title: docs[i].title,
-					author: docs[i].author,
-					likes: docs[i].likes
-				});
-			}
-			res.status(200).json(headers);
-		}
-	});
-});
-app.get('/uniqueid', function(req, res) {
-	var dbToSearch, 
-		propName = '';
-	if (req.query.for === 'idea') {
-		dbToSearch = ideasDb;
-		propName = 'ideaId';
-	}
-	else if (req.query.for === 'user'){
-		dbToSearch = userDb;
-		propName = 'accountId';
-	}
-	if (dbToSearch) {
-		dbToSearch.scan(filter, function(err, docs) {
-			if (err) {
-				res.sendStatus(500);
-			}
-			else {
-				var listofIds = [], id = 0;
-				var matcher = function matcher(item) {
-					return item === id;
-				};
-				for (var i = 0; i < docs.length; i++) {
-					listofIds.push(docs[i][propName]);
-				}
-				while(_.findIndex(listofIds, matcher) !== -1) {
-					id++;
-				}
-				res.status(200).json(id);
-			}
-		});
-	}
-});
-app.get('/isuniqueuser', function(req, res) {
-	userDb.scan(filter, function(err, docs) {
-		if (err) {
-			res.sendStatus(500);
-		}
-		else {
-			var userFound = false;
-			var matcher = function matcher(item) {
-				return item === req.query.user;
-			};
-			for (var i = 0; i < docs.length; i++) {
-				userFound = (docs[i].username === req.query.user);
-				if (userFound) {
-					break;
-				}
-			}
-			res.status(200).json(!userFound);
-		}
-	});
-});
+    app.use(passport.initialize());
 
-external(function (err, ipExternal) {
+    passport.use(new WindowsStrategy(require('./secrets/ldapAuth').config,
+        function(profile, done) {
+            "use strict";
+            if (profile) {
+                done(null, profile);
+            }
+            else {
+                done(null, false, "Invalid Credentials");
+            }
+        }
+    ));
+
+    passport.serializeUser(function(user, done) {
+        "use strict";
+        console.log('serializeUser: ' + user._json.sAMAccountName);
+        done(null, user);
+    });
+
+    passport.deserializeUser(function(user, done) {
+        "use strict";
+        var users = require('./users/users')(db);
+
+        if (user) {
+            console.log('deserializeUser:' + user._json.sAMAccountName);
+            users.findForLogin(user, done);
+        }
+        else {
+            done("No user provided!");
+        }
+    });
+}
+else if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('DEV  :method :url :status ' +
+        ':response-time ms - :res[content-length]',
+        { stream: logStream }
+    ));
+}
+
+// routes =============================================================
+require('./routes')(app, db); //configure our routes
+
+// show IP settings ===================================================
+external(function(err, ipExternal) {
+    "use strict";
+    // if (cluster.isMaster) {
     if (err) {
         console.log(
-        	chalk.red('Could not determine network status, server running in local-only mode') +
-        	'\nServer listening at' +
-    		'\n\tlocal:    ' + chalk.magenta('http://localhost:8080')
+            chalk.red('Could not determine network status, server running in local-only mode') +
+            '\nServer listening at' +
+            '\n\tlocal:    ' + chalk.magenta('http://localhost:' + port)
         );
     }
     else {
-    	console.log(
-    		'Server listening at' +
-    		'\n\tlocal:    ' + chalk.magenta('http://localhost:8080') + 
-    		'\n\tnetwork:  ' + chalk.magenta('http://') + chalk.magenta(ip.address()) + chalk.magenta(':8080') +
-    		'\n\tExternal: ' + chalk.magenta('http://') + chalk.magenta(ipExternal) + chalk.magenta(':8080') + 
-    		'\n\tExternal access requires port 8080 to be configured properly.'
-    	);
+        console.log(
+            'Server listening at' +
+            '\n\tlocal:    ' + chalk.magenta('http://localhost:' + port) +
+            '\n\tnetwork:  ' + chalk.magenta('http://' + ip.address() + ':' + port) +
+            '\n\tExternal: ' + chalk.magenta('http://' + ipExternal + ':' + port) +
+            '\n\tExternal access requires port ' + port + ' to be configured properly.'
+        );
     }
+    // }
 });
 
-app.listen(process.argv[2] || 8080);
+// start app ==========================================================
+if (process.env.NODE_ENV !== 'production') {
+    // if (cluster.isMaster) {
+    console.log('Server running in ' + chalk.cyan(process.env.NODE_ENV) + ' mode.');
+
+    // console.log('Master cluster setting up ' + numCpus + ' workers to listen on port ' + port + '...');
+    // var workers = [];
+    // for (var i = 0; i < numCpus; i++) {
+    //     workers.push(cluster.fork());
+    // }
+
+    // cluster.on('online', function(worker) {
+    //     console.log('Worker ' + worker.process.pid + ' is online!');
+    // });
+    //
+    // cluster.on('exit', function(worker, code, signal) {
+    //     console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+    //     console.log('Starting a new worker');
+    //     for (var i = workers.length - 1; i >= 0; i--) {
+    //       if (worker === workers[i]) {
+    //         workers.splice(i, 1);
+    //         break;
+    //       }
+    //     }
+    //     workers.push(cluster.fork());
+    // });
+    // } else {
+    app.listen(port);
+    // process.on('message', function(message) {
+    //     if(message.type === 'shutdown') {
+    //         process.exit(0);
+    //     }
+    // });
+    // }
+}
+else {
+    console.log('Server running in ' + chalk.cyan('production') + ' mode.');
+    var https = require('https');
+    var http = require('http');
+    var options = {
+        key: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.key'),
+        cert: fs.readFileSync('./server/secrets/innovate.ra.rockwell.com.crt')
+    };
+
+    https.createServer(options, app).listen(443);
+
+    http.createServer(function(req, res) {
+        "use strict";
+
+        res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
+        res.end();
+    }).listen(80);
+}

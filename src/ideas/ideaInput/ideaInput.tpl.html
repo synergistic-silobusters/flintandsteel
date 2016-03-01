@@ -1,0 +1,81 @@
+<form class="extra-padding-15" name="newIdeaForm" novalidate>
+    <div layout="column">
+        <md-input-container>
+            <label>Title</label>
+            <textarea ng-model="idea.title"
+                   name="title"
+                   columns="1"
+                   ng-minlength="4"
+                   ng-maxlength="150"
+                   md-maxlength="150"
+                   required></textarea>
+            <div ng-messages="newIdeaForm.title.$error" role="alert">
+                <div ng-message="required">Required</div>
+                <div ng-message="minlength">Your title is too short. Must be at least 4 characters</div>
+                <div ng-message="maxlength">Your title is too long</div>
+            </div>
+        </md-input-container>
+        <md-input-container>
+            <label>Description</label>
+            <textarea ng-model="idea.description"
+                      name="desc"
+                      columns="1"
+                      ng-minlength="15"
+                      ng-maxlength="1000"
+                      md-maxlength="1000"
+                      required></textarea>
+            <div ng-messages="newIdeaForm.desc.$error" role="alert">
+                <div ng-message="required">Required</div>
+                <div ng-message="minlength">Your description is too short. Must be at least 15 characters</div>
+                <div ng-message="maxlength">Your description is too long</div>
+            </div>
+        </md-input-container>
+        <a class="markdown-supported" href="https://guides.github.com/features/mastering-markdown/" target="_blank">
+            <svg aria-hidden="true" height="16" role="img" version="1.1" viewBox="0 0 16 16" width="16">
+                <path d="M14.85 3H1.15C0.52 3 0 3.52 0 4.15v7.69C0 12.48 0.52 13 1.15 13h13.69c0.64 0 1.15-0.52 1.15-1.15V4.15C16 3.52 15.48 3 14.85 3zM9 11L7 11V8l-1.5 1.92L4 8v3H2V5h2l1.5 2 1.5-2 2 0V11zM11.99 11.5L9.5 8h1.5V5h2v3h1.5L11.99 11.5z"></path>
+            </svg>
+            Styling with Markdown is supported
+        </a>
+        <md-input-container ng-if="false">
+            <label>Event</label>
+            <md-select placeholder="Select an Event" md-on-open="loadEvents()" ng-model="idea.eventId">
+                <md-option ng-value="event._id" ng-repeat="event in events">{{event.name}}</md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="idea-tags-input-container">
+            <label>Tags</label>
+            <input name="tags"
+                   ng-model="tagInput"
+                   ng-keypress="tagKeyEvent($event)"
+                   maxLength="50"
+                   type="text"
+                   ng-disabled="idea.tags.length === 5"></input>
+        </md-input-container>
+        <small class="tag-message" ng-show="idea.tags.length < 5">Press Enter to Add Tag - Limit 5</small>
+        <small class="tag-message" ng-show="idea.tags.length === 5">Tag Limit of 5 Reached</small>
+        <div layout="row" flex layout-wrap>
+            <span class="custom-chip-wrapper" ng-repeat="tag in idea.tags">
+                <small class="custom-chip tag">
+                    #{{tag}}
+                    <md-icon md-svg-icon="md-close" class="idea-tag-delete-icon" ng-click="removeTag(tag)" aria-hidden="true"></md-icon>
+                </small>
+            </span>
+        </div>
+        <div layout="row" flex layout-wrap>
+            <md-input-container flex>
+                <p><b>Choose what types of skills your team is looking for:</b></p>
+                <div layout="row" layout-wrap>
+                    <div ng-repeat="type in availableBacks" flex="50" ng-click="toggle(type, $index)">
+                        <md-checkbox ng-checked="type.checked">
+                            {{type.name}}
+                        </md-checkbox>
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+        <div layout="row" layout-align="end center" class="extra-padding-lg">
+            <md-button class="md-raised md-primary" type="button" ng-click="submitFn({idea: idea})" ng-disabled="newIdeaForm.$invalid" ng-bind="submitBtnText" aria-label="Submit"></md-button>
+            <md-button ng-if="cancelFn !== null && cancelBtnText !== null" class="md-raised md-primary" type="button" ng-click="cancelFn()" ng-bind="cancelBtnText" aria-label="Cancel"></md-button>
+        </div>
+    </div>
+</form>

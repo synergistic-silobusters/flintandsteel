@@ -2,53 +2,52 @@
 
 angular.module('flintAndSteel')
 .controller('SidenavCtrl',
-	[
-		'$scope',
-		'$state',
-		'$mdSidenav',
-		'ideaSvc',
-		'loginSvc',
-		function($scope, $state, $mdSidenav, ideaSvc, loginSvc) {
-			getIdeas = function() {
-				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-					$scope.topIdeas = data;
-				},function getIdeaHeadersError(data, status, headers, config) {
-					console.log(status);
-				});
-			};
+    [
+        '$scope', '$state', '$mdSidenav', 'ideaSvc', 'userSvc', 'sseSvc',
+        function($scope, $state, $mdSidenav, ideaSvc, userSvc, sseSvc) {
+            "use strict";
 
-			getIdeas();
-			setInterval(getIdeas, 750);
+            function setIdeaHeaders(data) {
+                $scope.$apply(function() {
+                    $scope.topIdeas = data;
+                });
+            }
 
-			$scope.navTo = function navTo(state) {
-				if (state === 'addIdea') {
-					if (loginSvc.isUserLoggedIn()) {
-						$state.go(state);
-					}
-					else {
-						$state.go('login');
-					}
-				}
-				else if (state === 'idea') {
-					$state.go('idea', {ideaId: 'mock_idea'});
-				}
-				else {
-					$state.go(state);
-				}
-				if (!$mdSidenav('left').isLockedOpen()) {
-					$mdSidenav('left').close();
-				}
-			};
+            function refreshHeaders() {
+                ideaSvc.getIdeaHeaders().then(function getIdeaHeadersSuccess(response) {
+                    $scope.topIdeas = response.data;
+                }, function getIdeaHeadersError(response) {
+                    console.log(response);
+                });
+            }
 
-			$scope.isUserLoggedIn = loginSvc.isUserLoggedIn;
+            refreshHeaders();
 
-			$scope.$root.$on('newIdeaAdded', function newIdeaAddedEvent(event) {
-				ideaSvc.getIdeaHeaders(function getIdeaHeadersSuccess(data) {
-					$scope.topIdeas = data;
-				},function getIdeaHeadersError(data, status, headers, config) {
-					console.log(status);
-				});
-			});
-		}
-	]
+            sseSvc.create("newHeaders", "/sse/ideas", setIdeaHeaders);
+
+            $scope.navTo = function navTo(state) {
+                if (state === 'addIdea') {
+                    if (userSvc.isUserLoggedIn()) {
+                        $state.go(state);
+                    }
+                    else {
+                        $state.go('home');
+                    }
+                }
+                else if (state === 'idea') {
+                    $state.go('idea', {ideaId: 'mock_idea'});
+                }
+                else {
+                    $state.go(state);
+                }
+                if (!$mdSidenav('left').isLockedOpen()) {
+                    $mdSidenav('left').close();
+                }
+            };
+
+            $scope.isUserLoggedIn = userSvc.isUserLoggedIn;
+
+            $scope.$root.$on('newIdeaAdded', refreshHeaders);
+        }
+    ]
 );
