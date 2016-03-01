@@ -464,7 +464,7 @@ angular.module('flintAndSteel')
                         templateUrl: template,
                         parent: angular.element(document.body),
                         targetEvent: ev,
-                        clickOutsideToClose: true,
+                        clickOutsideToClose: false,
                         locals: {
                             backingObj: backObj,
                             author: $scope.idea.authorId
