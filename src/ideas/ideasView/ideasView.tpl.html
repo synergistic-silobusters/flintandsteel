@@ -171,7 +171,7 @@
                 </span>
                 <span> Complex </span>
             </small>
-            <md-tooltip direction:"bottom">Complexity: {{idea.avgComplexity.value}} </md-tooltip>
+            <md-tooltip direction:"bottom">Avg Complexity: {{idea.avgComplexity.value}} </md-tooltip>
         </span>
         <span flex ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.complexity))">
             <small class="extra-padding-sides-15">
@@ -184,7 +184,8 @@
                 </span>
                 <span> Complex </span>
             </small>
-            <md-tooltip direction: "bottom">Login to Rate</md-tooltip>
+            <md-tooltip ng-if="!isUserLoggedIn()" direction: "bottom">Login to Rate</md-tooltip>
+            <md-tooltip ng-if="isUserLoggedIn()" direction: "bottom">Avg Complexity: {{idea.avgComplexity.value}}</md-tooltip>
         </span>
     </span>
     </md-card-footer>
