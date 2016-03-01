@@ -123,8 +123,8 @@
                 <div class="user-menu" ng-show="isUserLoggedIn()">
                     <md-menu md-offset="0 60">
                         <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+                            <span hide show-gt-sm>{{currentUser}}</span>
                             <identicon md-menu-origin="" username='getUsername()' size='24' class="identicon identicon-home"></identicon>
-                            {{currentUser}}
                             <i class="material-icons icon-button-adjust">&#xE5CF;</i>
                         </md-button>
                         <md-menu-content width="4">
