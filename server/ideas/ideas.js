@@ -16,8 +16,8 @@ module.exports = function(db) {
     var COLLECTION = "ideas";
     var IdeasSingleton;
 
-    module.create = function(title, description, authorId, eventId, tags, rolesreq, values, complexity) {
-        var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq, values, complexity);
+    module.create = function(title, description, authorId, eventId, tags, rolesreq, complexity) {
+        var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq, complexity);
         return new Promise(function(resolve, reject) {
             db.insertOne(COLLECTION, idea, function(err, doc) {
                 if (err) {

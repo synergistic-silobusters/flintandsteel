@@ -124,7 +124,6 @@ insertResult = db.ideas.insert(
                 types: [{ name: 'Owner', _lowername: 'owner' }]
             }],
             team: [{ _id: new ObjectId(), memberId: userIds[0] }],
-            values: [],
             complexity: []
         },
         {

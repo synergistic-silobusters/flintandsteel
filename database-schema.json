@@ -60,7 +60,7 @@
             },
             "set of objects with user._id"
         ],
-        "value": [
+        "complexity": [
             {
                 "stars": {"filled": true, "filled": true, "filled": true, "filled": true, "filled": false},
                 "value": 4,
