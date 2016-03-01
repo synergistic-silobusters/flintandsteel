@@ -701,31 +701,6 @@ angular.module('flintAndSteel')
                 }
                 return userRating;
             };
-        //
-        //     $scope.set_size = function set_size(index) {
-        //         //var font = 10 + (index * 4);
-        //         var font = 20;
-        //         //var topPadding = 14 - (index * 2);
-        //         var topPadding = 0;
-        //         var rightPadding = -20;
-        //         var leftPadding = 20;
-        //
-        //         if (index == 0 ) {
-        //             return {
-        //                 "font-size": font + "px",
-        //                 "padding-top": topPadding + "px",
-        //                 "padding-right": rightPadding + "px",
-        //                 "padding-left": leftPadding + "px"
-        //             }
-        //         }
-        //         else {
-        //             return {
-        //                 "font-size": font + "px",
-        //                 "padding-top": topPadding + "px",
-        //                 "padding-right": rightPadding + "px"
-        //             }
-        //         }
-        //     };
         }
     ]
 );

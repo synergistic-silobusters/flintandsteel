@@ -40,7 +40,6 @@ angular.module('flintAndSteel')
             $scope.Events = [$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5];
 
             function getInternetExplorerVersion(navObj) {
-                console.log(navObj);
                 var browserVersion = -1;
                 var userAgent = navObj.userAgent;
                 var versionMatcher;
@@ -55,7 +54,6 @@ angular.module('flintAndSteel')
                 }
                 else if (navObj.appName === 'Netscape') {
                     versionMatcher = new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})");
-                    console.log(searchResults);
                     searchResults = versionMatcher.exec(userAgent);
                     if (searchResults !== null) {
                         browserVersion = parseFloat(searchResults[1]);
@@ -102,7 +100,7 @@ angular.module('flintAndSteel')
                 angular.element("#wordcloud").jQCloud(WordList, {
                     classPattern: null,
                     delay: 50,
-                    colors: ["#900100", "#7f7f7f","#7f7f7f", "#7f7f7f", "#7f7f7f", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0", "#d0d0d0"],
+                    colors: ["#900100", "#7f7f7f","#7f7f7f", "#7f7f7f", "#7f7f7f", "#b7b7b7", "#b7b7b7", "#b7b7b7", "#b7b7b7", "#b7b7b7"],
                     fontSize: { from: 0.05, to: 0.01 },
                     shape: 'cloud',
                     width: width,

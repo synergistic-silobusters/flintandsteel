@@ -1,19 +1,17 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.directive('helpCard', 
+.directive('learnItem',
     [
         function() {
             "use strict";
 
-            
-            
             return {
                 restrict: 'E',
                 scope: {
-                    faq: '='
+                    item: '='
                 },
-                templateUrl: 'homeView/helpCard/helpCard.tpl.html'
+                templateUrl: 'learn/learnItem/learnItem.tpl.html'
             };
         }
     ]

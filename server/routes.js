@@ -18,7 +18,42 @@ module.exports = function(app, db) {
         mongo = require('mongodb'),
         Promise = require('bluebird'),
         ObjectId = mongo.ObjectID,
-        passport = require('passport');
+        passport = require('passport'),
+        Tokens = require('./tokens');
+
+    var tokens = new Tokens();
+
+    function processAuthorization(req, res, next) {
+        if (req.headers.authorization) {
+            var authorizationType = req.headers.authorization.split(' ')[0];
+            var authorizationToken = req.headers.authorization.split(' ')[1];
+            var userId = authorizationToken.split(':')[0];
+            var authorizationId = authorizationToken.split(':')[1];
+            tokens.authorize(db.getDb(), userId, authorizationId).then(function(result) {
+                if (result && authorizationType === 'Bearer') {
+                    next();
+                }
+                else {
+                    var message = 'authorization token malformed';
+                    if (!result) {
+                        message = 'authorization rejected';
+                    }
+                    res.set('WWW-Authenticate', 'Bearer');
+                    res.status(401).json({
+                        status: 401,
+                        message: message
+                    });
+                }
+            });
+        }
+        else {
+            res.set('WWW-Authenticate', 'Bearer');
+            res.status(401).json({
+                status: 401,
+                message: 'authorization token not found.'
+            });
+        }
+    }
 
     var IdeasInstance = ideas.getInstance();
 
@@ -54,7 +89,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/api/v1/ideas', function(req, res) {
+    app.post('/api/v1/ideas', processAuthorization, function(req, res) {
         ideas.create(
             req.body.title,
             req.body.description,
@@ -154,7 +189,7 @@ module.exports = function(app, db) {
         }
     });
 
-    app.delete('/api/v1/ideas/:id', function(req, res) {
+    app.delete('/api/v1/ideas/:id', processAuthorization, function(req, res) {
         ideas.delete(req.params.id).then(function() {
             res.sendStatus(204);
             return ideas.fetch();
@@ -167,7 +202,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/api/v1/ideas/:id', function(req, res) {
+    app.patch('/api/v1/ideas/:id', processAuthorization, function(req, res) {
         var promises = [];
         var avgIdea;
 
@@ -242,7 +277,17 @@ module.exports = function(app, db) {
                                 return res.status(200).json(users.errResObj);
                             }
                             else {
-                                return res.status(200).json(responseObj);
+                                var token = tokens.generate({ _id: responseObj._id, email: responseObj.email });
+                                users.update(responseObj._id, 'token', token, function(tokenError) {
+                                    if (tokenError) {
+                                        console.log(chalk.bgRed(tokenError));
+                                        return res.status(500).json(tokenError);
+                                    }
+                                    else {
+                                        responseObj.token = token;
+                                        return res.status(200).json(responseObj);
+                                    }
+                                });
                             }
                         });
                     }
@@ -251,7 +296,8 @@ module.exports = function(app, db) {
         }
     });
 
-    app.delete('/api/v1/users/:id', function(req, res) {
+    /*
+    app.delete('/api/v1/users/:id', processAuthorization, function(req, res) {
         var promises = [], patchDelete = [
             { "operation": "modify", "path": "firstName", "value": "\"Deleted\"" },
             { "operation": "modify", "path": "lastName", "value": "\"User\"" },
@@ -259,7 +305,8 @@ module.exports = function(app, db) {
             { "operation": "modify", "path": "username", "value": "\"deleted_user\"" },
             { "operation": "modify", "path": "email", "value": "\"deleted@deleted.com\"" },
             { "operation": "delete", "path": "nickname" },
-            { "operation": "delete", "path": "title" }
+            { "operation": "delete", "path": "title" },
+            { "operation": "delete", "path": "token" }
         ];
 
         _.forEach(patchDelete, function(patchOp) {
@@ -274,7 +321,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/api/v1/users/:id', function(req, res) {
+    app.patch('/api/v1/users/:id', processAuthorization, function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -288,6 +335,8 @@ module.exports = function(app, db) {
             res.sendStatus(500);
         });
     });
+    */
+
 
     app.get('/api/v1/events', function(req, res) {
         events.getAll().then(function(results) {
@@ -312,7 +361,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/api/v1/events', function(req, res) {
+    app.post('/api/v1/events', processAuthorization, function(req, res) {
         events.create(req.body.name, req.body.location, req.body.startDate, req.body.endDate).then(function(result) {
             res.status(201).json(result);
         }).catch(function(error) {
@@ -321,7 +370,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.delete('/api/v1/events/:id', function(req, res) {
+    app.delete('/api/v1/events/:id', processAuthorization, function(req, res) {
         db.deleteOne('events', req.params.id).then(function() {
             res.sendStatus(204);
         }).catch(function(error) {
@@ -330,7 +379,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/api/v1/events/:id', function(req, res) {
+    app.patch('/api/v1/events/:id', processAuthorization, function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -345,7 +394,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.post('/api/v1/comments', function(req, res) {
+    app.post('/api/v1/comments', processAuthorization, function(req, res) {
         Promise.all([
             ideas.get(req.body.parentId),
             comments.create(req.body.parentId, req.body.text, req.body.authorId)
@@ -371,7 +420,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.patch('/api/v1/comments/:id', function(req, res) {
+    app.patch('/api/v1/comments/:id', processAuthorization, function(req, res) {
         var promises = [];
 
         _.forEach(req.body, function(patchOp) {
@@ -386,7 +435,7 @@ module.exports = function(app, db) {
         });
     });
 
-    app.delete('/api/v1/comments/:id', function(req, res) {
+    app.delete('/api/v1/comments/:id', processAuthorization, function(req, res) {
         comments.get(req.params.id).then(function(commentToDelete) {
             return ideas.get(commentToDelete.parentId);
         }).then(function(idea) {
@@ -417,14 +466,22 @@ module.exports = function(app, db) {
         var sse = startSees(res);
 
         function updateHeaders(headers) {
-            ideaPostProcessing.headers(headers).then(function(headersData) {
-                var headersToSend = headersData.map(function(singleHeader) {
-                    return singleHeader[0];
-                });
+            // If the last idea is deleted, we send an empty array of headers.
+            if (!headers) {
+                var headersToSend = [];
                 sse("newHeaders", headersToSend);
-            }).catch(function(err) {
-                console.error(chalk.bgRed(err));
-            });
+            }
+            // Otherwise, we process the headers and send the results.
+            else {
+                ideaPostProcessing.headers(headers).then(function(headersData) {
+                    var headersToSend = headersData.map(function(singleHeader) {
+                        return singleHeader[0];
+                    });
+                    sse("newHeaders", headersToSend);
+                }).catch(function(err) {
+                    console.error(chalk.bgRed(err));
+                });
+            }
         }
 
         IdeasInstance.on("newHeaders", updateHeaders);
