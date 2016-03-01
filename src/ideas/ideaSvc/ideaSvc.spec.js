@@ -358,9 +358,9 @@ describe('ideaSvc', function() {
                 $httpBackend.flush();
             });
 
-            it('should return false if an id was not supplied', function() {
-                ideaSvc.getUserIdeasById().then(function(result) {
-                    expect(result).toBe(false);
+            it('should reject if an id was not supplied', function() {
+                ideaSvc.getUserIdeasById().catch(function(error) {
+                    expect(error).toEqual('No userId supplied');
                 });
 
             });
@@ -373,9 +373,9 @@ describe('ideaSvc', function() {
                 $httpBackend.flush();
             });
 
-            it('should return false if an id was not supplied', function() {
-                ideaSvc.getUserBacksById().then(function(result) {
-                    expect(result).toBe(false);
+            it('should reject if an id was not supplied', function() {
+                ideaSvc.getUserBacksById().catch(function(error) {
+                    expect(error).toEqual('No userId supplied');
                 });
 
             });

@@ -163,7 +163,7 @@ angular.module('flintAndSteel')
                     return $http.get('/api/v1/ideas/search?forterm=' + userId + '&inpath=authorId');
                 }
                 else {
-                    return $q.when(false);
+                    return $q.reject('No userId supplied');
                 }
             };
 
@@ -172,7 +172,7 @@ angular.module('flintAndSteel')
                     return $http.get('/api/v1/ideas/search?forterm=' + userId + '&inpath=backs.authorId');
                 }
                 else {
-                    return $q.when(false);
+                    return $q.reject('No userId supplied');
                 }
             };
 

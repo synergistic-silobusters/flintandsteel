@@ -39,7 +39,9 @@ angular.module('flintAndSteel')
                                 });
                         });
                     }
-                );
+                ).catch(function(error) {
+                    console.log(error);
+                });
 
                 //Get user Backs and Teams
                 ideaSvc.getUserBacksById(userId).then(
@@ -59,7 +61,9 @@ angular.module('flintAndSteel')
                                 });
                         });
                     }
-                );
+                ).catch(function(error) {
+                    console.log(error);
+                });
             }
         }
     ]
