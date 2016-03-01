@@ -1,5 +1,6 @@
 /* global angular */
 /* global EventSource */
+/* global _ */
 
 angular.module('flintAndSteel')
 .service('sseSvc',
