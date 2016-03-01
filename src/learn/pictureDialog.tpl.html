@@ -1,0 +1,16 @@
+<md-dialog ng-cloak aria-label="Picture Dialog">
+    <form>
+        <md-toolbar>
+            <div  class="md-toolbar-tools">
+                <h4 class="learn-dialog-toolbar-padding">{{item.title}}</h4>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="answer()" aria-label="Close" type="button">
+                    <i class="material-icons icon-button-adjust">&#xE5CD;</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="learn-dialog-content" layout="column">
+            <img src={{item.imgSource}} class="learn-dialog-img">
+        </md-dialog-content>
+    </form>
+</md-dialog>

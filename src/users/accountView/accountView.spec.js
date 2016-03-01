@@ -81,28 +81,16 @@ describe('AccountViewCtrl', function() {
             expect(ctrl).toBeDefined();
         });
 
-        it('should populate user data if a user is logged in', function() {
-            expect(scope.user).toBeDefined();
-        });
-
         it('should populate user ideas', function() {
             expect(scope.userIdeas.length).toBe(1);
         });
 
-        describe('$scope.logout', function() {
+        it('should populate user backs', function() {
+            expect(scope.userBacks.length).toBe(1);
+        });
 
-            beforeEach(function() {
-                spyOn(userSvcMock, 'logout').and.callFake(function() { });
-                spyOn(toastSvc, 'show');
-            });
-
-            it('should log out the user', function() {
-                scope.logout();
-
-                expect(userSvcMock.logout).toHaveBeenCalled();
-                expect(toastSvc.show).toHaveBeenCalled();
-                expect($state.go).toHaveBeenCalledWith('home');
-            });
+        it('should populate user teams', function() {
+            expect(scope.userTeams.length).toBe(1);
         });
     });
 });

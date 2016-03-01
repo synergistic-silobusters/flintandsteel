@@ -6,6 +6,7 @@ angular.module('flintAndSteel')
         function() {
             "use strict";
 
+
             return {
                 restrict: 'E',
                 scope: {

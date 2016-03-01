@@ -113,7 +113,6 @@ module.exports = function(app, db) {
             next();
         }
         else {
-            var idea;
             ideas.get(req.params.id)
             .then(function(doc) {
                 return ideaPostProcessing.idea(doc);
@@ -204,7 +203,6 @@ module.exports = function(app, db) {
 
     app.patch('/api/v1/ideas/:id', processAuthorization, function(req, res) {
         var promises = [];
-        var avgIdea;
 
         _.forEach(req.body, function(patchOp) {
             promises.push(db.patchObject('ideas', req.params.id, patchOp));
