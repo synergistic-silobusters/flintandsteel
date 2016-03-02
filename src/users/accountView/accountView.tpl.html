@@ -1,12 +1,220 @@
-<md-content layout="column" layout-align="start center">
-    <h1>Account</h1>
-    <div>
-        <!-- Need to figure out page layout -->
-        <div layout="row" layout-align="center">
-            <identicon username='user.username' size='130'></identicon>
+<md-content class="md-padding">
+    <div class="md-padding" layout="row" layout-align="start center" flex>
+        <identicon username='user.username' size="150" hide show-gt-md></identicon>
+        <div layout="column" class="extra-space-left">
+            <h1 class="no-margins">{{user.fullName}}</h1>
+            <h3 class="no-margins">{{user.username}}</h3>
+            <h3 class="no-margins">{{user.email}}</h3>
         </div>
-        <h2><center>{{user.name}} (<i>{{user.username}}</i>)</center></h2>
-        <h4><center>{{user.email}}</center><h4>
+        <div layout="row" layout-align="space-between" class="padding-sides-20" hide show-gt-sm>
+            <div layout="column" layout-align="center center">
+                <h1 class="account-side-panel-stat">{{userIdeas.length}}</h1>
+                <h3 ng-pluralize class="account-side-panel-stat" count="userIdeas.length"
+                     when="{'0': 'Ideas',
+                            'one': 'Idea',
+                            'other': 'Ideas'}">
+                </h3 ng-pluralize>
+            </div>
+            <div layout="column" layout-align="center center">
+                <h1 class="account-side-panel-stat">{{userBacks.length}}</h1>
+                <h3 ng-pluralize class="account-side-panel-stat" count="userBacks.length"
+                     when="{'0': 'Backs',
+                            'one': 'Back',
+                            'other': 'Backs'}">
+                </h3 ng-pluralize>
+            </div>
+            <div layout="column" layout-align="center center">
+                <h1 class="account-side-panel-stat">{{userTeams.length}}</h1>
+                <h3 ng-pluralize class="account-side-panel-stat" count="userTeams.length"
+                     when="{'0': 'Teams',
+                            'one': 'Team',
+                            'other': 'Teams'}">
+                </h3 ng-pluralize>
+            </div>
+        </div>
     </div>
-    <md-button class="md-raised md-warn" ng-click="logout()" flex>Logout</md-button>
+    <div class="md-padding">
+        <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">
+            <md-tab label="My Ideas">
+                <md-content class="md-padding">
+                    <md-list>
+                        <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!userIdeas.length">
+                            <h3><i>You have not contributed any ideas!</i></h3>
+                        </div>
+                        <md-item ng-repeat="idea in userIdeas | orderBy:'-likes'">
+                            <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer ellipsis-overflow">
+                                <h4 class="no-bottom-margin ellipsis-overflow">{{idea.title}}</h4>
+                                <small class="ellipsis-overflow">{{idea.description}}</small>
+                                <div layout="row" layout-align="start center">
+                                    <md-button class="md-icon-button" aria-label="Like">
+                                        {{idea.likes.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE87E;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.likes.length"
+                                                 when="{'0': 'Likes',
+                                                        'one': 'Like',
+                                                        'other': 'Likes'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <md-button class="md-icon-button" aria-label="Back">
+                                        {{idea.backs.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE893;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.backs.length"
+                                                when="{'0': 'Backs',
+                                                       'one': 'Back',
+                                                       'other': 'Backs'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <md-button class="md-icon-button" aria-label="Back">
+                                        {{idea.team.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.team.length"
+                                                 when="{'0': 'Team Members',
+                                                        'one': 'Team Member',
+                                                        'other': 'Team Members'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <small>
+                                        <span ng-show="idea.timeModified === idea.timeCreated">Created&nbsp</span>
+                                        <span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>
+                                        {{idea.timeModified}}
+                                    </small>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                        </md-item>
+                    </md-list>
+                </md-content>
+            </md-tab>
+            <md-tab label="My Backs">
+                <md-content class="md-padding">
+                    <md-list>
+                        <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!userBacks.length">
+                            <h3><i>You have not backed any ideas!</i></h3>
+                        </div>
+                        <md-item ng-repeat="idea in userBacks | orderBy:'-likes'">
+                            <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer ellipsis-overflow about-padding-bottom">
+                                <h4 class="no-bottom-margin ellipsis-overflow">{{idea.title}}</h4>
+                                <small class="ellipsis-overflow">{{idea.description}}</small>
+                                <div layout="row" layout-align="start center">
+                                    <md-button class="md-icon-button" aria-label="Like">
+                                        {{idea.likes.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE87E;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.likes.length"
+                                                 when="{'0': 'Likes',
+                                                        'one': 'Like',
+                                                        'other': 'Likes'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <md-button class="md-icon-button" aria-label="Back">
+                                        {{idea.backs.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE893;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.backs.length"
+                                                when="{'0': 'Backs',
+                                                       'one': 'Back',
+                                                       'other': 'Backs'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <md-button class="md-icon-button" aria-label="Back">
+                                        {{idea.team.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.team.length"
+                                                 when="{'0': 'Team Members',
+                                                        'one': 'Team Member',
+                                                        'other': 'Team Members'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <small>
+                                        <span ng-show="idea.timeModified === idea.timeCreated">Created&nbsp</span>
+                                        <span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>
+                                        {{idea.timeModified}}
+                                    </small>
+                                </div>
+                                <div layout="row" layout-align="start center">
+                                    <small>Contributions: </small>
+                                    <div ng-repeat="back in idea.backs" class="extra-padding-left-md">
+                                        <span class="custom-chip-wrapper" ng-repeat="type in back.types" ng-if="back.authorId === user._id">
+                                            <small class="custom-chip {{type._lowername}}">{{type.name}}</small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <md-divider></md-divider>
+                        </md-item>
+                    </md-list>
+                </md-content>
+            </md-tab>
+            <md-tab label="My Teams">
+                <md-content class="md-padding">
+                    <md-list>
+                        <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!userTeams.length">
+                            <h3><i>You are not a part of any teams!</i></h3>
+                        </div>
+                        <md-item ng-repeat="idea in userTeams | orderBy:'-likes'">
+                            <div ui-sref="idea({ ideaId: idea._id })" class="idea-pointer ellipsis-overflow about-padding-bottom">
+                                <h4 class="no-bottom-margin ellipsis-overflow">{{idea.title}}</h4>
+                                <small class="ellipsis-overflow">{{idea.description}}</small>
+                                <div layout="row" layout-align="start center">
+                                    <md-button class="md-icon-button" aria-label="Like">
+                                        {{idea.likes.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE87E;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.likes.length"
+                                                 when="{'0': 'Likes',
+                                                        'one': 'Like',
+                                                        'other': 'Likes'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <md-button class="md-icon-button" aria-label="Back">
+                                        {{idea.backs.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE893;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.backs.length"
+                                                when="{'0': 'Backs',
+                                                       'one': 'Back',
+                                                       'other': 'Backs'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <md-button class="md-icon-button" aria-label="Back">
+                                        {{idea.team.length}}
+                                        <i class="material-icons icon-button-adjust">&#xE7FC;</i>
+                                        <md-tooltip md-direction="bottom">
+                                            <ng-pluralize count="idea.team.length"
+                                                 when="{'0': 'Team Members',
+                                                        'one': 'Team Member',
+                                                        'other': 'Team Members'}">
+                                            </ng-pluralize>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <small>
+                                        <span ng-show="idea.timeModified === idea.timeCreated">Created&nbsp</span>
+                                        <span ng-show="idea.timeModified !== idea.timeCreated">Updated&nbsp</span>
+                                        {{idea.timeModified}}
+                                    </small>
+                                </div>
+                                <span>
+                                    <small>Team Members: </small>
+                                    <small ng-repeat="member in idea.team" class="extra-padding-left-md">{{member.member.name}}</small>
+                                </span>
+                            </div>
+                            <md-divider></md-divider>
+                        </md-item>
+                    </md-list>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </div>
 </md-content>

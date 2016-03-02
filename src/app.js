@@ -75,7 +75,6 @@ angular.module('flintAndSteel', [
             '900': 'bb1e32'
         });
         var rockstarterGrayMap = $mdThemingProvider.extendPalette('grey', {
-            '900': '6d6e71'
         });
 
         $mdThemingProvider.definePalette('rokstarter-red', rockstarterRedMap);
@@ -100,6 +99,20 @@ angular.module('flintAndSteel', [
         $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
         $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
         $httpProvider.defaults.headers.get.Pragma = 'no-cache';
+    }
+])
+.run(['$rootScope', '$location', '$window',
+    function($rootScope, $location, $window) {
+        "use strict";
+
+        $rootScope.$on('$stateChangeSuccess',
+            function() {
+                if (!$window.ga) {
+                    return;
+                }
+                $window.ga('send', 'pageview', { page: $location.path() });
+            }
+        );
     }
 ]);
 
