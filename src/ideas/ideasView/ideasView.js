@@ -99,10 +99,10 @@ angular.module('flintAndSteel')
                 }
             }
 
-            sseSvc.create("updateIdea_" + $stateParams.ideaId, '/sse/ideas/' + $stateParams.ideaId, eventUpdateIdea);
+            sseSvc.subscribe("updateIdea_" + $stateParams.ideaId, '/sse/ideas/' + $stateParams.ideaId, eventUpdateIdea);
 
             $scope.$on('$stateChangeStart', function() {
-                sseSvc.destroy();
+                sseSvc.unsubscribe('/sse/ideas/' + $scope.idea._id, eventUpdateIdea);
             });
 
             $scope.momentizeTime = function momentizeTime(time) {
