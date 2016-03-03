@@ -61,7 +61,7 @@ angular.module('flintAndSteel')
                         content = response.data.name + ' has successfully signed in!';
                     }
                     else if (response.data.status === 'AUTH_ERROR') {
-                        content = 'Your credentials don\'t match the stored ones :(';
+                        content = 'Invalid credentials :(';
                     }
                     else if (response.data.status === 'USER_NOT_FOUND') {
                         content = 'The user was not found in the server!';
