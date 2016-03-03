@@ -57,6 +57,12 @@ angular.module('flintAndSteel')
                         learnItem: item
                     }
                 });
+                $window.ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'learn',
+                    eventAction: 'show',
+                    eventLabel: item.title
+                });
             };
 
 
