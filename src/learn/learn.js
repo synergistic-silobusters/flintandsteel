@@ -4,8 +4,8 @@ angular.module('flintAndSteel')
 .controller('LearnCtrl',
     [
 
-        '$document', '$scope','$mdDialog',
-        function($document, $scope, $mdDialog) {
+        '$document', '$scope','$mdDialog', '$window',
+        function($document, $scope, $mdDialog, $window) {
             "use strict";
 
             $scope.learnItem0 = {
