@@ -118,6 +118,11 @@ angular.module('flintAndSteel')
                 if (type === 'comments') {
                     ideaSvc.postComment($scope.idea._id, ctrl.newComment, userSvc.getProperty('_id')).then(
                         function success() {
+                            $window.ga('send', {
+                                hitType: 'event',
+                                eventCategory: type,
+                                eventAction: 'add'
+                            });
                             ctrl.refreshIdea();
                         },
                         function error(response) {
@@ -165,6 +170,11 @@ angular.module('flintAndSteel')
 
                 ideaSvc.addInteraction($scope.idea._id, type, obj).then(
                     function success() {
+                        $window.ga('send', {
+                            hitType: 'event',
+                            eventCategory: type,
+                            eventAction: 'add'
+                        });
                         ctrl.refreshIdea();
                     },
                     function error(response) {
@@ -180,6 +190,11 @@ angular.module('flintAndSteel')
                     });
                     ideaSvc.removeInteraction($scope.idea._id, type, likeObj).then(
                         function success() {
+                            $window.ga('send', {
+                                hitType: 'event',
+                                eventCategory: type,
+                                eventAction: 'delete'
+                            });
                             ctrl.refreshIdea();
                         },
                         function error(response) {
@@ -192,6 +207,11 @@ angular.module('flintAndSteel')
                 if (isAuthorofInteraction || (ctrl.isUserAuthor() && type === 'updates')) {
                     if (type === 'comments') {
                         ideaSvc.deleteComment(obj.commentId).then(function() {
+                            $window.ga('send', {
+                                hitType: 'event',
+                                eventCategory: type,
+                                eventAction: 'delete'
+                            });
                             ctrl.refreshIdea();
                         },
                         function() {
@@ -207,6 +227,11 @@ angular.module('flintAndSteel')
                         };
                         ideaSvc.removeInteraction($scope.idea._id, type, backObjs).then(
                             function success() {
+                                $window.ga('send', {
+                                    hitType: 'event',
+                                    eventCategory: type,
+                                    eventAction: 'delete'
+                                });
                                 ctrl.refreshIdea();
                             },
                             function error(response) {
@@ -241,6 +266,11 @@ angular.module('flintAndSteel')
                         delete roles.checked;
                     });
                     ideaSvc.editIdea($scope.idea._id, idea.title, idea.description, idea.tags, idea.rolesreq, idea.eventId).then(function() {
+                        $window.ga('send', {
+                            hitType: 'event',
+                            eventCategory: 'ideas',
+                            eventAction: 'edit'
+                        });
                         ctrl.refreshIdea();
                     },
                     function() {
@@ -252,6 +282,11 @@ angular.module('flintAndSteel')
             ctrl.deleteIdea = function() {
                 if (ctrl.isUserAuthor()) {
                     ideaSvc.deleteIdea($scope.idea._id).then(function() {
+                        $window.ga('send', {
+                            hitType: 'event',
+                            eventCategory: 'ideas',
+                            eventAction: 'delete'
+                        });
                         return;
                     },
                     function() {
@@ -308,6 +343,11 @@ angular.module('flintAndSteel')
 
                 ideaSvc.updateIdea($scope.idea._id, 'team', $scope.idea.team).then(
                     function success() {
+                        $window.ga('send', {
+                            hitType: 'event',
+                            eventCategory: 'teams',
+                            eventAction: 'update'
+                        });
                         //console.log(data);
                     },
                     function error(response) {
@@ -512,6 +552,11 @@ angular.module('flintAndSteel')
                     }
                     ideaSvc.editBack($scope.idea._id, back._id, newBack).then(
                         function success() {
+                            $window.ga('send', {
+                                hitType: 'event',
+                                eventCategory: 'backs',
+                                eventAction: 'edit'
+                            });
                             ctrl.refreshIdea();
                         },
                         function error(response) {

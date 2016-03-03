@@ -27,7 +27,7 @@ angular.module('flintAndSteel')
                     if (angular.isDefined(response.data.status) && response.data.status === 'Created') {
                         $window.ga('send', {
                             hitType: 'event',
-                            eventCategory: 'Idea',
+                            eventCategory: 'ideas',
                             eventAction: 'add'
                         });
 
