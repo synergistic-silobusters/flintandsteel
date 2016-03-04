@@ -46,7 +46,6 @@ angular.module('flintAndSteel')
                 var searchResults;
                 if (navObj.appName === 'Microsoft Internet Explorer') {
                     versionMatcher = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                    console.log('We shouldn\'t be here');
                     searchResults = versionMatcher.exec(userAgent);
                     if (searchResults !== null) {
                         browserVersion = parseFloat(searchResults[1]);

@@ -1272,7 +1272,7 @@ describe('IdeasViewCtrl', function() {
                 scope.$digest();
             });
 
-            it('should console log if isses with editIdeaRating', function() {
+            it('should console log if issues with editIdeaRating', function() {
                 spyOn(ideaSvcMock, 'editIdeaRating').and.callFake(function editIdeaRating() {
                     return $q.reject();
                 });

@@ -664,25 +664,23 @@ angular.module('flintAndSteel')
                         });
                     }
 
-                    //can I do just length - 1 instead
-                    rating.forEach(function(value) {
-                        if (userSvc.getProperty('_id') === value.authorId) {
-                            value.value = index + 1;
-                            ctrl.updateStars(value);
-                        }
-                    });
+                    //finds the user's rating and adjusts value
+                    var userRating = _.find(rating, ['authorId', userSvc.getProperty('_id')]);
+                    if (typeof userRating !== 'undefined') {
+                        userRating.value = index + 1;
+                        ctrl.updateStars(userRating);
+                    }
                 }
             };
 
-            //Pass either $scope.idea.values or $scope.idea.complexity
+            //Pass $scope.idea.complexity as rating to see if user has rated idea
             $scope.hasUserRated = function hasUserRated(rating) {
                 var userRated = false;
                 if (userSvc.isUserLoggedIn() && typeof rating !== 'undefined') {
-                    rating.forEach(function(value) {
-                        if (userSvc.getProperty('_id') === value.authorId) {
-                            userRated = true;
-                        }
-                    });
+                    var find = _.find(rating, ['authorId', userSvc.getProperty('_id')]);
+                    if (typeof find !== 'undefined') {
+                        userRated = true;
+                    }
                 }
                 return userRated;
             };
