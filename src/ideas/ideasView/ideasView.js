@@ -671,6 +671,9 @@ angular.module('flintAndSteel')
                         ctrl.updateStars(userRating);
                     }
                 }
+                else {
+                    toastSvc.show('Please login to rate complexity.');
+                }
             };
 
             //Pass $scope.idea.complexity as rating to see if user has rated idea
