@@ -337,6 +337,7 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin, h4.no-bottom-marg
 
 .identicon-home {
     margin-right: 10px;
+    margin-left: 10px;
 }
 
 .md-tab.md-active {
