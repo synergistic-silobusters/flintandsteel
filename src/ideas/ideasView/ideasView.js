@@ -622,7 +622,7 @@ angular.module('flintAndSteel')
             // RATING FUNCTIONS   //
             ////////////////////////
 
-            var maxStars = 5;
+            var MAX_STARS = 5;
 
             ctrl.editIdeaRating = function(idea) {
                 if ($scope.isUserLoggedIn()) {
@@ -644,7 +644,7 @@ angular.module('flintAndSteel')
             //turns a rating value into filled stars
             ctrl.updateStars = function(rating) {
                 rating.stars = [];
-                for (var i = 0; i < maxStars; i++) {
+                for (var i = 0; i < MAX_STARS; i++) {
                     rating.stars.push({ filled: i < rating.value });
                 }
                 //removes $$hashKey and checked because they can't be stored in backend
