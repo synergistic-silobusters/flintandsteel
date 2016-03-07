@@ -10,7 +10,7 @@ describe('LearnCtrl', function() {
     "use strict";
 
     var ctrl, $mdDialog;
-    var scope, $controller;
+    var scope, $controller, $window;
 
     beforeEach(module('flintAndSteel'));
 
@@ -18,13 +18,16 @@ describe('LearnCtrl', function() {
         scope = $rootScope.$new();
         $mdDialog = _$mdDialog_;
         $controller = _$controller_;
-
+        $window = {
+            ga: function() {} // Google Analytics
+        };
     }));
 
     function createController() {
         return $controller('LearnCtrl', {
             $mdDialog: $mdDialog,
-            $scope: scope
+            $scope: scope,
+            $window: $window
         });
     }
 
@@ -41,7 +44,7 @@ describe('LearnCtrl', function() {
         });
 
         it('should show a dialog window when called', function() {
-            scope.showAdvanced();
+            scope.showAdvanced(null, {title: "Learn How to Do This"});
             expect($mdDialog.show).toHaveBeenCalled();
         });
     });

@@ -11,48 +11,80 @@ describe('sseSvc', function() {
 
     var sseSvc;
 
-    var dummyObj = {};
+    var dummyObj = {},
+        EventSourceMock = {};
 
     beforeEach(module('flintAndSteel'));
 
     beforeEach(inject(function(_sseSvc_) {
         sseSvc = _sseSvc_;
 
-        dummyObj.spyCallback = function() {};
+        dummyObj.spyCallback = function dummyCb() {};
 
-        spyOn(dummyObj, "spyCallback");
+        EventSourceMock.addEventListener = function(name, cb) {
+            cb({data: null});
+        };
+        EventSourceMock.close = function successfulClose() {
+            EventSourceMock.readyState = 2; // Closed
+        };
+        EventSourceMock.readyState = 1; // Open
+
+        spyOn(EventSourceMock, 'close').and.callThrough();
+
         spyOn(window, 'EventSource').and.callFake(function() {
-            var obj = {};
-            obj.addEventListener = function(name, cb) {
-                cb({data: null});
-            };
-            obj.close = function() {
-                obj.readyState = 2;
-            };
-            obj.readyState = 1;
-            return obj;
+            return EventSourceMock;
         });
-        // $httpBackend = _$httpBackend_;
     }));
 
     it('should exist', function() {
         expect(sseSvc).toBeDefined();
     });
 
-    describe('create()', function() {
-        it('should create an event listener and the callback should be called if the event is triggered', function() {
-            sseSvc.create("test", "/test", dummyObj.spyCallback);
+    describe('subscribe()', function() {
+        it('should create an event listener', function() {
+            sseSvc.subscribe("test", "/test", dummyObj.spyCallback);
             expect(window.EventSource).toHaveBeenCalledWith("/test");
-            expect(dummyObj.spyCallback).toHaveBeenCalledWith(null);
+        });
+
+        it('should not create a duplicate listener', function() {
+            sseSvc.subscribe("test", "/test", dummyObj.spyCallback);
+            sseSvc.subscribe("test", "/test", dummyObj.spyCallback);
+            expect(window.EventSource.calls.count()).toEqual(1);
         });
     });
 
-    describe('destroy()', function() {
-        it('should close the event', function() {
-            sseSvc.create("test", "/test", dummyObj.spyCallback);
-            expect(function() {
-                sseSvc.destroy();
-            }).not.toThrowError(Error, "Could not close event!");
+    describe('unsubscribe()', function() {
+
+        describe('when more than one subscriber', function() {
+            it('should not attempt to close the event', function() {
+                sseSvc.subscribe("test", "/test", dummyObj.spyCallback);
+                sseSvc.subscribe("test", "/test", function anotherSubscriber() {});
+                expect(function() {
+                    sseSvc.unsubscribe("/test", dummyObj.spyCallback);
+                }).not.toThrowError(Error, "Could not close event!");
+                expect(EventSourceMock.close).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('when only one subscriber', function() {
+            it('should successfully close the event if the server can be contacted', function() {
+                sseSvc.subscribe("test", "/test", dummyObj.spyCallback);
+                expect(function() {
+                    sseSvc.unsubscribe("/test", dummyObj.spyCallback);
+                }).not.toThrowError(Error, "Could not close event!");
+                expect(EventSourceMock.close).toHaveBeenCalled();
+            });
+
+            it('should throw an error if the server is unavailable', function() {
+                EventSourceMock.close = function badClose() {
+                    EventSourceMock.readyState = 1;
+                };
+
+                sseSvc.subscribe("test", "/test", dummyObj.spyCallback);
+                expect(function() {
+                    sseSvc.unsubscribe("/test", dummyObj.spyCallback);
+                }).toThrowError(Error, "Could not close event!");
+            });
         });
     });
 

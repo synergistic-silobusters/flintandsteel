@@ -8,15 +8,18 @@
 describe('userSvc', function() {
     "use strict";
 
-    var userSvc, $httpBackend, $rootScope, $q, dummyUser, dummyRes;
+    var userSvc, $httpBackend, $rootScope, $q, dummyUser, dummyRes, $window;
 
     beforeEach(module('flintAndSteel'));
 
-    beforeEach(inject(function(_userSvc_, _$httpBackend_, _$rootScope_, _$q_) {
+    beforeEach(inject(function(_userSvc_, _$httpBackend_, _$rootScope_, _$q_, _$window_) {
         userSvc = _userSvc_;
         $httpBackend = _$httpBackend_;
         $rootScope = _$rootScope_;
         $q = _$q_;
+
+        $window = _$window_;
+        $window.ga = function() {}; // Google Analytics
 
         dummyUser = {
             id: 'dummy_user',
