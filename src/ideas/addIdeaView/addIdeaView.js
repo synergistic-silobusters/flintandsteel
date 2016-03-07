@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('AddIdeaViewCtrl',
     [
-        '$scope', '$state', 'toastSvc', 'ideaSvc', 'userSvc',
-        function($scope, $state, toastSvc, ideaSvc, userSvc) {
+        '$scope', '$state', 'toastSvc', 'ideaSvc', 'userSvc', '$window',
+        function($scope, $state, toastSvc, ideaSvc, userSvc, $window) {
             "use strict";
 
             if (!userSvc.isUserLoggedIn()) {
@@ -25,6 +25,12 @@ angular.module('flintAndSteel')
                 ideaToAdd.authorId = userSvc.getProperty('_id');
                 ideaSvc.postIdea($scope.idea).then(function postIdeaSuccess(response) {
                     if (angular.isDefined(response.data.status) && response.data.status === 'Created') {
+                        $window.ga('send', {
+                            hitType: 'event',
+                            eventCategory: 'ideas',
+                            eventAction: 'add'
+                        });
+
                         toastSvc.show('New idea created successfully!');
                         $scope.$emit('newIdeaAdded');
                         $state.go('idea', { ideaId: response.data._id });

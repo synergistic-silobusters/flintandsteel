@@ -26,7 +26,8 @@ describe('IdeasViewCtrl', function() {
     var fakeWindow = {
         location: {
             href: ''
-        }
+        },
+        ga: function() {} // Google Analytics
     };
 
     beforeEach(module('flintAndSteel'));
