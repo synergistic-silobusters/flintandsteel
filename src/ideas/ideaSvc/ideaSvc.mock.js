@@ -109,7 +109,8 @@ angular.module('flintAndSteel')
                 tags: [
                     "thisIsATag",
                     "tagAllTheThings"
-                ]
+                ],
+                complexity: []
             };
 
             return {
@@ -178,6 +179,10 @@ angular.module('flintAndSteel')
                     mockIdea.tags = tags;
                     mockIdea.rolesreq = rolesreq;
                     mockIdea.timeModified = new Date().toISOString();
+                    return $q.when('Edited');
+                },
+                editIdeaRating: function editIdeaRating(ideaId, value) {
+                    mockIdea.complexity = value;
                     return $q.when('Edited');
                 },
                 deleteIdea: function deleteIdea() {

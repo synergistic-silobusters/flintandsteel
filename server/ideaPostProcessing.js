@@ -177,6 +177,39 @@ module.exports = function(db) {
             });
         }
 
+        // Calculate the average Value rating
+        var theDatabase = db.getDb();
+        var ideaAvgComplexity = new Promise(function(resolve, reject) {
+            theDatabase.collection('ideas').aggregate([
+                { $match: {_id: data._id} },
+                { $unwind: "$complexity" },
+                { $group: {_id: null, ratingAvg: { $avg: '$complexity.value'} } }
+            ]).toArray().then(function(averages) {
+                //If no ratings, average to zero
+                if (typeof averages[0] === 'undefined') {
+                    data.avgComplexity = {
+                        value: Number(0).toFixed(2),
+                        stars: []
+                    };
+                }
+                //If ratings, average to 2 decimals
+                else {
+                    data.avgComplexity = {
+                        value: Number(averages[0].ratingAvg).toFixed(2),
+                        stars: []
+                    };
+                }
+                //load star values to update page
+                for (var i = 0; i < 5; i++) {
+                    data.avgComplexity.stars.push({ filled: i < data.avgComplexity.value });
+                }
+                resolve(data);
+            }).catch(function(err) {
+                console.log(err);
+                reject(err);
+            });
+        });
+
         return Promise.all([
             ideaAuthor,
             ideaEvent,
@@ -184,7 +217,8 @@ module.exports = function(db) {
             Promise.all(ideaCommentAuthors),
             Promise.all(ideaBacks),
             Promise.all(ideaTeam),
-            Promise.all(ideaUpdates)
+            Promise.all(ideaUpdates),
+            ideaAvgComplexity
         ]);
     };
 

@@ -158,6 +158,34 @@
                 </md-tooltip>
             </span>
         </span>
+        <span>
+        <span flex ng-if="isUserLoggedIn() && hasUserRated(idea.complexity)" class="md-icon-button">
+            <small class="extra-padding-sides-15">
+                <span class="extra-padding-right-sm"> Simple </span>
+                <span ng-repeat="star in loadUserRating(idea.complexity).stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.complexity)">
+                    <!--Empty Circle-->
+                    <md-icon class="star" ng-show="!star.filled" class="material-icons">&#xE40C;</md-icon>
+                    <!--Filled Circle-->
+                    <md-icon class="star" ng-show="star.filled" class="material-icons">&#xE3FA;</md-icon>
+                </span>
+                <span> Complex </span>
+            </small>
+            <md-tooltip direction:"bottom">Avg Complexity: {{idea.avgComplexity.value}} </md-tooltip>
+        </span>
+        <span flex ng-if="!isUserLoggedIn() || (isUserLoggedIn() && !hasUserRated(idea.complexity))">
+            <small class="extra-padding-sides-15">
+                <span class="extra-padding-right-sm"> Simple </span>
+                <span ng-repeat="star in idea.avgComplexity.stars" ng-class="{filled: star.filled}" ng-click="toggle($index, idea.complexity)">
+                    <!--Empty Circle-->
+                    <md-icon class="black-star" ng-show="!star.filled" class="material-icons">&#xE40C;</md-icon>
+                    <!--Filled Circle-->
+                    <md-icon class="black-star" ng-show="star.filled" class="material-icons">&#xE3FA;</md-icon>
+                </span>
+                <span> Complex </span>
+            </small>
+            <md-tooltip direction: "bottom">Avg Complexity: {{idea.avgComplexity.value}}</md-tooltip>
+        </span>
+    </span>
     </md-card-footer>
 </md-card>
 
@@ -165,7 +193,7 @@
     <md-card-content>
         <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">
             <!-- Tab Used to show updates for the idea -->
-            <md-tab label="Updates">
+            <md-tab label="Updates ({{idea.updates.length}})">
                 <md-content class="md-padding">
                     <md-card>
                         <md-card-content ng-if="!idea.updates[0] && ideasView.isUserMemberOfTeam()">
@@ -225,7 +253,7 @@
                 </md-content>
             </md-tab>
             <!-- Tab used to show comments made on the idea by logged in users -->
-            <md-tab label="Comments">
+            <md-tab label="Comments ({{idea.comments.length}})">
                 <md-content class="md-padding">
                     <md-card>
                         <md-card-content ng-if="isUserLoggedIn()">
@@ -276,7 +304,7 @@
                 </md-content>
             </md-tab>
             <!-- Tab used to show users that are willing to contribute to an idea -->
-            <md-tab label="Backers">
+            <md-tab label="Backers ({{idea.backs.length}})">
                 <md-content class="md-padding">
                     <!-- Backer controls: only visible when logged in -->
                     <!-- Add new backing -->
@@ -325,7 +353,7 @@
                 </md-content>
             </md-tab>
             <!-- Tab used to show users who is part of a team, or allows the idea user to edit the team members -->
-            <md-tab label="Team">
+            <md-tab label="Team ({{idea.team.length}})">
                 <md-content class="md-padding">
                     <div layout="column">
                         <div ng-show="ideasView.enableTeamEdit === false">
