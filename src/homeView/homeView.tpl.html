@@ -1,9 +1,9 @@
 <div class="center-text" ng-if="browserVersion > 0">{{internetExplorerMessage}}</div>
 <!-- Announcemnt Carousel -->
 <!-- Top Trending Ideas -->
-<top-ideas title='Top Ideas' ideaslist='topIdeas'/>
+<top-ideas title='Top Ideas' ideaslist='topIdeas' sort='"-likes"'/>
 <!-- Most Recent Ideas -->
-<top-ideas title='New Ideas' ideasList='topIdeas'/>
+<top-ideas title='New Ideas' ideasList='topIdeas' sort='"-timeCreated"'/>
 <!-- Begin Timeline -->
 <div layout="row" layout-align="center center" ng-hide="searchText">
     <h2 class="homeview-padding-bottom">Event Schedule</h2>

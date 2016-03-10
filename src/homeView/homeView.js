@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$document', '$scope', '$timeout', '$window', '$state', 'ideaSvc',
-        function($document, $scope, $timeout, $window, $state, ideaSvc) {
+        '$document', '$scope', '$timeout', '$window', '$state', 'ideaSvc', 'sseSvc',
+        function($document, $scope, $timeout, $window, $state, ideaSvc, sseSvc) {
             "use strict";
 
 
@@ -23,6 +23,8 @@ angular.module('flintAndSteel')
             }
 
             refreshHeaders();
+
+            sseSvc.subscribe("newHeaders", "/sse/ideas", setIdeaHeaders);
 
             $scope.internetExplorerMessage = "Some pages may not render properly in this Browser.  For best experience, please use Google Chrome.";
 

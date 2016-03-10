@@ -10,7 +10,8 @@ angular.module('flintAndSteel')
                 restrict: 'E',
                 scope: {
                     title: '@',
-                    ideaslist: '='
+                    ideaslist: '=',
+                    sort: '='
                 },
                 templateUrl: 'utilities/topIdeas.tpl.html'
             };
