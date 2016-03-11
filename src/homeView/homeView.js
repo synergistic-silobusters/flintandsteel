@@ -7,7 +7,6 @@ angular.module('flintAndSteel')
         function($document, $scope, $timeout, $window, $state, ideaSvc, sseSvc) {
             "use strict";
 
-
             function setIdeaHeaders(data) {
                 $scope.$apply(function() {
                     $scope.topIdeas = data;
@@ -25,6 +24,8 @@ angular.module('flintAndSteel')
             refreshHeaders();
 
             sseSvc.subscribe("newHeaders", "/sse/ideas", setIdeaHeaders);
+
+            $scope.$root.$on('newIdeaAdded', refreshHeaders);
 
             $scope.internetExplorerMessage = "Some pages may not render properly in this Browser.  For best experience, please use Google Chrome.";
 
