@@ -1,0 +1,27 @@
+<h2 class="center-text margin-top"> {{title}} </h2>
+<div ng-if="!ideaslist" layout="row" layout-align="center">
+    No ideas.
+</div>
+<div layout="row" layout-sm="column" layout-align="center">
+    <div layout="row" layout-align="center" hide-gt-md show-sm ng-repeat="idea in ideaslist | orderBy:sort | limitTo:2" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer md-padding">
+        <md-card style="width: 240px; height: 360px; background-color: grey">
+            <md-card-content>
+                {{idea.title}}
+            </md-card-content>
+        </md-card>
+    </div>
+    <div hide show-lg  ng-repeat="idea in ideaslist | orderBy:sort | limitTo:3" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer md-padding">
+        <md-card style="width: 240px; height: 360px; background-color: grey">
+            <md-card-content>
+                {{idea.title}}
+            </md-card-content>
+        </md-card>
+    </div>
+    <div hide show-gt-lg ng-repeat="idea in ideaslist | orderBy:sort | limitTo:4" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer md-padding">
+        <md-card style="width: 240px; height: 360px; background-color: grey">
+            <md-card-content>
+                {{idea.title}}
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
