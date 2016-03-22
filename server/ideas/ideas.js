@@ -16,8 +16,8 @@ module.exports = function(db) {
     var COLLECTION = "ideas";
     var IdeasSingleton;
 
-    module.create = function(title, description, authorId, eventId, tags, rolesreq) {
-        var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq);
+    module.create = function(title, description, authorId, eventId, tags, rolesreq, complexity) {
+        var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq, complexity);
         return new Promise(function(resolve, reject) {
             db.insertOne(COLLECTION, idea, function(err, doc) {
                 if (err) {
@@ -47,7 +47,8 @@ module.exports = function(db) {
             likes: 1,
             backs: 1,
             tags: 1,
-            team: 1
+            team: 1,
+            timeCreated: 1
         };
 
         return new Promise(function(resolve, reject) {
@@ -70,7 +71,8 @@ module.exports = function(db) {
                             likes: doc.likes.length,
                             backs: doc.backs.length,
                             tags: doc.tags,
-                            team: doc.team.length
+                            team: doc.team.length,
+                            timeCreated: doc.timeCreated
                         });
                     });
                     resolve(headers);

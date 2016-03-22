@@ -59,6 +59,13 @@
                 "memberId": "idea.authorId"
             },
             "set of objects with user._id"
+        ],
+        "complexity": [
+            {
+                "stars": "set of indicators if the object is filled according to value",
+                "value": "value of the rating",
+                "authorId": "one user._id"
+            }
         ]
     },
     "comment": {

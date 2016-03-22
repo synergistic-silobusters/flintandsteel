@@ -203,8 +203,8 @@ module.exports = function(dbName, cb) {
                 idToChange = '',
                 path = '',
                 runUpdate = true;
-            
-            
+
+
             if (/append|create|modify/.test(command.operation)) {
                 valueObj = JSON.parse(command.value);
 
@@ -232,13 +232,13 @@ module.exports = function(dbName, cb) {
                     valueObj = new ObjectId(valueObj);
                 }
             }
-                    
+            
             switch (command.operation) {
                 case "append":
                     toChange = {};
                     valueObj._id = new ObjectId();
                     toChange[command.path] = valueObj;
-                    updateConfig = { 
+                    updateConfig = {
                         $push: toChange
                     };
                     if (collection === 'ideas') {

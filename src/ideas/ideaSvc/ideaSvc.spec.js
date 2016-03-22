@@ -58,6 +58,19 @@ describe('ideaSvc', function() {
                     name: 'Experience',
                     _lowername: 'experience'
                 }
+            ],
+            complexity: [
+                {
+                    value: 4,
+                    authorId: 1,
+                    stars: [
+                        { filled: true },
+                        { filled: true },
+                        { filled: true },
+                        { filled: true },
+                        { filled: false }
+                    ]
+                }
             ]
         };
 
@@ -379,6 +392,38 @@ describe('ideaSvc', function() {
                 });
 
             });
+        });
+    });
+
+    describe('ideaSvc.editIdeaRating', function() {
+        var editIdeaHandler, smallDummyIdea, patchOperation;
+
+        beforeEach(function() {
+            editIdeaHandler = $httpBackend.whenPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
+            smallDummyIdea = {
+                id: dummyIdea._id,
+                title: dummyIdea.title,
+                description: dummyIdea.description,
+                tags: dummyIdea.tags,
+                rolesreq: dummyIdea.rolesreq,
+                eventId: 1,
+                complexity: dummyIdea.complexity
+            };
+
+            patchOperation = [
+                { operation: 'modify', path: 'complexity', value: JSON.stringify(smallDummyIdea.complexity) }
+            ];
+        });
+
+        it('should edit an existing idea', function() {
+            $httpBackend.expectPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
+
+            ideaSvc.editIdeaRating(dummyIdea._id, dummyIdea.complexity)
+            .then(function(response) {
+                expect(response.data).toBe('OK');
+            }, function() { });
+
+            $httpBackend.flush();
         });
     });
 

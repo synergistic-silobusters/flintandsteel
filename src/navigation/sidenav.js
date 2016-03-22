@@ -23,7 +23,7 @@ angular.module('flintAndSteel')
 
             refreshHeaders();
 
-            sseSvc.create("newHeaders", "/sse/ideas", setIdeaHeaders);
+            sseSvc.subscribe("newHeaders", "/sse/ideas", setIdeaHeaders);
 
             $scope.navTo = function navTo(state) {
                 if (state === 'addIdea') {

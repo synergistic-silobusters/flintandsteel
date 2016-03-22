@@ -41,6 +41,7 @@
 
     <!-- inject:js -->
   <script src="app.js"></script>
+  <script src="utilities/topIdeas.js"></script>
   <script src="utilities/startFromFilter.js"></script>
   <script src="utilities/sseSvc.js"></script>
   <script src="utilities/paginateSvc.js"></script>
@@ -92,7 +93,7 @@
                 <img ui-sref="home" src="assets/Innovate-Rockwell-Automation-White.png" width="250"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span>
-            <md-button ng-controller="SidenavCtrl" aria-label="Add another idea" class="toolbar-left-link" ng-click="navTo('addidea')">
+            <md-button aria-label="Add another idea" class="toolbar-left-link" ui-sref="addidea">
                 Create
                 <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
                 <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
@@ -123,8 +124,8 @@
                 <div class="user-menu" ng-show="isUserLoggedIn()">
                     <md-menu md-offset="0 60">
                         <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+                            <span hide show-gt-sm>{{currentUser}}</span>
                             <identicon md-menu-origin="" username='getUsername()' size='24' class="identicon identicon-home"></identicon>
-                            {{currentUser}}
                             <i class="material-icons icon-button-adjust">&#xE5CF;</i>
                         </md-button>
                         <md-menu-content width="4">
@@ -148,7 +149,7 @@
     </md-toolbar>
 
     <md-content flex layout="row">
-        <md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
+        <!-- <md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
             <md-content ng-controller="SidenavCtrl" flex>
                 <div layout="column" flex>
                     <div flex>
@@ -167,7 +168,7 @@
             </md-content>
             <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
             </div>
-        </md-sidenav>
+        </md-sidenav> -->
         <md-content ui-view flex></md-content>
     </md-content>
 

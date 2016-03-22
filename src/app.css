@@ -1,5 +1,32 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+.star {
+    /*color: #ffcc00;*/
+    padding-top: 7px;
+    color: #3F51B5;
+    font-size: 15px;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+
+    &.filled {
+      color: #ffcc00;
+    }
+}
+
+.black-star {
+    padding-top: 7px;
+    color: black;
+    font-size: 15px;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+
+    &.filled {
+      color: #ffcc00;
+    }
+}
+
 .icon-button-adjust {
     vertical-align: middle;
 }
@@ -201,6 +228,10 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin, h4.no-bottom-marg
     padding-left: 5px;
 }
 
+.extra-padding-right-sm {
+    padding-right: 5px;
+}
+
 .extra-padding-left-md {
     padding-left: 10px;
 }
@@ -337,6 +368,7 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin, h4.no-bottom-marg
 
 .identicon-home {
     margin-right: 10px;
+    margin-left: 10px;
 }
 
 .md-tab.md-active {

@@ -9,7 +9,7 @@
 describe('AddIdeaViewCtrl', function() {
     "use strict";
 
-    var scope, rootScope, $q, ctrl, toastSvc, $state, ideaSvcMock, userSvcMock, eventSvcMock;
+    var scope, rootScope, $q, ctrl, toastSvc, $state, ideaSvcMock, userSvcMock, eventSvcMock, $window;
 
     beforeEach(module('flintAndSteel'));
     beforeEach(module('ui.router'));
@@ -26,6 +26,10 @@ describe('AddIdeaViewCtrl', function() {
         userSvcMock = _userSvcMock_;
         eventSvcMock = _eventSvcMock_;
 
+        $window = {
+            ga: function() {} // Google Analytics
+        };
+
         spyOn($state, 'go');
 
         ctrl = $controller('AddIdeaViewCtrl', {
@@ -34,7 +38,8 @@ describe('AddIdeaViewCtrl', function() {
             toastSvc: toastSvc,
             ideaSvc: ideaSvcMock,
             userSvc: userSvcMock,
-            eventSvc: eventSvcMock
+            eventSvc: eventSvcMock,
+            $window: $window
         });
 
         scope.idea = {
