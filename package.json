@@ -30,12 +30,12 @@
     "express": "4.13.0",
     "external-ip": "0.2.3",
     "ip": "0.3.3",
+    "sha.js": "2.4.4",
     "lodash": "4.1.0",
     "mongodb": "2.1.4",
     "morgan": "1.6.1",
     "passport": "0.3.2",
-    "passport-windowsauth": "1.0.0",
-    "sha.js": "2.4.4"
+    "passport-windowsauth": "1.0.0"
   },
   "devDependencies": {
     "bench-rest": "1.1.1",
@@ -58,8 +58,7 @@
     "karma-coverage": "0.5.3",
     "karma-jasmine": "0.3.6",
     "karma-ng-html2js-preprocessor": "0.2.0",
-    "karma-phantomjs-launcher": "1.0.0",
-    "mkdirs": "0.0.2",
-    "phantomjs-prebuilt": "^2.1.6"
+    "karma-phantomjs-launcher": "0.1.4",
+    "mkdirs": "0.0.2"
   }
 }
