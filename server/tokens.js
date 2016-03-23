@@ -1,7 +1,6 @@
 /* global require */
 /* global module */
 /* global process */
-/* global Promise */
 /* global TypeError */
 
 module.exports = function() {
@@ -9,6 +8,7 @@ module.exports = function() {
 
     var sha256 = require('sha.js')('sha256');
     var _ = require('lodash');
+    var Promise = require('bluebird');
     var serverToken = 'uninitialized';
     var ObjectId = require('mongodb').ObjectId;
     var MongoClient = require('mongodb').MongoClient;

@@ -1,13 +1,13 @@
 /* global module */
 /* global process */
-/* global Promise */
 
 module.exports = function(db) {
     "use strict";
 
     var module = {};
 
-    var UserModel = require('./userModel');
+    var UserModel = require('./userModel'),
+        Promise = require('bluebird');
 
     var COLLECTION = "users";
 
