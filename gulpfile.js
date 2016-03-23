@@ -11,7 +11,7 @@ var gulp = require('gulp'),
     jscs = require('gulp-jscs'),
     stylish = require('jshint-stylish-ex'),
     nodemon = require('gulp-nodemon'),
-    karma = require('karma').server,
+    KarmaServer = require('karma').Server,
     spawn = require('child_process').spawn,
     mkdirs = require('mkdirs'),
     angularFilesort = require('gulp-angular-filesort'),
@@ -218,11 +218,15 @@ gulp.task('code-check', ['jshint', 'jscs']);
 gulp.task('test:client', function(done) {
     "use strict";
 
-    karma.start({
+    var server = new KarmaServer({
         configFile: __dirname + '/karma.conf.js',
         singleRun: true
     }, done);
+
+    server.start();
 });
+
+gulp.task('test', ['test:client']);
 
 gulp.task('test:load', ['initialize:db-dev'], function(cb) {
     "use strict";
