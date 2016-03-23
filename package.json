@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/YashdalfTheGray/flintandsteel",
   "dependencies": {
-    "bluebird": "3.0.5",
     "body-parser": "1.13.1",
     "chalk": "1.1.0",
     "docstore": "0.1.1",
