@@ -1,7 +1,7 @@
 /* global module */
 /* global process */
+/* global Promise */
 /* global Buffer */
-
 
 module.exports = function(app, db) {
     "use strict";
@@ -16,7 +16,6 @@ module.exports = function(app, db) {
         chalk = require('chalk'),
         _ = require('lodash'),
         mongo = require('mongodb'),
-        Promise = require('bluebird'),
         ObjectId = mongo.ObjectID,
         passport = require('passport'),
         Tokens = require('./tokens');

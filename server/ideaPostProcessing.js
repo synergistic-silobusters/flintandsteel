@@ -1,4 +1,5 @@
 /* global module */
+/* global Promise */
 
 module.exports = function(db) {
     "use strict";
@@ -7,8 +8,7 @@ module.exports = function(db) {
 
     var users = require('./users/users')(db),
         comments = require('./comments/comments')(db),
-        events = require('./events/events')(db),
-        Promise = require('bluebird');
+        events = require('./events/events')(db);
 
     module.idea = function idea(data) {
         if (!data) {

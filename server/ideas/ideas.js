@@ -1,6 +1,5 @@
 /* global module */
-
-var Promise = require('bluebird');
+/* global Promise */
 
 module.exports = function(db) {
     "use strict";

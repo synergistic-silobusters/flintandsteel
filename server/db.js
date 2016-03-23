@@ -1,5 +1,6 @@
 /* global module */
 /* global process */
+/* global Promise */
 
 module.exports = function(dbName, cb) {
     "use strict";
@@ -10,8 +11,7 @@ module.exports = function(dbName, cb) {
         ObjectId = mongodb.ObjectID,
         MongoClient = mongodb.MongoClient,
         chalk = require('chalk'),
-        _ = require('lodash'),
-        Promise = require('bluebird');
+        _ = require('lodash');
 
     var db;
 
@@ -232,7 +232,7 @@ module.exports = function(dbName, cb) {
                     valueObj = new ObjectId(valueObj);
                 }
             }
-            
+
             switch (command.operation) {
                 case "append":
                     toChange = {};

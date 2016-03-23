@@ -1,16 +1,16 @@
 /* global module */
+/* global Promise */
 
 module.exports = function(db) {
     "use strict";
     var module = {};
 
-    var EventModel = require('./eventModel'),
-        Promise = require('bluebird');
+    var EventModel = require('./eventModel');
 
     var COLLECTION = "events";
 
     module.create = function(name, location, startDate, endDate) {
-        return new Promise(function(resolve, reject) {    
+        return new Promise(function(resolve, reject) {
             var event = EventModel.create(name, location, startDate, endDate);
             db.insertOne(COLLECTION, event, function(err, doc) {
                 if (err) {
