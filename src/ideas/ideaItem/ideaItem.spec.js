@@ -16,7 +16,7 @@ describe('ideaItem', function() {
     function getCompiledElement() {
         var element = angular.element('<' + DIRECTIVE_NAME + '></' + DIRECTIVE_NAME + '>');
         var compiledElement = compile(element)(scope);
-        scope.$digest();
+        //scope.$digest();
         return compiledElement;
     }
 

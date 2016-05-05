@@ -29,6 +29,8 @@ module.exports = function(config) {
             'src/lib/angular-messages/angular-messages.js',
             'src/lib/angular-identicon/src/identiconDirective.js',
             'src/lib/angular-identicon/src/md5.js',
+            'src/lib/angular-slick-carousel/dist/angular-slick.js',
+            'src/lib/slick-carousel/slick/slick.js',
             'src/lib/identicon/identicon.js',
             'src/lib/identicon/pnglib.js',
             'src/lib/marked/lib/marked.js',

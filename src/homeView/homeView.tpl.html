@@ -1,5 +1,17 @@
 <div class="center-text" ng-if="browserVersion > 0">{{internetExplorerMessage}}</div>
 <!-- Announcemnt Carousel -->
+<h2 class="center-text margin-top"> Announcements </h2>
+<script type="text/ng-template" id="tpl.html">
+    <img ng-src="{{i.img}}" />
+</script>
+<div class="slick-container">
+    <slick class="caro-button" settings="slickConfig" ng-if="numberLoaded">
+        <div ng-repeat="i in number">
+            <div class="" ng-include="'tpl.html'"></div>
+        </div>
+    </slick>
+</div>
+
 <!-- Top Trending Ideas -->
 <top-ideas title='Top Ideas' ideaslist='topIdeas' sort='"-likes"'/>
 <!-- Most Recent Ideas -->

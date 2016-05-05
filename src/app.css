@@ -1,5 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+.slick-container {
+    width: 500px;
+    margin: auto;
+}
+
+button.slick-next.slick-arrow:before,
+button.slick-prev.slick-arrow:before {
+    color: darkgrey;
+}
+
 .star {
     /*color: #ffcc00;*/
     padding-top: 7px;
