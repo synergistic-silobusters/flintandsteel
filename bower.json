@@ -17,14 +17,13 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "angular": "1.4.7",
-    "angular-animate": "1.4.7",
-    "angular-aria": "1.4.7",
+    "angular": "1.5.3",
+    "angular-animate": "1.5.3",
+    "angular-aria": "1.5.3",
     "angular-identicon": "0.1.18",
-    "angular-material": "0.11.2",
     "angular-marked": "1.0.1",
-    "angular-messages": "1.4.7",
-    "angular-mocks": "1.4.7",
+    "angular-messages": "1.5.3",
+    "angular-mocks": "1.5.3",
     "angular-timeline": "1.6.1",
     "angular-ui-router": "0.2.15",
     "event-source-polyfill": "0.0.6",
@@ -32,9 +31,7 @@
     "jqcloud2": "2.0.1",
     "jquery": "2.2.0",
     "lodash": "4.1.0",
-    "moment": "2.10.3"
-  },
-  "resolutions": {
-    "angular": "1.4.7"
+    "moment": "2.10.3",
+    "angular-material": "1.0.6"
   }
 }
