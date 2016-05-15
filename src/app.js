@@ -10,8 +10,7 @@ angular.module('flintAndSteel', [
         'ngMaterial',
         'ngMessages',
         'ui.identicon',
-        'hc.marked',
-        'slickCarousel'
+        'hc.marked'
     ]
 )
 .config([

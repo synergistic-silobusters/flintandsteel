@@ -45,37 +45,6 @@ angular.module('flintAndSteel')
 
             $scope.Events = [$scope.Event2, $scope.Event3, $scope.Event4, $scope.Event5];
 
-            /////
-            // Announcements Carousel
-            /////
-
-            $scope.slickConfig = {
-                enabled: true,
-                autoplay: true,
-                draggable: false,
-                autoplaySpeed: 3000,
-                method: {},
-                event: {
-                    beforeChange: function (event, slick, currentSlide, nextSlide) {
-                    },
-                    afterChange: function (event, slick, currentSlide, nextSlide) {
-                    }
-                }
-            };
-
-            $scope.number = [
-                {label: 1, img: '../assets/Announcement1.jpg'},
-                {label: 2, img: '../assets/Announcement2.jpg'},
-                {label: 3, img: '../assets/Announcement3.jpg'}
-            ];
-
-            $scope.numberLoaded = true;
-            $scope.numberUpdate = function(){
-                $scope.numberLoaded = false; // disable slick
-                //number update
-                $scope.numberLoaded = true; // enable slick
-            };
-
             function getInternetExplorerVersion(navObj) {
                 var browserVersion = -1;
                 var userAgent = navObj.userAgent;

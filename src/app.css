@@ -1,17 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
-.slick-container {
-    width: 500px;
-    height: 250px;
-    margin: auto;
-    padding-top: 25px;
-}
-
-button.slick-next.slick-arrow:before,
-button.slick-prev.slick-arrow:before {
-    color: darkgrey;
-}
-
 .star {
     /*color: #ffcc00;*/
     padding-top: 7px;
@@ -321,7 +309,7 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin, h4.no-bottom-marg
 }
 
 .margin-top {
-    margin-top: 30px;
+    margin-top: 75px;
 }
 
 .margin-bottom-md {
