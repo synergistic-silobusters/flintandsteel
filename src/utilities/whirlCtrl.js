@@ -64,6 +64,13 @@ angular.module('flintAndSteel')
                     ctrl.current = ctrl.items[ctrl.counter];
                     ctrl.current.classList.add('current');
                     ctrl.current.classList.remove('not');
+
+                    // If navigate is used, restart slide interval
+                    clearInterval( ctrl.id );
+                    ctrl.id = window.setInterval(increment, delayTime);
+                    function increment() {
+                        $scope.navigate(1);
+                    };
                 }
             };
 
