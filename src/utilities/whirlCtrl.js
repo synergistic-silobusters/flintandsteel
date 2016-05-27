@@ -8,13 +8,16 @@ angular.module('flintAndSteel')
             "use strict";
 
             var ctrl = this;
+            var delayTime = 5000; // Time for incrementing through slides
 
             // List the images you want to scroll through
             $scope.slides = [
-                {label: 1, img: '../assets/Announcement1.jpg', show: true},
-                {label: 2, img: '../assets/Announcement2.jpg', show: false},
-                {label: 3, img: '../assets/Announcement3.jpg', show: false}
+                {label: 1, img: '../assets/Announcement1.jpg'},
+                {label: 2, img: '../assets/Announcement2.jpg'},
+                {label: 3, img: '../assets/Announcement3.jpg'}
             ];
+
+            //$scope.current = 0;
 
             // Check to make sure the document has finished loading the html
             //   before processing it and taging with of the elems are shown
@@ -28,6 +31,7 @@ angular.module('flintAndSteel')
             // Once the document is finished loading, it will tag the first
             //   image as "current" in the html
             $scope.control = function control() {
+                $scope.check = 0;
                 ctrl.box = document.querySelector('.whirligig-container');
                 ctrl.next = ctrl.box.querySelector('.next');
                 ctrl.prev = ctrl.box.querySelector('.prev');
@@ -39,6 +43,7 @@ angular.module('flintAndSteel')
 
                 ctrl.current.classList.remove('not');
                 ctrl.current.classList.add('new');
+                $scope.current = ctrl.counter;
             };
 
             // Used to navigate slides.  A given direction of -1 will give the
@@ -62,9 +67,8 @@ angular.module('flintAndSteel')
                 }
             };
 
-            // Every 3 seconds, navigate forward one slide
-            var delay = 5000;
-            var id = window.setInterval(increment, delay);
+            // Every 5 seconds, navigate forward one slide
+            ctrl.id = window.setInterval(increment, delayTime);
             function increment() {
                 $scope.navigate(1);
             };

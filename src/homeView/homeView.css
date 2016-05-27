@@ -25,9 +25,8 @@
     margin: auto;
     position: relative;
     overflow: hidden;
-    border: 1px solid #ccc;
     box-shadow: 2px 2px 10px #ccc;
-    z-index: 2;
+    /*z-index: 2;*/
 }
 .whirligig-container {
     width: 550px;
