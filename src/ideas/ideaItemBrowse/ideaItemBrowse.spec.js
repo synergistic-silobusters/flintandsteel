@@ -35,8 +35,8 @@ describe('ideaItemBrowse', function() {
         element = undef;
     });
 
-    // it('should exist', function() {
-    //     element = getCompiledElement();
-    //     expect(element).toBeDefined();
-    // });
+    it('should exist', function() {
+        element = getCompiledElement();
+        expect(element).toBeDefined();
+    });
 });

@@ -21,12 +21,20 @@ angular.module('flintAndSteel')
 
             // Check to make sure the document has finished loading the html
             //   before processing it and taging with of the elems are shown
-            var tid = setInterval( function () {
-                if ( document.readyState !== 'complete' ) return;
-                clearInterval( tid );
+            var tid = setInterval(function() {
+                if (document.readyState !== 'complete') {
+                    return;
+                }
+                clearInterval(tid);
 
                 $scope.control();
-            }, 100 );
+            }, 100);
+
+            // Every 5 seconds, navigate forward one slide
+            function increment() {
+                $scope.navigate(1);
+            }
+            var slideInt = window.setInterval(increment, delayTime);
 
             // Once the document is finished loading, it will tag the first
             //   image as "current" in the html
@@ -36,7 +44,7 @@ angular.module('flintAndSteel')
                 ctrl.next = ctrl.box.querySelector('.next');
                 ctrl.prev = ctrl.box.querySelector('.prev');
                 ctrl.items = ctrl.box.querySelectorAll('li');
-                ctrl.counter = ctrl.items.length-1;
+                ctrl.counter = ctrl.items.length - 1;
                 ctrl.amount = ctrl.items.length;
                 ctrl.current = ctrl.items[ctrl.counter];
                 ctrl.box.classList.add('active');
@@ -50,15 +58,17 @@ angular.module('flintAndSteel')
             //   previous image, a direction of 1 will give the next image,
             //   and a direction of 0 will give the current image
             $scope.navigate = function navigate(direction) {
-                if (typeof ctrl.current != 'undefined') {
+                if (typeof ctrl.current !== 'undefined') {
                     ctrl.current.classList.remove('current');
                     ctrl.current.classList.remove('new');
                     ctrl.current.classList.add('not');
                     if (direction === -1 && ctrl.counter <= 0) {
                         ctrl.counter = ctrl.amount - 1;
-                    } else if (direction === 1 && ctrl.counter >= ctrl.amount-1) {
+                    }
+                    else if (direction === 1 && ctrl.counter >= ctrl.amount - 1) {
                         ctrl.counter = 0;
-                    } else {
+                    }
+                    else {
                         ctrl.counter = ctrl.counter + direction;
                     }
                     ctrl.current = ctrl.items[ctrl.counter];
@@ -66,17 +76,10 @@ angular.module('flintAndSteel')
                     ctrl.current.classList.remove('not');
 
                     // If navigate is used, restart slide interval
-                    clearInterval( slideInt );
+                    clearInterval(slideInt);
                     slideInt = window.setInterval(increment, delayTime);
                 }
             };
-
-            // Every 5 seconds, navigate forward one slide
-            var slideInt = window.setInterval(increment, delayTime);
-            function increment() {
-                $scope.navigate(1);
-            };
-
         }
     ]
 );

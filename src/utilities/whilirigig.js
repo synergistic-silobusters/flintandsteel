@@ -9,7 +9,7 @@ angular.module('flintAndSteel')
             return {
                 restrict: 'E',
                 scope: {
-                    title: '@',
+                    title: '@'
                 },
                 templateUrl: 'utilities/whirligig.tpl.html'
             };
