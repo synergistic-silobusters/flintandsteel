@@ -35,6 +35,7 @@ describe('homeView', function() {
     });
 
     it('should exist', function() {
+        spyOn(console, 'log').and.callFake(function() {});
         element = getCompiledElement();
         expect(element).toBeDefined();
     });

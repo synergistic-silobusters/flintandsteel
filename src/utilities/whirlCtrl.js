@@ -66,16 +66,13 @@ angular.module('flintAndSteel')
                     ctrl.current.classList.remove('not');
 
                     // If navigate is used, restart slide interval
-                    clearInterval( ctrl.id );
-                    ctrl.id = window.setInterval(increment, delayTime);
-                    function increment() {
-                        $scope.navigate(1);
-                    };
+                    clearInterval( slideInt );
+                    slideInt = window.setInterval(increment, delayTime);
                 }
             };
 
             // Every 5 seconds, navigate forward one slide
-            ctrl.id = window.setInterval(increment, delayTime);
+            var slideInt = window.setInterval(increment, delayTime);
             function increment() {
                 $scope.navigate(1);
             };
