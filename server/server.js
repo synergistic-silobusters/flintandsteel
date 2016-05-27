@@ -18,7 +18,8 @@ var express = require('express'),
     fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
-    ip = require('ip');
+    ip = require('ip'),
+    xFrameOptions = require('x-frame-options');
 // var cluster          = require('cluster');
 // var numCpus          = require('os').cpus().length;
 
@@ -38,6 +39,7 @@ var app = express();
 
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
+app.use(xFrameOptions());
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -102,6 +104,10 @@ else if (process.env.NODE_ENV === 'development') {
 // routes =============================================================
 require('./routes')(app, db); //configure our routes
 
+app.get('/', function (req, res) {
+    res.get('X-Frame-Options'); // === 'Deny' , default is deny
+  });
+  
 // show IP settings ===================================================
 external(function(err, ipExternal) {
     "use strict";
