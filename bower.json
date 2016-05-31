@@ -27,7 +27,7 @@
     "angular-timeline": "1.6.1",
     "angular-ui-router": "0.2.15",
     "event-source-polyfill": "0.0.6",
-    "identicon": "*",
+    "identicon": "#2548ab2912c3176f77b92d9404aa359933ef4b32",
     "jqcloud2": "2.0.1",
     "jquery": "2.2.0",
     "lodash": "4.1.0",
