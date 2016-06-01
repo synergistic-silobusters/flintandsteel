@@ -26,17 +26,11 @@ describe('WhirlCtrl', function() {
         })
     );
 
-    afterEach(function() {
-        $document.find('body').html('');
-    });
-
-    beforeEach(function() {
-        // Add dummy html
-        $document = angular.element(document);
-        $document.find('body').append('<div class="whirligig-container">' +
-          '<ol><li>Thing</li><li>Another Thing</li> ' +
-          '<li>Last Thing</li></ol></div>');
-    });
+    // Add dummy html
+    $document = angular.element(document);
+    $document.find('body').append('<div class="whirligig-container">' +
+      '<ol><li>Thing</li><li>Another Thing</li> ' +
+      '<li>Last Thing</li></ol></div>');
 
     it('should exist', function() {
         expect(ctrl).toBeDefined();
