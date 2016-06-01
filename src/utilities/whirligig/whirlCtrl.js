@@ -17,29 +17,27 @@ angular.module('flintAndSteel')
                 {label: 3, img: '../assets/Announcement3.jpg'}
             ];
 
-            //$scope.current = 0;
-
             // Check to make sure the document has finished loading the html
             //   before processing it and taging with of the elems are shown
-            var tid = setInterval(function() {
+            $scope.load = function load() {
                 if (document.readyState !== 'complete') {
                     return;
                 }
-                clearInterval(tid);
 
                 $scope.control();
-            }, 100);
+            };
+            var tid = setInterval($scope.load, 100);
 
             // Every 5 seconds, navigate forward one slide
-            function increment() {
+            $scope.increment = function increment() {
                 $scope.navigate(1);
-            }
-            var slideInt = window.setInterval(increment, delayTime);
+            };
+            var slideInt = window.setInterval($scope.increment, delayTime);
 
             // Once the document is finished loading, it will tag the first
             //   image as "current" in the html
             $scope.control = function control() {
-                $scope.check = 0;
+                clearInterval(tid);
                 ctrl.box = document.querySelector('.whirligig-container');
                 ctrl.next = ctrl.box.querySelector('.next');
                 ctrl.prev = ctrl.box.querySelector('.prev');
@@ -51,7 +49,6 @@ angular.module('flintAndSteel')
 
                 ctrl.current.classList.remove('not');
                 ctrl.current.classList.add('new');
-                $scope.current = ctrl.counter;
             };
 
             // Used to navigate slides.  A given direction of -1 will give the
@@ -77,7 +74,7 @@ angular.module('flintAndSteel')
 
                     // If navigate is used, restart slide interval
                     clearInterval(slideInt);
-                    slideInt = window.setInterval(increment, delayTime);
+                    slideInt = window.setInterval($scope.increment, delayTime);
                 }
             };
         }

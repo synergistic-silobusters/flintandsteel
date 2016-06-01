@@ -7,7 +7,7 @@
 /* global expect */
 /* global spyOn */
 
-describe('homeView', function() {
+describe('whirligig', function() {
     "use strict";
 
     var DIRECTIVE_NAME = "whirligig";
@@ -23,7 +23,7 @@ describe('homeView', function() {
 
     beforeEach(function() {
         module('flintAndSteel');
-        module('utilities/whirligig.tpl.html');
+        module('utilities/whirligig/whirligig.tpl.html');
 
         inject(function($rootScope, $compile) {
             scope = $rootScope.$new();
