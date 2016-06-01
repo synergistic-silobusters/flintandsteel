@@ -105,6 +105,7 @@ else if (process.env.NODE_ENV === 'development') {
 require('./routes')(app, db); //configure our routes
 
 app.get('/', function(req, res) {
+    "use strict";
     res.get('X-Frame-Options'); // === 'Deny' , default is deny
 });
 
