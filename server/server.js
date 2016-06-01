@@ -104,10 +104,10 @@ else if (process.env.NODE_ENV === 'development') {
 // routes =============================================================
 require('./routes')(app, db); //configure our routes
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
     res.get('X-Frame-Options'); // === 'Deny' , default is deny
-  });
-  
+});
+
 // show IP settings ===================================================
 external(function(err, ipExternal) {
     "use strict";
