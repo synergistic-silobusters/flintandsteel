@@ -11,7 +11,8 @@ angular.module('flintAndSteel')
                 scope: {
                     title: '@'
                 },
-                templateUrl: 'utilities/whirligig/whirligig.tpl.html'
+                templateUrl: 'utilities/whirligig/whirligig.tpl.html',
+                controller: 'WhirlCtrl'
             };
         }
     ]
