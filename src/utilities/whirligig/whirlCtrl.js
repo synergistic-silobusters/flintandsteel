@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('WhirlCtrl',
     [
-        '$scope',
-        function($scope) {
+        '$scope', '$interval',
+        function($scope, $interval) {
             "use strict";
 
             var ctrl = this;
@@ -26,18 +26,18 @@ angular.module('flintAndSteel')
 
                 $scope.control();
             };
-            var tid = setInterval($scope.load, 100);
+            var loadTimer = $interval($scope.load, 100);
 
             // Every 5 seconds, navigate forward one slide
             $scope.increment = function increment() {
                 $scope.navigate(1);
             };
-            var slideInt = window.setInterval($scope.increment, delayTime);
+            var slideTimer = $interval($scope.increment, delayTime);
 
             // Once the document is finished loading, it will tag the first
             //   image as "current" in the html
             $scope.control = function control() {
-                clearInterval(tid);
+                $interval.cancel(loadTimer);
                 ctrl.box = document.querySelector('.whirligig-container');
                 ctrl.next = ctrl.box.querySelector('.next');
                 ctrl.prev = ctrl.box.querySelector('.prev');
@@ -45,10 +45,11 @@ angular.module('flintAndSteel')
                 ctrl.counter = ctrl.items.length - 1;
                 ctrl.amount = ctrl.items.length;
                 ctrl.current = ctrl.items[ctrl.counter];
+                ctrl.current.classList.remove('not');
                 ctrl.box.classList.add('active');
 
-                ctrl.current.classList.remove('not');
                 ctrl.current.classList.add('new');
+                ctrl.current.classList.remove('not');
             };
 
             // Used to navigate slides.  A given direction of -1 will give the
@@ -73,10 +74,16 @@ angular.module('flintAndSteel')
                     ctrl.current.classList.remove('not');
 
                     // If navigate is used, restart slide interval
-                    clearInterval(slideInt);
-                    slideInt = window.setInterval($scope.increment, delayTime);
+                    $interval.cancel(slideTimer);
+                    slideTimer = $interval($scope.increment, delayTime);
                 }
             };
+
+            $scope.$on('$destroy', function() {
+                // this assumes that you're using $interval and not window.setInterval
+                $interval.cancel(loadTimer);
+                $interval.cancel(slideTimer);
+            });
         }
     ]
 );

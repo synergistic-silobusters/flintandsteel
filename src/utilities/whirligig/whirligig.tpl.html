@@ -1,8 +1,7 @@
 <div class="whirligig-container" ng-controller="WhirlCtrl">
     <div class="whirligig-box active">
         <ol class="content">
-            <!--<li class="animate-if" ng-if=slide.show ng-repeat="slide in slides">-->
-            <li class="not" ng-repeat="slide in slides">
+            <li ng-repeat="slide in slides">
                 <img ng-src="{{slide.img}}" />
             </li>
         </ol>
