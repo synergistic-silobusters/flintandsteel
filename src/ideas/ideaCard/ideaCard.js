@@ -3,6 +3,8 @@
 angular.module('flintAndSteel')
 .directive('ideaCard', [
     function() {
+        "use strict";
+
         return {
             restrict: 'E',
             scope: {

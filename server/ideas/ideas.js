@@ -10,8 +10,7 @@ module.exports = function(db) {
     require('events').EventEmitter.prototype._maxListeners = 102;
 
     var IdeaModel = require('./ideaModel'),
-        chalk = require('chalk'),
-        _ = require('lodash');
+        chalk = require('chalk');
 
     var COLLECTION = "ideas";
     var IdeasSingleton;
