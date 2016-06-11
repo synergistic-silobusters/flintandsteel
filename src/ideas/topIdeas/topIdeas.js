@@ -13,7 +13,7 @@ angular.module('flintAndSteel')
                     ideaslist: '=',
                     sort: '='
                 },
-                templateUrl: 'utilities/topIdeas.tpl.html'
+                templateUrl: 'ideas/topIdeas/topIdeas.tpl.html'
             };
         }
     ]

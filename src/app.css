@@ -1,5 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+.idea-card {
+    width: 256px;
+    max-height: 376px;
+}
+
+.idea-card-image {
+    height: 135px;
+}
+
 .star {
     /*color: #ffcc00;*/
     padding-top: 7px;
