@@ -16,6 +16,15 @@ module.exports = function(db) {
     var COLLECTION = "ideas";
     var IdeasSingleton;
 
+    function getAbstract(text, length) {
+        if (text.length <= length) {
+            return text;
+        }
+        else {
+            return text.substr(0, text.lastIndexOf(' ', length)) + '\u2026';
+        }
+    }
+
     module.create = function(title, description, authorId, eventId, tags, rolesreq, complexity) {
         var idea = IdeaModel.create(title, description, authorId, eventId, tags, rolesreq, complexity);
         return new Promise(function(resolve, reject) {
@@ -67,7 +76,7 @@ module.exports = function(db) {
                             title: doc.title,
                             authorId: doc.authorId,
                             eventId: doc.eventId,
-                            abstract: _.take(_.words(doc.description), 20).join(' '),
+                            abstract: getAbstract(doc.description, 50),
                             likes: doc.likes.length,
                             backs: doc.backs.length,
                             tags: doc.tags,
