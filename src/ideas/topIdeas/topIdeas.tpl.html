@@ -3,25 +3,13 @@
     No ideas.
 </div>
 <div layout="row" layout-sm="column" layout-align="center">
-    <div layout="row" layout-align="center" hide-gt-md show-sm ng-repeat="idea in ideaslist | orderBy:sort | limitTo:2" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer md-padding">
-        <md-card style="width: 240px; height: 360px; background-color: grey">
-            <md-card-content>
-                {{idea.title}}
-            </md-card-content>
-        </md-card>
+    <div layout="row" layout-align="center" hide-gt-md show-sm ng-repeat="idea in ideaslist | orderBy:sort | limitTo:2" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer idea-card md-padding">
+        <idea-card idea="idea"></idea-card>
     </div>
-    <div hide show-lg  ng-repeat="idea in ideaslist | orderBy:sort | limitTo:3" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer md-padding">
-        <md-card style="width: 240px; height: 360px; background-color: grey">
-            <md-card-content>
-                {{idea.title}}
-            </md-card-content>
-        </md-card>
+    <div hide show-lg  ng-repeat="idea in ideaslist | orderBy:sort | limitTo:3" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer idea-card md-padding">
+        <idea-card idea="idea"></idea-card>
     </div>
-    <div hide show-gt-lg ng-repeat="idea in ideaslist | orderBy:sort | limitTo:4" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer md-padding">
-        <md-card style="width: 240px; height: 360px; background-color: grey">
-            <md-card-content>
-                {{idea.title}}
-            </md-card-content>
-        </md-card>
+    <div hide show-gt-lg ng-repeat="idea in ideaslist | orderBy:sort | limitTo:4" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer idea-card md-padding">
+        <idea-card idea="idea"></idea-card>
     </div>
 </div>
