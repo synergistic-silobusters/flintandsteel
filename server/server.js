@@ -18,7 +18,8 @@ var express = require('express'),
     fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
-    ip = require('ip');
+    ip = require('ip'),
+    helmet = require('helmet');
 // var cluster          = require('cluster');
 // var numCpus          = require('os').cpus().length;
 
@@ -38,6 +39,13 @@ var app = express();
 
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
+
+// helmet.use settings
+app.use(helmet());
+app.use(helmet.frameguard({ action: 'deny' }));
+app.use(helmet.xssFilter());
+app.use(helmet.xssFilter({ setOnOldIE: true }));
+app.use(helmet.noSniff())
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";

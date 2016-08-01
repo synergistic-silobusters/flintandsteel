@@ -29,6 +29,7 @@
     "chalk": "1.1.1",
     "express": "4.13.0",
     "external-ip": "0.2.4",
+    "helmet": "^2.1.2",
     "ip": "1.1.2",
     "lodash": "4.6.0",
     "mongodb": "2.1.4",
