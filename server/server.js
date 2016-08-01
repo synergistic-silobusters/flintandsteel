@@ -18,8 +18,7 @@ var express = require('express'),
     fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
-    ip = require('ip'),
-    helmet = require('helmet');
+    ip = require('ip');
 // var cluster          = require('cluster');
 // var numCpus          = require('os').cpus().length;
 
@@ -39,7 +38,6 @@ var app = express();
 
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
-app.use(helmet());
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
