@@ -39,13 +39,7 @@ var app = express();
 
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
-
-// helmet.use settings
 app.use(helmet());
-app.use(helmet.frameguard({ action: 'deny' }));
-app.use(helmet.xssFilter());
-app.use(helmet.xssFilter({ setOnOldIE: true }));
-app.use(helmet.noSniff())
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
