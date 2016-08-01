@@ -1,0 +1,17 @@
+<div class="whirligig-container">
+    <div class="whirligig-box active">
+        <ol class="content">
+            <li ng-repeat="slide in slides">
+                <img ng-src="{{slide.img}}" />
+            </li>
+        </ol>
+    </div>
+    <div class="buttons">
+        <md-button class="next md-icon-button md-primary" ng-click=navigate(1)>
+            <i class="material-icons">&#xE315;</i>
+        </md-button>
+        <md-button class="prev md-icon-button md-primary" ng-click=navigate(-1)>
+            <i class="material-icons">&#xE314;</i>
+        </md-button>
+    </div>
+</div>

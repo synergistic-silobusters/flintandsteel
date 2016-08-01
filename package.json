@@ -36,7 +36,8 @@
     "morgan": "1.7.0",
     "passport": "0.3.2",
     "passport-windowsauth": "1.0.0",
-    "sha.js": "2.4.5"
+    "sha.js": "2.4.5",
+    "x-frame-options": "^1.0.0"
   },
   "devDependencies": {
     "bench-rest": "1.1.1",
