@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // modules ============================================================
 var express = require('express'),
+    helmet = require('helmet'),
     morgan = require('morgan'),
     path = require('path'),
     chalk = require('chalk'),
@@ -18,8 +19,7 @@ var express = require('express'),
     fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
-    ip = require('ip'),
-    xFrameOptions = require('x-frame-options');
+    ip = require('ip');
 // var cluster          = require('cluster');
 // var numCpus          = require('os').cpus().length;
 
@@ -37,9 +37,9 @@ var logStream = fs.createWriteStream(__dirname + '/server.log', { flags: 'a' });
 
 var app = express();
 
+app.use(helmet());
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
-app.use(xFrameOptions());
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
