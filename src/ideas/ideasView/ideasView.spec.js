@@ -26,7 +26,8 @@ describe('IdeasViewCtrl', function() {
     var fakeWindow = {
         location: {
             href: ''
-        }
+        },
+        ga: function() {} // Google Analytics
     };
 
     beforeEach(module('flintAndSteel'));
@@ -1240,6 +1241,210 @@ describe('IdeasViewCtrl', function() {
                     sseSvcMock.simulate(tempIdea);
                     expect(toastSvc.show).toHaveBeenCalledWith('Oh no! The author just deleted that idea.');
                 });
+            });
+        });
+
+        describe('ctrl.editIdeaRating', function() {
+            var mockIdea;
+
+            beforeEach(function() {
+                mockIdea = ideaSvcMock.getIdea();
+                scope.idea = mockIdea.$$state.value.data;
+            });
+
+            it('should not edit if user is not logged in', function() {
+                spyOn(ideaSvcMock, 'editIdeaRating').and.callThrough();
+                //Logout as user
+                userSvcMock.logout();
+
+                //test function
+                ctrl.editIdeaRating(scope.idea);
+                expect(ideaSvcMock.editIdeaRating).not.toHaveBeenCalled();
+            });
+
+            it('should edit if user has logged in', function() {
+                spyOn(ideaSvcMock, 'editIdeaRating').and.callThrough();
+                //Login
+                userSvcMock.checkLogin(authorAccount);
+
+                //test function
+                ctrl.editIdeaRating(scope.idea);
+                expect(ideaSvcMock.editIdeaRating).toHaveBeenCalled();
+                scope.$digest();
+            });
+
+            it('should console log if issues with editIdeaRating', function() {
+                spyOn(ideaSvcMock, 'editIdeaRating').and.callFake(function editIdeaRating() {
+                    return $q.reject();
+                });
+                spyOn(console, 'log').and.callFake(function() {});
+
+                //Login
+                userSvcMock.checkLogin(authorAccount);
+
+                //test function
+                ctrl.editIdeaRating(scope.idea);
+                expect(ideaSvcMock.editIdeaRating).toHaveBeenCalled();
+                scope.$digest();
+                expect(console.log).toHaveBeenCalled();
+            });
+        });
+
+        describe('ctrl.updateStars', function() {
+            var mockIdea, mockStars;
+
+            beforeEach(function() {
+                mockIdea = ideaSvcMock.getIdea();
+                scope.idea = mockIdea.$$state.value.data;
+                mockStars = [
+                    { filled: true },
+                    { filled: true },
+                    { filled: false },
+                    { filled: false },
+                    { filled: false }
+                ];
+            });
+
+            it('should not update if data is null', function() {
+                scope.idea.complexity.push({value: 2, authorId: 1});
+                ctrl.updateStars(scope.idea.complexity[0]);
+                expect(scope.idea.complexity[0].stars).toEqual(mockStars);
+            });
+        });
+
+        describe('$scope.toggle', function() {
+            var mockIdea, mockValue;
+
+            beforeEach(function() {
+                mockIdea = ideaSvcMock.getIdea();
+                scope.idea = mockIdea.$$state.value.data;
+                mockValue = {
+                    value: 4,
+                    stars: [
+                        { filled: true },
+                        { filled: true },
+                        { filled: false },
+                        { filled: false },
+                        { filled: false }
+                    ],
+                    authorId: 1
+                };
+                spyOn(userSvcMock, 'getProperty').and.callThrough();
+            });
+
+            it('should not update if user is not logged in', function() {
+                //Logout as user
+                userSvcMock.logout();
+
+                scope.toggle(1, scope.idea.complexity);
+                expect(userSvcMock.getProperty).not.toHaveBeenCalled();
+            });
+
+            it('should update if user is logged in', function() {
+                //Login
+                userSvcMock.checkLogin(authorAccount);
+
+                scope.idea.complexity.push(mockValue);
+                scope.toggle(2, scope.idea.complexity);
+                expect(scope.idea.complexity[0].value).toBe(3);
+            });
+
+            it('should create a new rating if user has not rated', function() {
+                //Login
+                userSvcMock.checkLogin(authorAccount);
+
+                scope.toggle(2, scope.idea.complexity);
+                expect(scope.idea.complexity[0].value).toBe(3);
+            });
+        });
+
+        describe('$scope.hasUserRated', function() {
+            var mockIdea, mockValue, testReturn;
+
+            beforeEach(function() {
+                mockIdea = ideaSvcMock.getIdea();
+                scope.idea = mockIdea.$$state.value.data;
+                mockValue = {
+                    value: 4,
+                    stars: [
+                        { filled: true },
+                        { filled: true },
+                        { filled: false },
+                        { filled: false },
+                        { filled: false }
+                    ],
+                    authorId: 1
+                };
+            });
+
+            it('should return false if user has not rated', function() {
+                //Login
+                userSvcMock.checkLogin(authorAccount);
+
+                testReturn = scope.hasUserRated(scope.idea.complexity);
+                expect(testReturn).toBe(false);
+            });
+
+            it('should return true if user has rated', function() {
+                //Login
+                userSvcMock.checkLogin(authorAccount);
+                scope.toggle(3, scope.idea.complexity);
+
+                testReturn = scope.hasUserRated(scope.idea.complexity);
+                expect(testReturn).toBe(true);
+            });
+
+            it('should return false if user is not logged in', function() {
+                //Logout as user
+                userSvcMock.logout();
+
+                testReturn = scope.hasUserRated(scope.idea.complexity);
+                expect(testReturn).toBe(false);
+            });
+        });
+
+        describe('$scope.loadUserRating', function() {
+            var mockIdea, mockValue, testReturn;
+
+            beforeEach(function() {
+                mockIdea = ideaSvcMock.getIdea();
+                scope.idea = mockIdea.$$state.value.data;
+                mockValue = {
+                    value: 4,
+                    stars: [
+                        { filled: true },
+                        { filled: true },
+                        { filled: false },
+                        { filled: false },
+                        { filled: false }
+                    ],
+                    authorId: 1
+                };
+            });
+
+            it('should not return a rating if user is logged out', function() {
+                //Logout as user
+                userSvcMock.logout();
+
+                testReturn = scope.loadUserRating(scope.idea.complexity);
+                expect(testReturn).toEqual({});
+            });
+
+            it('should not return a rating if user has not rate', function() {
+                //Login
+                userSvcMock.checkLogin(authorAccount);
+
+                testReturn = scope.loadUserRating(scope.idea.complexity);
+                expect(testReturn).toEqual({});
+            });
+
+            it('should return a rating if user has rated', function() {
+                //Login
+                userSvcMock.checkLogin(authorAccount);
+
+                scope.idea.complexity.push(mockValue);
+                testReturn = scope.loadUserRating(scope.idea.complexity);
+                expect(testReturn).toEqual(mockValue);
             });
         });
     });

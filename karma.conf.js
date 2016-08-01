@@ -29,8 +29,8 @@ module.exports = function(config) {
             'src/lib/angular-messages/angular-messages.js',
             'src/lib/angular-identicon/src/identiconDirective.js',
             'src/lib/angular-identicon/src/md5.js',
-            'src/lib/identicon/identicon.js',
             'src/lib/identicon/pnglib.js',
+            'src/lib/identicon/identicon.js',
             'src/lib/marked/lib/marked.js',
             'src/lib/moment/moment.js',
             'src/lib/lodash/lodash.js',
@@ -42,6 +42,7 @@ module.exports = function(config) {
             'src/users/userSvc/userSvc.mock.js',
             'src/toastSvc/toastSvc.js',
             'src/homeView/homeView.js',
+            'src/learn/*.js',
             'src/events/**/*.js',
             'src/ideas/**/*.js',
             'src/navigation/**/*.js',
@@ -69,6 +70,7 @@ module.exports = function(config) {
             'src/navigation/**/!(*spec|*mock).js': ['coverage'],
             'src/users/**/!(*spec|*mock).js': ['coverage'],
             'src/utilities/**/!(*spec|*mock).js': ['coverage'],
+            'src/learn/**/!(*spec|*mock).js': ['coverage'],
             'src/**/*.tpl.html': ['ng-html2js']
         },
 

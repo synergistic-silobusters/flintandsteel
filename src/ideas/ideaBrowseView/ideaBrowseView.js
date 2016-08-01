@@ -19,10 +19,10 @@ angular.module('flintAndSteel')
                 console.log(response);
             });
 
-            sseSvc.create("newHeaders", "/sse/ideas", setIdeaHeaders);
+            sseSvc.subscribe("newHeaders", "/sse/ideas", setIdeaHeaders);
 
             $scope.$on('$stateChangeStart', function() {
-                sseSvc.destroy();
+                sseSvc.unsubscribe("/sse/ideas", setIdeaHeaders);
             });
         }
     ]

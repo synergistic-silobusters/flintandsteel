@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .factory('userSvc',
     [
-        '$http', '$rootScope', '$q',
-        function($http, $rootScope, $q) {
+        '$http', '$rootScope', '$q', '$window',
+        function($http, $rootScope, $q, $window) {
             "use strict";
 
             this.checkLogin = function checkLogin(account) {
@@ -15,6 +15,7 @@ angular.module('flintAndSteel')
 
                 $http.post('/api/v1/users/login', encodedAccount).then(function(response) {
                     $rootScope.account = response.data;
+                    $window.ga('set', 'userId', $rootScope.account._id);
                     def.resolve(response);
                 },
                 function(response) {

@@ -10,7 +10,7 @@
 describe('ideaSvc', function() {
     "use strict";
 
-    var ideaSvc, $httpBackend, dummyIdea, userSvc;
+    var ideaSvc, $httpBackend, dummyIdea, dummyUser, dummyRes, userSvc;
 
     beforeEach(module('flintAndSteel'));
 
@@ -58,8 +58,33 @@ describe('ideaSvc', function() {
                     name: 'Experience',
                     _lowername: 'experience'
                 }
+            ],
+            complexity: [
+                {
+                    value: 4,
+                    authorId: 1,
+                    stars: [
+                        { filled: true },
+                        { filled: true },
+                        { filled: true },
+                        { filled: true },
+                        { filled: false }
+                    ]
+                }
             ]
         };
+
+        dummyUser = {
+            id: 'dummy_user',
+            username: 'theBestDummy',
+            password: 'password',
+            name: 'Dummy User',
+            likedIdeas: ['mock_idea', 'dummy_idea']
+        };
+
+        dummyRes = dummyUser;
+        dummyRes.password = undefined;
+        dummyRes.status = 'AUTH_OK';
     }));
 
     afterEach(function() {
@@ -332,6 +357,68 @@ describe('ideaSvc', function() {
             $httpBackend.expectPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation);
 
             ideaSvc.editIdea(dummyIdea._id, dummyIdea.title, dummyIdea.description, dummyIdea.tags, dummyIdea.rolesreq, dummyIdea.eventId)
+            .then(function(response) {
+                expect(response.data).toBe('OK');
+            }, function() { });
+
+            $httpBackend.flush();
+        });
+
+        describe('ideaSvc.getUserIdeasById', function() {
+            it('should query the server for ideas by a user when an id is supplied', function() {
+                $httpBackend.whenGET('/api/v1/ideas/search?forterm=1&inpath=authorId').respond(200, dummyRes);
+                ideaSvc.getUserIdeasById(1).then(function() {}, function() {});
+                $httpBackend.flush();
+            });
+
+            it('should reject if an id was not supplied', function() {
+                ideaSvc.getUserIdeasById().catch(function(error) {
+                    expect(error).toEqual('No userId supplied');
+                });
+
+            });
+        });
+
+        describe('ideaSvc.getUserBacksById', function() {
+            it('should query the server idea backs by a user when an id is supplied', function() {
+                $httpBackend.whenGET('/api/v1/ideas/search?forterm=1&inpath=backs.authorId').respond(200, dummyRes);
+                ideaSvc.getUserBacksById(1).then(function() {}, function() {});
+                $httpBackend.flush();
+            });
+
+            it('should reject if an id was not supplied', function() {
+                ideaSvc.getUserBacksById().catch(function(error) {
+                    expect(error).toEqual('No userId supplied');
+                });
+
+            });
+        });
+    });
+
+    describe('ideaSvc.editIdeaRating', function() {
+        var editIdeaHandler, smallDummyIdea, patchOperation;
+
+        beforeEach(function() {
+            editIdeaHandler = $httpBackend.whenPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
+            smallDummyIdea = {
+                id: dummyIdea._id,
+                title: dummyIdea.title,
+                description: dummyIdea.description,
+                tags: dummyIdea.tags,
+                rolesreq: dummyIdea.rolesreq,
+                eventId: 1,
+                complexity: dummyIdea.complexity
+            };
+
+            patchOperation = [
+                { operation: 'modify', path: 'complexity', value: JSON.stringify(smallDummyIdea.complexity) }
+            ];
+        });
+
+        it('should edit an existing idea', function() {
+            $httpBackend.expectPATCH('/api/v1/ideas/' + dummyIdea._id, patchOperation).respond(200, 'OK');
+
+            ideaSvc.editIdeaRating(dummyIdea._id, dummyIdea.complexity)
             .then(function(response) {
                 expect(response.data).toBe('OK');
             }, function() { });

@@ -28,8 +28,8 @@
     <script src="lib/angular-aria/angular-aria.js"></script>
     <script src="lib/angular-identicon/dist/angular-identicon.js"></script>
     <script src="lib/angular-identicon/src/md5.js"></script>
-    <script src="lib/identicon/identicon.js"></script>
     <script src="lib/identicon/pnglib.js"></script>
+    <script src="lib/identicon/identicon.js"></script>
     <script src="lib/lodash/lodash.js"></script>
     <script src="lib/marked/lib/marked.js"></script>
     <script src="lib/moment/moment.js"></script>
@@ -41,6 +41,9 @@
 
     <!-- inject:js -->
   <script src="app.js"></script>
+  <script src="utilities/whirligig/whirlCtrl.js"></script>
+  <script src="utilities/whirligig/whilirigig.js"></script>
+  <script src="utilities/topIdeas.js"></script>
   <script src="utilities/startFromFilter.js"></script>
   <script src="utilities/sseSvc.js"></script>
   <script src="utilities/paginateSvc.js"></script>
@@ -51,6 +54,7 @@
   <script src="toastSvc/toastSvc.js"></script>
   <script src="navigation/toolbar.js"></script>
   <script src="navigation/sidenav.js"></script>
+  <script src="learn/pictureDialog.js"></script>
   <script src="learn/learnItem/learnItem.js"></script>
   <script src="learn/learn.js"></script>
   <script src="ideas/searchFilter/searchFilter.js"></script>
@@ -91,7 +95,7 @@
                 <img ui-sref="home" src="assets/Innovate-Rockwell-Automation-White.png" width="250"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span>
-            <md-button ng-controller="SidenavCtrl" aria-label="Add another idea" class="toolbar-left-link" ng-click="navTo('addidea')">
+            <md-button aria-label="Add another idea" class="toolbar-left-link" ui-sref="addidea">
                 Create
                 <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
                 <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
@@ -108,7 +112,7 @@
 
             <div class="md-padding" layout="row">
                 <!-- Feedback Button -->
-                <md-button class="md-icon-button" aria-label="Feedback" ui-sref="idea({ ideaId: '566eff2a6405f74421c3a583' })" ng-if="isUserLoggedIn()">
+                <md-button class="md-icon-button" aria-label="Feedback" ng-if="isUserLoggedIn()" href="mailto:innovate@ra.rockwell.com?subject=Innovate Feedback">
                     <i class="material-icons icon-button-adjust" flex-sm="100" flex-md="100" flex-gt-md="auto">&#xE87F;</i>
                     <md-tooltip md-direction="bottom">Feedback</md-tooltip>
                 </md-button>
@@ -122,8 +126,8 @@
                 <div class="user-menu" ng-show="isUserLoggedIn()">
                     <md-menu md-offset="0 60">
                         <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+                            <span hide show-gt-sm>{{currentUser}}</span>
                             <identicon md-menu-origin="" username='getUsername()' size='24' class="identicon identicon-home"></identicon>
-                            {{currentUser}}
                             <i class="material-icons icon-button-adjust">&#xE5CF;</i>
                         </md-button>
                         <md-menu-content width="4">
@@ -147,7 +151,7 @@
     </md-toolbar>
 
     <md-content flex layout="row">
-        <md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
+        <!-- <md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
             <md-content ng-controller="SidenavCtrl" flex>
                 <div layout="column" flex>
                     <div flex>
@@ -166,7 +170,7 @@
             </md-content>
             <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
             </div>
-        </md-sidenav>
+        </md-sidenav> -->
         <md-content ui-view flex></md-content>
     </md-content>
 

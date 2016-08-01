@@ -1,5 +1,32 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+.star {
+    /*color: #ffcc00;*/
+    padding-top: 7px;
+    color: #3F51B5;
+    font-size: 15px;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+
+    &.filled {
+      color: #ffcc00;
+    }
+}
+
+.black-star {
+    padding-top: 7px;
+    color: black;
+    font-size: 15px;
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+
+    &.filled {
+      color: #ffcc00;
+    }
+}
+
 .icon-button-adjust {
     vertical-align: middle;
 }
@@ -85,7 +112,7 @@ img.grayscale:hover {
     overflow: scroll;
 }
 
-h1.no-margins {
+h1.no-margins, h2.no-margins, h3.no-margins, h4.no-margins {
     margin: 0px;
     margin-block-end: 0;
     margin-block-start: 0;
@@ -93,7 +120,7 @@ h1.no-margins {
     -webkit-margin-before: 0;
 }
 
-h2.no-bottom-margin {
+h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin, h4.no-bottom-margin {
     -webkit-margin-after: 0;
 }
 
@@ -201,6 +228,10 @@ h2.no-bottom-margin {
     padding-left: 5px;
 }
 
+.extra-padding-right-sm {
+    padding-right: 5px;
+}
+
 .extra-padding-left-md {
     padding-left: 10px;
 }
@@ -278,7 +309,7 @@ h2.no-bottom-margin {
 }
 
 .margin-top {
-    margin-top: 30px;
+    margin-top: 75px;
 }
 
 .margin-bottom-md {
@@ -337,6 +368,7 @@ h2.no-bottom-margin {
 
 .identicon-home {
     margin-right: 10px;
+    margin-left: 10px;
 }
 
 .md-tab.md-active {
@@ -431,16 +463,19 @@ h2.no-bottom-margin {
     line-height: 65px;
     border-radius: 0;
 }
+
 .toolbar-links {
     margin-left: 6px;
     cursor: pointer;
     line-height: 65px;
     border-radius: 0;
 }
+
 .toolbar-lightbulb {
     cursor: pointer;
     cursor: hand;
 }
+
 .lightbulb {
     padding-top: 50px;
     max-width: 100%;
@@ -449,9 +484,40 @@ h2.no-bottom-margin {
 .title {
     padding: 35px;
 }
+
 .learn-objects {
     padding: 50px;
 }
+
 .learn-objects-img {
     width:100%;
 }
+
+.learn-dialog-img {
+    width:100%;
+    max-height: 500px;
+}
+
+.learn-dialog-content {
+    max-width:800px;
+    max-height:810px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.learn-dialog-button {
+    margin-right:20px;
+}
+
+.learn-item {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.learn-dialog-toolbar-padding {
+    padding-left:20px
+}
+
+.account-side-panel-stat {
+    color: #1976D2;
+    margin: 0px 15px 0px 15px;

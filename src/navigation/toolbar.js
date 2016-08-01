@@ -61,7 +61,7 @@ angular.module('flintAndSteel')
                         content = response.data.name + ' has successfully signed in!';
                     }
                     else if (response.data.status === 'AUTH_ERROR') {
-                        content = 'Your credentials don\'t match the stored ones :(';
+                        content = 'Invalid credentials :(';
                     }
                     else if (response.data.status === 'USER_NOT_FOUND') {
                         content = 'The user was not found in the server!';
@@ -83,7 +83,7 @@ angular.module('flintAndSteel')
                 if ($state.includes('idea')) {
                     $state.reload('idea');
                 }
-                else if ($state.includes('addidea')) {
+                else if ($state.includes('addidea') || $state.includes('account')) {
                     $state.go('home');
                 }
             };

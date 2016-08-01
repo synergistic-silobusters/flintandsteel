@@ -265,6 +265,20 @@ describe('ToolbarCtrl', function() {
             scope.logout();
             expect($state.go).toHaveBeenCalledWith('home');
         });
+
+        it('should go home if in account', function() {
+            spyOn($state, 'includes').and.callFake(function(data) {
+                if (data === 'account') {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+
+            scope.logout();
+            expect($state.go).toHaveBeenCalledWith('home');
+        });
     });
 
     describe('$scope.settings', function() {

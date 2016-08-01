@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .factory('ideaSvc',
     [
-        '$http', 'userSvc',
-        function($http, userSvc) {
+        '$http', 'userSvc', '$q',
+        function($http, userSvc, $q) {
             "use strict";
 
             function getAuthorizationString() {
@@ -131,6 +131,21 @@ angular.module('flintAndSteel')
                 }
             };
 
+            this.editIdeaRating = function editIdeaRating(ideaId, complexity) {
+                if (ideaId !== 'mock_idea') {
+                    return $http.patch('/api/v1/ideas/' + ideaId,
+                        [
+                            { operation: 'modify', path: 'complexity', value: JSON.stringify(complexity) }
+                        ],
+                        {
+                            headers: {
+                                'Authorization': getAuthorizationString()
+                            }
+                        }
+                    );
+                }
+            };
+
             this.deleteIdea = function deleteIdea(ideaId) {
                 if (ideaId !== 'mock_idea') {
                     return $http.delete('/api/v1/ideas/' + ideaId, {
@@ -158,6 +173,24 @@ angular.module('flintAndSteel')
                 });
             };
 
+            this.getUserIdeasById = function getUserIdeasById(userId) {
+                if (userId) {
+                    return $http.get('/api/v1/ideas/search?forterm=' + userId + '&inpath=authorId');
+                }
+                else {
+                    return $q.reject('No userId supplied');
+                }
+            };
+
+            this.getUserBacksById = function getUserBacksById(userId) {
+                if (userId) {
+                    return $http.get('/api/v1/ideas/search?forterm=' + userId + '&inpath=backs.authorId');
+                }
+                else {
+                    return $q.reject('No userId supplied');
+                }
+            };
+
             return {
                 postIdea: this.postIdea,
                 getIdea: this.getIdea,
@@ -170,7 +203,10 @@ angular.module('flintAndSteel')
                 editBack: this.editBack,
                 editIdea: this.editIdea,
                 deleteIdea: this.deleteIdea,
-                getBackTypeChips: this.getBackTypeChips
+                getBackTypeChips: this.getBackTypeChips,
+                editIdeaRating: this.editIdeaRating,
+                getUserIdeasById: this.getUserIdeasById,
+                getUserBacksById: this.getUserBacksById
             };
         }
     ]
