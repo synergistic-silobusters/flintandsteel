@@ -3,9 +3,26 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$document', '$scope', '$timeout', '$window', '$state', 'ideaSvc', 'sseSvc',
-        function($document, $scope, $timeout, $window, $state, ideaSvc, sseSvc) {
+        '$document', '$scope', '$timeout', '$window', '$state', 'ideaSvc', 'sseSvc', '$interval',
+        function($document, $scope, $timeout, $window, $state, ideaSvc, sseSvc, $interval) {
             "use strict";
+
+            // Check to make sure the document has finished loading the html
+            //   before showing it to reduce jank
+            $scope.loaded = false;
+            $scope.load = function load() {
+                if (document.readyState !== 'complete') {
+                    return;
+                }
+
+                $scope.loaded = true;
+            };
+            var loadTimer = $interval($scope.load, 100);
+
+            // Destroy timer on page change
+            $scope.$on('$destroy', function() {
+                $interval.cancel(loadTimer);
+            });
 
             function setIdeaHeaders(data) {
                 $scope.$apply(function() {
