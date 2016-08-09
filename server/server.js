@@ -42,12 +42,13 @@ app.use(helmet());
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
-var transporter = nodemailer.createTransport({
-    host: 'mailrelay.ra.rockwell.com',
-    port: 25
-});
 
 // Example of how to send an email.  More can be found at nodemailer.com
+// var transporter = nodemailer.createTransport({
+//     host: 'mailrelay.ra.rockwell.com',
+//     port: 25
+// });
+
 // var mailData = {
 //     from: 'innovate@ra.rockwell.com',
 //     to: 'djparis1@ra.rockwell.com',
