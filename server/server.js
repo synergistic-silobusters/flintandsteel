@@ -49,13 +49,13 @@ var transporter = nodemailer.createTransport({
 
 // Example of how to send an email.  More can be found at nodemailer.com
 var mailData = {
-    from: 'innovate@ra.rockwell.com',
-//     to: 'djparis1@ra.rockwell.com',
-//     subject: 'E-mail from server works',
-//     text: 'Plaintext version of the message'
+    from: 'innovate@ra.rockwell.com'
+//    to: 'djparis1@ra.rockwell.com',
+//    subject: 'E-mail from server works',
+//    text: 'Plaintext version of the message'
 };
 // Stubbed until we need it.
- transporter.sendMail(mailData);
+transporter.sendMail(mailData);
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
