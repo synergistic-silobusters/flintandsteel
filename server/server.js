@@ -19,7 +19,8 @@ var express = require('express'),
     fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
-    ip = require('ip');
+    ip = require('ip'),
+    nodemailer = require('nodemailer');
 // var cluster          = require('cluster');
 // var numCpus          = require('os').cpus().length;
 
@@ -40,6 +41,20 @@ var app = express();
 app.use(helmet());
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
+
+var transporter = nodemailer.createTransport({
+    host: 'mailrelay.ra.rockwell.com',
+    port: 25
+});
+
+// Example of how to send an email.  More can be found at nodemailer.com
+// var mailData = {
+//     from: 'innovate@ra.rockwell.com',
+//     to: 'djparis1@ra.rockwell.com',
+//     subject: 'E-mail from server works',
+//     text: 'Plaintext version of the message'
+// };
+// transporter.sendMail(mailData);
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
