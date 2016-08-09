@@ -43,10 +43,18 @@ app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
 
 var transporter = nodemailer.createTransport({
-    transport: 'ses', // loads nodemailer-ses-transport
-    accessKeyId: 'AWSACCESSKEY',
-    secretAccessKey: 'AWS/Secret/key'
+    host: 'mailrelay.ra.rockwell.com',
+    port: 25
 });
+
+var mailData = {
+    from: 'innovate@ra.rockwell.com',
+    to: 'djparis1@ra.rockwell.com',
+    subject: 'E-mail from server works',
+    text: 'Plaintext version of the message'
+};
+
+transporter.sendMail(mailData);
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
