@@ -50,9 +50,9 @@ var transporter = nodemailer.createTransport({
 // Example of how to send an email.  More can be found at nodemailer.com
 var mailData = {
     from: 'innovate@ra.rockwell.com'
-//    to: 'djparis1@ra.rockwell.com',
-//    subject: 'E-mail from server works',
-//    text: 'Plaintext version of the message'
+// to: 'djparis1@ra.rockwell.com',
+// subject: 'E-mail from server works',
+// text: 'Plaintext version of the message'
 };
 // Stubbed until we need it.
 transporter.sendMail(mailData);
