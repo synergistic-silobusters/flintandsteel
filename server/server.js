@@ -19,7 +19,8 @@ var express = require('express'),
     fs = require('fs'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
-    ip = require('ip');
+    ip = require('ip'),
+    nodemailer = require('nodemailer');
 // var cluster          = require('cluster');
 // var numCpus          = require('os').cpus().length;
 
@@ -40,6 +41,12 @@ var app = express();
 app.use(helmet());
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
+
+var transporter = nodemailer.createTransport({
+    transport: 'ses', // loads nodemailer-ses-transport
+    accessKeyId: 'AWSACCESSKEY',
+    secretAccessKey: 'AWS/Secret/key'
+});
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";

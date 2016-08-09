@@ -34,6 +34,7 @@
     "lodash": "4.6.0",
     "mongodb": "2.1.4",
     "morgan": "1.7.0",
+    "nodemailer": "2.5.0",
     "passport": "0.3.2",
     "passport-windowsauth": "1.0.0",
     "sha.js": "2.4.5"
