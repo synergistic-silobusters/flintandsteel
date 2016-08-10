@@ -47,16 +47,6 @@ var transporter = nodemailer.createTransport({
     port: 25
 });
 
-// Example of how to send an email.  More can be found at nodemailer.com
-var mailData = {
-    from: 'innovate@ra.rockwell.com'
-    // to: 'djparis1@ra.rockwell.com',
-    // subject: 'E-mail from server works',
-    // text: 'Plaintext version of the message'
-};
-// Stubbed until we need it.
-transporter.sendMail(mailData);
-
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -200,4 +190,14 @@ else {
         res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
         res.end();
     }).listen(80);
+    
+    // Example of how to send an email.  More can be found at nodemailer.com
+    // Notify team that the server has restarted.
+    var mailData = {
+        from: 'innovate@ra.rockwell.com',
+        to: 'innovate@ra.rockwell.com',
+        subject: 'Server Restart',
+        text: 'The Innovate server has restarted.'
+    };
+    transporter.sendMail(mailData);
 }
