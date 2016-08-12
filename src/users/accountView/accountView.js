@@ -21,12 +21,24 @@ angular.module('flintAndSteel')
                         $scope.user = result.data;
                     }
                 );
-
+                
+                // Get user subscription status
+                var userSubscription = userSvc.getProperty('isSubscribed');
+                if (userSubscription === "undefined")
+                {
+                    userSubscription = false;
+                }
+                userSvc.getUserSubscription(userSubscription).then(
+                    function(result) {
+                        $scope.isSubscribed = result.data;
+                    }
+                );
+                
                 $scope.userIdeas = [];
                 $scope.userBacks = [];
                 $scope.userTeams = [];
 
-                //Get user ideas
+                // Get user ideas
                 ideaSvc.getUserIdeasById(userId).then(
                     function(result) {
                         var userIdeaSearch = result.data;
@@ -43,7 +55,7 @@ angular.module('flintAndSteel')
                     console.log(error);
                 });
 
-                //Get user Backs and Teams
+                // Get user Backs and Teams
                 ideaSvc.getUserBacksById(userId).then(
                     function(result) {
                         var userBackSearch = result.data;

@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('WhirlCtrl',
     [
-        '$scope', '$interval',
-        function($scope, $interval) {
+        '$scope', '$interval', 'userSvc', '$state', 'toastSvc', 
+        function($scope, $interval, userSvc, $state, toastSvc) {
             "use strict";
 
             var ctrl = this;
@@ -79,6 +79,17 @@ angular.module('flintAndSteel')
                 }
             };
 
+            $scope.gotoAccount = function gotoAccount() {
+                if (!userSvc.isUserLoggedIn())
+                {
+                    toastSvc.show('Please log in to subscribe to email');
+                }
+                else
+                {
+                    $state.go('account');
+                }
+            };
+            
             $scope.$on('$destroy', function() {
                 // this assumes that you're using $interval and not window.setInterval
                 $interval.cancel(loadTimer);

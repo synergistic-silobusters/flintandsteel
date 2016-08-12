@@ -34,6 +34,12 @@
         </div>
     </div>
     <div class="md-padding">
+        <h3 class="no-margins">Email List</h3>
+        <md-switch ng-model="user.isSubscribed" ng-true-value="'You are subscribed!'" ng-false-value="'You are not subscribed to Innovate news:('">
+            {{ user.isSubscribed }}
+        </md-switch>
+    </div>
+    <div class="md-padding">
         <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">
             <md-tab label="My Ideas">
                 <md-content class="md-padding">
