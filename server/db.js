@@ -228,11 +228,14 @@ module.exports = function(dbName, cb) {
                         }
                     }
                 }
+                else if (collection === 'users') {
+                    
+                }
                 else if (collection === 'comments' && command.path === 'authorId' || command.path === 'parentId') {
                     valueObj = new ObjectId(valueObj);
                 }
             }
-            
+
             switch (command.operation) {
                 case "append":
                     toChange = {};

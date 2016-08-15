@@ -21,19 +21,10 @@ angular.module('flintAndSteel')
                         $scope.user = result.data;
                     }
                 );
-                
+
                 // Get user subscription status
-                var userSubscription = userSvc.getProperty('isSubscribed');
-                if (userSubscription === "undefined")
-                {
-                    userSubscription = false;
-                }
-                userSvc.getUserSubscription(userSubscription).then(
-                    function(result) {
-                        $scope.isSubscribed = result.data;
-                    }
-                );
-                
+                $scope.isUserSubscribed = userSvc.getProperty('isSubscribed') || false;
+
                 $scope.userIdeas = [];
                 $scope.userBacks = [];
                 $scope.userTeams = [];

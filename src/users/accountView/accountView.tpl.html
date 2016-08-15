@@ -35,8 +35,13 @@
     </div>
     <div class="md-padding">
         <h3 class="no-margins">Email List</h3>
-        <md-switch ng-model="user.isSubscribed" ng-true-value="'You are subscribed!'" ng-false-value="'You are not subscribed to Innovate news:('">
-            {{ user.isSubscribed }}
+        <md-switch aria-label="Subscribe to Email" ng-model="isUserSubscribed">
+            <div ng-if="isUserSubscribed">
+                <h4>You are subscribed to the Innovate mailing list!</h4>
+            </div>
+            <div ng-if="!isUserSubscribed">
+                <h4>You are not subscribed :(</h4>
+            </div>
         </md-switch>
     </div>
     <div class="md-padding">

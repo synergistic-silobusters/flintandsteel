@@ -11,7 +11,7 @@ function User(firstName, lastName, fullName, username, email, nickname, title, i
     this.email = email;
     this.nickname = nickname;
     this.title = title;
-    this.isSubscribed = isSubscribed;
+    this.isSubscribed = isSubscribed || false;
 
     return this;
 }
@@ -32,6 +32,7 @@ function UserLDAP(ldapObj) {
     this.email = ldapJson.mail;
     this.nickname = ldapJson.cn;
     this.title = ldapJson.title;
+    this.isSubscribed = false;
 
     return this;
 }
