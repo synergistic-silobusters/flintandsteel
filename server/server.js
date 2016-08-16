@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // modules ============================================================
 var express = require('express'),
+    helmet = require('helmet'),
     morgan = require('morgan'),
     path = require('path'),
     chalk = require('chalk'),
@@ -19,7 +20,7 @@ var express = require('express'),
     passport = require('passport'),
     WindowsStrategy = require('passport-windowsauth'),
     ip = require('ip'),
-    xFrameOptions = require('x-frame-options');
+    nodemailer = require('nodemailer');
 // var cluster          = require('cluster');
 // var numCpus          = require('os').cpus().length;
 
@@ -37,9 +38,14 @@ var logStream = fs.createWriteStream(__dirname + '/server.log', { flags: 'a' });
 
 var app = express();
 
+app.use(helmet());
 app.use(express.static(path.join(__dirname + '/../src')));
 app.use(bodyParser.json());
-app.use(xFrameOptions());
+
+var transporter = nodemailer.createTransport({
+    host: 'mailrelay.ra.rockwell.com',
+    port: 25
+});
 
 if (process.env.NODE_ENV === 'production') {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -184,4 +190,14 @@ else {
         res.writeHead(302, { "Location": "https://" + req.headers.host + req.url });
         res.end();
     }).listen(80);
+    
+    // Example of how to send an email.  More can be found at nodemailer.com
+    // Notify team that the server has restarted.
+    var mailData = {
+        from: 'innovate@ra.rockwell.com',
+        to: 'innovate@ra.rockwell.com',
+        subject: 'Server Restart',
+        text: 'The Innovate server has restarted.'
+    };
+    transporter.sendMail(mailData);
 }
