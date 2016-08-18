@@ -68,6 +68,18 @@ angular.module('flintAndSteel')
                     console.log(error);
                 });
             }
+
+            // Set isSubscribed
+            $scope.subscribe = function() {
+                $scope.isUserSubscribed = userSvc.getSubcriptionStatus();
+                console.log($scope.isUserSubscribed);
+                userSvc.setSubscription(userId, $scope.isUserSubscribed).then(function(response) {
+                    // Assuming I should update isUserSubscribed with what isSubscribed has changed to on success.
+                    $scope.isUserSubscribed = userSvc.getProperty('isSubscribed');
+                }).catch(function(error) {
+                    // error here
+                });
+            };
         }
     ]
 );

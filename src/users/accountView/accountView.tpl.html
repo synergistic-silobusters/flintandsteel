@@ -35,7 +35,7 @@
     </div>
     <div class="md-padding">
         <h3 class="no-margins">Email List</h3>
-        <md-switch aria-label="Subscribe to Email" ng-model="isUserSubscribed">
+        <md-switch aria-label="Subscribe to Email" ng-click="subscribe()" ng-model="isUserSubscribed">
             <div ng-if="isUserSubscribed">
                 <h4>You are subscribed to the Innovate mailing list!</h4>
             </div>
