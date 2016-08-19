@@ -2,7 +2,11 @@
     <div class="whirligig-box active">
         <ol class="content">
             <li ng-repeat="slide in slides">
-                <img ng-src="{{slide.img}}" />
+                <div ng-if="$first" ng-click="gotoAccount()">
+                    <img class="toolbar-lightbulb" ng-src="{{slide.img}}" />
+                </div>
+                <img ng-if="$middle" ng-src="{{slide.img}}" />
+                <img ng-if="$last"   ng-src="{{slide.img}}" />
             </li>
         </ol>
     </div>
