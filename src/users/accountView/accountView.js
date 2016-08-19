@@ -71,10 +71,10 @@ angular.module('flintAndSteel')
 
             // Set isSubscribed
             $scope.subscribe = function() {
-                userSvc.setSubscription(userId, $scope.isUserSubscribed).then(function(response) {
+                userSvc.setSubscription(userId, $scope.isUserSubscribed).then(function() {
                     // Success here
                 }).catch(function(error) {
-                    // Error here
+                    console.log(error);
                 });
             };
         }
