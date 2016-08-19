@@ -3,7 +3,7 @@
 angular.module('flintAndSteel')
 .controller('WhirlCtrl',
     [
-        '$scope', '$interval', 'userSvc', '$state', 'toastSvc', 
+        '$scope', '$interval', 'userSvc', '$state', 'toastSvc',
         function($scope, $interval, userSvc, $state, toastSvc) {
             "use strict";
 
@@ -89,7 +89,7 @@ angular.module('flintAndSteel')
                     $state.go('account');
                 }
             };
-            
+
             $scope.$on('$destroy', function() {
                 // this assumes that you're using $interval and not window.setInterval
                 $interval.cancel(loadTimer);
