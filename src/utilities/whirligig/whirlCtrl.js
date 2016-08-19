@@ -80,12 +80,10 @@ angular.module('flintAndSteel')
             };
 
             $scope.gotoAccount = function gotoAccount() {
-                if (!userSvc.isUserLoggedIn())
-                {
+                if (!userSvc.isUserLoggedIn()) {
                     toastSvc.show('Please log in to subscribe to email');
                 }
-                else
-                {
+                else {
                     $state.go('account');
                 }
             };

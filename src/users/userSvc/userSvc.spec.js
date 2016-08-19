@@ -4,6 +4,7 @@
 /* global inject */
 /* global it */
 /* global expect */
+/* global spyOn */
 
 describe('userSvc', function() {
     "use strict";
