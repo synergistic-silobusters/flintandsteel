@@ -34,7 +34,7 @@ var insertResult = db.users.insert(
             email: 'test1@test.com',
             nickname: 'Threepy',
             title: 'Hippy Lumberjack',
-            isSubscribed: 'false'
+            isSubscribed: false
         },
         {
             firstName: 'Rick',

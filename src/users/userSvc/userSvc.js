@@ -40,10 +40,6 @@ angular.module('flintAndSteel')
                 return $rootScope.account[propertyName];
             };
 
-            this.getSubcriptionStatus = function getSubcriptionStatus() {
-                return $rootScope.account.isSubscribed;
-            };
-
             this.getUserById = function getUserById(userId) {
                 if (userId) {
                     return $http.get('/api/v1/users/' + userId);
@@ -78,7 +74,6 @@ angular.module('flintAndSteel')
                 isUserLoggedIn: this.isUserLoggedIn,
                 logout: this.logout,
                 getProperty: this.getProperty,
-                getSubcriptionStatus: this.getSubcriptionStatus,
                 getUserById: this.getUserById,
                 setSubscription: this.setSubscription
             };

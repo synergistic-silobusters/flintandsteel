@@ -36,7 +36,8 @@ module.exports = function(db) {
                     _id: user._id,
                     username: user.username,
                     email: user.email,
-                    name: user.fullName
+                    name: user.fullName,
+                    isSubscribed: user.isSubscribed
                 };
                 cb(null, responseObj);
             }
@@ -59,7 +60,8 @@ module.exports = function(db) {
                         name: doc.fullName,
                         username: doc.username,
                         email: doc.email,
-                        token: doc.token
+                        token: doc.token,
+                        isSubscribed: doc.isSubscribed
                     });
                 }
             });
