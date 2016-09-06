@@ -49,12 +49,33 @@ angular.module('flintAndSteel')
                 }
             };
 
+            var self = this; // Using "this" threw a fit
+
+            function getAuthorizationString() {
+                return 'Bearer ' +
+                self.getProperty('_id') + ':' +
+                self.getProperty('token');
+            }
+
+            this.setSubscription = function setSubscription(userId, isSubscribed) {
+                return $http.patch('/api/v1/users/' + userId,
+                [
+                    { operation: 'modify', path: 'isSubscribed', value: isSubscribed }
+                ],
+                {
+                    headers: {
+                        'Authorization': getAuthorizationString()
+                    }
+                });
+            };
+
             return {
                 checkLogin: this.checkLogin,
                 isUserLoggedIn: this.isUserLoggedIn,
                 logout: this.logout,
                 getProperty: this.getProperty,
-                getUserById: this.getUserById
+                getUserById: this.getUserById,
+                setSubscription: this.setSubscription
             };
         }
     ]

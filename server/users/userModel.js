@@ -1,7 +1,7 @@
 /* global exports */
 /* global process */
 
-function User(firstName, lastName, fullName, username, email, nickname, title) {
+function User(firstName, lastName, fullName, username, email, nickname, title, isSubscribed) {
     "use strict";
 
     this.firstName = firstName;
@@ -11,6 +11,7 @@ function User(firstName, lastName, fullName, username, email, nickname, title) {
     this.email = email;
     this.nickname = nickname;
     this.title = title;
+    this.isSubscribed = isSubscribed || false;
 
     return this;
 }
@@ -31,6 +32,7 @@ function UserLDAP(ldapObj) {
     this.email = ldapJson.mail;
     this.nickname = ldapJson.cn;
     this.title = ldapJson.title;
+    this.isSubscribed = false;
 
     return this;
 }
@@ -45,10 +47,10 @@ if (process.env.NODE_ENV === 'production') {
     };
 }
 else {
-    createFn = function(firstName, lastName, fullName, username, email, nickname, title) {
+    createFn = function(firstName, lastName, fullName, username, email, nickname, title, isSubscribed) {
         "use strict";
 
-        return new User(firstName, lastName, fullName, username, email, nickname, title);
+        return new User(firstName, lastName, fullName, username, email, nickname, title, isSubscribed);
     };
 }
 

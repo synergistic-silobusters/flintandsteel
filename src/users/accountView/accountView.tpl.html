@@ -34,6 +34,17 @@
         </div>
     </div>
     <div class="md-padding">
+        <h3 class="no-margins">Email List</h3>
+        <md-switch aria-label="Subscribe to Email" ng-model="isUserSubscribed" ng-change="subscribe()">
+            <div ng-if="isUserSubscribed">
+                <h4>You are subscribed to the Innovate mailing list!</h4>
+            </div>
+            <div ng-if="!isUserSubscribed">
+                <h4>You are not subscribed :(</h4>
+            </div>
+        </md-switch>
+    </div>
+    <div class="md-padding">
         <md-tabs md-dynamic-height md-border-bottom="" md-selected="selectedTab">
             <md-tab label="My Ideas">
                 <md-content class="md-padding">

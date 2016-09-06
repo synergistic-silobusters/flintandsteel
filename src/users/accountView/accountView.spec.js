@@ -92,5 +92,9 @@ describe('AccountViewCtrl', function() {
         it('should populate user teams', function() {
             expect(scope.userTeams.length).toBe(1);
         });
+
+        it('should populate subscription status', function() {
+            expect(scope.isUserSubscribed).toBe(false);
+        });
     });
 });
