@@ -1,17 +1,19 @@
 /* global angular */
 
 angular.module('flintAndSteel')
-.directive('ideaItem', 
+.directive('topIdeas',
     [
         function() {
             "use strict";
-            
+
             return {
                 restrict: 'E',
                 scope: {
-                    idea: '='
+                    title: '@',
+                    ideaslist: '=',
+                    sort: '='
                 },
-                templateUrl: 'ideas/ideaItem/ideaItem.tpl.html'
+                templateUrl: 'ideas/topIdeas/topIdeas.tpl.html'
             };
         }
     ]
