@@ -7,8 +7,7 @@
         "username": "",
         "email": "",
         "nickname": "",
-        "title": "",
-        "isSubscribed": ""
+        "title": ""
     },
     "idea": {
         "_id": "mongo_generated",

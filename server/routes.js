@@ -318,7 +318,7 @@ module.exports = function(app, db) {
             res.sendStatus(500);
         });
     });
-    */
+
     app.patch('/api/v1/users/:id', processAuthorization, function(req, res) {
         var promises = [];
 
@@ -333,7 +333,7 @@ module.exports = function(app, db) {
             res.sendStatus(500);
         });
     });
-
+    */
     app.get('/api/v1/events', function(req, res) {
         events.getAll().then(function(results) {
             res.status(200).json(results);

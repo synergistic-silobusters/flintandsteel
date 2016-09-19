@@ -33,8 +33,7 @@ var insertResult = db.users.insert(
             username: 'test1',
             email: 'test1@test.com',
             nickname: 'Threepy',
-            title: 'Hippy Lumberjack',
-            isSubscribed: false
+            title: 'Hippy Lumberjack'
         },
         {
             firstName: 'Rick',
@@ -43,8 +42,7 @@ var insertResult = db.users.insert(
             username: 'test2',
             email: 'test2@test.com',
             nickname: 'Dirty',
-            title: 'Street Pharmacist',
-            isSubscribed: false
+            title: 'Street Pharmacist'
         },
         {
             firstName: 'Dick',
@@ -53,8 +51,7 @@ var insertResult = db.users.insert(
             username: 'test3',
             email: 'test3@test.com',
             nickname: 'The Fracker',
-            title: 'Money Bags Oil Man',
-            isSubscribed: true
+            title: 'Money Bags Oil Man'
         },
         {
             firstName: 'Test',
@@ -63,8 +60,7 @@ var insertResult = db.users.insert(
             username: 'test4',
             email: 'test4@test.com',
             nickname: 'The Tester',
-            title: 'Testin\' All Day',
-            isSubscribed: false
+            title: 'Testin\' All Day'
         }
     ]
 );

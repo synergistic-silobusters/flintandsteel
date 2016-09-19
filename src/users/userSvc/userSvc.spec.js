@@ -4,7 +4,6 @@
 /* global inject */
 /* global it */
 /* global expect */
-/* global spyOn */
 
 describe('userSvc', function() {
     "use strict";
@@ -131,26 +130,6 @@ describe('userSvc', function() {
                 expect(result).toBe(false);
             });
 
-        });
-    });
-
-    describe('userSvc.setSubscription', function() {
-        beforeEach(function() {
-            $rootScope.account = dummyUser;
-            spyOn(userSvc, 'getProperty').and.callFake(function(prop) {
-                if (prop === '_id') {
-                    return 'test_id';
-                }
-                else if (prop === 'token') {
-                    return 'test_token';
-                }
-            });
-        });
-
-        it('should set isSubscribed', function() {
-            $httpBackend.whenPATCH('/api/v1/users/1').respond(200, 'OK');
-            userSvc.setSubscription(1, true).then(function() {}, function() {});
-            $httpBackend.flush();
         });
     });
 });

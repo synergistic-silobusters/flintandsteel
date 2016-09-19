@@ -11,15 +11,13 @@ angular.module('flintAndSteel')
                 _id: 1,
                 username: 'MainManDarth',
                 name: 'Darth Vader',
-                likedIdeas: [ 'mock_idea' ],
-                isSubscribed: false
+                likedIdeas: [ 'mock_idea' ]
             };
 
             var mockUserAccount2 = {
                 _id: 2,
                 username: 'SonOfDarth',
-                name: 'Luke Skywalker',
-                isSubscribed: true
+                name: 'Luke Skywalker'
             };
 
             var loggedIn = false;
