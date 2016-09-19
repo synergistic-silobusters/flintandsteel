@@ -22,9 +22,6 @@ angular.module('flintAndSteel')
                     }
                 );
 
-                // Get user subscription status
-                $scope.isUserSubscribed = userSvc.getProperty('isSubscribed') || false;
-
                 $scope.userIdeas = [];
                 $scope.userBacks = [];
                 $scope.userTeams = [];
@@ -68,15 +65,6 @@ angular.module('flintAndSteel')
                     console.log(error);
                 });
             }
-
-            // Set isSubscribed
-            $scope.subscribe = function() {
-                userSvc.setSubscription(userId, $scope.isUserSubscribed).then(function() {
-                    // Success here
-                }).catch(function(error) {
-                    console.log(error);
-                });
-            };
         }
     ]
 );
