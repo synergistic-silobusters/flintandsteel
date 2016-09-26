@@ -334,8 +334,6 @@ module.exports = function(app, db) {
         });
     });
     */
-
-
     app.get('/api/v1/events', function(req, res) {
         events.getAll().then(function(results) {
             res.status(200).json(results);

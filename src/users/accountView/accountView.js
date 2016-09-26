@@ -26,7 +26,7 @@ angular.module('flintAndSteel')
                 $scope.userBacks = [];
                 $scope.userTeams = [];
 
-                //Get user ideas
+                // Get user ideas
                 ideaSvc.getUserIdeasById(userId).then(
                     function(result) {
                         var userIdeaSearch = result.data;
@@ -43,7 +43,7 @@ angular.module('flintAndSteel')
                     console.log(error);
                 });
 
-                //Get user Backs and Teams
+                // Get user Backs and Teams
                 ideaSvc.getUserBacksById(userId).then(
                     function(result) {
                         var userBackSearch = result.data;
