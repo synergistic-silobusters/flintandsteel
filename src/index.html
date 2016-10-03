@@ -43,7 +43,6 @@
   <script src="app.js"></script>
   <script src="utilities/whirligig/whirlCtrl.js"></script>
   <script src="utilities/whirligig/whilirigig.js"></script>
-  <script src="utilities/topIdeas.js"></script>
   <script src="utilities/startFromFilter.js"></script>
   <script src="utilities/sseSvc.js"></script>
   <script src="utilities/paginateSvc.js"></script>
@@ -57,14 +56,15 @@
   <script src="learn/pictureDialog.js"></script>
   <script src="learn/learnItem/learnItem.js"></script>
   <script src="learn/learn.js"></script>
+  <script src="ideas/topIdeas/topIdeas.js"></script>
   <script src="ideas/searchFilter/searchFilter.js"></script>
   <script src="ideas/ideasView/ideasView.js"></script>
   <script src="ideas/ideasView/ideaBack/dialogBack.js"></script>
   <script src="ideas/ideaSvc/ideaSvc.js"></script>
   <script src="ideas/ideaItemBrowse/ideaItemBrowse.js"></script>
-  <script src="ideas/ideaItem/ideaItem.js"></script>
   <script src="ideas/ideaInput/IdeaInputCtrl.js"></script>
   <script src="ideas/ideaInput/ideaInput.js"></script>
+  <script src="ideas/ideaCard/ideaCard.js"></script>
   <script src="ideas/ideaBrowseView/ideaBrowseView.js"></script>
   <script src="ideas/addIdeaView/addIdeaView.js"></script>
   <script src="homeView/timelineEvent/timelineEvent.js"></script>
@@ -85,26 +85,42 @@
 </head>
 
 <body ng-app="flintAndSteel" layout="column">
-
     <md-toolbar ng-controller="ToolbarCtrl">
         <div class="md-toolbar-tools">
-            <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
-                <i class="material-icons icon-button-adjust">&#xE5D2;</i>
-            </md-button>
+            <md-menu md-offset="-15 60">
+                <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="$mdOpenMenu($event)">
+                    <i class="material-icons icon-button-adjust">&#xE5D2;</i>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button aria-label="Add another idea" ui-sref="addidea">Create</md-button>
+                        <md-tooltip md-direction="right" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
+                        <md-tooltip md-direction="right" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ui-sref="ideabrowse">Browse</md-button>
+                        <md-tooltip md-direction="right">Browse Ideas</md-tooltip>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ui-sref="learn">Learn</md-button>
+                        <md-tooltip md-direction="right">Learn About Innovate</md-tooltip>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
             <span class="toolbar-lightbulb">
-                <img ui-sref="home" src="assets/Innovate-Rockwell-Automation-White.png" width="250"/>
+                <img ui-sref="home" src="assets/Lightbulb-no-globe.png" width="35"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span>
-            <md-button aria-label="Add another idea" class="toolbar-left-link" ui-sref="addidea">
+            <md-button hide show-gt-md aria-label="Add another idea" class="toolbar-left-link" ui-sref="addidea">
                 Create
                 <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
                 <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
             </md-button>
-            <md-button class="toolbar-links" ui-sref="ideabrowse">
+            <md-button hide show-gt-md class="toolbar-links" ui-sref="ideabrowse">
                 Browse
                 <md-tooltip md-direction="bottom">Browse Ideas</md-tooltip>
             </md-button>
-            <md-button class="toolbar-links" ui-sref="learn">
+            <md-button hide show-gt-md class="toolbar-links" ui-sref="learn">
                 Learn
                 <md-tooltip md-direction="bottom">Learn About Innovate</md-tooltip>
             </md-button>
@@ -151,26 +167,6 @@
     </md-toolbar>
 
     <md-content flex layout="row">
-        <!-- <md-sidenav md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-z2" md-component-id="left" layout="column">
-            <md-content ng-controller="SidenavCtrl" flex>
-                <div layout="column" flex>
-                    <div flex>
-                        <md-list class="top-ideas-list">
-                            <md-subheader class="md-accent md-hue-1">Trending Ideas</md-subheader>
-                            <div layout="row" layout-align="center center" class="no-ideas-div" ng-show="!topIdeas.length">
-                                <h3><i>No ideas</i></h3>
-                            </div>
-                            <md-item ng-repeat="idea in topIdeas | orderBy:'-likes' | limitTo:10">
-                                <idea-item idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-item>
-                            </md-item>
-                        </md-list>
-                        <md-divider></md-divider>
-                    </div>
-                </div>
-            </md-content>
-            <div ng-controller="SidenavCtrl" flex class="add-idea" layout="row" layout-align="end end">
-            </div>
-        </md-sidenav> -->
         <md-content ui-view flex></md-content>
     </md-content>
 

@@ -3,8 +3,8 @@
 angular.module('flintAndSteel')
 .controller('WhirlCtrl',
     [
-        '$scope', '$interval',
-        function($scope, $interval) {
+        '$scope', '$interval', 'userSvc', '$state', 'toastSvc',
+        function($scope, $interval, userSvc, $state, toastSvc) {
             "use strict";
 
             var ctrl = this;
@@ -76,6 +76,15 @@ angular.module('flintAndSteel')
                     // If navigate is used, restart slide interval
                     $interval.cancel(slideTimer);
                     slideTimer = $interval($scope.increment, delayTime);
+                }
+            };
+
+            $scope.gotoAccount = function gotoAccount() {
+                if (!userSvc.isUserLoggedIn()) {
+                    toastSvc.show('Please log in to subscribe to email');
+                }
+                else {
+                    $state.go('account');
                 }
             };
 
