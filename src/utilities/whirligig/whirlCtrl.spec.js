@@ -10,15 +10,22 @@
 describe('WhirlCtrl', function() {
     "use strict";
 
-    var scope, ctrl, compile, $document;
+    var scope, ctrl, compile, $document, $state, userSvc;
 
     beforeEach(module('flintAndSteel'));
 
     beforeEach(
-        inject(function($rootScope, $controller, $compile, _$document_) {
+        inject(function($rootScope, $controller, $compile, _$document_, _$state_, _userSvc_) {
             scope = $rootScope.$new();
             compile = $compile;
             $document = _$document_;
+            $state = _$state_;
+            userSvc = _userSvc_;
+
+            spyOn($state, 'go');
+            spyOn(userSvc, 'isUserLoggedIn').and.callFake(function() {
+                return true;
+            });
 
             ctrl = $controller('WhirlCtrl', {
                 $scope: scope
@@ -87,6 +94,13 @@ describe('WhirlCtrl', function() {
             // navigate backward
             scope.navigate(0);
             expect(ctrl.counter).toBe(0);
+        });
+    });
+
+    describe('$scope.gotoAccount', function() {
+        it('should go to account when logged in', function() {
+            scope.gotoAccount();
+            expect($state.go).toHaveBeenCalledWith('account');
         });
     });
 });

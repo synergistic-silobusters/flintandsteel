@@ -85,26 +85,42 @@
 </head>
 
 <body ng-app="flintAndSteel" layout="column">
-
     <md-toolbar ng-controller="ToolbarCtrl">
         <div class="md-toolbar-tools">
-            <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="showNav()">
-                <i class="material-icons icon-button-adjust">&#xE5D2;</i>
-            </md-button>
+            <md-menu md-offset="-15 60">
+                <md-button hide-gt-md class="md-icon-button" aria-label="Menu" ng-click="$mdOpenMenu($event)">
+                    <i class="material-icons icon-button-adjust">&#xE5D2;</i>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button aria-label="Add another idea" ui-sref="addidea">Create</md-button>
+                        <md-tooltip md-direction="right" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
+                        <md-tooltip md-direction="right" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ui-sref="ideabrowse">Browse</md-button>
+                        <md-tooltip md-direction="right">Browse Ideas</md-tooltip>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ui-sref="learn">Learn</md-button>
+                        <md-tooltip md-direction="right">Learn About Innovate</md-tooltip>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
             <span class="toolbar-lightbulb">
-                <img ui-sref="home" src="assets/Innovate-Rockwell-Automation-White.png" width="250"/>
+                <img ui-sref="home" src="assets/Lightbulb-no-globe.png" width="35"/>
                 <md-tooltip md-direction="bottom">Home</md-tooltip>
             </span>
-            <md-button aria-label="Add another idea" class="toolbar-left-link" ui-sref="addidea">
+            <md-button hide show-gt-md aria-label="Add another idea" class="toolbar-left-link" ui-sref="addidea">
                 Create
                 <md-tooltip md-direction="bottom" ng-if="isUserLoggedIn()">Add Idea</md-tooltip>
                 <md-tooltip md-direction="bottom" ng-if="!isUserLoggedIn()">Log In to Create</md-tooltip>
             </md-button>
-            <md-button class="toolbar-links" ui-sref="ideabrowse">
+            <md-button hide show-gt-md class="toolbar-links" ui-sref="ideabrowse">
                 Browse
                 <md-tooltip md-direction="bottom">Browse Ideas</md-tooltip>
             </md-button>
-            <md-button class="toolbar-links" ui-sref="learn">
+            <md-button hide show-gt-md class="toolbar-links" ui-sref="learn">
                 Learn
                 <md-tooltip md-direction="bottom">Learn About Innovate</md-tooltip>
             </md-button>
