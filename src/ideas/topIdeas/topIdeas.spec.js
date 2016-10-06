@@ -22,7 +22,7 @@ describe('ideaItemBrowse', function() {
 
     beforeEach(function() {
         module('flintAndSteel');
-        module('utilities/topIdeas.tpl.html');
+        module('ideas/topIdeas/topIdeas.tpl.html');
 
         inject(function($rootScope, $compile) {
             scope = $rootScope.$new();
