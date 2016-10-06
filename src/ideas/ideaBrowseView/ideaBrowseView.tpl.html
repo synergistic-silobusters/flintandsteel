@@ -6,7 +6,7 @@
         <input name="search" ng-model="searchText">
     </md-input-container>
     <div layout="row" layout-align="center center" layout-wrap>
-        <md-item ng-repeat="idea in searchResults=(topIdeas | search:searchText)">
+        <md-item ng-repeat="idea in searchResults=(topIdeas | search:searchText)" class="md-padding">
             <idea-card idea="idea" ui-sref="idea({ ideaId: idea._id })" class="idea-pointer"></idea-card>
         </md-item>
         <h3 class="no-ideas-div" ng-show="!searchResults.length"><i>No ideas match your search</i></h3>
