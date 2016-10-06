@@ -9,23 +9,23 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <span class="sign-in-tip" flex>Use your RA-INT Credentials</span>
+        <span class="sign-in-tip">Use your RA-INT Credentials</span>
         <md-dialog-content class="extra-padding-15 extra-padding-top-md" layout="column">
-            <md-input-container flex>
+            <md-input-container>
                 <label>Username</label>
                 <input id="username" ng-model="account.username" name="username" required>
                 <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
-            <md-input-container flex>
+            <md-input-container>
                 <label>Password</label>
                 <input ng-model="account.password" name="password" type="password" required>
                 <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
-            <md-dialog-actions flex>
+            <md-dialog-actions>
                 <md-button class="md-raised md-primary login-button" type="submit" ng-disabled="loginForm.$invalid">
                     Login
                 </md-button>
