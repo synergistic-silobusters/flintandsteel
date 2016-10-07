@@ -38,10 +38,10 @@ describe('HomeViewCtrl', function() {
 
     beforeEach(function() {
         scope.$digest();
+        ctrl = createController();
     });
 
     it('should exist', function() {
-        ctrl = createController();
         expect(ctrl).toBeDefined();
     });
 
@@ -78,7 +78,7 @@ describe('HomeViewCtrl', function() {
 
     describe('navToBrowse()', function() {
         beforeEach(function() {
-            ctrl = createController();
+            // ctrl = createController();
             spyOn($state, 'go');
         });
 
@@ -91,7 +91,7 @@ describe('HomeViewCtrl', function() {
     describe('receiving a server-sent event', function() {
         beforeEach(function() {
             spyOn(scope, '$apply').and.callThrough();
-            ctrl = createController();
+            // ctrl = createController();
         });
 
         it('should set $scope.topIdeas to data from event', function() {
@@ -105,7 +105,7 @@ describe('HomeViewCtrl', function() {
 
         beforeEach(function() {
             spyOn(ideaSvcMock, 'getIdeaHeaders').and.callThrough();
-            ctrl = createController();
+            // ctrl = createController();
         });
 
         it('should catch the newIdeaAdded event', function() {
@@ -115,5 +115,20 @@ describe('HomeViewCtrl', function() {
             expect(scope.topIdeas).not.toBe(null);
         });
     });
+
+    describe('$scope.loadMore()', function() {
+
+        beforeEach(function() {
+            scope.topIdeas = [1, 2, 3, 4, 5];
+        })
+
+        it('should add ideas', function() {
+            expect(scope.ideas).not.toBe(null);
+            scope.loadMore();
+            expect(scope.ideas.length).toBe(4);
+            scope.loadMore();
+            expect(scope.ideas.length).toBe(5);
+        })
+    })
 
 });

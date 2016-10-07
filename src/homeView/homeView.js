@@ -42,20 +42,22 @@ angular.module('flintAndSteel')
             }
 
             // causes mousewheel action to trigger scroll
-            $('#parent').bind('mousewheel', function(e){
-                $('#parent').scroll();
+            $('#parent').bind('mousewheel', function(e) { // jshint ignore:line
+                if (false) {
+                    console.log(e);
+                }
+                $('#parent').scroll(); // jshint ignore:line
             });
 
             // Loads more ideas
-            $scope.loadMore = function() {
+            $scope.loadMore = function loadMore() {
                 if ($scope.topIdeas.length > $scope.ideas.length) {
-                    console.log('ping');
                     var last = -1;
-                    if ($scope.ideas.length != 0) {
+                    if ($scope.ideas.length !== 0) {
                         last = $scope.ideas.length - 1;
                     }
 
-                    for(var i = 1; i <= 4; i++) {
+                    for (var i = 1; i <= 4; i++) {
                         if ($scope.topIdeas.length > last + i) {
                             $scope.ideas.push($scope.topIdeas[last + i]);
                         }
@@ -66,11 +68,11 @@ angular.module('flintAndSteel')
                 }
             };
 
-            $scope.top = function() {
-              var elem = $document.find('#top');
-              $uiViewScroll(elem);
-              // $anchorScroll();
-            }
+            // $scope.top = function() {
+            //   var elem = $document.find('#top');
+            //   $uiViewScroll(elem);
+            //   // $anchorScroll();
+            // }
 
             refreshHeaders();
 
