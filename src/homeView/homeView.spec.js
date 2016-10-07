@@ -78,7 +78,6 @@ describe('HomeViewCtrl', function() {
 
     describe('navToBrowse()', function() {
         beforeEach(function() {
-            // ctrl = createController();
             spyOn($state, 'go');
         });
 
@@ -91,7 +90,6 @@ describe('HomeViewCtrl', function() {
     describe('receiving a server-sent event', function() {
         beforeEach(function() {
             spyOn(scope, '$apply').and.callThrough();
-            // ctrl = createController();
         });
 
         it('should set $scope.topIdeas to data from event', function() {
@@ -105,7 +103,6 @@ describe('HomeViewCtrl', function() {
 
         beforeEach(function() {
             spyOn(ideaSvcMock, 'getIdeaHeaders').and.callThrough();
-            // ctrl = createController();
         });
 
         it('should catch the newIdeaAdded event', function() {
