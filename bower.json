@@ -33,6 +33,6 @@
     "jquery": "2.2.0",
     "lodash": "4.1.0",
     "moment": "2.10.3",
-    "angular-material": "1.0.6"
+    "angular-material": "1.1.1"
   }
 }
