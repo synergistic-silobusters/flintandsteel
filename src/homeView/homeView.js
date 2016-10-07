@@ -3,13 +3,14 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$document', '$scope', '$timeout', '$window', '$state', 'ideaSvc', 'sseSvc', '$interval',
-        function($document, $scope, $timeout, $window, $state, ideaSvc, sseSvc, $interval) {
+        '$document', '$scope', '$timeout', '$window', '$state', 'ideaSvc', 'sseSvc', '$interval', '$location', '$anchorScroll',
+        function($document, $scope, $timeout, $window, $state, ideaSvc, sseSvc, $interval, $location, $anchorScroll) {
             "use strict";
 
             // Check to make sure the document has finished loading the html
             //   before showing it to reduce jank
             $scope.loaded = false;
+            $scope.showTop = false;
             $scope.ideas = [];
             $scope.topIdeas = [];
             $scope.load = function load() {
@@ -43,10 +44,16 @@ angular.module('flintAndSteel')
 
             // causes mousewheel action to trigger scroll
             $('#parent').bind('mousewheel', function(e) { // jshint ignore:line
-                if (false) {
-                    console.log(e);
-                }
+                e = null;
+                
                 $('#parent').scroll(); // jshint ignore:line
+                var top = $('#parent').offset().top; // jshint ignore:line
+                if (top < -200) {
+                    $scope.showTop = true;
+                }
+                else {
+                    $scope.showTop = false;
+                }
             });
 
             // Loads more ideas
@@ -68,11 +75,11 @@ angular.module('flintAndSteel')
                 }
             };
 
-            // $scope.top = function() {
-            //   var elem = $document.find('#top');
-            //   $uiViewScroll(elem);
-            //   // $anchorScroll();
-            // }
+            $scope.top = function() {
+                $scope.showTop = false;
+                $location.hash('parent');
+                $anchorScroll();
+            };
 
             refreshHeaders();
 

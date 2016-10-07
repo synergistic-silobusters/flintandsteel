@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
-
 <div id="parent" ng-show="loaded">
-    <div id="top" class="center-text" ng-if="browserVersion > 0">{{internetExplorerMessage}}</div>
+    <div class="center-text" ng-if="browserVersion > 0">{{internetExplorerMessage}}</div>
     <!-- Announcemnt Carousel -->
     <whirligig class="margin-top"> </whirligig>
 
@@ -20,7 +19,7 @@
         </div>
     </div>
 
-    <md-button ng-click="emit()">
-      More
+    <md-button ng-if="showTop" class="top md-fab" ng-click="top()" aria-label="to top">
+        <i class="material-icons icon-button-adjust">publish</i>
     </md-button>
 </div>

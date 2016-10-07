@@ -120,7 +120,7 @@ describe('HomeViewCtrl', function() {
 
         beforeEach(function() {
             scope.topIdeas = [1, 2, 3, 4, 5];
-        })
+        });
 
         it('should add ideas', function() {
             expect(scope.ideas).not.toBe(null);
@@ -128,7 +128,7 @@ describe('HomeViewCtrl', function() {
             expect(scope.ideas.length).toBe(4);
             scope.loadMore();
             expect(scope.ideas.length).toBe(5);
-        })
-    })
+        });
+    });
 
 });

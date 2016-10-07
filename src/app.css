@@ -6,7 +6,11 @@
     width: 100vw;
     padding-bottom: 0px;
 }
-
+.top {
+    position: fixed;
+    right: 20px;
+    bottom: 10px;
+}
 .idea-card {
     width: 256px;
     max-height: 376px;
