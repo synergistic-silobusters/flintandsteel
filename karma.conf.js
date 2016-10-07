@@ -35,6 +35,7 @@ module.exports = function(config) {
             'src/lib/moment/moment.js',
             'src/lib/lodash/lodash.js',
             'src/lib/jqcloud2/dist/jqcloud.min.js',
+            'src/lib/nginfinitescroll/build/ng-infinite-scroll.js',
             'src/app.js',
             'src/about/about.js',
             'src/events/eventSvc/eventSvc.mock.js',

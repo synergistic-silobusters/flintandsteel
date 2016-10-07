@@ -3,13 +3,16 @@
 angular.module('flintAndSteel')
 .controller('HomeViewCtrl',
     [
-        '$document', '$scope', '$timeout', '$window', '$state', 'ideaSvc', 'sseSvc', '$interval',
-        function($document, $scope, $timeout, $window, $state, ideaSvc, sseSvc, $interval) {
+        '$document', '$scope', '$timeout', '$window', '$state', 'ideaSvc', 'sseSvc', '$interval', '$location', '$anchorScroll',
+        function($document, $scope, $timeout, $window, $state, ideaSvc, sseSvc, $interval, $location, $anchorScroll) {
             "use strict";
 
             // Check to make sure the document has finished loading the html
             //   before showing it to reduce jank
             $scope.loaded = false;
+            $scope.showTop = false;
+            $scope.ideas = [];
+            $scope.topIdeas = [];
             $scope.load = function load() {
                 if (document.readyState !== 'complete') {
                     return;
@@ -33,10 +36,50 @@ angular.module('flintAndSteel')
             function refreshHeaders() {
                 ideaSvc.getIdeaHeaders().then(function getIdeaHeadersSuccess(response) {
                     $scope.topIdeas = response.data;
+                    $scope.loadMore();
                 }, function getIdeaHeadersError(response) {
                     console.log(response);
                 });
             }
+
+            // causes mousewheel action to trigger scroll
+            $('#parent').bind('mousewheel', function(e) { // jshint ignore:line
+                e = null;
+                
+                $('#parent').scroll(); // jshint ignore:line
+                var top = $('#parent').offset().top; // jshint ignore:line
+                if (top < -200) {
+                    $scope.showTop = true;
+                }
+                else {
+                    $scope.showTop = false;
+                }
+            });
+
+            // Loads more ideas
+            $scope.loadMore = function loadMore() {
+                if ($scope.topIdeas.length > $scope.ideas.length) {
+                    var last = -1;
+                    if ($scope.ideas.length !== 0) {
+                        last = $scope.ideas.length - 1;
+                    }
+
+                    for (var i = 1; i <= 4; i++) {
+                        if ($scope.topIdeas.length > last + i) {
+                            $scope.ideas.push($scope.topIdeas[last + i]);
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                }
+            };
+
+            $scope.top = function() {
+                $scope.showTop = false;
+                $location.hash('parent');
+                $anchorScroll();
+            };
 
             refreshHeaders();
 

@@ -1,4 +1,5 @@
-<div ng-show="loaded">
+<!DOCTYPE HTML>
+<div id="parent" ng-show="loaded">
     <div class="center-text" ng-if="browserVersion > 0">{{internetExplorerMessage}}</div>
     <!-- Announcemnt Carousel -->
     <whirligig class="margin-top"> </whirligig>
@@ -7,28 +8,18 @@
     <top-ideas title='Top Ideas' ideaslist='topIdeas' sort='"-likes"'/>
     <!-- Most Recent Ideas -->
     <top-ideas title='New Ideas' ideasList='topIdeas' sort='"-timeCreated"'/>
-    <!-- Begin Timeline -->
-    <!--<div layout="row" layout-align="center center" ng-hide="searchText">
-        <h2 class="homeview-padding-bottom">Event Schedule</h2>
-    </div>
-    <div class="container" ng-hide="searchText">
-        <div class="row">
-            <div class="timeline-centered">
-                <md-item ng-repeat="Event in Events">
-                <timeline-event  event="Event"/>
-                </md-item>
-                <article class="timeline-entry begin">
-                    <div class="timeline-entry-inner">
-                        <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
-                            <i class="entypo-flight"/>
-                        </div>
-                    </div>
-                </article>
+    <!-- All Ideas - Infinite Scroll -->
+    <h2 class="center-text margin-top"> All Ideas </h2>
+
+    <div infinite-scroll='loadMore()' infinite-scroll-immediate-check=false infinite-scroll-distance='1'>
+        <div layout="row" layout-wrap layout-align="center center">
+            <div layout-align="center" ng-repeat='idea in ideas'>
+                <idea-card idea="idea"></idea-card>
             </div>
         </div>
     </div>
-    <jqcloud words="words" width="500" height="350" steps="7"></jqcloud>-->
-    <!-- End Timeline -->
-    <div><h6><center><a ui-sref="about">About Us</a></center></h6></div>
-    <div><h6><center><a ui-sref="innovationdisclosure">Innovation Disclosure Assistant</a></center></h6></div>
-<div>
+
+    <md-button ng-if="showTop" class="top md-fab" ng-click="top()" aria-label="to top">
+        <i class="material-icons icon-button-adjust">publish</i>
+    </md-button>
+</div>
