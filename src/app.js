@@ -10,7 +10,8 @@ angular.module('flintAndSteel', [
         'ngMaterial',
         'ngMessages',
         'ui.identicon',
-        'hc.marked'
+        'hc.marked',
+        'infinite-scroll'
     ]
 )
 .config([

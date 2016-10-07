@@ -10,6 +10,8 @@ angular.module('flintAndSteel')
             // Check to make sure the document has finished loading the html
             //   before showing it to reduce jank
             $scope.loaded = false;
+            $scope.ideas = [];
+            $scope.topIdeas = [];
             $scope.load = function load() {
                 if (document.readyState !== 'complete') {
                     return;
@@ -33,9 +35,41 @@ angular.module('flintAndSteel')
             function refreshHeaders() {
                 ideaSvc.getIdeaHeaders().then(function getIdeaHeadersSuccess(response) {
                     $scope.topIdeas = response.data;
+                    $scope.loadMore();
                 }, function getIdeaHeadersError(response) {
                     console.log(response);
                 });
+            }
+
+            // causes mousewheel action to trigger scroll
+            $('#parent').bind('mousewheel', function(e){
+                $('#parent').scroll();
+            });
+
+            // Loads more ideas
+            $scope.loadMore = function() {
+                if ($scope.topIdeas.length > $scope.ideas.length) {
+                    console.log('ping');
+                    var last = -1;
+                    if ($scope.ideas.length != 0) {
+                        last = $scope.ideas.length - 1;
+                    }
+
+                    for(var i = 1; i <= 4; i++) {
+                        if ($scope.topIdeas.length > last + i) {
+                            $scope.ideas.push($scope.topIdeas[last + i]);
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                }
+            };
+
+            $scope.top = function() {
+              var elem = $document.find('#top');
+              $uiViewScroll(elem);
+              // $anchorScroll();
             }
 
             refreshHeaders();

@@ -1,5 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+
+#list-wrapper{
+    overflow: scroll;
+    width: 100vw;
+    padding-bottom: 0px;
+}
+
 .idea-card {
     width: 256px;
     max-height: 376px;
