@@ -106,7 +106,7 @@ insertResult = db.ideas.insert(
     [
         {
             title: 'Guybrush\'s Test Idea',
-            description: 'This is an idea description.',
+            description: 'Nihil enim iam habes, quod ad corpus referas; Tibi hoc incredibile, quod beatissimum. A mene tu? Quod cum accidisset ut alter alterum',
             authorId: userIds[0],
             eventId: eventIds[0],
             timeCreated: now,

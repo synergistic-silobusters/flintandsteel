@@ -232,7 +232,7 @@ module.exports = function(dbName, cb) {
                     valueObj = new ObjectId(valueObj);
                 }
             }
-            
+
             switch (command.operation) {
                 case "append":
                     toChange = {};

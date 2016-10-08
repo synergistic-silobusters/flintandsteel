@@ -1,4 +1,4 @@
-<md-dialog aria-label="Login" ng-cloak>
+<md-dialog aria-label="Login">
     <form name="loginForm" novalidate ng-submit="login(account)">
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -9,29 +9,27 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <span class="sign-in-tip" flex>Use your RA-INT Credentials</span>
-        <md-dialog-content class="extra-padding-15 extra-padding-top-md">
-            <md-input-container flex>
+        <span class="sign-in-tip">Use your RA-INT Credentials</span>
+        <md-dialog-content class="extra-padding-15 extra-padding-top-md" layout="column">
+            <md-input-container>
                 <label>Username</label>
                 <input id="username" ng-model="account.username" name="username" required>
                 <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
-            <md-input-container flex>
+            <md-input-container>
                 <label>Password</label>
                 <input ng-model="account.password" name="password" type="password" required>
                 <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
-            <br></br>
-            <md-dialog-actions flex layout="column">
-                <md-button class="md-raised md-primary login-button" type="submit" ng-disabled="loginForm.$invalid" flex>
+            <md-dialog-actions>
+                <md-button class="md-raised md-primary login-button" type="submit" ng-disabled="loginForm.$invalid">
                     Login
                 </md-button>
             </md-dialog-actions>
-            <p></p>
         </md-dialog-content>
     </form>
 </md-dialog>

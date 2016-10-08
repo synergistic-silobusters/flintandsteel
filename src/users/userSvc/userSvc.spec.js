@@ -132,5 +132,4 @@ describe('userSvc', function() {
 
         });
     });
-
 });

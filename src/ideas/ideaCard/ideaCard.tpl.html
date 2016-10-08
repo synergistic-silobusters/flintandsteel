@@ -1,0 +1,30 @@
+<md-card>
+    <img ng-src="idea.imgSrc" alt="{{idea.title}}" ng-if="idea.imgSrc" class="idea-card-image">
+    <md-card-title>
+        <md-card-title-text><span class="md-headline">{{idea.title}}</span></md-card-title-text>
+    </md-card-title>
+    <md-card-content layout="column">
+        <p>{{idea.abstract}}</p>
+        <div layout="row">
+            <div flex>
+                <span class="extra-padding-right-sm">{{idea.likes}}</span>
+                <i class="material-icons icon-button-adjust">&#xE87D;</i>
+            </div>
+            <div flex>
+                <span class="extra-padding-right-sm">{{idea.backs}}</span>
+                <i class="material-icons icon-button-adjust">&#xE892;</i>
+            </div>
+            <div flex>
+                <span class="extra-padding-right-sm">{{idea.team}}</span>
+                <i class="material-icons icon-button-adjust">&#xE7EF;</i>
+            </div>
+        </div>
+        <div class="extra-padding-top-md" layout="row" flex>
+            <span layout="row" layout-align="center center">
+                <identicon username='idea.author.username' size='18'></identicon>
+            </span>
+            <span>&nbsp;</span>
+            <span>{{idea.author.name}}</span>
+        </div>
+    </md-card-content>
+</md-card>
