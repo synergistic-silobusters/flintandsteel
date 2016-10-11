@@ -10,12 +10,13 @@ angular.module('flintAndSteel', [
         'ngMaterial',
         'ngMessages',
         'ui.identicon',
-        'hc.marked'
+        'hc.marked',
+        'infinite-scroll'
     ]
 )
 .config([
-    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider', '$httpProvider', 'markedProvider',
-    function($urlRouterProvider, $stateProvider, $mdThemingProvider, $httpProvider, markedProvider) {
+    '$urlRouterProvider', '$stateProvider', '$mdThemingProvider', '$httpProvider', 'markedProvider', '$uiViewScrollProvider',
+    function($urlRouterProvider, $stateProvider, $mdThemingProvider, $httpProvider, markedProvider, $uiViewScrollProvider) {
         "use strict";
 
         // Use GitHub Flavored Markdown ("gfm")
@@ -75,6 +76,7 @@ angular.module('flintAndSteel', [
             });
 
         $urlRouterProvider.otherwise('/');
+        $uiViewScrollProvider.useAnchorScroll();
 
         var rockstarterRedMap = $mdThemingProvider.extendPalette('red', {
             '900': 'bb1e32'
