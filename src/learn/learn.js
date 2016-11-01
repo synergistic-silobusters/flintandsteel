@@ -55,7 +55,7 @@ angular.module('flintAndSteel')
                 imgSource: "assets/learn/learnToBack.gif",
                 orderImg: "1",
                 orderDesc: "2",
-                description: "Backing an idea volunteers skills towards the team.  Once you back an idea, the idea owner can add you to their team."
+                description: "Backing an idea volunteers skills towards the team.  Once you back an idea, the idea owner can add you to their team to help work on the idea."
             };
             $scope.learnItem7 = {
                 title: "Add to Team",
