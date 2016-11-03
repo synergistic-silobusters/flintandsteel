@@ -20,7 +20,7 @@ angular.module('flintAndSteel')
                 imgSource: "assets/learn/learnToSubmitIdea.gif",
                 orderImg: "2",
                 orderDesc: "1",
-                description: "Ideas are the foundation of 'Innovate'.  They can consist of a suggestion to fix a business problem, a technical problem, or a general innovation for the company."
+                description: "Submit an idea that you are passionate about.  Use the site and networking to socialize the idea, building a team around it."
             };
             $scope.learnItem2 = {
                 title: "Search Ideas",
@@ -55,7 +55,7 @@ angular.module('flintAndSteel')
                 imgSource: "assets/learn/learnToBack.gif",
                 orderImg: "1",
                 orderDesc: "2",
-                description: "Backing an idea volunteers skills towards the team.  Once you back an idea, the idea owner can add you to their team."
+                description: "Backing an idea volunteers skills towards the team.  Once you back an idea, the idea owner can add you to their team to help work on the idea."
             };
             $scope.learnItem7 = {
                 title: "Add to Team",
